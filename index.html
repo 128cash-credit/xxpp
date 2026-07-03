@@ -3,76 +3,33 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Smart Stock Exchange - India</title>
+    <title>Smart Stock Exchange - Live Trading</title>
     <style>
-        /* ─── RESET & BASE ─── */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
         
         body {
             background: #f0f2f5;
             color: #1a1a2e;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-
-        /* ─── SCROLLBAR ─── */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #e8eaed;
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 10px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(135deg, #5a67d8 0%, #6b46a1 100%);
-        }
-
-        /* ─── APP CONTAINER ─── */
+        
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #e8eaed; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; }
+        
         #app {
-            width: 100%;
             max-width: 1440px;
-            min-height: 100vh;
+            margin: 0 auto;
             background: #f0f2f5;
-            position: relative;
-            display: flex;
-            flex-direction: column;
+            min-height: 100vh;
         }
-
-        /* ─── PAGE CONTAINER ─── */
-        .page {
-            display: none;
-            width: 100%;
-            flex: 1;
-            animation: fadeIn 0.4s ease;
-        }
-        .page.active {
-            display: flex;
-            flex-direction: column;
-        }
-        @keyframes fadeIn {
-            0% {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* ─── AUTH PAGES ─── */
+        
+        /* Auth Pages */
         .auth-page {
             min-height: 100vh;
             display: flex;
@@ -80,1984 +37,998 @@
             justify-content: center;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
-            position: relative;
-            overflow: hidden;
         }
-        .auth-page::before {
-            content: '';
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            top: -100px;
-            right: -100px;
-        }
-        .auth-page::after {
-            content: '';
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
-            bottom: -80px;
-            left: -80px;
-        }
+        
         .auth-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
+            background: white;
             border-radius: 24px;
             padding: 45px 40px;
             width: 100%;
             max-width: 440px;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
-            position: relative;
-            z-index: 1;
-            transition: transform 0.3s ease;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.2);
         }
-        .auth-card:hover {
-            transform: translateY(-5px);
-        }
+        
         .auth-card .logo {
             font-size: 30px;
             font-weight: 800;
             color: #1a1a2e;
-            letter-spacing: -0.5px;
             margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
-        .auth-card .logo span {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .auth-card .sub {
-            color: #6b7280;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-        .auth-card label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: #374151;
-            margin-bottom: 6px;
-            margin-top: 18px;
-        }
-        .auth-card label:first-of-type {
-            margin-top: 0;
-        }
-        .auth-card .input-group {
-            position: relative;
-        }
-        .auth-card .input-group .icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 18px;
-            color: #9ca3af;
-        }
+        .auth-card .logo span { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .auth-card .sub { color: #6b7280; font-size: 14px; margin-bottom: 30px; }
+        .auth-card label { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 6px; margin-top: 18px; }
         .auth-card input {
-            width: 100%;
-            padding: 13px 16px 13px 44px;
-            background: #f9fafb;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            color: #1a1a2e;
-            font-size: 15px;
-            outline: none;
-            transition: all 0.3s ease;
+            width: 100%; padding: 13px 16px;
+            background: #f9fafb; border: 2px solid #e5e7eb; border-radius: 12px;
+            color: #1a1a2e; font-size: 15px; outline: none;
+            transition: all 0.3s;
         }
-        .auth-card input:focus {
-            border-color: #667eea;
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        }
-        .auth-card input::placeholder {
-            color: #9ca3af;
-        }
+        .auth-card input:focus { border-color: #667eea; background: white; box-shadow: 0 0 0 4px rgba(102,126,234,0.1); }
         .auth-card .btn-primary {
-            width: 100%;
-            padding: 15px;
-            margin-top: 26px;
+            width: 100%; padding: 15px; margin-top: 26px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            color: #ffffff;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            border: none; border-radius: 12px; font-size: 16px; font-weight: 700;
+            color: white; cursor: pointer; transition: all 0.3s;
         }
-        .auth-card .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
-        }
-        .auth-card .btn-primary:active {
-            transform: translateY(0);
-        }
-        .auth-card .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .auth-card .switch-link {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #6b7280;
-        }
-        .auth-card .switch-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s;
-        }
-        .auth-card .switch-link a:hover {
-            color: #764ba2;
-            text-decoration: underline;
-        }
-        .auth-card .error-msg {
-            color: #ef4444;
-            font-size: 13px;
-            margin-top: 8px;
-            display: none;
-            padding: 10px;
-            background: #fef2f2;
-            border-radius: 8px;
-            border-left: 4px solid #ef4444;
-        }
-        .auth-card .success-msg {
-            color: #10b981;
-            font-size: 13px;
-            margin-top: 8px;
-            display: none;
-            padding: 10px;
-            background: #f0fdf4;
-            border-radius: 8px;
-            border-left: 4px solid #10b981;
-        }
-
-        /* ─── DASHBOARD LAYOUT ─── */
-        .dashboard {
-            display: none;
-            flex-direction: column;
-            min-height: 100vh;
-            background: #f0f2f5;
-        }
-        .dashboard.active {
-            display: flex;
-        }
-
-        /* ─── TOP BAR ─── */
+        .auth-card .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(102,126,234,0.4); }
+        .auth-card .switch-link { text-align: center; margin-top: 20px; font-size: 14px; color: #6b7280; }
+        .auth-card .switch-link a { color: #667eea; text-decoration: none; font-weight: 600; }
+        .auth-card .error-msg { color: #ef4444; font-size: 13px; margin-top: 8px; display: none; padding: 10px; background: #fef2f2; border-radius: 8px; border-left: 4px solid #ef4444; }
+        .auth-card .success-msg { color: #10b981; font-size: 13px; margin-top: 8px; display: none; padding: 10px; background: #f0fdf4; border-radius: 8px; border-left: 4px solid #10b981; }
+        
+        .page { display: none; width: 100%; flex: 1; animation: fadeIn 0.4s ease; }
+        .page.active { display: flex; flex-direction: column; }
+        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+        
+        /* Dashboard */
+        .dashboard { display: none; flex-direction: column; min-height: 100vh; background: #f0f2f5; }
+        .dashboard.active { display: flex; }
+        
         .topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 28px;
-            background: #ffffff;
-            border-bottom: 1px solid #e5e7eb;
-            flex-wrap: wrap;
-            gap: 12px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 28px; background: white; border-bottom: 1px solid #e5e7eb;
+            flex-wrap: wrap; gap: 12px; position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        .topbar .brand {
-            font-size: 24px;
-            font-weight: 800;
-            color: #1a1a2e;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .topbar .brand span {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .topbar .brand small {
-            font-weight: 400;
-            color: #6b7280;
-            font-size: 12px;
-            -webkit-text-fill-color: #6b7280;
-        }
-        .topbar .user-info {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-        .topbar .user-info .badge {
-            background: #f3f4f6;
-            padding: 7px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            color: #374151;
-            border: 1px solid #e5e7eb;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-        .topbar .user-info .badge:hover {
-            background: #e5e7eb;
-        }
-        .topbar .user-info .badge.verified {
-            border-color: #10b981;
-            color: #10b981;
-            background: #f0fdf4;
-        }
-        .topbar .user-info .badge.frozen {
-            border-color: #ef4444;
-            color: #ef4444;
-            background: #fef2f2;
-        }
-        .topbar .user-info .badge.gold {
-            border-color: #f59e0b;
-            color: #f59e0b;
-            background: #fffbeb;
-        }
-        .topbar .user-info .logout-btn {
-            background: #f3f4f6;
-            border: 1px solid #e5e7eb;
-            color: #6b7280;
-            padding: 8px 18px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-        .topbar .user-info .logout-btn:hover {
-            border-color: #ef4444;
-            color: #ef4444;
-            background: #fef2f2;
-        }
-
-        /* ─── DASHBOARD BODY ─── */
-        .dash-body {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-        }
-
-        /* ─── SIDEBAR ─── */
+        .topbar .brand { font-size: 24px; font-weight: 800; color: #1a1a2e; }
+        .topbar .brand span { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .topbar .user-info { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+        .topbar .user-info .badge { background: #f3f4f6; padding: 7px 16px; border-radius: 20px; font-size: 13px; color: #374151; border: 1px solid #e5e7eb; font-weight: 500; }
+        .topbar .user-info .badge.verified { border-color: #10b981; color: #10b981; background: #f0fdf4; }
+        .topbar .user-info .badge.frozen { border-color: #ef4444; color: #ef4444; background: #fef2f2; }
+        .topbar .user-info .badge.gold { border-color: #f59e0b; color: #f59e0b; background: #fffbeb; }
+        .topbar .user-info .logout-btn { background: #f3f4f6; border: 1px solid #e5e7eb; color: #6b7280; padding: 8px 18px; border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.3s; }
+        .topbar .user-info .logout-btn:hover { border-color: #ef4444; color: #ef4444; background: #fef2f2; }
+        
+        .dash-body { display: flex; flex: 1; overflow: hidden; }
+        
         .sidebar {
-            width: 240px;
-            background: #ffffff;
-            border-right: 1px solid #e5e7eb;
-            padding: 20px 0;
-            flex-shrink: 0;
-            overflow-y: auto;
-            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.02);
+            width: 220px; background: white; border-right: 1px solid #e5e7eb;
+            padding: 20px 0; flex-shrink: 0; overflow-y: auto;
         }
         .sidebar .nav-item {
-            padding: 14px 24px;
-            color: #6b7280;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
-            border-left: 4px solid transparent;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 2px 10px;
-            border-radius: 10px;
+            padding: 14px 24px; color: #6b7280; cursor: pointer; font-size: 14px; font-weight: 500;
+            border-left: 4px solid transparent; transition: all 0.3s;
+            display: flex; align-items: center; gap: 12px; margin: 2px 10px; border-radius: 10px;
         }
-        .sidebar .nav-item:hover {
-            background: #f3f4f6;
-            color: #1a1a2e;
-            transform: translateX(4px);
-        }
-        .sidebar .nav-item.active {
-            color: #667eea;
-            border-left-color: #667eea;
-            background: #f0f4ff;
-            font-weight: 600;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
-        }
-        .sidebar .nav-item .icon {
-            font-size: 20px;
-            width: 28px;
-            text-align: center;
-        }
-
-        /* ─── CONTENT ─── */
-        .content {
-            flex: 1;
-            padding: 28px;
-            overflow-y: auto;
-            background: #f0f2f5;
-        }
-
-        /* ─── CARDS ─── */
-        .card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 24px 28px;
-            border: 1px solid #e5e7eb;
-            margin-bottom: 24px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s;
-        }
-        .card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-        }
-        .card-title {
-            font-size: 17px;
-            font-weight: 700;
-            color: #1a1a2e;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .card-title .sub {
-            font-size: 13px;
-            font-weight: 400;
-            color: #6b7280;
-        }
-
-        /* ─── GRID ─── */
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-        .grid-3 {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-        .grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-
-        /* ─── STAT CARDS ─── */
-        .stat-card {
-            background: #ffffff;
-            border-radius: 16px;
-            padding: 22px 24px;
-            border: 1px solid #e5e7eb;
-            transition: all 0.3s;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-        }
-        .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-        }
-        .stat-card .label {
-            font-size: 12px;
-            color: #6b7280;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-        }
-        .stat-card .value {
-            font-size: 28px;
-            font-weight: 800;
-            margin-top: 6px;
-            color: #1a1a2e;
-        }
-        .stat-card .value.green {
-            color: #10b981;
-        }
-        .stat-card .value.red {
-            color: #ef4444;
-        }
-        .stat-card .value.gold {
-            color: #f59e0b;
-        }
-        .stat-card .value.purple {
-            color: #667eea;
-        }
-
-        /* ─── STOCK TABLE ─── */
-        .stock-table-wrap {
-            overflow-x: auto;
-        }
-        .stock-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
-        .stock-table th {
-            text-align: left;
-            padding: 12px 14px;
-            color: #6b7280;
-            font-weight: 600;
-            border-bottom: 2px solid #e5e7eb;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .stock-table td {
-            padding: 12px 14px;
-            border-bottom: 1px solid #f3f4f6;
-            color: #1a1a2e;
-        }
-        .stock-table tr:hover td {
-            background: #f9fafb;
-        }
-        .stock-table .price-up {
-            color: #10b981;
-            font-weight: 600;
-        }
-        .stock-table .price-down {
-            color: #ef4444;
-            font-weight: 600;
-        }
+        .sidebar .nav-item:hover { background: #f3f4f6; color: #1a1a2e; transform: translateX(4px); }
+        .sidebar .nav-item.active { color: #667eea; border-left-color: #667eea; background: #f0f4ff; font-weight: 600; }
+        .sidebar .nav-item .icon { font-size: 20px; width: 28px; text-align: center; }
+        
+        .content { flex: 1; padding: 28px; overflow-y: auto; background: #f0f2f5; }
+        
+        .card { background: white; border-radius: 16px; padding: 24px 28px; border: 1px solid #e5e7eb; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .card-title { font-size: 17px; font-weight: 700; color: #1a1a2e; margin-bottom: 16px; display: flex; align-items: center; justify-content: space-between; }
+        .card-title .sub { font-size: 13px; font-weight: 400; color: #6b7280; }
+        
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        
+        .stat-card { background: white; border-radius: 16px; padding: 22px 24px; border: 1px solid #e5e7eb; transition: all 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+        .stat-card .label { font-size: 12px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+        .stat-card .value { font-size: 28px; font-weight: 800; margin-top: 6px; color: #1a1a2e; }
+        .stat-card .value.green { color: #10b981; }
+        .stat-card .value.red { color: #ef4444; }
+        .stat-card .value.gold { color: #f59e0b; }
+        .stat-card .value.purple { color: #667eea; }
+        
+        .stock-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .stock-table th { text-align: left; padding: 12px 14px; color: #6b7280; font-weight: 600; border-bottom: 2px solid #e5e7eb; font-size: 12px; text-transform: uppercase; }
+        .stock-table td { padding: 12px 14px; border-bottom: 1px solid #f3f4f6; color: #1a1a2e; }
+        .stock-table tr:hover td { background: #f9fafb; }
+        .stock-table .price-up { color: #10b981; font-weight: 600; }
+        .stock-table .price-down { color: #ef4444; font-weight: 600; }
         .stock-table .action-btn {
-            background: transparent;
-            border: 2px solid #e5e7eb;
-            color: #6b7280;
-            padding: 6px 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            transition: all 0.3s;
-            margin-right: 6px;
+            background: transparent; border: 2px solid #e5e7eb; color: #6b7280;
+            padding: 6px 16px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: 600;
+            transition: all 0.3s; margin-right: 6px;
         }
-        .stock-table .action-btn.buy {
-            border-color: #10b981;
-            color: #10b981;
+        .stock-table .action-btn.buy { border-color: #10b981; color: #10b981; }
+        .stock-table .action-btn.buy:hover { background: #10b981; color: white; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(16,185,129,0.3); }
+        .stock-table .action-btn.sell { border-color: #ef4444; color: #ef4444; }
+        .stock-table .action-btn.sell:hover { background: #ef4444; color: white; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(239,68,68,0.3); }
+        
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; color: #374151; margin-bottom: 6px; font-weight: 600; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 12px 16px; background: #f9fafb; border: 2px solid #e5e7eb;
+            border-radius: 10px; color: #1a1a2e; font-size: 14px; outline: none; transition: all 0.3s;
         }
-        .stock-table .action-btn.buy:hover {
-            background: #10b981;
-            color: #ffffff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-        }
-        .stock-table .action-btn.sell {
-            border-color: #ef4444;
-            color: #ef4444;
-        }
-        .stock-table .action-btn.sell:hover {
-            background: #ef4444;
-            color: #ffffff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
-        }
-
-        /* ─── FORMS ─── */
-        .form-group {
-            margin-bottom: 18px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            color: #374151;
-            margin-bottom: 6px;
-            font-weight: 600;
-        }
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 12px 16px;
-            background: #f9fafb;
-            border: 2px solid #e5e7eb;
-            border-radius: 10px;
-            color: #1a1a2e;
-            font-size: 14px;
-            outline: none;
-            transition: all 0.3s;
-        }
-        .form-group input:focus,
-        .form-group select:focus {
-            border-color: #667eea;
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
-        }
-        .form-group input::placeholder {
-            color: #9ca3af;
-        }
-        .form-group select option {
-            background: #ffffff;
-        }
-
+        .form-group input:focus, .form-group select:focus { border-color: #667eea; background: white; box-shadow: 0 0 0 4px rgba(102,126,234,0.1); }
+        
         .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            padding: 12px 24px; border: none; border-radius: 10px; font-weight: 700; font-size: 14px;
+            cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px;
         }
-        .btn:hover {
-            transform: translateY(-2px);
-        }
-        .btn:active {
-            transform: translateY(0);
-        }
-        .btn-gold {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: #ffffff;
-        }
-        .btn-gold:hover {
-            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
-        }
-        .btn-green {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: #ffffff;
-        }
-        .btn-green:hover {
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-        }
-        .btn-red {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: #ffffff;
-        }
-        .btn-red:hover {
-            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
-        }
-        .btn-purple {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #ffffff;
-        }
-        .btn-purple:hover {
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
-        }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #e5e7eb;
-            color: #6b7280;
-        }
-        .btn-outline:hover {
-            border-color: #667eea;
-            color: #667eea;
-            background: #f0f4ff;
-        }
-        .btn-sm {
-            padding: 6px 14px;
-            font-size: 12px;
-        }
-
-        .flex {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .flex-between {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
+        .btn:hover { transform: translateY(-2px); }
+        .btn-gold { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: white; }
+        .btn-gold:hover { box-shadow: 0 6px 20px rgba(245,158,11,0.4); }
+        .btn-green { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; }
+        .btn-green:hover { box-shadow: 0 6px 20px rgba(16,185,129,0.4); }
+        .btn-red { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; }
+        .btn-red:hover { box-shadow: 0 6px 20px rgba(239,68,68,0.4); }
+        .btn-purple { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .btn-purple:hover { box-shadow: 0 6px 20px rgba(102,126,234,0.4); }
+        .btn-outline { background: transparent; border: 2px solid #e5e7eb; color: #6b7280; }
+        .btn-outline:hover { border-color: #667eea; color: #667eea; background: #f0f4ff; }
+        .btn-sm { padding: 6px 14px; font-size: 12px; }
+        
+        .flex { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
         .mt-12 { margin-top: 12px; }
         .mt-20 { margin-top: 20px; }
         .mb-12 { margin-bottom: 12px; }
-        .gap-8 { gap: 8px; }
-        .text-center { text-align: center; }
         .text-muted { color: #6b7280; }
-        .text-gold { color: #f59e0b; }
         .text-green { color: #10b981; }
         .text-red { color: #ef4444; }
+        .text-gold { color: #f59e0b; }
         .text-purple { color: #667eea; }
-        .w-full { width: 100%; }
-
-        /* ─── TABLES ─── */
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-        }
-        .history-table th {
-            text-align: left;
-            padding: 10px 14px;
-            color: #6b7280;
-            font-weight: 600;
-            border-bottom: 2px solid #e5e7eb;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .history-table td {
-            padding: 10px 14px;
-            border-bottom: 1px solid #f3f4f6;
-            color: #374151;
-        }
+        .hidden { display: none !important; }
+        
+        .history-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .history-table th { text-align: left; padding: 10px 14px; color: #6b7280; font-weight: 600; border-bottom: 2px solid #e5e7eb; font-size: 11px; text-transform: uppercase; }
+        .history-table td { padding: 10px 14px; border-bottom: 1px solid #f3f4f6; color: #374151; }
         .history-table .buy-type { color: #10b981; font-weight: 600; }
         .history-table .sell-type { color: #ef4444; font-weight: 600; }
         .history-table .deposit-type { color: #f59e0b; font-weight: 600; }
-        .history-table .withdraw-type { color: #ef4444; font-weight: 600; }
-
-        /* ─── ADMIN PANEL ─── */
-        .admin-user-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 0;
-            border-bottom: 1px solid #f3f4f6;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .admin-user-row:last-child {
-            border-bottom: none;
-        }
-        .admin-user-row .info {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-        .admin-user-row .info .name {
-            font-weight: 600;
-            color: #1a1a2e;
-        }
-        .admin-user-row .info .phone {
-            color: #6b7280;
-            font-size: 13px;
-        }
-        .admin-user-row .info .badge-sm {
-            font-size: 11px;
-            padding: 4px 12px;
-            border-radius: 12px;
-            background: #f3f4f6;
-            border: 1px solid #e5e7eb;
-            font-weight: 500;
-        }
-        .admin-user-row .info .badge-sm.verified {
-            border-color: #10b981;
-            color: #10b981;
-            background: #f0fdf4;
-        }
-        .admin-user-row .info .badge-sm.frozen {
-            border-color: #ef4444;
-            color: #ef4444;
-            background: #fef2f2;
-        }
-        .admin-user-row .actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        /* ─── TOAST ─── */
-        .toast-container {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            max-width: 400px;
-            width: 100%;
-        }
-        .toast {
-            padding: 16px 20px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 500;
-            background: #ffffff;
-            border-left: 4px solid #667eea;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
-            color: #1a1a2e;
-            animation: slideIn 0.4s ease;
-            border: 1px solid #e5e7eb;
-        }
-        .toast.success {
-            border-left-color: #10b981;
-        }
-        .toast.error {
-            border-left-color: #ef4444;
-        }
-        .toast.info {
-            border-left-color: #667eea;
-        }
-        @keyframes slideIn {
-            0% {
-                transform: translateX(50px);
-                opacity: 0;
-            }
-            100% {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        /* ─── RESPONSIVE ─── */
-        @media (max-width: 1024px) {
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
+        
+        .admin-user-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid #f3f4f6; flex-wrap: wrap; gap: 10px; }
+        .admin-user-row .info { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+        .admin-user-row .info .name { font-weight: 600; color: #1a1a2e; }
+        .admin-user-row .info .phone { color: #6b7280; font-size: 13px; }
+        .admin-user-row .info .badge-sm { font-size: 11px; padding: 4px 12px; border-radius: 12px; background: #f3f4f6; border: 1px solid #e5e7eb; font-weight: 500; }
+        .admin-user-row .info .badge-sm.verified { border-color: #10b981; color: #10b981; background: #f0fdf4; }
+        .admin-user-row .info .badge-sm.frozen { border-color: #ef4444; color: #ef4444; background: #fef2f2; }
+        .admin-user-row .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+        
+        .toast-container { position: fixed; top: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; max-width: 400px; width: 100%; }
+        .toast { padding: 16px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; background: white; border-left: 4px solid #667eea; box-shadow: 0 10px 40px rgba(0,0,0,0.12); color: #1a1a2e; animation: slideIn 0.4s ease; border: 1px solid #e5e7eb; }
+        .toast.success { border-left-color: #10b981; }
+        .toast.error { border-left-color: #ef4444; }
+        .toast.info { border-left-color: #667eea; }
+        @keyframes slideIn { 0% { transform: translateX(50px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+        
+        @media (max-width: 1024px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; } }
         @media (max-width: 768px) {
-            .sidebar {
-                width: 70px;
-                padding: 12px 0;
-            }
-            .sidebar .nav-item {
-                padding: 14px;
-                font-size: 0;
-                justify-content: center;
-                margin: 2px 6px;
-            }
-            .sidebar .nav-item .icon {
-                font-size: 22px;
-                width: auto;
-            }
-            .sidebar .nav-item .label {
-                display: none;
-            }
-            .topbar {
-                padding: 12px 16px;
-            }
-            .topbar .brand {
-                font-size: 18px;
-            }
-            .content {
-                padding: 16px;
-            }
-            .grid-2, .grid-3, .grid-4 {
-                grid-template-columns: 1fr;
-            }
-            .auth-card {
-                padding: 30px 24px;
-            }
-            .stock-table {
-                font-size: 12px;
-            }
-            .stock-table th, .stock-table td {
-                padding: 8px 10px;
-            }
+            .sidebar { width: 70px; padding: 12px 0; }
+            .sidebar .nav-item { padding: 14px; font-size: 0; justify-content: center; margin: 2px 6px; }
+            .sidebar .nav-item .icon { font-size: 22px; width: auto; }
+            .sidebar .nav-item .label { display: none; }
+            .content { padding: 16px; }
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+            .auth-card { padding: 30px 24px; }
         }
         @media (max-width: 480px) {
-            .topbar .user-info .badge {
-                font-size: 11px;
-                padding: 4px 10px;
-            }
-            .content {
-                padding: 12px;
-            }
-            .card {
-                padding: 16px 18px;
-            }
-            .stat-card .value {
-                font-size: 20px;
-            }
-            .admin-user-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-        }
-
-        /* ─── MISC ─── */
-        .hidden { display: none !important; }
-        .block { display: block !important; }
-        .truncate {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            max-width: 120px;
-        }
-        .gap-4 { gap: 4px; }
-        .items-center { align-items: center; }
-        .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-        .bg-white { background: #ffffff; }
-        .rounded-lg { border-radius: 12px; }
-        .p-4 { padding: 16px; }
-        
-        /* ─── Skeleton Loading ─── */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f2f5 25%, #e5e7eb 50%, #f0f2f5 75%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
-            border-radius: 8px;
-        }
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+            .topbar { padding: 12px 16px; }
+            .topbar .brand { font-size: 18px; }
+            .content { padding: 12px; }
+            .card { padding: 16px 18px; }
+            .stat-card .value { font-size: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ─── TOAST CONTAINER ─── -->
+<div id="app">
+    <!-- TOAST -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- ─── APP ─── -->
-    <div id="app">
+    <!-- SIGNUP -->
+    <div class="page active" id="pageSignUp">
+        <div class="auth-page">
+            <div class="auth-card">
+                <div class="logo">📈 <span>SmartExchange</span></div>
+                <div class="sub">Join India's smartest trading network</div>
+                <div id="signupError" class="error-msg"></div>
+                <div id="signupSuccess" class="success-msg"></div>
+                <label>👤 Full Name</label>
+                <input type="text" id="suName" placeholder="e.g. Rajesh Kumar" />
+                <label>📱 Phone Number</label>
+                <input type="tel" id="suPhone" placeholder="9876543210" />
+                <label>🆔 Aadhaar Card</label>
+                <input type="text" id="suAadhaar" placeholder="1234 5678 9012" />
+                <label>🔒 Password</label>
+                <input type="password" id="suPassword" placeholder="Min 6 characters" />
+                <button class="btn-primary" id="signupBtn">🚀 Create Account</button>
+                <div class="switch-link">Already have an account? <a href="#" id="gotoLogin">Log In</a></div>
+            </div>
+        </div>
+    </div>
 
-        <!-- ════════════════════════════════════════ -->
-        <!-- PAGE: SIGN UP                          -->
-        <!-- ════════════════════════════════════════ -->
-        <div class="page active" id="pageSignUp">
-            <div class="auth-page">
-                <div class="auth-card">
-                    <div class="logo">📈 <span>SmartExchange</span></div>
-                    <div class="sub">Join India's smartest trading network</div>
+    <!-- LOGIN -->
+    <div class="page" id="pageLogin">
+        <div class="auth-page">
+            <div class="auth-card">
+                <div class="logo">📈 <span>SmartExchange</span></div>
+                <div class="sub">Welcome back! Log in to your account</div>
+                <div id="loginError" class="error-msg"></div>
+                <label>📱 Phone Number</label>
+                <input type="tel" id="liPhone" placeholder="9876543210" />
+                <label>🔒 Password</label>
+                <input type="password" id="liPassword" placeholder="Enter your password" />
+                <button class="btn-primary" id="loginBtn">🔑 Log In</button>
+                <div class="switch-link">Don't have an account? <a href="#" id="gotoSignup">Register Now</a></div>
+            </div>
+        </div>
+    </div>
 
-                    <div id="signupError" class="error-msg"></div>
-                    <div id="signupSuccess" class="success-msg"></div>
-
-                    <label>👤 Full Name</label>
-                    <div class="input-group">
-                        <input type="text" id="suName" placeholder="e.g. Rajesh Kumar" />
+    <!-- DASHBOARD -->
+    <div class="dashboard" id="pageDashboard">
+        <div class="topbar">
+            <div class="brand">📈 <span>SmartExchange</span> <small style="font-weight:400;color:#6b7280;-webkit-text-fill-color:#6b7280;">| India</small></div>
+            <div class="user-info">
+                <span class="badge gold" id="dashBalance">₹0.00</span>
+                <span class="badge" id="dashCreditScore">⭐ 0</span>
+                <span class="badge" id="dashVerifyBadge">🔴 Unverified</span>
+                <span class="badge" id="dashStatusBadge">✅ Active</span>
+                <span style="color:#6b7280;font-size:13px;font-weight:500;" id="dashUserName">User</span>
+                <button class="logout-btn" id="logoutBtn">⏻ Logout</button>
+            </div>
+        </div>
+        <div class="dash-body">
+            <div class="sidebar" id="sidebar">
+                <div class="nav-item active" data-tab="overview"><span class="icon">📊</span><span class="label">Overview</span></div>
+                <div class="nav-item" data-tab="trading"><span class="icon">📈</span><span class="label">Trading</span></div>
+                <div class="nav-item" data-tab="deposit"><span class="icon">💰</span><span class="label">Deposit</span></div>
+                <div class="nav-item" data-tab="withdraw"><span class="icon">🏦</span><span class="label">Withdraw</span></div>
+                <div class="nav-item" data-tab="history"><span class="icon">📜</span><span class="label">History</span></div>
+                <div class="nav-item" data-tab="account"><span class="icon">⚙️</span><span class="label">Account</span></div>
+                <div class="nav-item" data-tab="admin"><span class="icon">🛡️</span><span class="label">Admin</span></div>
+            </div>
+            <div class="content" id="dashContent">
+                <!-- OVERVIEW -->
+                <div class="tab-content" id="tabOverview">
+                    <div class="grid-4">
+                        <div class="stat-card"><div class="label">Total Balance</div><div class="value gold" id="ovBalance">₹0.00</div></div>
+                        <div class="stat-card"><div class="label">Credit Score</div><div class="value purple" id="ovCredit">⭐ 0</div></div>
+                        <div class="stat-card"><div class="label">Portfolio Value</div><div class="value" id="ovPortfolio">₹0.00</div></div>
+                        <div class="stat-card"><div class="label">Today's P&L</div><div class="value green" id="ovPnL">+₹0.00</div></div>
                     </div>
-
-                    <label>📱 Phone Number</label>
-                    <div class="input-group">
-                        <input type="tel" id="suPhone" placeholder="9876543210" />
+                    <div class="card">
+                        <div class="card-title">📊 Market Overview <span class="sub">Top Indian Stocks</span></div>
+                        <div class="stock-table-wrap">
+                            <table class="stock-table" id="overviewStockTable">
+                                <thead><tr><th>Symbol</th><th>Name</th><th>Price (₹)</th><th>Change</th><th>Volume</th></tr></thead>
+                                <tbody id="overviewStockBody"></tbody>
+                            </table>
+                        </div>
                     </div>
-
-                    <label>🆔 Aadhaar Card Number</label>
-                    <div class="input-group">
-                        <input type="text" id="suAadhaar" placeholder="1234 5678 9012" />
+                    <div class="card">
+                        <div class="card-title">⚡ Quick Actions</div>
+                        <div class="flex">
+                            <button class="btn btn-gold" onclick="navigateTab('deposit')">💰 Deposit</button>
+                            <button class="btn btn-outline" onclick="navigateTab('withdraw')">🏦 Withdraw</button>
+                            <button class="btn btn-green" onclick="navigateTab('trading')">📈 Trade</button>
+                            <button class="btn btn-purple" onclick="navigateTab('account')">⚙️ Account</button>
+                        </div>
                     </div>
+                </div>
 
-                    <label>🔒 Password</label>
-                    <div class="input-group">
-                        <input type="password" id="suPassword" placeholder="Min 6 characters" />
+                <!-- TRADING -->
+                <div class="tab-content hidden" id="tabTrading">
+                    <div class="card">
+                        <div class="card-title">📈 Trade Stocks <span class="sub">Buy / Sell</span></div>
+                        <div class="grid-2">
+                            <div>
+                                <div class="form-group"><label>Select Stock</label><select id="tradeStockSelect"></select></div>
+                                <div class="form-group"><label>Current Price (₹)</label><input type="text" id="tradePrice" readonly /></div>
+                                <div class="form-group"><label>Quantity</label><input type="number" id="tradeQty" min="1" value="1" /></div>
+                                <div class="form-group"><label>Total (₹)</label><input type="text" id="tradeTotal" readonly /></div>
+                                <div class="flex">
+                                    <button class="btn btn-green" id="tradeBuyBtn">📈 Buy</button>
+                                    <button class="btn btn-red" id="tradeSellBtn">📉 Sell</button>
+                                </div>
+                                <div id="tradeMsg" class="text-muted mt-12" style="font-size:13px;"></div>
+                            </div>
+                            <div>
+                                <div class="card-title" style="margin-top:0;">📊 Your Holdings</div>
+                                <div class="stock-table-wrap">
+                                    <table class="stock-table" id="holdingsTable">
+                                        <thead><tr><th>Stock</th><th>Qty</th><th>Avg Price</th><th>Current</th><th>P&L</th></tr></thead>
+                                        <tbody id="holdingsBody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    <div class="card">
+                        <div class="card-title">📈 All Indian Stocks</div>
+                        <div class="stock-table-wrap">
+                            <table class="stock-table" id="tradeStockTable">
+                                <thead><tr><th>Symbol</th><th>Name</th><th>Price (₹)</th><th>Change</th><th>Action</th></tr></thead>
+                                <tbody id="tradeStockBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-                    <button class="btn-primary" id="signupBtn">🚀 Create Account</button>
+                <!-- DEPOSIT -->
+                <div class="tab-content hidden" id="tabDeposit">
+                    <div class="card">
+                        <div class="card-title">💰 Deposit Funds <span class="sub">Add money to your account</span></div>
+                        <div class="grid-2">
+                            <div>
+                                <div class="form-group"><label>Amount (₹)</label><input type="number" id="depositAmount" placeholder="Enter amount" min="1" /></div>
+                                <div class="form-group"><label>Payment Method</label>
+                                    <select id="depositMethod"><option value="upi">📱 UPI</option><option value="bank">🏦 Bank Transfer</option></select>
+                                </div>
+                                <div id="depositUpiField" class="form-group"><label>UPI ID</label><input type="text" id="depositUpi" placeholder="example@upi" /></div>
+                                <div id="depositBankField" class="form-group hidden"><label>Bank Details</label><input type="text" id="depositBank" placeholder="Account Number / IFSC" /></div>
+                                <button class="btn btn-gold" id="depositBtn">💰 Deposit Now</button>
+                                <div id="depositMsg" class="mt-12 text-muted" style="font-size:13px;"></div>
+                            </div>
+                            <div>
+                                <div class="card-title" style="margin-top:0;">💳 Quick Deposit</div>
+                                <div class="flex">
+                                    <button class="btn btn-outline btn-sm" onclick="setDeposit(500)">₹500</button>
+                                    <button class="btn btn-outline btn-sm" onclick="setDeposit(1000)">₹1,000</button>
+                                    <button class="btn btn-outline btn-sm" onclick="setDeposit(5000)">₹5,000</button>
+                                    <button class="btn btn-outline btn-sm" onclick="setDeposit(10000)">₹10,000</button>
+                                </div>
+                                <div class="mt-20" style="background:#f9fafb;padding:16px;border-radius:12px;border:1px solid #e5e7eb;">
+                                    <p style="font-size:13px;color:#6b7280;margin:4px 0;">📌 <strong>UPI:</strong> smartex@pay</p>
+                                    <p style="font-size:13px;color:#6b7280;margin:4px 0;">🏦 <strong>Bank:</strong> HDFC 1234 5678 9012</p>
+                                    <p style="font-size:13px;color:#6b7280;margin:4px 0;">🏦 <strong>IFSC:</strong> HDFC0001234</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                    <div class="switch-link">
-                        Already have an account? <a href="#" id="gotoLogin">Log In</a>
+                <!-- WITHDRAW -->
+                <div class="tab-content hidden" id="tabWithdraw">
+                    <div class="card">
+                        <div class="card-title">🏦 Withdraw Funds <span class="sub">Withdraw to your bank or UPI</span></div>
+                        <div class="grid-2">
+                            <div>
+                                <div class="form-group"><label>Amount (₹)</label><input type="number" id="withdrawAmount" placeholder="Enter amount" min="1" /></div>
+                                <div class="form-group"><label>Withdraw Method</label>
+                                    <select id="withdrawMethod"><option value="upi">📱 UPI</option><option value="bank">🏦 Bank Transfer</option></select>
+                                </div>
+                                <div id="withdrawUpiField" class="form-group"><label>UPI ID</label><input type="text" id="withdrawUpi" placeholder="example@upi" /></div>
+                                <div id="withdrawBankField" class="form-group hidden"><label>Bank Details</label><input type="text" id="withdrawBank" placeholder="Account Number / IFSC" /></div>
+                                <button class="btn btn-red" id="withdrawBtn">🏦 Withdraw</button>
+                                <div id="withdrawMsg" class="mt-12 text-muted" style="font-size:13px;"></div>
+                            </div>
+                            <div>
+                                <div class="card-title" style="margin-top:0;">📋 Withdraw Info</div>
+                                <div style="background:#f9fafb;padding:16px;border-radius:12px;border:1px solid #e5e7eb;">
+                                    <p style="font-size:13px;color:#6b7280;margin:6px 0;">✅ Withdrawals processed within 24 hours</p>
+                                    <p style="font-size:13px;color:#6b7280;margin:6px 0;">🔒 Secure UPI & Bank details stored</p>
+                                    <p style="font-size:13px;color:#6b7280;margin:6px 0;">⚠️ Minimum withdraw: ₹100</p>
+                                    <p style="font-size:13px;color:#6b7280;margin:6px 0;">📌 <strong>Your UPI:</strong> <span id="savedUpi">Not set</span></p>
+                                    <p style="font-size:13px;color:#6b7280;margin:6px 0;">🏦 <strong>Your Bank:</strong> <span id="savedBank">Not set</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- HISTORY -->
+                <div class="tab-content hidden" id="tabHistory">
+                    <div class="card">
+                        <div class="card-title">📜 Transaction History <span class="sub">All your activity</span></div>
+                        <div class="stock-table-wrap">
+                            <table class="history-table" id="historyTable">
+                                <thead><tr><th>Date</th><th>Type</th><th>Stock / Method</th><th>Qty / Ref</th><th>Amount (₹)</th><th>Status</th></tr></thead>
+                                <tbody id="historyBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACCOUNT -->
+                <div class="tab-content hidden" id="tabAccount">
+                    <div class="card">
+                        <div class="card-title">⚙️ Account Settings <span class="sub">Manage your profile</span></div>
+                        <div class="grid-2">
+                            <div>
+                                <div class="form-group"><label>Full Name</label><input type="text" id="accName" readonly style="background:#f9fafb;" /></div>
+                                <div class="form-group"><label>Phone Number</label><input type="text" id="accPhone" readonly style="background:#f9fafb;" /></div>
+                                <div class="form-group"><label>Aadhaar Number</label><input type="text" id="accAadhaar" readonly style="background:#f9fafb;" /></div>
+                                <div class="form-group"><label>Account Status</label><input type="text" id="accStatus" readonly style="background:#f9fafb;" /></div>
+                                <div class="form-group"><label>Verification Status</label><input type="text" id="accVerified" readonly style="background:#f9fafb;" /></div>
+                            </div>
+                            <div>
+                                <div class="card-title" style="margin-top:0;">🔐 Actions</div>
+                                <div class="flex" style="flex-direction:column;align-items:stretch;gap:10px;">
+                                    <button class="btn btn-green" id="verifyBtn">✅ Verify Account</button>
+                                    <button class="btn btn-outline" id="freezeToggleBtn">❄️ Toggle Freeze</button>
+                                </div>
+                                <div class="mt-20" style="background:#f9fafb;padding:16px;border-radius:12px;border:1px solid #e5e7eb;">
+                                    <label style="font-size:13px;color:#374151;font-weight:600;">Credit Score</label>
+                                    <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
+                                        <button class="btn btn-sm btn-outline" id="scoreUpBtn">+10</button>
+                                        <button class="btn btn-sm btn-outline" id="scoreDownBtn">-10</button>
+                                        <span id="accCreditScore" style="font-weight:800;font-size:24px;color:#667eea;">0</span>
+                                    </div>
+                                </div>
+                                <div class="mt-12" style="background:#f9fafb;padding:16px;border-radius:12px;border:1px solid #e5e7eb;">
+                                    <label style="font-size:13px;color:#374151;font-weight:600;">Balance</label>
+                                    <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
+                                        <button class="btn btn-sm btn-gold" id="balanceAddBtn">+₹100</button>
+                                        <button class="btn btn-sm btn-red" id="balanceSubBtn">-₹100</button>
+                                        <span id="accBalanceDisplay" style="font-weight:800;font-size:24px;color:#f59e0b;">₹0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ADMIN -->
+                <div class="tab-content hidden" id="tabAdmin">
+                    <div class="card">
+                        <div class="card-title">🛡️ Admin Panel <span class="sub">Manage users & system</span></div>
+                        <div id="adminUserList"></div>
+                    </div>
+                    <div class="grid-3">
+                        <div class="stat-card"><div class="label">Total Users</div><div class="value gold" id="adminTotalUsers">0</div></div>
+                        <div class="stat-card"><div class="label">Total Deposits</div><div class="value green" id="adminTotalDeposits">₹0</div></div>
+                        <div class="stat-card"><div class="label">Total Withdrawals</div><div class="value red" id="adminTotalWithdrawals">₹0</div></div>
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- ════════════════════════════════════════ -->
-        <!-- PAGE: LOGIN                            -->
-        <!-- ════════════════════════════════════════ -->
-        <div class="page" id="pageLogin">
-            <div class="auth-page">
-                <div class="auth-card">
-                    <div class="logo">📈 <span>SmartExchange</span></div>
-                    <div class="sub">Welcome back! Log in to your account</div>
-
-                    <div id="loginError" class="error-msg"></div>
-
-                    <label>📱 Phone Number</label>
-                    <div class="input-group">
-                        <input type="tel" id="liPhone" placeholder="9876543210" />
-                    </div>
-
-                    <label>🔒 Password</label>
-                    <div class="input-group">
-                        <input type="password" id="liPassword" placeholder="Enter your password" />
-                    </div>
-
-                    <button class="btn-primary" id="loginBtn">🔑 Log In</button>
-
-                    <div class="switch-link">
-                        Don't have an account? <a href="#" id="gotoSignup">Register Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ════════════════════════════════════════ -->
-        <!-- PAGE: DASHBOARD                        -->
-        <!-- ════════════════════════════════════════ -->
-        <div class="dashboard" id="pageDashboard">
-
-            <!-- TOP BAR -->
-            <div class="topbar">
-                <div class="brand">📈 <span>SmartExchange</span> <small>| India</small></div>
-                <div class="user-info">
-                    <span class="badge gold" id="dashBalance">₹0.00</span>
-                    <span class="badge" id="dashCreditScore">⭐ 0</span>
-                    <span class="badge" id="dashVerifyBadge">🔴 Unverified</span>
-                    <span class="badge" id="dashStatusBadge">✅ Active</span>
-                    <span style="color:#6b7280;font-size:13px;font-weight:500;" id="dashUserName">User</span>
-                    <button class="logout-btn" id="logoutBtn">⏻ Logout</button>
-                </div>
-            </div>
-
-            <div class="dash-body">
-                <!-- SIDEBAR -->
-                <div class="sidebar" id="sidebar">
-                    <div class="nav-item active" data-tab="overview"><span class="icon">📊</span><span class="label">Overview</span></div>
-                    <div class="nav-item" data-tab="trading"><span class="icon">📈</span><span class="label">Trading</span></div>
-                    <div class="nav-item" data-tab="deposit"><span class="icon">💰</span><span class="label">Deposit</span></div>
-                    <div class="nav-item" data-tab="withdraw"><span class="icon">🏦</span><span class="label">Withdraw</span></div>
-                    <div class="nav-item" data-tab="history"><span class="icon">📜</span><span class="label">History</span></div>
-                    <div class="nav-item" data-tab="account"><span class="icon">⚙️</span><span class="label">Account</span></div>
-                    <div class="nav-item" data-tab="admin"><span class="icon">🛡️</span><span class="label">Admin</span></div>
-                </div>
-
-                <!-- CONTENT -->
-                <div class="content" id="dashContent">
-
-                    <!-- ─── OVERVIEW ─── -->
-                    <div class="tab-content" id="tabOverview">
-                        <div class="grid-4">
-                            <div class="stat-card"><div class="label">Total Balance</div><div class="value gold" id="ovBalance">₹0.00</div></div>
-                            <div class="stat-card"><div class="label">Credit Score</div><div class="value purple" id="ovCredit">⭐ 0</div></div>
-                            <div class="stat-card"><div class="label">Portfolio Value</div><div class="value" id="ovPortfolio">₹0.00</div></div>
-                            <div class="stat-card"><div class="label">Today's P&L</div><div class="value green" id="ovPnL">+₹0.00</div></div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-title">📊 Market Overview <span class="sub">Top Indian Stocks</span></div>
-                            <div class="stock-table-wrap">
-                                <table class="stock-table" id="overviewStockTable">
-                                    <thead><tr><th>Symbol</th><th>Name</th><th>Price (₹)</th><th>Change</th><th>Volume</th></tr></thead>
-                                    <tbody id="overviewStockBody"></tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="card">
-                            <div class="card-title">⚡ Quick Actions</div>
-                            <div class="flex">
-                                <button class="btn btn-gold" onclick="navigateTab('deposit')">💰 Deposit</button>
-                                <button class="btn btn-outline" onclick="navigateTab('withdraw')">🏦 Withdraw</button>
-                                <button class="btn btn-green" onclick="navigateTab('trading')">📈 Trade</button>
-                                <button class="btn btn-purple" onclick="navigateTab('account')">⚙️ Account</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ─── TRADING ─── -->
-                    <div class="tab-content hidden" id="tabTrading">
-                        <div class="card">
-                            <div class="card-title">📈 Trade Stocks <span class="sub">Buy / Sell</span></div>
-                            <div class="grid-2">
-                                <div>
-                                    <div class="form-group">
-                                        <label>Select Stock</label>
-                                        <select id="tradeStockSelect"></select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Current Price (₹)</label>
-                                        <input type="text" id="tradePrice" readonly />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Quantity</label>
-                                        <input type="number" id="tradeQty" min="1" value="1" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Total (₹)</label>
-                                        <input type="text" id="tradeTotal" readonly />
-                                    </div>
-                                    <div class="flex">
-                                        <button class="btn btn-green" id="tradeBuyBtn">📈 Buy</button>
-                                        <button class="btn btn-red" id="tradeSellBtn">📉 Sell</button>
-                                    </div>
-                                    <div id="tradeMsg" class="text-muted mt-12" style="font-size:13px;"></div>
-                                </div>
-                                <div>
-                                    <div class="card-title" style="margin-top:0;">📊 Your Holdings</div>
-                                    <div class="stock-table-wrap">
-                                        <table class="stock-table" id="holdingsTable">
-                                            <thead><tr><th>Stock</th><th>Qty</th><th>Avg Price</th><th>Current</th><th>P&L</th></tr></thead>
-                                            <tbody id="holdingsBody"></tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-title">📈 All Indian Stocks</div>
-                            <div class="stock-table-wrap">
-                                <table class="stock-table" id="tradeStockTable">
-                                    <thead><tr><th>Symbol</th><th>Name</th><th>Price (₹)</th><th>Change</th><th>Action</th></tr></thead>
-                                    <tbody id="tradeStockBody"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ─── DEPOSIT ─── -->
-                    <div class="tab-content hidden" id="tabDeposit">
-                        <div class="card">
-                            <div class="card-title">💰 Deposit Funds <span class="sub">Add money to your account</span></div>
-                            <div class="grid-2">
-                                <div>
-                                    <div class="form-group">
-                                        <label>Amount (₹)</label>
-                                        <input type="number" id="depositAmount" placeholder="Enter amount" min="1" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Payment Method</label>
-                                        <select id="depositMethod">
-                                            <option value="upi">📱 UPI</option>
-                                            <option value="bank">🏦 Bank Transfer</option>
-                                        </select>
-                                    </div>
-                                    <div id="depositUpiField" class="form-group">
-                                        <label>UPI ID</label>
-                                        <input type="text" id="depositUpi" placeholder="example@upi" />
-                                    </div>
-                                    <div id="depositBankField" class="form-group hidden">
-                                        <label>Bank Details</label>
-                                        <input type="text" id="depositBank" placeholder="Account Number / IFSC" />
-                                    </div>
-                                    <button class="btn btn-gold" id="depositBtn">💰 Deposit Now</button>
-                                    <div id="depositMsg" class="mt-12 text-muted" style="font-size:13px;"></div>
-                                </div>
-                                <div>
-                                    <div class="card-title" style="margin-top:0;">💳 Quick Deposit</div>
-                                    <div class="flex">
-                                        <button class="btn btn-outline btn-sm" onclick="setDeposit(500)">₹500</button>
-                                        <button class="btn btn-outline btn-sm" onclick="setDeposit(1000)">₹1,000</button>
-                                        <button class="btn btn-outline btn-sm" onclick="setDeposit(5000)">₹5,000</button>
-                                        <button class="btn btn-outline btn-sm" onclick="setDeposit(10000)">₹10,000</button>
-                                    </div>
-                                    <div class="mt-20" style="background:#f9fafb;padding:16px;border-radius:12px;border:1px solid #e5e7eb;">
-                                        <p style="font-size:13px;color:#6b7280;margin:4px 0;">📌 <strong>UPI:</strong> smartex@pay</p>
-                                        <p style="font-size:13px;color:#6b7280;margin:4px 0;">🏦 <strong>Bank:</strong> HDFC 1234 5678 9012</p>
-                                        <p style="font-size:13px;color:#6b7280;margin:4px 0;">🏦 <strong>IFSC:</strong> HDFC0001234</p>
-                                        <p style="font-size:13px;color:#6b7280;margin:4px 0;">📞 <strong>Support:</strong> +91 98765 43210</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ─── WITHDRAW ─── -->
-                    <div class="tab-content hidden" id="tabWithdraw">
-                        <div class="card">
-                            <div class="card-title">🏦 Withdraw Funds <span class="sub">Withdraw to your bank or UPI</span></div>
-                            <div class="grid-2">
-                                <div>
-                                    <div class="form-group">
-                                        <label>Amount (₹)</label>
-                                        <input type="number" id="withdrawAmount" placeholder="Enter amount" min="1" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Withdraw Method</label>
-                                        <select id="withdrawMethod">
-                                            <option value="upi">📱 UPI</option>
-                                            <option value="bank">🏦 Bank Transfer</option>
-                                        </select>
-                                    </div>
-                                    <div id="withdrawUpiField" class="form-group">
-                                        <label>UPI ID</label>
-                                        <input type="text" id="withdrawUpi" placeholder="example@upi" />
-                                    </div>
-                                    <div id="withdrawBankField" class="form-group hidden">
-                                        <label>Bank Details</label>
-                                        <input type="text" id="withdrawBank" placeholder="Account Number / IFSC" />
-                                    </div>
-                                    <button class="btn btn-red" id="withdrawBtn">🏦 Withdraw</button>
-                                    <div id="withdrawMsg" class="mt-12 text-muted" style="font-size:13px;"></div>
-                                </div>
-                                <div>
-                                    <div class="card-title" style="margin-top:0;">📋 Withdraw Info</div>
-                                    <div style="background:#f9fafb;padding:16px;border-radius:12px;border:1px solid #e5e7eb;">
-                                        <p style="font-size:13px;color:#6b7280;margin:6px 0;">✅ Withdrawals processed within 24 hours</p>
-                                        <p style="font-size:13px;color:#6b7280;margin:6px 0;">🔒 Secure UPI & Bank details stored</p>
-                                        <p style="font-size:13px;color:#6b7280;margin:6px 0;">⚠️ Minimum withdraw: ₹100</p>
-                                        <p style="font-size:13px;color:#6b7280;margin:6px 0;">📌 <strong>Your UPI:</strong> <span id="savedUpi">Not set</span></p>
-                                        <p style="font-size:13px;color:#6b7280;margin:6px 0;">🏦 <strong>Your Bank:</strong> <span id="savedBank">Not set</span></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ─── HISTORY ─── -->
-                    <div class="tab-content hidden" id="tabHistory">
-                        <div class="card">
-                            <div class="card-title">📜 Transaction History <span class="sub">All your activity</span></div>
-                            <div class="stock-table-wrap">
-                                <table class="history-table" id="historyTable">
-                                    <thead><tr><th>Date</th><th>Type</th><th>Stock / Method</th><th>Qty / Ref</th><th>Amount (₹)</th><th>Status</th></tr></thead>
-                                    <tbody id="historyBody"></tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ─── ACCOUNT ─── -->
-                    <div class="tab-content hidden" id="tabAccount">
-                        <div class="card">
-                            <div class="card-title">⚙️ Account Settings <span class="sub">Manage your profile</span></div>
-                            <div class="grid-2">
-                                <div>
-                                    <div class="form-group">
-                                        <label>Full Name</label>
-                                        <input type="text" id="accName" readonly style="background:#f9fafb;" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Phone Number</label>
-                                        <input type="text" id="accPhone" readonly style="background:#f9fafb;" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Aadhaar Number</label>
-                                        <input type="text" id="accAadhaar" readonly style="background:#f9fafb;" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Account Status</label>
-                                        <input type="text" id="accStatus" readonly style="background:#f9fafb;" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Verification Status</label>
-                                        <input type="text" id="accVerified" readonly style="background:#f9fafb;" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="card-title" style="margin-top:0;">🔐 Actions</div>
-                                    <div class="flex" style="flex-direction:column;align-items:stretch;gap:10px;">
-                                        <button class="btn btn-green" id="verifyBtn">✅ Verify Account</button>
-                                        <button class="btn btn-outline" id="freezeToggleBtn">❄️ Toggle Freeze</button>
-                                    </div>
-                                    <div class="mt-20" style="background:#f9fafb;padding:16px;border-radius:12px;border:1px solid #e5e7eb;">
-                                        <label style="font-size:13px;color:#374151;font-weight:600;">Credit Score</label>
-                                        <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
-                                            <button class="btn btn-sm btn-outline" id="scoreUpBtn">+10</button>
-                                            <button class="btn btn-sm btn-outline" id="scoreDownBtn">-10</button>
-                                            <span id="accCreditScore" style="font-weight:800;font-size:24px;color:#667eea;">0</span>
-                                        </div>
-                                    </div>
-                                    <div class="mt-12" style="background:#f9fafb;padding:16px;border-radius:12px;border:1px solid #e5e7eb;">
-                                        <label style="font-size:13px;color:#374151;font-weight:600;">Balance</label>
-                                        <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
-                                            <button class="btn btn-sm btn-gold" id="balanceAddBtn">+₹100</button>
-                                            <button class="btn btn-sm btn-red" id="balanceSubBtn">-₹100</button>
-                                            <span id="accBalanceDisplay" style="font-weight:800;font-size:24px;color:#f59e0b;">₹0</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ─── ADMIN ─── -->
-                    <div class="tab-content hidden" id="tabAdmin">
-                        <div class="card">
-                            <div class="card-title">🛡️ Admin Panel <span class="sub">Manage users & system</span></div>
-                            <div id="adminUserList"></div>
-                        </div>
-                        <div class="grid-3">
-                            <div class="stat-card"><div class="label">Total Users</div><div class="value gold" id="adminTotalUsers">0</div></div>
-                            <div class="stat-card"><div class="label">Total Deposits</div><div class="value green" id="adminTotalDeposits">₹0</div></div>
-                            <div class="stat-card"><div class="label">Total Withdrawals</div><div class="value red" id="adminTotalWithdrawals">₹0</div></div>
-                        </div>
-                    </div>
-
-                </div><!-- /content -->
-            </div><!-- /dash-body -->
-        </div><!-- /dashboard -->
-
-    </div><!-- /app -->
-
-    <script>
-        // ════════════════════════════════════════════════════════════
-        //  SMART STOCK EXCHANGE — Full Application (White Theme)
-        //  All data stored in localStorage.
-        // ════════════════════════════════════════════════════════════
-
-        // ─── CONSTANTS ───
-        const STORAGE_KEY = 'smartExchangeData';
-        const DEFAULT_STOCKS = [
-            { symbol: 'RELIANCE', name: 'Reliance Industries', price: 2850, change: 0 },
-            { symbol: 'TCS', name: 'Tata Consultancy', price: 3850, change: 0 },
-            { symbol: 'HDFCBANK', name: 'HDFC Bank', price: 1650, change: 0 },
-            { symbol: 'INFY', name: 'Infosys', price: 1550, change: 0 },
-            { symbol: 'ICICIBANK', name: 'ICICI Bank', price: 1120, change: 0 },
-            { symbol: 'SBIN', name: 'SBI', price: 820, change: 0 },
-            { symbol: 'BHARTIARTL', name: 'Bharti Airtel', price: 980, change: 0 },
-            { symbol: 'ITC', name: 'ITC Ltd', price: 430, change: 0 },
-            { symbol: 'WIPRO', name: 'Wipro', price: 510, change: 0 },
-            { symbol: 'HCLTECH', name: 'HCL Tech', price: 1250, change: 0 },
-            { symbol: 'SUNPHARMA', name: 'Sun Pharma', price: 1120, change: 0 },
-            { symbol: 'TATAMOTORS', name: 'Tata Motors', price: 980, change: 0 },
-            { symbol: 'AXISBANK', name: 'Axis Bank', price: 1050, change: 0 },
-            { symbol: 'BAJFINANCE', name: 'Bajaj Finance', price: 6800, change: 0 },
-            { symbol: 'MARUTI', name: 'Maruti Suzuki', price: 10200, change: 0 },
-            { symbol: 'TITAN', name: 'Titan Company', price: 3450, change: 0 },
-            { symbol: 'ASIANPAINT', name: 'Asian Paints', price: 2950, change: 0 },
-            { symbol: 'NTPC', name: 'NTPC Ltd', price: 220, change: 0 },
-            { symbol: 'ONGC', name: 'ONGC Ltd', price: 180, change: 0 },
-            { symbol: 'POWERGRID', name: 'Power Grid', price: 190, change: 0 },
-        ];
-
-        // ─── STATE ───
-        let data = loadData();
-        let currentUser = null;
-        let currentTab = 'overview';
-        let priceInterval = null;
-
-        // ─── INIT ───
-        function init() {
-            // Ensure data structure
-            if (!data.users) data.users = [];
-            if (!data.stocks) data.stocks = DEFAULT_STOCKS.map(s => ({ ...s }));
-            if (!data.transactions) data.transactions = [];
-            if (!data.deposits) data.deposits = [];
-            if (!data.withdrawals) data.withdrawals = [];
-            saveData();
-
-            // Check session
-            const session = sessionStorage.getItem('smartSession');
-            if (session) {
-                const user = data.users.find(u => u.phone === session);
-                if (user) {
-                    currentUser = user;
-                    showDashboard();
-                    return;
-                }
-            }
-            showPage('pageSignUp');
-
-            // Event listeners
-            document.getElementById('signupBtn').addEventListener('click', handleSignup);
-            document.getElementById('loginBtn').addEventListener('click', handleLogin);
-            document.getElementById('gotoLogin').addEventListener('click', e => { e.preventDefault();
-                showPage('pageLogin'); });
-            document.getElementById('gotoSignup').addEventListener('click', e => { e.preventDefault();
-                showPage('pageSignUp'); });
-            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
-
-            // Sidebar nav
-            document.querySelectorAll('.sidebar .nav-item').forEach(el => {
-                el.addEventListener('click', () => {
-                    const tab = el.dataset.tab;
-                    navigateTab(tab);
-                });
-            });
-
-            // Deposit method toggle
-            document.getElementById('depositMethod').addEventListener('change', function() {
-                toggleDepositFields(this.value);
-            });
-            document.getElementById('withdrawMethod').addEventListener('change', function() {
-                toggleWithdrawFields(this.value);
-            });
-
-            // Deposit
-            document.getElementById('depositBtn').addEventListener('click', handleDeposit);
-            // Withdraw
-            document.getElementById('withdrawBtn').addEventListener('click', handleWithdraw);
-
-            // Trade
-            document.getElementById('tradeStockSelect').addEventListener('change', updateTradePrice);
-            document.getElementById('tradeQty').addEventListener('input', updateTradeTotal);
-            document.getElementById('tradeBuyBtn').addEventListener('click', () => handleTrade('buy'));
-            document.getElementById('tradeSellBtn').addEventListener('click', () => handleTrade('sell'));
-
-            // Account actions
-            document.getElementById('verifyBtn').addEventListener('click', handleVerify);
-            document.getElementById('freezeToggleBtn').addEventListener('click', handleFreezeToggle);
-            document.getElementById('scoreUpBtn').addEventListener('click', () => adjustScore(10));
-            document.getElementById('scoreDownBtn').addEventListener('click', () => adjustScore(-10));
-            document.getElementById('balanceAddBtn').addEventListener('click', () => adjustBalance(100));
-            document.getElementById('balanceSubBtn').addEventListener('click', () => adjustBalance(-100));
-
-            // Start price simulation
-            startPriceSimulation();
-        }
-
-        // ─── DATA HELPERS ───
-        function loadData() {
-            try {
-                const raw = localStorage.getItem(STORAGE_KEY);
-                if (raw) return JSON.parse(raw);
-            } catch (e) {}
-            return { users: [], stocks: [], transactions: [], deposits: [], withdrawals: [] };
-        }
-
-        function saveData() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-        }
-
-        function getStock(symbol) {
-            return data.stocks.find(s => s.symbol === symbol);
-        }
-
-        function getUser(phone) {
-            return data.users.find(u => u.phone === phone);
-        }
-
-        function getHoldings(user) {
-            return user.holdings || {};
-        }
-
-        function setHoldings(user, holdings) {
-            user.holdings = holdings;
-            saveData();
-        }
-
-        function addTransaction(user, type, stock, qty, price, amount, status = 'completed') {
-            data.transactions.push({
-                userPhone: user.phone,
-                type,
-                stock,
-                qty,
-                price,
-                amount,
-                status,
-                date: new Date().toISOString()
-            });
-            saveData();
-        }
-
-        function addDeposit(user, amount, method, ref) {
-            data.deposits.push({
-                userPhone: user.phone,
-                amount,
-                method,
-                ref,
-                status: 'completed',
-                date: new Date().toISOString()
-            });
-            saveData();
-        }
-
-        function addWithdraw(user, amount, method, ref) {
-            data.withdrawals.push({
-                userPhone: user.phone,
-                amount,
-                method,
-                ref,
-                status: 'pending',
-                date: new Date().toISOString()
-            });
-            saveData();
-        }
-
-        // ─── NAVIGATION ───
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId).classList.add('active');
-        }
-
-        function showDashboard() {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById('pageDashboard').classList.add('active');
-            document.getElementById('pageDashboard').style.display = 'flex';
-            updateDashboard();
-            navigateTab('overview');
-        }
-
-        function navigateTab(tab) {
-            currentTab = tab;
-            // Update sidebar
-            document.querySelectorAll('.sidebar .nav-item').forEach(el => {
-                el.classList.toggle('active', el.dataset.tab === tab);
-            });
-            // Update content
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-            const target = document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1));
-            if (target) target.classList.remove('hidden');
-            // Refresh content
-            if (tab === 'overview') renderOverview();
-            if (tab === 'trading') renderTrading();
-            if (tab === 'history') renderHistory();
-            if (tab === 'account') renderAccount();
-            if (tab === 'admin') renderAdmin();
-            if (tab === 'deposit') updateDepositUI();
-            if (tab === 'withdraw') updateWithdrawUI();
-        }
-
-        // ─── AUTH ───
-        function handleSignup() {
-            const name = document.getElementById('suName').value.trim();
-            const phone = document.getElementById('suPhone').value.trim();
-            const aadhaar = document.getElementById('suAadhaar').value.trim();
-            const password = document.getElementById('suPassword').value.trim();
-
-            const errEl = document.getElementById('signupError');
-            const sucEl = document.getElementById('signupSuccess');
-            errEl.style.display = 'none';
-            sucEl.style.display = 'none';
-
-            if (!name || !phone || !aadhaar || !password) {
-                errEl.textContent = '❌ All fields are required.';
-                errEl.style.display = 'block';
-                return;
-            }
-            if (password.length < 6) {
-                errEl.textContent = '❌ Password must be at least 6 characters.';
-                errEl.style.display = 'block';
-                return;
-            }
-            if (getUser(phone)) {
-                errEl.textContent = '❌ Phone number already registered.';
-                errEl.style.display = 'block';
-                return;
-            }
-
-            const user = {
-                name,
-                phone,
-                aadhaar,
-                password,
-                balance: 10000,
-                creditScore: 650,
-                verified: false,
-                frozen: false,
-                holdings: {},
-                upi: '',
-                bank: '',
-                createdAt: new Date().toISOString()
-            };
-            data.users.push(user);
-            saveData();
-
-            sucEl.textContent = '✅ Account created! Please login.';
-            sucEl.style.display = 'block';
-            document.getElementById('suName').value = '';
-            document.getElementById('suPhone').value = '';
-            document.getElementById('suAadhaar').value = '';
-            document.getElementById('suPassword').value = '';
-
-            setTimeout(() => showPage('pageLogin'), 800);
-            toast('Account created successfully! 🎉', 'success');
-        }
-
-        function handleLogin() {
-            const phone = document.getElementById('liPhone').value.trim();
-            const password = document.getElementById('liPassword').value.trim();
-            const errEl = document.getElementById('loginError');
-            errEl.style.display = 'none';
-
-            if (!phone || !password) {
-                errEl.textContent = '❌ Please fill in all fields.';
-                errEl.style.display = 'block';
-                return;
-            }
-
-            const user = getUser(phone);
-            if (!user || user.password !== password) {
-                errEl.textContent = '❌ Invalid phone or password.';
-                errEl.style.display = 'block';
-                return;
-            }
-
-            if (user.frozen) {
-                errEl.textContent = '❌ Account is frozen. Contact admin.';
-                errEl.style.display = 'block';
-                return;
-            }
-
-            currentUser = user;
-            sessionStorage.setItem('smartSession', user.phone);
-            showDashboard();
-            toast('Welcome back, ' + user.name + '! 👋', 'success');
-        }
-
-        function handleLogout() {
-            sessionStorage.removeItem('smartSession');
-            currentUser = null;
-            if (priceInterval) clearInterval(priceInterval);
-            showPage('pageLogin');
-            toast('Logged out successfully.', 'info');
-        }
-
-        // ─── DASHBOARD UPDATE ───
-        function updateDashboard() {
-            if (!currentUser) return;
-            const u = currentUser;
-            document.getElementById('dashBalance').textContent = '₹' + u.balance.toFixed(2);
-            document.getElementById('dashCreditScore').textContent = '⭐ ' + u.creditScore;
-            
-            const verifyBadge = document.getElementById('dashVerifyBadge');
-            verifyBadge.textContent = u.verified ? '✅ Verified' : '🔴 Unverified';
-            verifyBadge.className = 'badge' + (u.verified ? ' verified' : '');
-            
-            const statusBadge = document.getElementById('dashStatusBadge');
-            statusBadge.textContent = u.frozen ? '❄️ Frozen' : '✅ Active';
-            statusBadge.className = 'badge' + (u.frozen ? ' frozen' : '');
-            
-            document.getElementById('dashUserName').textContent = u.name;
-        }
-
-        // ─── OVERVIEW ───
-        function renderOverview() {
-            if (!currentUser) return;
-            const u = currentUser;
-            let portfolioValue = 0;
-            const holdings = getHoldings(u);
-            for (const [symbol, qty] of Object.entries(holdings)) {
-                const stock = getStock(symbol);
-                if (stock) portfolioValue += stock.price * qty;
-            }
-            const total = u.balance + portfolioValue;
-
-            document.getElementById('ovBalance').textContent = '₹' + u.balance.toFixed(2);
-            document.getElementById('ovCredit').textContent = '⭐ ' + u.creditScore;
-            document.getElementById('ovPortfolio').textContent = '₹' + portfolioValue.toFixed(2);
-            
-            const pnl = (Math.random() * 200 - 100);
-            const pnlEl = document.getElementById('ovPnL');
-            pnlEl.textContent = (pnl >= 0 ? '+' : '') + '₹' + pnl.toFixed(2);
-            pnlEl.className = 'value ' + (pnl >= 0 ? 'green' : 'red');
-
-            const body = document.getElementById('overviewStockBody');
-            body.innerHTML = '';
-            data.stocks.slice(0, 10).forEach(s => {
-                const change = ((Math.random() - 0.45) * 4).toFixed(2);
-                const cls = parseFloat(change) >= 0 ? 'price-up' : 'price-down';
-                body.innerHTML += `<tr>
-                    <td><strong>${s.symbol}</strong></td>
-                    <td>${s.name}</td>
-                    <td>₹${s.price.toFixed(2)}</td>
-                    <td class="${cls}">${parseFloat(change)>=0?'+':''}${change}%</td>
-                    <td>${Math.floor(Math.random()*50000+10000).toLocaleString()}</td>
-                </tr>`;
-            });
-            updateDashboard();
-        }
-
-        // ─── TRADING ───
-        function renderTrading() {
-            if (!currentUser) return;
-            populateTradeSelect();
-            updateTradePrice();
-            renderHoldings();
-            renderTradeStockTable();
-        }
-
-        function populateTradeSelect() {
-            const sel = document.getElementById('tradeStockSelect');
-            sel.innerHTML = '';
-            data.stocks.forEach(s => {
-                const opt = document.createElement('option');
-                opt.value = s.symbol;
-                opt.textContent = s.symbol + ' - ' + s.name;
-                sel.appendChild(opt);
-            });
-        }
-
-        function updateTradePrice() {
-            const symbol = document.getElementById('tradeStockSelect').value;
-            const stock = getStock(symbol);
-            if (stock) {
-                document.getElementById('tradePrice').value = '₹' + stock.price.toFixed(2);
-                updateTradeTotal();
-            }
-        }
-
-        function updateTradeTotal() {
-            const symbol = document.getElementById('tradeStockSelect').value;
-            const stock = getStock(symbol);
-            const qty = parseInt(document.getElementById('tradeQty').value) || 0;
-            if (stock) {
-                document.getElementById('tradeTotal').value = '₹' + (stock.price * qty).toFixed(2);
-            }
-        }
-
-        function renderHoldings() {
-            const u = currentUser;
-            const holdings = getHoldings(u);
-            const body = document.getElementById('holdingsBody');
-            body.innerHTML = '';
-            let total = 0;
-            for (const [symbol, qty] of Object.entries(holdings)) {
-                const stock = getStock(symbol);
-                if (!stock || qty === 0) continue;
-                const avgPrice = u.holdingsAvg && u.holdingsAvg[symbol] ? u.holdingsAvg[symbol] : stock.price;
-                const current = stock.price;
-                const pnl = (current - avgPrice) * qty;
-                total += pnl;
-                body.innerHTML += `<tr>
-                    <td><strong>${symbol}</strong></td>
-                    <td>${qty}</td>
-                    <td>₹${avgPrice.toFixed(2)}</td>
-                    <td>₹${current.toFixed(2)}</td>
-                    <td class="${pnl>=0?'text-green':'text-red'}">${pnl>=0?'+':''}₹${pnl.toFixed(2)}</td>
-                </tr>`;
-            }
-            if (!body.innerHTML) {
-                body.innerHTML = `<tr><td colspan="5" class="text-muted text-center" style="padding:30px;">No holdings yet. Start trading!</td></tr>`;
-            }
-        }
-
-        function renderTradeStockTable() {
-            const body = document.getElementById('tradeStockBody');
-            body.innerHTML = '';
-            data.stocks.forEach(s => {
-                const change = ((Math.random() - 0.45) * 4).toFixed(2);
-                const cls = parseFloat(change) >= 0 ? 'price-up' : 'price-down';
-                body.innerHTML += `<tr>
-                    <td><strong>${s.symbol}</strong></td>
-                    <td>${s.name}</td>
-                    <td>₹${s.price.toFixed(2)}</td>
-                    <td class="${cls}">${parseFloat(change)>=0?'+':''}${change}%</td>
-                    <td>
-                        <button class="action-btn buy" onclick="quickTrade('${s.symbol}','buy')">📈 Buy</button>
-                        <button class="action-btn sell" onclick="quickTrade('${s.symbol}','sell')">📉 Sell</button>
-                    </td>
-                </tr>`;
-            });
-        }
-
-        function quickTrade(symbol, type) {
-            document.getElementById('tradeStockSelect').value = symbol;
-            updateTradePrice();
-            const qty = parseInt(document.getElementById('tradeQty').value) || 1;
-            handleTrade(type);
-        }
-
-        function handleTrade(type) {
-            if (!currentUser) return;
-            const u = currentUser;
-            if (u.frozen) {
-                toast('❌ Account frozen. Cannot trade.', 'error');
-                return;
-            }
-            const symbol = document.getElementById('tradeStockSelect').value;
-            const stock = getStock(symbol);
-            if (!stock) { toast('Stock not found.', 'error'); return; }
-            const qty = parseInt(document.getElementById('tradeQty').value) || 0;
-            if (qty <= 0) { toast('Enter valid quantity.', 'error'); return; }
-            const total = stock.price * qty;
-            const msgEl = document.getElementById('tradeMsg');
-
-            const holdings = getHoldings(u);
-            const currentQty = holdings[symbol] || 0;
-
-            if (type === 'buy') {
-                if (u.balance < total) {
-                    msgEl.textContent = '❌ Insufficient balance.';
-                    msgEl.style.color = '#ef4444';
-                    return;
-                }
-                if (u.creditScore < 400) {
-                    msgEl.textContent = '❌ Credit score too low (min 400).';
-                    msgEl.style.color = '#ef4444';
-                    return;
-                }
-                u.balance -= total;
-                holdings[symbol] = (holdings[symbol] || 0) + qty;
-                if (!u.holdingsAvg) u.holdingsAvg = {};
-                const oldQty = currentQty;
-                const oldAvg = u.holdingsAvg[symbol] || stock.price;
-                if (oldQty === 0) {
-                    u.holdingsAvg[symbol] = stock.price;
-                } else {
-                    u.holdingsAvg[symbol] = (oldAvg * oldQty + stock.price * qty) / (oldQty + qty);
-                }
-                setHoldings(u, holdings);
-                addTransaction(u, 'buy', symbol, qty, stock.price, total);
-                saveData();
-                msgEl.textContent = '✅ Bought ' + qty + ' shares of ' + symbol + ' for ₹' + total.toFixed(2);
-                msgEl.style.color = '#10b981';
-                toast('📈 Bought ' + qty + ' ' + symbol, 'success');
-            } else if (type === 'sell') {
-                if (currentQty < qty) {
-                    msgEl.textContent = '❌ You only have ' + currentQty + ' shares.';
-                    msgEl.style.color = '#ef4444';
-                    return;
-                }
-                u.balance += total;
-                holdings[symbol] = (holdings[symbol] || 0) - qty;
-                if (holdings[symbol] <= 0) {
-                    delete holdings[symbol];
-                    if (u.holdingsAvg) delete u.holdingsAvg[symbol];
-                }
-                setHoldings(u, holdings);
-                addTransaction(u, 'sell', symbol, qty, stock.price, total);
-                saveData();
-                msgEl.textContent = '✅ Sold ' + qty + ' shares of ' + symbol + ' for ₹' + total.toFixed(2);
-                msgEl.style.color = '#f59e0b';
-                toast('📉 Sold ' + qty + ' ' + symbol, 'info');
-            }
-            updateDashboard();
-            renderHoldings();
-            renderTradeStockTable();
-            updateTradeTotal();
-        }
-
-        // ─── DEPOSIT ───
-        function updateDepositUI() {
-            toggleDepositFields(document.getElementById('depositMethod').value);
-            document.getElementById('depositMsg').textContent = '';
-        }
-
-        function toggleDepositFields(method) {
-            const upiField = document.getElementById('depositUpiField');
-            const bankField = document.getElementById('depositBankField');
-            if (method === 'upi') {
-                upiField.classList.remove('hidden');
-                bankField.classList.add('hidden');
-            } else {
-                upiField.classList.add('hidden');
-                bankField.classList.remove('hidden');
-            }
-        }
-
-        function setDeposit(amount) {
-            document.getElementById('depositAmount').value = amount;
-        }
-
-        function handleDeposit() {
-            if (!currentUser) return;
-            const u = currentUser;
-            if (u.frozen) { toast('❌ Account frozen.', 'error'); return; }
-            const amount = parseFloat(document.getElementById('depositAmount').value);
-            if (!amount || amount <= 0) { toast('Enter valid amount.', 'error'); return; }
-            const method = document.getElementById('depositMethod').value;
-            let ref = '';
-            if (method === 'upi') {
-                ref = document.getElementById('depositUpi').value.trim() || 'smartex@pay';
-                u.upi = ref;
-            } else {
-                ref = document.getElementById('depositBank').value.trim() || 'HDFC-1234';
-                u.bank = ref;
-            }
-            u.balance += amount;
-            addDeposit(u, amount, method, ref);
-            saveData();
-            document.getElementById('depositMsg').textContent = '✅ Deposited ₹' + amount.toFixed(2) + ' via ' + method.toUpperCase();
-            document.getElementById('depositMsg').style.color = '#10b981';
-            document.getElementById('depositAmount').value = '';
-            updateDashboard();
-            toast('💰 ₹' + amount.toFixed(2) + ' deposited!', 'success');
-        }
-
-        // ─── WITHDRAW ───
-        function updateWithdrawUI() {
-            toggleWithdrawFields(document.getElementById('withdrawMethod').value);
-            document.getElementById('withdrawMsg').textContent = '';
-            const u = currentUser;
-            document.getElementById('savedUpi').textContent = u.upi || 'Not set';
-            document.getElementById('savedBank').textContent = u.bank || 'Not set';
-        }
-
-        function toggleWithdrawFields(method) {
-            const upiField = document.getElementById('withdrawUpiField');
-            const bankField = document.getElementById('withdrawBankField');
-            if (method === 'upi') {
-                upiField.classList.remove('hidden');
-                bankField.classList.add('hidden');
-            } else {
-                upiField.classList.add('hidden');
-                bankField.classList.remove('hidden');
-            }
-        }
-
-        function handleWithdraw() {
-            if (!currentUser) return;
-            const u = currentUser;
-            if (u.frozen) { toast('❌ Account frozen.', 'error'); return; }
-            const amount = parseFloat(document.getElementById('withdrawAmount').value);
-            if (!amount || amount <= 0) { toast('Enter valid amount.', 'error'); return; }
-            if (amount < 100) { toast('⚠️ Minimum withdraw: ₹100', 'error'); return; }
-            if (amount > u.balance) { toast('❌ Insufficient balance.', 'error'); return; }
-            const method = document.getElementById('withdrawMethod').value;
-            let ref = '';
-            if (method === 'upi') {
-                ref = document.getElementById('withdrawUpi').value.trim() || u.upi || 'Not set';
-                if (!u.upi && ref !== 'Not set') u.upi = ref;
-            } else {
-                ref = document.getElementById('withdrawBank').value.trim() || u.bank || 'Not set';
-                if (!u.bank && ref !== 'Not set') u.bank = ref;
-            }
-            u.balance -= amount;
-            addWithdraw(u, amount, method, ref);
-            saveData();
-            document.getElementById('withdrawMsg').textContent = '✅ Withdrawal request of ₹' + amount.toFixed(2) +
-                ' via ' + method.toUpperCase() + ' submitted.';
-            document.getElementById('withdrawMsg').style.color = '#f59e0b';
-            document.getElementById('withdrawAmount').value = '';
-            updateDashboard();
-            toast('🏦 Withdraw request submitted.', 'info');
-        }
-
-        // ─── HISTORY ───
-        function renderHistory() {
-            if (!currentUser) return;
-            const u = currentUser;
-            const body = document.getElementById('historyBody');
-            body.innerHTML = '';
-            const txs = data.transactions.filter(t => t.userPhone === u.phone).reverse();
-            if (txs.length === 0) {
-                body.innerHTML = `<tr><td colspan="6" class="text-muted text-center" style="padding:30px;">No transactions yet.</td></tr>`;
-                return;
-            }
-            txs.slice(0, 50).forEach(t => {
-                const typeClass = t.type === 'buy' ? 'buy-type' : t.type === 'sell' ? 'sell-type' : 
-                                 t.type === 'deposit' ? 'deposit-type' : 'withdraw-type';
-                const label = t.type.charAt(0).toUpperCase() + t.type.slice(1);
-                const date = new Date(t.date).toLocaleString();
-                body.innerHTML += `<tr>
-                    <td>${date}</td>
-                    <td class="${typeClass}">${label}</td>
-                    <td>${t.stock || t.method || '-'}</td>
-                    <td>${t.qty || t.ref || '-'}</td>
-                    <td>₹${t.amount.toFixed(2)}</td>
-                    <td><span style="color:${t.status === 'completed' ? '#10b981' : '#f59e0b'};">${t.status || 'completed'}</span></td>
-                </tr>`;
-            });
-        }
-
-        // ─── ACCOUNT ───
-        function renderAccount() {
-            if (!currentUser) return;
-            const u = currentUser;
-            document.getElementById('accName').value = u.name;
-            document.getElementById('accPhone').value = u.phone;
-            document.getElementById('accAadhaar').value = u.aadhaar;
-            document.getElementById('accStatus').value = u.frozen ? '❄️ Frozen' : '✅ Active';
-            document.getElementById('accVerified').value = u.verified ? '✅ Verified' : '🔴 Unverified';
-            document.getElementById('accCreditScore').textContent = u.creditScore;
-            document.getElementById('accBalanceDisplay').textContent = '₹' + u.balance.toFixed(2);
-        }
-
-        function handleVerify() {
-            if (!currentUser) return;
-            const u = currentUser;
-            if (u.verified) { toast('Already verified.', 'info'); return; }
-            u.verified = true;
-            u.creditScore = Math.min(u.creditScore + 50, 900);
-            saveData();
-            renderAccount();
-            updateDashboard();
-            toast('✅ Account verified! +50 credit score.', 'success');
-        }
-
-        function handleFreezeToggle() {
-            if (!currentUser) return;
-            const u = currentUser;
-            u.frozen = !u.frozen;
-            saveData();
-            renderAccount();
-            updateDashboard();
-            toast(u.frozen ? '❄️ Account frozen.' : '✅ Account unfrozen.', 'info');
-        }
-
-        function adjustScore(delta) {
-            if (!currentUser) return;
-            const u = currentUser;
-            u.creditScore = Math.max(200, Math.min(900, u.creditScore + delta));
-            saveData();
-            renderAccount();
-            updateDashboard();
-            toast('⭐ Credit score ' + (delta > 0 ? '+' : '') + delta, 'info');
-        }
-
-        function adjustBalance(delta) {
-            if (!currentUser) return;
-            const u = currentUser;
-            u.balance = Math.max(0, u.balance + delta);
-            saveData();
-            renderAccount();
-            updateDashboard();
-            toast('💰 Balance ' + (delta > 0 ? '+' : '') + '₹' + delta, 'info');
-        }
-
-        // ─── ADMIN ───
-        function renderAdmin() {
-            const list = document.getElementById('adminUserList');
-            list.innerHTML = '';
-            data.users.forEach(u => {
-                const holdings = getHoldings(u);
-                const holdingCount = Object.keys(holdings).length;
-                const div = document.createElement('div');
-                div.className = 'admin-user-row';
-                div.innerHTML = `
-                    <div class="info">
-                        <span class="name">${u.name}</span>
-                        <span class="phone">📱 ${u.phone}</span>
-                        <span class="badge-sm ${u.verified?'verified':''}">${u.verified?'✅ Verified':'🔴 Unverified'}</span>
-                        <span class="badge-sm ${u.frozen?'frozen':''}">${u.frozen?'❄️ Frozen':'✅ Active'}</span>
-                        <span style="color:#f59e0b;font-weight:600;">₹${u.balance.toFixed(2)}</span>
-                        <span style="color:#6b7280;font-size:12px;">⭐ ${u.creditScore}</span>
-                        <span style="color:#6b7280;font-size:12px;">📊 ${holdingCount} holdings</span>
-                    </div>
-                    <div class="actions">
-                        <button class="btn btn-sm btn-outline" onclick="adminToggleFreeze('${u.phone}')">${u.frozen?'Unfreeze':'Freeze'}</button>
-                        <button class="btn btn-sm btn-outline" onclick="adminVerify('${u.phone}')">Verify</button>
-                        <button class="btn btn-sm btn-gold" onclick="adminAddBalance('${u.phone}')">+₹500</button>
-                    </div>
-                `;
-                list.appendChild(div);
-            });
-            document.getElementById('adminTotalUsers').textContent = data.users.length;
-            let totalDep = 0,
-                totalWith = 0;
-            data.deposits.forEach(d => totalDep += d.amount);
-            data.withdrawals.forEach(w => totalWith += w.amount);
-            document.getElementById('adminTotalDeposits').textContent = '₹' + totalDep.toFixed(2);
-            document.getElementById('adminTotalWithdrawals').textContent = '₹' + totalWith.toFixed(2);
-        }
-
-        function adminToggleFreeze(phone) {
-            const u = getUser(phone);
-            if (!u) return;
-            u.frozen = !u.frozen;
-            saveData();
-            renderAdmin();
-            toast(u.frozen ? '❄️ User frozen.' : '✅ User unfrozen.', 'info');
-        }
-
-        function adminVerify(phone) {
-            const u = getUser(phone);
-            if (!u) return;
-            u.verified = true;
-            u.creditScore = Math.min(u.creditScore + 30, 900);
-            saveData();
-            renderAdmin();
-            toast('✅ User verified.', 'success');
-        }
-
-        function adminAddBalance(phone) {
-            const u = getUser(phone);
-            if (!u) return;
-            u.balance += 500;
-            saveData();
-            renderAdmin();
-            toast('💰 Added ₹500 to user.', 'success');
-        }
-
-        // ─── PRICE SIMULATION ───
-        function startPriceSimulation() {
-            if (priceInterval) clearInterval(priceInterval);
-            priceInterval = setInterval(() => {
-                data.stocks.forEach(s => {
-                    const change = (Math.random() - 0.48) * 6;
-                    s.price = Math.max(10, s.price * (1 + change / 100));
-                    s.price = Math.round(s.price * 100) / 100;
-                });
-                saveData();
-                if (currentTab === 'overview') renderOverview();
-                if (currentTab === 'trading') {
-                    updateTradePrice();
-                    renderHoldings();
-                    renderTradeStockTable();
-                }
-                updateDashboard();
-            }, 5000);
-        }
-
-        // ─── TOAST ───
-        function toast(message, type = 'info') {
-            const container = document.getElementById('toastContainer');
-            const el = document.createElement('div');
-            el.className = 'toast ' + type;
-            el.textContent = message;
-            container.appendChild(el);
-            setTimeout(() => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateX(50px)';
-                setTimeout(() => el.remove(), 300);
-            }, 3500);
-        }
-
-        // ─── EXPOSE GLOBALS ───
-        window.navigateTab = navigateTab;
-        window.setDeposit = setDeposit;
-        window.quickTrade = quickTrade;
-        window.adminToggleFreeze = adminToggleFreeze;
-        window.adminVerify = adminVerify;
-        window.adminAddBalance = adminAddBalance;
-
-        // ─── START ───
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
+    </div>
+</div>
+
+<script>
+// ============================================================
+// SMART STOCK EXCHANGE - Complete Live Trading Platform
+// ============================================================
+
+const STORAGE_KEY = 'smartExchangeData';
+const DEFAULT_STOCKS = [
+    { symbol: 'RELIANCE', name: 'Reliance Industries', price: 2850.50 },
+    { symbol: 'TCS', name: 'Tata Consultancy', price: 3850.25 },
+    { symbol: 'HDFCBANK', name: 'HDFC Bank', price: 1650.75 },
+    { symbol: 'INFY', name: 'Infosys', price: 1550.00 },
+    { symbol: 'ICICIBANK', name: 'ICICI Bank', price: 1120.40 },
+    { symbol: 'SBIN', name: 'SBI', price: 820.30 },
+    { symbol: 'BHARTIARTL', name: 'Bharti Airtel', price: 980.15 },
+    { symbol: 'ITC', name: 'ITC Ltd', price: 430.60 },
+    { symbol: 'WIPRO', name: 'Wipro', price: 510.25 },
+    { symbol: 'HCLTECH', name: 'HCL Tech', price: 1250.80 },
+    { symbol: 'SUNPHARMA', name: 'Sun Pharma', price: 1120.45 },
+    { symbol: 'TATAMOTORS', name: 'Tata Motors', price: 980.90 },
+    { symbol: 'AXISBANK', name: 'Axis Bank', price: 1050.30 },
+    { symbol: 'BAJFINANCE', name: 'Bajaj Finance', price: 6800.00 },
+    { symbol: 'MARUTI', name: 'Maruti Suzuki', price: 10200.00 },
+    { symbol: 'TITAN', name: 'Titan Company', price: 3450.60 },
+    { symbol: 'ASIANPAINT', name: 'Asian Paints', price: 2950.75 },
+    { symbol: 'NTPC', name: 'NTPC Ltd', price: 220.40 },
+    { symbol: 'ONGC', name: 'ONGC Ltd', price: 180.25 },
+    { symbol: 'POWERGRID', name: 'Power Grid', price: 190.80 }
+];
+
+let data = loadData();
+let currentUser = null;
+let currentTab = 'overview';
+let priceInterval = null;
+
+function loadData() {
+    try { const raw = localStorage.getItem(STORAGE_KEY); if (raw) return JSON.parse(raw); } catch(e) {}
+    return { users: [], stocks: [], transactions: [], deposits: [], withdrawals: [] };
+}
+
+function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }
+
+function getStock(symbol) { return data.stocks.find(s => s.symbol === symbol); }
+function getUser(phone) { return data.users.find(u => u.phone === phone); }
+function getHoldings(user) { return user.holdings || {}; }
+function setHoldings(user, holdings) { user.holdings = holdings; saveData(); }
+
+function addTransaction(user, type, stock, qty, price, amount, status = 'completed') {
+    data.transactions.push({ userPhone: user.phone, type, stock, qty, price, amount, status, date: new Date().toISOString() });
+    saveData();
+}
+
+function addDeposit(user, amount, method, ref) {
+    data.deposits.push({ userPhone: user.phone, amount, method, ref, status: 'completed', date: new Date().toISOString() });
+    saveData();
+}
+
+function addWithdraw(user, amount, method, ref) {
+    data.withdrawals.push({ userPhone: user.phone, amount, method, ref, status: 'pending', date: new Date().toISOString() });
+    saveData();
+}
+
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+}
+
+function showDashboard() {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('pageDashboard').classList.add('active');
+    document.getElementById('pageDashboard').style.display = 'flex';
+    updateDashboard();
+    navigateTab('overview');
+}
+
+function navigateTab(tab) {
+    currentTab = tab;
+    document.querySelectorAll('.sidebar .nav-item').forEach(el => el.classList.toggle('active', el.dataset.tab === tab));
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    const target = document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1));
+    if (target) target.classList.remove('hidden');
+    if (tab === 'overview') renderOverview();
+    if (tab === 'trading') renderTrading();
+    if (tab === 'history') renderHistory();
+    if (tab === 'account') renderAccount();
+    if (tab === 'admin') renderAdmin();
+    if (tab === 'deposit') updateDepositUI();
+    if (tab === 'withdraw') updateWithdrawUI();
+}
+
+function updateDashboard() {
+    if (!currentUser) return;
+    const u = currentUser;
+    document.getElementById('dashBalance').textContent = '₹' + u.balance.toFixed(2);
+    document.getElementById('dashCreditScore').textContent = '⭐ ' + u.creditScore;
+    const vb = document.getElementById('dashVerifyBadge');
+    vb.textContent = u.verified ? '✅ Verified' : '🔴 Unverified';
+    vb.className = 'badge' + (u.verified ? ' verified' : '');
+    const sb = document.getElementById('dashStatusBadge');
+    sb.textContent = u.frozen ? '❄️ Frozen' : '✅ Active';
+    sb.className = 'badge' + (u.frozen ? ' frozen' : '');
+    document.getElementById('dashUserName').textContent = u.name;
+}
+
+function renderOverview() {
+    if (!currentUser) return;
+    const u = currentUser;
+    let portfolioValue = 0;
+    const holdings = getHoldings(u);
+    for (const [symbol, qty] of Object.entries(holdings)) {
+        const stock = getStock(symbol);
+        if (stock) portfolioValue += stock.price * qty;
+    }
+    document.getElementById('ovBalance').textContent = '₹' + u.balance.toFixed(2);
+    document.getElementById('ovCredit').textContent = '⭐ ' + u.creditScore;
+    document.getElementById('ovPortfolio').textContent = '₹' + portfolioValue.toFixed(2);
+    const pnl = (Math.random() * 200 - 100);
+    const pnlEl = document.getElementById('ovPnL');
+    pnlEl.textContent = (pnl >= 0 ? '+' : '') + '₹' + pnl.toFixed(2);
+    pnlEl.className = 'value ' + (pnl >= 0 ? 'green' : 'red');
+    
+    const body = document.getElementById('overviewStockBody');
+    body.innerHTML = '';
+    data.stocks.slice(0, 10).forEach(s => {
+        const change = ((Math.random() - 0.45) * 4).toFixed(2);
+        const cls = parseFloat(change) >= 0 ? 'price-up' : 'price-down';
+        body.innerHTML += `<tr><td><strong>${s.symbol}</strong></td><td>${s.name}</td><td>₹${s.price.toFixed(2)}</td><td class="${cls}">${parseFloat(change)>=0?'+':''}${change}%</td><td>${Math.floor(Math.random()*50000+10000).toLocaleString()}</td></tr>`;
+    });
+    updateDashboard();
+}
+
+function renderTrading() {
+    if (!currentUser) return;
+    populateTradeSelect();
+    updateTradePrice();
+    renderHoldings();
+    renderTradeStockTable();
+}
+
+function populateTradeSelect() {
+    const sel = document.getElementById('tradeStockSelect');
+    sel.innerHTML = '';
+    data.stocks.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.symbol;
+        opt.textContent = s.symbol + ' - ' + s.name;
+        sel.appendChild(opt);
+    });
+}
+
+function updateTradePrice() {
+    const symbol = document.getElementById('tradeStockSelect').value;
+    const stock = getStock(symbol);
+    if (stock) {
+        document.getElementById('tradePrice').value = '₹' + stock.price.toFixed(2);
+        updateTradeTotal();
+    }
+}
+
+function updateTradeTotal() {
+    const symbol = document.getElementById('tradeStockSelect').value;
+    const stock = getStock(symbol);
+    const qty = parseInt(document.getElementById('tradeQty').value) || 0;
+    if (stock) document.getElementById('tradeTotal').value = '₹' + (stock.price * qty).toFixed(2);
+}
+
+function renderHoldings() {
+    const u = currentUser;
+    const holdings = getHoldings(u);
+    const body = document.getElementById('holdingsBody');
+    body.innerHTML = '';
+    for (const [symbol, qty] of Object.entries(holdings)) {
+        const stock = getStock(symbol);
+        if (!stock || qty === 0) continue;
+        const avgPrice = u.holdingsAvg && u.holdingsAvg[symbol] ? u.holdingsAvg[symbol] : stock.price;
+        const pnl = (stock.price - avgPrice) * qty;
+        body.innerHTML += `<tr><td><strong>${symbol}</strong></td><td>${qty}</td><td>₹${avgPrice.toFixed(2)}</td><td>₹${stock.price.toFixed(2)}</td><td class="${pnl>=0?'text-green':'text-red'}">${pnl>=0?'+':''}₹${pnl.toFixed(2)}</td></tr>`;
+    }
+    if (!body.innerHTML) body.innerHTML = `<tr><td colspan="5" class="text-muted text-center" style="padding:30px;">No holdings yet. Start trading!</td></tr>`;
+}
+
+function renderTradeStockTable() {
+    const body = document.getElementById('tradeStockBody');
+    body.innerHTML = '';
+    data.stocks.forEach(s => {
+        const change = ((Math.random() - 0.45) * 4).toFixed(2);
+        const cls = parseFloat(change) >= 0 ? 'price-up' : 'price-down';
+        body.innerHTML += `<tr><td><strong>${s.symbol}</strong></td><td>${s.name}</td><td>₹${s.price.toFixed(2)}</td><td class="${cls}">${parseFloat(change)>=0?'+':''}${change}%</td><td><button class="action-btn buy" onclick="quickTrade('${s.symbol}','buy')">📈 Buy</button><button class="action-btn sell" onclick="quickTrade('${s.symbol}','sell')">📉 Sell</button></td></tr>`;
+    });
+}
+
+function quickTrade(symbol, type) {
+    document.getElementById('tradeStockSelect').value = symbol;
+    updateTradePrice();
+    const qty = parseInt(document.getElementById('tradeQty').value) || 1;
+    handleTrade(type);
+}
+
+function handleTrade(type) {
+    if (!currentUser) return;
+    const u = currentUser;
+    if (u.frozen) { toast('❌ Account frozen. Cannot trade.', 'error'); return; }
+    const symbol = document.getElementById('tradeStockSelect').value;
+    const stock = getStock(symbol);
+    if (!stock) { toast('Stock not found.', 'error'); return; }
+    const qty = parseInt(document.getElementById('tradeQty').value) || 0;
+    if (qty <= 0) { toast('Enter valid quantity.', 'error'); return; }
+    const total = stock.price * qty;
+    const msgEl = document.getElementById('tradeMsg');
+    const holdings = getHoldings(u);
+    const currentQty = holdings[symbol] || 0;
+
+    if (type === 'buy') {
+        if (u.balance < total) { msgEl.textContent = '❌ Insufficient balance.'; msgEl.style.color = '#ef4444'; return; }
+        if (u.creditScore < 400) { msgEl.textContent = '❌ Credit score too low (min 400).'; msgEl.style.color = '#ef4444'; return; }
+        u.balance -= total;
+        holdings[symbol] = (holdings[symbol] || 0) + qty;
+        if (!u.holdingsAvg) u.holdingsAvg = {};
+        const oldQty = currentQty;
+        const oldAvg = u.holdingsAvg[symbol] || stock.price;
+        u.holdingsAvg[symbol] = oldQty === 0 ? stock.price : (oldAvg * oldQty + stock.price * qty) / (oldQty + qty);
+        setHoldings(u, holdings);
+        addTransaction(u, 'buy', symbol, qty, stock.price, total);
+        saveData();
+        msgEl.textContent = '✅ Bought ' + qty + ' shares of ' + symbol + ' for ₹' + total.toFixed(2);
+        msgEl.style.color = '#10b981';
+        toast('📈 Bought ' + qty + ' ' + symbol, 'success');
+    } else {
+        if (currentQty < qty) { msgEl.textContent = '❌ You only have ' + currentQty + ' shares.'; msgEl.style.color = '#ef4444'; return; }
+        u.balance += total;
+        holdings[symbol] = (holdings[symbol] || 0) - qty;
+        if (holdings[symbol] <= 0) { delete holdings[symbol]; if (u.holdingsAvg) delete u.holdingsAvg[symbol]; }
+        setHoldings(u, holdings);
+        addTransaction(u, 'sell', symbol, qty, stock.price, total);
+        saveData();
+        msgEl.textContent = '✅ Sold ' + qty + ' shares of ' + symbol + ' for ₹' + total.toFixed(2);
+        msgEl.style.color = '#f59e0b';
+        toast('📉 Sold ' + qty + ' ' + symbol, 'info');
+    }
+    updateDashboard();
+    renderHoldings();
+    renderTradeStockTable();
+    updateTradeTotal();
+}
+
+function updateDepositUI() {
+    toggleDepositFields(document.getElementById('depositMethod').value);
+    document.getElementById('depositMsg').textContent = '';
+}
+
+function toggleDepositFields(method) {
+    const upiField = document.getElementById('depositUpiField');
+    const bankField = document.getElementById('depositBankField');
+    if (method === 'upi') { upiField.classList.remove('hidden'); bankField.classList.add('hidden'); }
+    else { upiField.classList.add('hidden'); bankField.classList.remove('hidden'); }
+}
+
+function setDeposit(amount) { document.getElementById('depositAmount').value = amount; }
+
+function handleDeposit() {
+    if (!currentUser) return;
+    const u = currentUser;
+    if (u.frozen) { toast('❌ Account frozen.', 'error'); return; }
+    const amount = parseFloat(document.getElementById('depositAmount').value);
+    if (!amount || amount <= 0) { toast('Enter valid amount.', 'error'); return; }
+    const method = document.getElementById('depositMethod').value;
+    let ref = '';
+    if (method === 'upi') { ref = document.getElementById('depositUpi').value.trim() || 'smartex@pay'; u.upi = ref; }
+    else { ref = document.getElementById('depositBank').value.trim() || 'HDFC-1234'; u.bank = ref; }
+    u.balance += amount;
+    addDeposit(u, amount, method, ref);
+    saveData();
+    document.getElementById('depositMsg').textContent = '✅ Deposited ₹' + amount.toFixed(2) + ' via ' + method.toUpperCase();
+    document.getElementById('depositMsg').style.color = '#10b981';
+    document.getElementById('depositAmount').value = '';
+    updateDashboard();
+    toast('💰 ₹' + amount.toFixed(2) + ' deposited!', 'success');
+}
+
+function updateWithdrawUI() {
+    toggleWithdrawFields(document.getElementById('withdrawMethod').value);
+    document.getElementById('withdrawMsg').textContent = '';
+    const u = currentUser;
+    document.getElementById('savedUpi').textContent = u.upi || 'Not set';
+    document.getElementById('savedBank').textContent = u.bank || 'Not set';
+}
+
+function toggleWithdrawFields(method) {
+    const upiField = document.getElementById('withdrawUpiField');
+    const bankField = document.getElementById('withdrawBankField');
+    if (method === 'upi') { upiField.classList.remove('hidden'); bankField.classList.add('hidden'); }
+    else { upiField.classList.add('hidden'); bankField.classList.remove('hidden'); }
+}
+
+function handleWithdraw() {
+    if (!currentUser) return;
+    const u = currentUser;
+    if (u.frozen) { toast('❌ Account frozen.', 'error'); return; }
+    const amount = parseFloat(document.getElementById('withdrawAmount').value);
+    if (!amount || amount <= 0) { toast('Enter valid amount.', 'error'); return; }
+    if (amount < 100) { toast('⚠️ Minimum withdraw: ₹100', 'error'); return; }
+    if (amount > u.balance) { toast('❌ Insufficient balance.', 'error'); return; }
+    const method = document.getElementById('withdrawMethod').value;
+    let ref = '';
+    if (method === 'upi') { ref = document.getElementById('withdrawUpi').value.trim() || u.upi || 'Not set'; if (!u.upi && ref !== 'Not set') u.upi = ref; }
+    else { ref = document.getElementById('withdrawBank').value.trim() || u.bank || 'Not set'; if (!u.bank && ref !== 'Not set') u.bank = ref; }
+    u.balance -= amount;
+    addWithdraw(u, amount, method, ref);
+    saveData();
+    document.getElementById('withdrawMsg').textContent = '✅ Withdrawal request of ₹' + amount.toFixed(2) + ' via ' + method.toUpperCase() + ' submitted.';
+    document.getElementById('withdrawMsg').style.color = '#f59e0b';
+    document.getElementById('withdrawAmount').value = '';
+    updateDashboard();
+    toast('🏦 Withdraw request submitted.', 'info');
+}
+
+function renderHistory() {
+    if (!currentUser) return;
+    const u = currentUser;
+    const body = document.getElementById('historyBody');
+    body.innerHTML = '';
+    const txs = data.transactions.filter(t => t.userPhone === u.phone).reverse();
+    if (txs.length === 0) { body.innerHTML = `<tr><td colspan="6" class="text-muted text-center" style="padding:30px;">No transactions yet.</td></tr>`; return; }
+    txs.slice(0, 50).forEach(t => {
+        const typeClass = t.type === 'buy' ? 'buy-type' : t.type === 'sell' ? 'sell-type' : t.type === 'deposit' ? 'deposit-type' : '';
+        const label = t.type.charAt(0).toUpperCase() + t.type.slice(1);
+        body.innerHTML += `<tr><td>${new Date(t.date).toLocaleString()}</td><td class="${typeClass}">${label}</td><td>${t.stock || t.method || '-'}</td><td>${t.qty || t.ref || '-'}</td><td>₹${t.amount.toFixed(2)}</td><td><span style="color:${t.status === 'completed' ? '#10b981' : '#f59e0b'};">${t.status || 'completed'}</span></td></tr>`;
+    });
+}
+
+function renderAccount() {
+    if (!currentUser) return;
+    const u = currentUser;
+    document.getElementById('accName').value = u.name;
+    document.getElementById('accPhone').value = u.phone;
+    document.getElementById('accAadhaar').value = u.aadhaar;
+    document.getElementById('accStatus').value = u.frozen ? '❄️ Frozen' : '✅ Active';
+    document.getElementById('accVerified').value = u.verified ? '✅ Verified' : '🔴 Unverified';
+    document.getElementById('accCreditScore').textContent = u.creditScore;
+    document.getElementById('accBalanceDisplay').textContent = '₹' + u.balance.toFixed(2);
+}
+
+function handleVerify() {
+    if (!currentUser) return;
+    const u = currentUser;
+    if (u.verified) { toast('Already verified.', 'info'); return; }
+    u.verified = true;
+    u.creditScore = Math.min(u.creditScore + 50, 900);
+    saveData();
+    renderAccount();
+    updateDashboard();
+    toast('✅ Account verified! +50 credit score.', 'success');
+}
+
+function handleFreezeToggle() {
+    if (!currentUser) return;
+    const u = currentUser;
+    u.frozen = !u.frozen;
+    saveData();
+    renderAccount();
+    updateDashboard();
+    toast(u.frozen ? '❄️ Account frozen.' : '✅ Account unfrozen.', 'info');
+}
+
+function adjustScore(delta) {
+    if (!currentUser) return;
+    const u = currentUser;
+    u.creditScore = Math.max(200, Math.min(900, u.creditScore + delta));
+    saveData();
+    renderAccount();
+    updateDashboard();
+    toast('⭐ Credit score ' + (delta > 0 ? '+' : '') + delta, 'info');
+}
+
+function adjustBalance(delta) {
+    if (!currentUser) return;
+    const u = currentUser;
+    u.balance = Math.max(0, u.balance + delta);
+    saveData();
+    renderAccount();
+    updateDashboard();
+    toast('💰 Balance ' + (delta > 0 ? '+' : '') + '₹' + delta, 'info');
+}
+
+function renderAdmin() {
+    const list = document.getElementById('adminUserList');
+    list.innerHTML = '';
+    data.users.forEach(u => {
+        const holdings = getHoldings(u);
+        const holdingCount = Object.keys(holdings).length;
+        const div = document.createElement('div');
+        div.className = 'admin-user-row';
+        div.innerHTML = `<div class="info"><span class="name">${u.name}</span><span class="phone">📱 ${u.phone}</span><span class="badge-sm ${u.verified?'verified':''}">${u.verified?'✅ Verified':'🔴 Unverified'}</span><span class="badge-sm ${u.frozen?'frozen':''}">${u.frozen?'❄️ Frozen':'✅ Active'}</span><span style="color:#f59e0b;font-weight:600;">₹${u.balance.toFixed(2)}</span><span style="color:#6b7280;font-size:12px;">⭐ ${u.creditScore}</span><span style="color:#6b7280;font-size:12px;">📊 ${holdingCount} holdings</span></div><div class="actions"><button class="btn btn-sm btn-outline" onclick="adminToggleFreeze('${u.phone}')">${u.frozen?'Unfreeze':'Freeze'}</button><button class="btn btn-sm btn-outline" onclick="adminVerify('${u.phone}')">Verify</button><button class="btn btn-sm btn-gold" onclick="adminAddBalance('${u.phone}')">+₹500</button></div>`;
+        list.appendChild(div);
+    });
+    document.getElementById('adminTotalUsers').textContent = data.users.length;
+    let totalDep = 0, totalWith = 0;
+    data.deposits.forEach(d => totalDep += d.amount);
+    data.withdrawals.forEach(w => totalWith += w.amount);
+    document.getElementById('adminTotalDeposits').textContent = '₹' + totalDep.toFixed(2);
+    document.getElementById('adminTotalWithdrawals').textContent = '₹' + totalWith.toFixed(2);
+}
+
+function adminToggleFreeze(phone) { const u = getUser(phone); if (!u) return; u.frozen = !u.frozen; saveData(); renderAdmin(); toast(u.frozen ? '❄️ User frozen.' : '✅ User unfrozen.', 'info'); }
+function adminVerify(phone) { const u = getUser(phone); if (!u) return; u.verified = true; u.creditScore = Math.min(u.creditScore + 30, 900); saveData(); renderAdmin(); toast('✅ User verified.', 'success'); }
+function adminAddBalance(phone) { const u = getUser(phone); if (!u) return; u.balance += 500; saveData(); renderAdmin(); toast('💰 Added ₹500 to user.', 'success'); }
+
+function toast(message, type = 'info') {
+    const container = document.getElementById('toastContainer');
+    const el = document.createElement('div');
+    el.className = 'toast ' + type;
+    el.textContent = message;
+    container.appendChild(el);
+    setTimeout(() => { el.style.opacity = '0'; el.style.transform = 'translateX(50px)'; setTimeout(() => el.remove(), 300); }, 3500);
+}
+
+function startPriceSimulation() {
+    if (priceInterval) clearInterval(priceInterval);
+    priceInterval = setInterval(() => {
+        data.stocks.forEach(s => {
+            const change = (Math.random() - 0.48) * 6;
+            s.price = Math.max(10, Math.round((s.price * (1 + change / 100)) * 100) / 100);
+        });
+        saveData();
+        if (currentTab === 'overview') renderOverview();
+        if (currentTab === 'trading') { updateTradePrice(); renderHoldings(); renderTradeStockTable(); }
+        updateDashboard();
+    }, 5000);
+}
+
+// Auth Handlers
+function handleSignup() {
+    const name = document.getElementById('suName').value.trim();
+    const phone = document.getElementById('suPhone').value.trim();
+    const aadhaar = document.getElementById('suAadhaar').value.trim();
+    const password = document.getElementById('suPassword').value.trim();
+    const errEl = document.getElementById('signupError');
+    const sucEl = document.getElementById('signupSuccess');
+    errEl.style.display = 'none';
+    sucEl.style.display = 'none';
+    if (!name || !phone || !aadhaar || !password) {
+        errEl.textContent = '❌ All fields are required.';
+        errEl.style.display = 'block';
+        return;
+    }
+    if (password.length < 6) { errEl.textContent = '❌ Password must be at least 6 characters.'; errEl.style.display = 'block'; return; }
+    if (getUser(phone)) { errEl.textContent = '❌ Phone number already registered.'; errEl.style.display = 'block'; return; }
+    const user = { name, phone, aadhaar, password, balance: 10000, creditScore: 650, verified: false, frozen: false, holdings: {}, upi: '', bank: '', createdAt: new Date().toISOString() };
+    data.users.push(user);
+    saveData();
+    sucEl.textContent = '✅ Account created! Please login.';
+    sucEl.style.display = 'block';
+    document.getElementById('suName').value = '';
+    document.getElementById('suPhone').value = '';
+    document.getElementById('suAadhaar').value = '';
+    document.getElementById('suPassword').value = '';
+    setTimeout(() => showPage('pageLogin'), 800);
+    toast('Account created successfully! 🎉', 'success');
+}
+
+function handleLogin() {
+    const phone = document.getElementById('liPhone').value.trim();
+    const password = document.getElementById('liPassword').value.trim();
+    const errEl = document.getElementById('loginError');
+    errEl.style.display = 'none';
+    if (!phone || !password) { errEl.textContent = '❌ Please fill in all fields.'; errEl.style.display = 'block'; return; }
+    const user = getUser(phone);
+    if (!user || user.password !== password) { errEl.textContent = '❌ Invalid phone or password.'; errEl.style.display = 'block'; return; }
+    if (user.frozen) { errEl.textContent = '❌ Account is frozen. Contact admin.'; errEl.style.display = 'block'; return; }
+    currentUser = user;
+    sessionStorage.setItem('smartSession', user.phone);
+    showDashboard();
+    toast('Welcome back, ' + user.name + '! 👋', 'success');
+}
+
+function handleLogout() {
+    sessionStorage.removeItem('smartSession');
+    currentUser = null;
+    if (priceInterval) clearInterval(priceInterval);
+    showPage('pageLogin');
+    toast('Logged out successfully.', 'info');
+}
+
+// Init
+function init() {
+    if (!data.users) data.users = [];
+    if (!data.stocks) data.stocks = DEFAULT_STOCKS.map(s => ({ ...s }));
+    if (!data.transactions) data.transactions = [];
+    if (!data.deposits) data.deposits = [];
+    if (!data.withdrawals) data.withdrawals = [];
+    saveData();
+
+    const session = sessionStorage.getItem('smartSession');
+    if (session) {
+        const user = data.users.find(u => u.phone === session);
+        if (user) { currentUser = user; showDashboard(); return; }
+    }
+    showPage('pageSignUp');
+
+    document.getElementById('signupBtn').addEventListener('click', handleSignup);
+    document.getElementById('loginBtn').addEventListener('click', handleLogin);
+    document.getElementById('gotoLogin').addEventListener('click', e => { e.preventDefault(); showPage('pageLogin'); });
+    document.getElementById('gotoSignup').addEventListener('click', e => { e.preventDefault(); showPage('pageSignUp'); });
+    document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+
+    document.querySelectorAll('.sidebar .nav-item').forEach(el => {
+        el.addEventListener('click', () => navigateTab(el.dataset.tab));
+    });
+
+    document.getElementById('depositMethod').addEventListener('change', function() { toggleDepositFields(this.value); });
+    document.getElementById('withdrawMethod').addEventListener('change', function() { toggleWithdrawFields(this.value); });
+    document.getElementById('depositBtn').addEventListener('click', handleDeposit);
+    document.getElementById('withdrawBtn').addEventListener('click', handleWithdraw);
+    document.getElementById('tradeStockSelect').addEventListener('change', updateTradePrice);
+    document.getElementById('tradeQty').addEventListener('input', updateTradeTotal);
+    document.getElementById('tradeBuyBtn').addEventListener('click', () => handleTrade('buy'));
+    document.getElementById('tradeSellBtn').addEventListener('click', () => handleTrade('sell'));
+    document.getElementById('verifyBtn').addEventListener('click', handleVerify);
+    document.getElementById('freezeToggleBtn').addEventListener('click', handleFreezeToggle);
+    document.getElementById('scoreUpBtn').addEventListener('click', () => adjustScore(10));
+    document.getElementById('scoreDownBtn').addEventListener('click', () => adjustScore(-10));
+    document.getElementById('balanceAddBtn').addEventListener('click', () => adjustBalance(100));
+    document.getElementById('balanceSubBtn').addEventListener('click', () => adjustBalance(-100));
+
+    startPriceSimulation();
+}
+
+window.navigateTab = navigateTab;
+window.setDeposit = setDeposit;
+window.quickTrade = quickTrade;
+window.adminToggleFreeze = adminToggleFreeze;
+window.adminVerify = adminVerify;
+window.adminAddBalance = adminAddBalance;
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
 </html>
