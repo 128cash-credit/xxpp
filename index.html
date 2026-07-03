@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Smart Stock Exchange</title>
+    <title>Smart Stock Exchange - India</title>
     <style>
         /* ─── RESET & BASE ─── */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
+        
         body {
-            background: #0b0e11;
-            color: #eaecef;
+            background: #f0f2f5;
+            color: #1a1a2e;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -23,15 +24,19 @@
 
         /* ─── SCROLLBAR ─── */
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
         }
         ::-webkit-scrollbar-track {
-            background: #1e2329;
+            background: #e8eaed;
+            border-radius: 10px;
         }
         ::-webkit-scrollbar-thumb {
-            background: #f0b90b;
-            border-radius: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #5a67d8 0%, #6b46a1 100%);
         }
 
         /* ─── APP CONTAINER ─── */
@@ -39,7 +44,7 @@
             width: 100%;
             max-width: 1440px;
             min-height: 100vh;
-            background: #0b0e11;
+            background: #f0f2f5;
             position: relative;
             display: flex;
             flex-direction: column;
@@ -50,16 +55,16 @@
             display: none;
             width: 100%;
             flex: 1;
-            animation: fade 0.3s ease;
+            animation: fadeIn 0.4s ease;
         }
         .page.active {
             display: flex;
             flex-direction: column;
         }
-        @keyframes fade {
+        @keyframes fadeIn {
             0% {
-                opacity: 0.6;
-                transform: translateY(6px);
+                opacity: 0;
+                transform: translateY(10px);
             }
             100% {
                 opacity: 1;
@@ -73,124 +78,169 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(ellipse at 30% 20%, #1a1f2b, #0b0e11 70%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        .auth-page::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+        }
+        .auth-page::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            bottom: -80px;
+            left: -80px;
         }
         .auth-card {
-            background: #1e2329;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
             border-radius: 24px;
-            padding: 40px 36px;
+            padding: 45px 40px;
             width: 100%;
-            max-width: 420px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
-            border: 1px solid #2b3139;
+            max-width: 440px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s ease;
+        }
+        .auth-card:hover {
+            transform: translateY(-5px);
         }
         .auth-card .logo {
-            font-size: 26px;
-            font-weight: 700;
-            color: #f0b90b;
+            font-size: 30px;
+            font-weight: 800;
+            color: #1a1a2e;
             letter-spacing: -0.5px;
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
         .auth-card .logo span {
-            color: #eaecef;
-            font-weight: 300;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .auth-card .sub {
-            color: #848e9c;
+            color: #6b7280;
             font-size: 14px;
-            margin-bottom: 28px;
+            margin-bottom: 30px;
         }
         .auth-card label {
             display: block;
             font-size: 13px;
-            font-weight: 500;
-            color: #b7bdc6;
-            margin-bottom: 4px;
-            margin-top: 16px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+            margin-top: 18px;
         }
         .auth-card label:first-of-type {
             margin-top: 0;
         }
-        .auth-card input {
-            width: 100%;
-            padding: 12px 16px;
-            background: #13171d;
-            border: 1px solid #2b3139;
-            border-radius: 12px;
-            color: #eaecef;
-            font-size: 15px;
-            outline: none;
-            transition: border 0.2s;
-        }
-        .auth-card input:focus {
-            border-color: #f0b90b;
-        }
-        .auth-card input::placeholder {
-            color: #5e6673;
-        }
-        .auth-card .btn-primary {
-            width: 100%;
-            padding: 14px;
-            margin-top: 24px;
-            background: #f0b90b;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 600;
-            color: #0b0e11;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .auth-card .btn-primary:hover {
-            background: #d9a80a;
-        }
-        .auth-card .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .auth-card .switch-link {
-            text-align: center;
-            margin-top: 18px;
-            font-size: 14px;
-            color: #848e9c;
-        }
-        .auth-card .switch-link a {
-            color: #f0b90b;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        .auth-card .switch-link a:hover {
-            text-decoration: underline;
-        }
-        .auth-card .error-msg {
-            color: #f6465d;
-            font-size: 13px;
-            margin-top: 8px;
-            display: none;
-        }
-        .auth-card .success-msg {
-            color: #0ecb81;
-            font-size: 13px;
-            margin-top: 8px;
-            display: none;
-        }
-        .auth-card .input-icon-wrap {
+        .auth-card .input-group {
             position: relative;
         }
-        .auth-card .input-icon-wrap .icon {
+        .auth-card .input-group .icon {
             position: absolute;
             left: 14px;
             top: 50%;
             transform: translateY(-50%);
             font-size: 18px;
-            opacity: 0.5;
+            color: #9ca3af;
         }
-        .auth-card .input-icon-wrap input {
-            padding-left: 44px;
+        .auth-card input {
+            width: 100%;
+            padding: 13px 16px 13px 44px;
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            color: #1a1a2e;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .auth-card input:focus {
+            border-color: #667eea;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+        .auth-card input::placeholder {
+            color: #9ca3af;
+        }
+        .auth-card .btn-primary {
+            width: 100%;
+            padding: 15px;
+            margin-top: 26px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .auth-card .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        .auth-card .btn-primary:active {
+            transform: translateY(0);
+        }
+        .auth-card .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .auth-card .switch-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .auth-card .switch-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+        .auth-card .switch-link a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+        .auth-card .error-msg {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+            padding: 10px;
+            background: #fef2f2;
+            border-radius: 8px;
+            border-left: 4px solid #ef4444;
+        }
+        .auth-card .success-msg {
+            color: #10b981;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+            padding: 10px;
+            background: #f0fdf4;
+            border-radius: 8px;
+            border-left: 4px solid #10b981;
         }
 
         /* ─── DASHBOARD LAYOUT ─── */
@@ -198,7 +248,7 @@
             display: none;
             flex-direction: column;
             min-height: 100vh;
-            background: #0b0e11;
+            background: #f0f2f5;
         }
         .dashboard.active {
             display: flex;
@@ -209,60 +259,84 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 12px 24px;
-            background: #13171d;
-            border-bottom: 1px solid #1e2329;
+            padding: 16px 28px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
         .topbar .brand {
-            font-size: 22px;
-            font-weight: 700;
-            color: #f0b90b;
+            font-size: 24px;
+            font-weight: 800;
+            color: #1a1a2e;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+        }
+        .topbar .brand span {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         .topbar .brand small {
-            font-weight: 300;
-            color: #848e9c;
+            font-weight: 400;
+            color: #6b7280;
             font-size: 12px;
+            -webkit-text-fill-color: #6b7280;
         }
         .topbar .user-info {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
             flex-wrap: wrap;
         }
         .topbar .user-info .badge {
-            background: #1e2329;
-            padding: 6px 14px;
+            background: #f3f4f6;
+            padding: 7px 16px;
             border-radius: 20px;
             font-size: 13px;
-            color: #b7bdc6;
-            border: 1px solid #2b3139;
+            color: #374151;
+            border: 1px solid #e5e7eb;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        .topbar .user-info .badge:hover {
+            background: #e5e7eb;
         }
         .topbar .user-info .badge.verified {
-            border-color: #0ecb81;
-            color: #0ecb81;
+            border-color: #10b981;
+            color: #10b981;
+            background: #f0fdf4;
         }
         .topbar .user-info .badge.frozen {
-            border-color: #f6465d;
-            color: #f6465d;
+            border-color: #ef4444;
+            color: #ef4444;
+            background: #fef2f2;
+        }
+        .topbar .user-info .badge.gold {
+            border-color: #f59e0b;
+            color: #f59e0b;
+            background: #fffbeb;
         }
         .topbar .user-info .logout-btn {
-            background: transparent;
-            border: 1px solid #2b3139;
-            color: #848e9c;
-            padding: 6px 16px;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            color: #6b7280;
+            padding: 8px 18px;
             border-radius: 20px;
             cursor: pointer;
             font-size: 13px;
-            transition: 0.2s;
+            font-weight: 500;
+            transition: all 0.3s;
         }
         .topbar .user-info .logout-btn:hover {
-            border-color: #f6465d;
-            color: #f6465d;
+            border-color: #ef4444;
+            color: #ef4444;
+            background: #fef2f2;
         }
 
         /* ─── DASHBOARD BODY ─── */
@@ -274,61 +348,72 @@
 
         /* ─── SIDEBAR ─── */
         .sidebar {
-            width: 220px;
-            background: #13171d;
-            border-right: 1px solid #1e2329;
-            padding: 16px 0;
+            width: 240px;
+            background: #ffffff;
+            border-right: 1px solid #e5e7eb;
+            padding: 20px 0;
             flex-shrink: 0;
             overflow-y: auto;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.02);
         }
         .sidebar .nav-item {
-            padding: 12px 24px;
-            color: #848e9c;
+            padding: 14px 24px;
+            color: #6b7280;
             cursor: pointer;
             font-size: 14px;
             font-weight: 500;
-            border-left: 3px solid transparent;
-            transition: 0.2s;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            margin: 2px 10px;
+            border-radius: 10px;
         }
         .sidebar .nav-item:hover {
-            background: #1e2329;
-            color: #eaecef;
+            background: #f3f4f6;
+            color: #1a1a2e;
+            transform: translateX(4px);
         }
         .sidebar .nav-item.active {
-            color: #f0b90b;
-            border-left-color: #f0b90b;
-            background: #1e2329;
+            color: #667eea;
+            border-left-color: #667eea;
+            background: #f0f4ff;
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
         }
         .sidebar .nav-item .icon {
-            font-size: 18px;
-            width: 24px;
+            font-size: 20px;
+            width: 28px;
             text-align: center;
         }
 
         /* ─── CONTENT ─── */
         .content {
             flex: 1;
-            padding: 24px;
+            padding: 28px;
             overflow-y: auto;
-            background: #0b0e11;
+            background: #f0f2f5;
         }
 
         /* ─── CARDS ─── */
         .card {
-            background: #13171d;
+            background: #ffffff;
             border-radius: 16px;
-            padding: 20px 24px;
-            border: 1px solid #1e2329;
-            margin-bottom: 20px;
+            padding: 24px 28px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            transition: all 0.3s;
+        }
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
         }
         .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #eaecef;
-            margin-bottom: 14px;
+            font-size: 17px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -336,53 +421,63 @@
         .card-title .sub {
             font-size: 13px;
             font-weight: 400;
-            color: #848e9c;
+            color: #6b7280;
         }
 
         /* ─── GRID ─── */
         .grid-2 {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 24px;
         }
         .grid-3 {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 24px;
         }
         .grid-4 {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
+            gap: 20px;
         }
 
         /* ─── STAT CARDS ─── */
         .stat-card {
-            background: #13171d;
+            background: #ffffff;
             border-radius: 16px;
-            padding: 18px 20px;
-            border: 1px solid #1e2329;
+            padding: 22px 24px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
         }
         .stat-card .label {
             font-size: 12px;
-            color: #848e9c;
+            color: #6b7280;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-weight: 600;
         }
         .stat-card .value {
-            font-size: 26px;
-            font-weight: 700;
-            margin-top: 4px;
-            color: #eaecef;
+            font-size: 28px;
+            font-weight: 800;
+            margin-top: 6px;
+            color: #1a1a2e;
         }
         .stat-card .value.green {
-            color: #0ecb81;
+            color: #10b981;
         }
         .stat-card .value.red {
-            color: #f6465d;
+            color: #ef4444;
         }
         .stat-card .value.gold {
-            color: #f0b90b;
+            color: #f59e0b;
+        }
+        .stat-card .value.purple {
+            color: #667eea;
         }
 
         /* ─── STOCK TABLE ─── */
@@ -396,128 +491,154 @@
         }
         .stock-table th {
             text-align: left;
-            padding: 10px 12px;
-            color: #848e9c;
-            font-weight: 500;
-            border-bottom: 1px solid #1e2329;
+            padding: 12px 14px;
+            color: #6b7280;
+            font-weight: 600;
+            border-bottom: 2px solid #e5e7eb;
             font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.5px;
         }
         .stock-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #1a1f2b;
-            color: #eaecef;
+            padding: 12px 14px;
+            border-bottom: 1px solid #f3f4f6;
+            color: #1a1a2e;
         }
         .stock-table tr:hover td {
-            background: #1a1f2b;
+            background: #f9fafb;
         }
         .stock-table .price-up {
-            color: #0ecb81;
+            color: #10b981;
+            font-weight: 600;
         }
         .stock-table .price-down {
-            color: #f6465d;
+            color: #ef4444;
+            font-weight: 600;
         }
         .stock-table .action-btn {
             background: transparent;
-            border: 1px solid #2b3139;
-            color: #b7bdc6;
-            padding: 4px 12px;
-            border-radius: 6px;
+            border: 2px solid #e5e7eb;
+            color: #6b7280;
+            padding: 6px 16px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 12px;
-            transition: 0.2s;
-            margin-right: 4px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-right: 6px;
         }
         .stock-table .action-btn.buy {
-            border-color: #0ecb81;
-            color: #0ecb81;
+            border-color: #10b981;
+            color: #10b981;
         }
         .stock-table .action-btn.buy:hover {
-            background: #0ecb81;
-            color: #0b0e11;
+            background: #10b981;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
         .stock-table .action-btn.sell {
-            border-color: #f6465d;
-            color: #f6465d;
+            border-color: #ef4444;
+            color: #ef4444;
         }
         .stock-table .action-btn.sell:hover {
-            background: #f6465d;
-            color: #0b0e11;
+            background: #ef4444;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
         }
 
         /* ─── FORMS ─── */
         .form-group {
-            margin-bottom: 14px;
+            margin-bottom: 18px;
         }
         .form-group label {
             display: block;
             font-size: 13px;
-            color: #b7bdc6;
-            margin-bottom: 4px;
-            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+            font-weight: 600;
         }
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 10px 14px;
-            background: #0b0e11;
-            border: 1px solid #2b3139;
+            padding: 12px 16px;
+            background: #f9fafb;
+            border: 2px solid #e5e7eb;
             border-radius: 10px;
-            color: #eaecef;
+            color: #1a1a2e;
             font-size: 14px;
             outline: none;
-            transition: 0.2s;
+            transition: all 0.3s;
         }
         .form-group input:focus,
         .form-group select:focus {
-            border-color: #f0b90b;
+            border-color: #667eea;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
         }
         .form-group input::placeholder {
-            color: #5e6673;
+            color: #9ca3af;
         }
         .form-group select option {
-            background: #13171d;
+            background: #ffffff;
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 12px 24px;
             border: none;
             border-radius: 10px;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 14px;
             cursor: pointer;
-            transition: 0.2s;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .btn:active {
+            transform: translateY(0);
         }
         .btn-gold {
-            background: #f0b90b;
-            color: #0b0e11;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: #ffffff;
         }
         .btn-gold:hover {
-            background: #d9a80a;
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
         }
         .btn-green {
-            background: #0ecb81;
-            color: #0b0e11;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: #ffffff;
         }
         .btn-green:hover {
-            background: #0bb56e;
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
         }
         .btn-red {
-            background: #f6465d;
-            color: #fff;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: #ffffff;
         }
         .btn-red:hover {
-            background: #d43a4f;
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+        .btn-purple {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+        }
+        .btn-purple:hover {
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
         .btn-outline {
             background: transparent;
-            border: 1px solid #2b3139;
-            color: #b7bdc6;
+            border: 2px solid #e5e7eb;
+            color: #6b7280;
         }
         .btn-outline:hover {
-            border-color: #f0b90b;
-            color: #f0b90b;
+            border-color: #667eea;
+            color: #667eea;
+            background: #f0f4ff;
         }
         .btn-sm {
             padding: 6px 14px;
@@ -537,36 +658,17 @@
             flex-wrap: wrap;
             gap: 12px;
         }
-        .mt-12 {
-            margin-top: 12px;
-        }
-        .mt-20 {
-            margin-top: 20px;
-        }
-        .mb-12 {
-            margin-bottom: 12px;
-        }
-        .gap-8 {
-            gap: 8px;
-        }
-        .text-center {
-            text-align: center;
-        }
-        .text-muted {
-            color: #848e9c;
-        }
-        .text-gold {
-            color: #f0b90b;
-        }
-        .text-green {
-            color: #0ecb81;
-        }
-        .text-red {
-            color: #f6465d;
-        }
-        .w-full {
-            width: 100%;
-        }
+        .mt-12 { margin-top: 12px; }
+        .mt-20 { margin-top: 20px; }
+        .mb-12 { margin-bottom: 12px; }
+        .gap-8 { gap: 8px; }
+        .text-center { text-align: center; }
+        .text-muted { color: #6b7280; }
+        .text-gold { color: #f59e0b; }
+        .text-green { color: #10b981; }
+        .text-red { color: #ef4444; }
+        .text-purple { color: #667eea; }
+        .w-full { width: 100%; }
 
         /* ─── TABLES ─── */
         .history-table {
@@ -576,110 +678,111 @@
         }
         .history-table th {
             text-align: left;
-            padding: 8px 10px;
-            color: #848e9c;
-            font-weight: 500;
-            border-bottom: 1px solid #1e2329;
+            padding: 10px 14px;
+            color: #6b7280;
+            font-weight: 600;
+            border-bottom: 2px solid #e5e7eb;
             font-size: 11px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         .history-table td {
-            padding: 8px 10px;
-            border-bottom: 1px solid #1a1f2b;
-            color: #b7bdc6;
+            padding: 10px 14px;
+            border-bottom: 1px solid #f3f4f6;
+            color: #374151;
         }
-        .history-table .buy-type {
-            color: #0ecb81;
-        }
-        .history-table .sell-type {
-            color: #f6465d;
-        }
-        .history-table .deposit-type {
-            color: #f0b90b;
-        }
-        .history-table .withdraw-type {
-            color: #f6465d;
-        }
+        .history-table .buy-type { color: #10b981; font-weight: 600; }
+        .history-table .sell-type { color: #ef4444; font-weight: 600; }
+        .history-table .deposit-type { color: #f59e0b; font-weight: 600; }
+        .history-table .withdraw-type { color: #ef4444; font-weight: 600; }
 
         /* ─── ADMIN PANEL ─── */
         .admin-user-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid #1a1f2b;
+            padding: 14px 0;
+            border-bottom: 1px solid #f3f4f6;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
+        }
+        .admin-user-row:last-child {
+            border-bottom: none;
         }
         .admin-user-row .info {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 14px;
             flex-wrap: wrap;
         }
         .admin-user-row .info .name {
-            font-weight: 500;
+            font-weight: 600;
+            color: #1a1a2e;
         }
         .admin-user-row .info .phone {
-            color: #848e9c;
+            color: #6b7280;
             font-size: 13px;
         }
         .admin-user-row .info .badge-sm {
             font-size: 11px;
-            padding: 2px 10px;
+            padding: 4px 12px;
             border-radius: 12px;
-            background: #1e2329;
-            border: 1px solid #2b3139;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            font-weight: 500;
         }
         .admin-user-row .info .badge-sm.verified {
-            border-color: #0ecb81;
-            color: #0ecb81;
+            border-color: #10b981;
+            color: #10b981;
+            background: #f0fdf4;
         }
         .admin-user-row .info .badge-sm.frozen {
-            border-color: #f6465d;
-            color: #f6465d;
+            border-color: #ef4444;
+            color: #ef4444;
+            background: #fef2f2;
         }
         .admin-user-row .actions {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
         /* ─── TOAST ─── */
         .toast-container {
             position: fixed;
-            top: 20px;
-            right: 20px;
+            top: 24px;
+            right: 24px;
             z-index: 9999;
             display: flex;
             flex-direction: column;
             gap: 10px;
-            max-width: 360px;
+            max-width: 400px;
             width: 100%;
         }
         .toast {
-            padding: 14px 20px;
+            padding: 16px 20px;
             border-radius: 12px;
             font-size: 14px;
             font-weight: 500;
-            background: #1e2329;
-            border-left: 4px solid #f0b90b;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
-            color: #eaecef;
-            animation: slideIn 0.3s ease;
+            background: #ffffff;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12);
+            color: #1a1a2e;
+            animation: slideIn 0.4s ease;
+            border: 1px solid #e5e7eb;
         }
         .toast.success {
-            border-left-color: #0ecb81;
+            border-left-color: #10b981;
         }
         .toast.error {
-            border-left-color: #f6465d;
+            border-left-color: #ef4444;
         }
         .toast.info {
-            border-left-color: #f0b90b;
+            border-left-color: #667eea;
         }
         @keyframes slideIn {
             0% {
-                transform: translateX(40px);
+                transform: translateX(50px);
                 opacity: 0;
             }
             100% {
@@ -690,98 +793,96 @@
 
         /* ─── RESPONSIVE ─── */
         @media (max-width: 1024px) {
-            .grid-2,
-            .grid-3,
-            .grid-4 {
+            .grid-2, .grid-3, .grid-4 {
                 grid-template-columns: 1fr 1fr;
             }
         }
         @media (max-width: 768px) {
             .sidebar {
-                width: 60px;
-                padding: 8px 0;
+                width: 70px;
+                padding: 12px 0;
             }
             .sidebar .nav-item {
-                padding: 12px 14px;
+                padding: 14px;
                 font-size: 0;
                 justify-content: center;
+                margin: 2px 6px;
             }
             .sidebar .nav-item .icon {
-                font-size: 20px;
+                font-size: 22px;
                 width: auto;
             }
             .sidebar .nav-item .label {
                 display: none;
             }
+            .topbar {
+                padding: 12px 16px;
+            }
             .topbar .brand {
                 font-size: 18px;
             }
             .content {
-                padding: 14px;
+                padding: 16px;
             }
-            .grid-2,
-            .grid-3,
-            .grid-4 {
+            .grid-2, .grid-3, .grid-4 {
                 grid-template-columns: 1fr;
             }
             .auth-card {
-                padding: 28px 20px;
+                padding: 30px 24px;
             }
             .stock-table {
                 font-size: 12px;
             }
-            .stock-table th,
-            .stock-table td {
-                padding: 6px 8px;
-            }
-            .admin-user-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .admin-user-row .actions {
-                justify-content: flex-start;
+            .stock-table th, .stock-table td {
+                padding: 8px 10px;
             }
         }
         @media (max-width: 480px) {
-            .topbar {
-                padding: 10px 14px;
-            }
             .topbar .user-info .badge {
                 font-size: 11px;
                 padding: 4px 10px;
             }
             .content {
-                padding: 10px;
+                padding: 12px;
             }
             .card {
-                padding: 14px 16px;
+                padding: 16px 18px;
             }
             .stat-card .value {
                 font-size: 20px;
             }
+            .admin-user-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
         }
 
         /* ─── MISC ─── */
-        .hidden {
-            display: none !important;
-        }
-        .block {
-            display: block !important;
-        }
+        .hidden { display: none !important; }
+        .block { display: block !important; }
         .truncate {
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             max-width: 120px;
         }
-        .w-full {
-            width: 100%;
+        .gap-4 { gap: 4px; }
+        .items-center { align-items: center; }
+        .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .bg-white { background: #ffffff; }
+        .rounded-lg { border-radius: 12px; }
+        .p-4 { padding: 16px; }
+        
+        /* ─── Skeleton Loading ─── */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f2f5 25%, #e5e7eb 50%, #f0f2f5 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+            border-radius: 8px;
         }
-        .gap-4 {
-            gap: 4px;
-        }
-        .items-center {
-            align-items: center;
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
     </style>
 </head>
@@ -799,25 +900,33 @@
         <div class="page active" id="pageSignUp">
             <div class="auth-page">
                 <div class="auth-card">
-                    <div class="logo">📈 Smart<span>Exchange</span></div>
-                    <div class="sub">Join the smart exchange network</div>
+                    <div class="logo">📈 <span>SmartExchange</span></div>
+                    <div class="sub">Join India's smartest trading network</div>
 
                     <div id="signupError" class="error-msg"></div>
                     <div id="signupSuccess" class="success-msg"></div>
 
-                    <label>Full Name</label>
-                    <input type="text" id="suName" placeholder="e.g. Rajesh Kumar" />
+                    <label>👤 Full Name</label>
+                    <div class="input-group">
+                        <input type="text" id="suName" placeholder="e.g. Rajesh Kumar" />
+                    </div>
 
-                    <label>Phone Number</label>
-                    <input type="tel" id="suPhone" placeholder="9876543210" />
+                    <label>📱 Phone Number</label>
+                    <div class="input-group">
+                        <input type="tel" id="suPhone" placeholder="9876543210" />
+                    </div>
 
-                    <label>Aadhaar Card Number</label>
-                    <input type="text" id="suAadhaar" placeholder="1234 5678 9012" />
+                    <label>🆔 Aadhaar Card Number</label>
+                    <div class="input-group">
+                        <input type="text" id="suAadhaar" placeholder="1234 5678 9012" />
+                    </div>
 
-                    <label>Password</label>
-                    <input type="password" id="suPassword" placeholder="Min 6 characters" />
+                    <label>🔒 Password</label>
+                    <div class="input-group">
+                        <input type="password" id="suPassword" placeholder="Min 6 characters" />
+                    </div>
 
-                    <button class="btn-primary" id="signupBtn">Sign Up →</button>
+                    <button class="btn-primary" id="signupBtn">🚀 Create Account</button>
 
                     <div class="switch-link">
                         Already have an account? <a href="#" id="gotoLogin">Log In</a>
@@ -832,18 +941,22 @@
         <div class="page" id="pageLogin">
             <div class="auth-page">
                 <div class="auth-card">
-                    <div class="logo">📈 Smart<span>Exchange</span></div>
-                    <div class="sub">Welcome Back · Log in to your account</div>
+                    <div class="logo">📈 <span>SmartExchange</span></div>
+                    <div class="sub">Welcome back! Log in to your account</div>
 
                     <div id="loginError" class="error-msg"></div>
 
                     <label>📱 Phone Number</label>
-                    <input type="tel" id="liPhone" placeholder="9876543210" />
+                    <div class="input-group">
+                        <input type="tel" id="liPhone" placeholder="9876543210" />
+                    </div>
 
                     <label>🔒 Password</label>
-                    <input type="password" id="liPassword" placeholder="Enter password" />
+                    <div class="input-group">
+                        <input type="password" id="liPassword" placeholder="Enter your password" />
+                    </div>
 
-                    <button class="btn-primary" id="loginBtn">Log In →</button>
+                    <button class="btn-primary" id="loginBtn">🔑 Log In</button>
 
                     <div class="switch-link">
                         Don't have an account? <a href="#" id="gotoSignup">Register Now</a>
@@ -859,13 +972,13 @@
 
             <!-- TOP BAR -->
             <div class="topbar">
-                <div class="brand">📈 Smart<span style="font-weight:300;">Exchange</span> <small>| India</small></div>
+                <div class="brand">📈 <span>SmartExchange</span> <small>| India</small></div>
                 <div class="user-info">
-                    <span class="badge" id="dashBalance">₹0.00</span>
+                    <span class="badge gold" id="dashBalance">₹0.00</span>
                     <span class="badge" id="dashCreditScore">⭐ 0</span>
                     <span class="badge" id="dashVerifyBadge">🔴 Unverified</span>
                     <span class="badge" id="dashStatusBadge">✅ Active</span>
-                    <span style="color:#848e9c;font-size:13px;" id="dashUserName">User</span>
+                    <span style="color:#6b7280;font-size:13px;font-weight:500;" id="dashUserName">User</span>
                     <button class="logout-btn" id="logoutBtn">⏻ Logout</button>
                 </div>
             </div>
@@ -889,7 +1002,7 @@
                     <div class="tab-content" id="tabOverview">
                         <div class="grid-4">
                             <div class="stat-card"><div class="label">Total Balance</div><div class="value gold" id="ovBalance">₹0.00</div></div>
-                            <div class="stat-card"><div class="label">Credit Score</div><div class="value" id="ovCredit">⭐ 0</div></div>
+                            <div class="stat-card"><div class="label">Credit Score</div><div class="value purple" id="ovCredit">⭐ 0</div></div>
                             <div class="stat-card"><div class="label">Portfolio Value</div><div class="value" id="ovPortfolio">₹0.00</div></div>
                             <div class="stat-card"><div class="label">Today's P&L</div><div class="value green" id="ovPnL">+₹0.00</div></div>
                         </div>
@@ -905,11 +1018,12 @@
                         </div>
 
                         <div class="card">
-                            <div class="card-title">📋 Quick Actions</div>
+                            <div class="card-title">⚡ Quick Actions</div>
                             <div class="flex">
                                 <button class="btn btn-gold" onclick="navigateTab('deposit')">💰 Deposit</button>
                                 <button class="btn btn-outline" onclick="navigateTab('withdraw')">🏦 Withdraw</button>
                                 <button class="btn btn-green" onclick="navigateTab('trading')">📈 Trade</button>
+                                <button class="btn btn-purple" onclick="navigateTab('account')">⚙️ Account</button>
                             </div>
                         </div>
                     </div>
@@ -937,8 +1051,8 @@
                                         <input type="text" id="tradeTotal" readonly />
                                     </div>
                                     <div class="flex">
-                                        <button class="btn btn-green" id="tradeBuyBtn">Buy</button>
-                                        <button class="btn btn-red" id="tradeSellBtn">Sell</button>
+                                        <button class="btn btn-green" id="tradeBuyBtn">📈 Buy</button>
+                                        <button class="btn btn-red" id="tradeSellBtn">📉 Sell</button>
                                     </div>
                                     <div id="tradeMsg" class="text-muted mt-12" style="font-size:13px;"></div>
                                 </div>
@@ -967,7 +1081,7 @@
                     <!-- ─── DEPOSIT ─── -->
                     <div class="tab-content hidden" id="tabDeposit">
                         <div class="card">
-                            <div class="card-title">💰 Deposit Funds</div>
+                            <div class="card-title">💰 Deposit Funds <span class="sub">Add money to your account</span></div>
                             <div class="grid-2">
                                 <div>
                                     <div class="form-group">
@@ -977,8 +1091,8 @@
                                     <div class="form-group">
                                         <label>Payment Method</label>
                                         <select id="depositMethod">
-                                            <option value="upi">UPI</option>
-                                            <option value="bank">Bank Transfer</option>
+                                            <option value="upi">📱 UPI</option>
+                                            <option value="bank">🏦 Bank Transfer</option>
                                         </select>
                                     </div>
                                     <div id="depositUpiField" class="form-group">
@@ -989,7 +1103,7 @@
                                         <label>Bank Details</label>
                                         <input type="text" id="depositBank" placeholder="Account Number / IFSC" />
                                     </div>
-                                    <button class="btn btn-gold" id="depositBtn">Deposit Now</button>
+                                    <button class="btn btn-gold" id="depositBtn">💰 Deposit Now</button>
                                     <div id="depositMsg" class="mt-12 text-muted" style="font-size:13px;"></div>
                                 </div>
                                 <div>
@@ -1000,9 +1114,11 @@
                                         <button class="btn btn-outline btn-sm" onclick="setDeposit(5000)">₹5,000</button>
                                         <button class="btn btn-outline btn-sm" onclick="setDeposit(10000)">₹10,000</button>
                                     </div>
-                                    <div class="mt-20 text-muted" style="font-size:13px;">
-                                        <p>📌 UPI: smartex@pay</p>
-                                        <p>🏦 Bank: HDFC 1234 5678 9012 (IFSC: HDFC0001)</p>
+                                    <div class="mt-20" style="background:#f9fafb;padding:16px;border-radius:12px;border:1px solid #e5e7eb;">
+                                        <p style="font-size:13px;color:#6b7280;margin:4px 0;">📌 <strong>UPI:</strong> smartex@pay</p>
+                                        <p style="font-size:13px;color:#6b7280;margin:4px 0;">🏦 <strong>Bank:</strong> HDFC 1234 5678 9012</p>
+                                        <p style="font-size:13px;color:#6b7280;margin:4px 0;">🏦 <strong>IFSC:</strong> HDFC0001234</p>
+                                        <p style="font-size:13px;color:#6b7280;margin:4px 0;">📞 <strong>Support:</strong> +91 98765 43210</p>
                                     </div>
                                 </div>
                             </div>
@@ -1012,7 +1128,7 @@
                     <!-- ─── WITHDRAW ─── -->
                     <div class="tab-content hidden" id="tabWithdraw">
                         <div class="card">
-                            <div class="card-title">🏦 Withdraw Funds</div>
+                            <div class="card-title">🏦 Withdraw Funds <span class="sub">Withdraw to your bank or UPI</span></div>
                             <div class="grid-2">
                                 <div>
                                     <div class="form-group">
@@ -1022,8 +1138,8 @@
                                     <div class="form-group">
                                         <label>Withdraw Method</label>
                                         <select id="withdrawMethod">
-                                            <option value="upi">UPI</option>
-                                            <option value="bank">Bank Transfer</option>
+                                            <option value="upi">📱 UPI</option>
+                                            <option value="bank">🏦 Bank Transfer</option>
                                         </select>
                                     </div>
                                     <div id="withdrawUpiField" class="form-group">
@@ -1034,17 +1150,17 @@
                                         <label>Bank Details</label>
                                         <input type="text" id="withdrawBank" placeholder="Account Number / IFSC" />
                                     </div>
-                                    <button class="btn btn-red" id="withdrawBtn">Withdraw</button>
+                                    <button class="btn btn-red" id="withdrawBtn">🏦 Withdraw</button>
                                     <div id="withdrawMsg" class="mt-12 text-muted" style="font-size:13px;"></div>
                                 </div>
                                 <div>
                                     <div class="card-title" style="margin-top:0;">📋 Withdraw Info</div>
-                                    <div class="text-muted" style="font-size:13px;line-height:1.8;">
-                                        <p>✅ Withdrawals are processed within 24 hours.</p>
-                                        <p>🔒 UPI & Bank details are securely stored.</p>
-                                        <p>⚠️ Minimum withdraw: ₹100</p>
-                                        <p>📌 Your saved UPI: <span id="savedUpi">Not set</span></p>
-                                        <p>🏦 Your saved Bank: <span id="savedBank">Not set</span></p>
+                                    <div style="background:#f9fafb;padding:16px;border-radius:12px;border:1px solid #e5e7eb;">
+                                        <p style="font-size:13px;color:#6b7280;margin:6px 0;">✅ Withdrawals processed within 24 hours</p>
+                                        <p style="font-size:13px;color:#6b7280;margin:6px 0;">🔒 Secure UPI & Bank details stored</p>
+                                        <p style="font-size:13px;color:#6b7280;margin:6px 0;">⚠️ Minimum withdraw: ₹100</p>
+                                        <p style="font-size:13px;color:#6b7280;margin:6px 0;">📌 <strong>Your UPI:</strong> <span id="savedUpi">Not set</span></p>
+                                        <p style="font-size:13px;color:#6b7280;margin:6px 0;">🏦 <strong>Your Bank:</strong> <span id="savedBank">Not set</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -1054,7 +1170,7 @@
                     <!-- ─── HISTORY ─── -->
                     <div class="tab-content hidden" id="tabHistory">
                         <div class="card">
-                            <div class="card-title">📜 Transaction History</div>
+                            <div class="card-title">📜 Transaction History <span class="sub">All your activity</span></div>
                             <div class="stock-table-wrap">
                                 <table class="history-table" id="historyTable">
                                     <thead><tr><th>Date</th><th>Type</th><th>Stock / Method</th><th>Qty / Ref</th><th>Amount (₹)</th><th>Status</th></tr></thead>
@@ -1067,50 +1183,50 @@
                     <!-- ─── ACCOUNT ─── -->
                     <div class="tab-content hidden" id="tabAccount">
                         <div class="card">
-                            <div class="card-title">⚙️ Account Settings</div>
+                            <div class="card-title">⚙️ Account Settings <span class="sub">Manage your profile</span></div>
                             <div class="grid-2">
                                 <div>
                                     <div class="form-group">
                                         <label>Full Name</label>
-                                        <input type="text" id="accName" readonly />
+                                        <input type="text" id="accName" readonly style="background:#f9fafb;" />
                                     </div>
                                     <div class="form-group">
                                         <label>Phone Number</label>
-                                        <input type="text" id="accPhone" readonly />
+                                        <input type="text" id="accPhone" readonly style="background:#f9fafb;" />
                                     </div>
                                     <div class="form-group">
                                         <label>Aadhaar Number</label>
-                                        <input type="text" id="accAadhaar" readonly />
+                                        <input type="text" id="accAadhaar" readonly style="background:#f9fafb;" />
                                     </div>
                                     <div class="form-group">
                                         <label>Account Status</label>
-                                        <input type="text" id="accStatus" readonly />
+                                        <input type="text" id="accStatus" readonly style="background:#f9fafb;" />
                                     </div>
                                     <div class="form-group">
                                         <label>Verification Status</label>
-                                        <input type="text" id="accVerified" readonly />
+                                        <input type="text" id="accVerified" readonly style="background:#f9fafb;" />
                                     </div>
                                 </div>
                                 <div>
                                     <div class="card-title" style="margin-top:0;">🔐 Actions</div>
-                                    <div class="flex">
+                                    <div class="flex" style="flex-direction:column;align-items:stretch;gap:10px;">
                                         <button class="btn btn-green" id="verifyBtn">✅ Verify Account</button>
                                         <button class="btn btn-outline" id="freezeToggleBtn">❄️ Toggle Freeze</button>
                                     </div>
-                                    <div class="mt-20">
-                                        <label style="font-size:13px;color:#b7bdc6;">Credit Score</label>
-                                        <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
+                                    <div class="mt-20" style="background:#f9fafb;padding:16px;border-radius:12px;border:1px solid #e5e7eb;">
+                                        <label style="font-size:13px;color:#374151;font-weight:600;">Credit Score</label>
+                                        <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
                                             <button class="btn btn-sm btn-outline" id="scoreUpBtn">+10</button>
                                             <button class="btn btn-sm btn-outline" id="scoreDownBtn">-10</button>
-                                            <span id="accCreditScore" style="font-weight:700;font-size:20px;color:#f0b90b;">0</span>
+                                            <span id="accCreditScore" style="font-weight:800;font-size:24px;color:#667eea;">0</span>
                                         </div>
                                     </div>
-                                    <div class="mt-20">
-                                        <label style="font-size:13px;color:#b7bdc6;">Balance</label>
-                                        <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
+                                    <div class="mt-12" style="background:#f9fafb;padding:16px;border-radius:12px;border:1px solid #e5e7eb;">
+                                        <label style="font-size:13px;color:#374151;font-weight:600;">Balance</label>
+                                        <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
                                             <button class="btn btn-sm btn-gold" id="balanceAddBtn">+₹100</button>
                                             <button class="btn btn-sm btn-red" id="balanceSubBtn">-₹100</button>
-                                            <span id="accBalanceDisplay" style="font-weight:700;font-size:20px;color:#f0b90b;">₹0</span>
+                                            <span id="accBalanceDisplay" style="font-weight:800;font-size:24px;color:#f59e0b;">₹0</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1121,16 +1237,13 @@
                     <!-- ─── ADMIN ─── -->
                     <div class="tab-content hidden" id="tabAdmin">
                         <div class="card">
-                            <div class="card-title">🛡️ Admin Panel <span class="sub">Manage Users</span></div>
+                            <div class="card-title">🛡️ Admin Panel <span class="sub">Manage users & system</span></div>
                             <div id="adminUserList"></div>
                         </div>
-                        <div class="card">
-                            <div class="card-title">📊 System Stats</div>
-                            <div class="grid-3">
-                                <div class="stat-card"><div class="label">Total Users</div><div class="value gold" id="adminTotalUsers">0</div></div>
-                                <div class="stat-card"><div class="label">Total Deposits</div><div class="value green" id="adminTotalDeposits">₹0</div></div>
-                                <div class="stat-card"><div class="label">Total Withdrawals</div><div class="value red" id="adminTotalWithdrawals">₹0</div></div>
-                            </div>
+                        <div class="grid-3">
+                            <div class="stat-card"><div class="label">Total Users</div><div class="value gold" id="adminTotalUsers">0</div></div>
+                            <div class="stat-card"><div class="label">Total Deposits</div><div class="value green" id="adminTotalDeposits">₹0</div></div>
+                            <div class="stat-card"><div class="label">Total Withdrawals</div><div class="value red" id="adminTotalWithdrawals">₹0</div></div>
                         </div>
                     </div>
 
@@ -1142,7 +1255,7 @@
 
     <script>
         // ════════════════════════════════════════════════════════════
-        //  SMART STOCK EXCHANGE — Full Application
+        //  SMART STOCK EXCHANGE — Full Application (White Theme)
         //  All data stored in localStorage.
         // ════════════════════════════════════════════════════════════
 
@@ -1164,6 +1277,11 @@
             { symbol: 'AXISBANK', name: 'Axis Bank', price: 1050, change: 0 },
             { symbol: 'BAJFINANCE', name: 'Bajaj Finance', price: 6800, change: 0 },
             { symbol: 'MARUTI', name: 'Maruti Suzuki', price: 10200, change: 0 },
+            { symbol: 'TITAN', name: 'Titan Company', price: 3450, change: 0 },
+            { symbol: 'ASIANPAINT', name: 'Asian Paints', price: 2950, change: 0 },
+            { symbol: 'NTPC', name: 'NTPC Ltd', price: 220, change: 0 },
+            { symbol: 'ONGC', name: 'ONGC Ltd', price: 180, change: 0 },
+            { symbol: 'POWERGRID', name: 'Power Grid', price: 190, change: 0 },
         ];
 
         // ─── STATE ───
@@ -1397,6 +1515,7 @@
             document.getElementById('suPassword').value = '';
 
             setTimeout(() => showPage('pageLogin'), 800);
+            toast('Account created successfully! 🎉', 'success');
         }
 
         function handleLogin() {
@@ -1427,7 +1546,7 @@
             currentUser = user;
             sessionStorage.setItem('smartSession', user.phone);
             showDashboard();
-            toast('Welcome back, ' + user.name + '!', 'success');
+            toast('Welcome back, ' + user.name + '! 👋', 'success');
         }
 
         function handleLogout() {
@@ -1435,7 +1554,7 @@
             currentUser = null;
             if (priceInterval) clearInterval(priceInterval);
             showPage('pageLogin');
-            toast('Logged out.', 'info');
+            toast('Logged out successfully.', 'info');
         }
 
         // ─── DASHBOARD UPDATE ───
@@ -1444,10 +1563,15 @@
             const u = currentUser;
             document.getElementById('dashBalance').textContent = '₹' + u.balance.toFixed(2);
             document.getElementById('dashCreditScore').textContent = '⭐ ' + u.creditScore;
-            document.getElementById('dashVerifyBadge').textContent = u.verified ? '🟢 Verified' : '🔴 Unverified';
-            document.getElementById('dashVerifyBadge').className = 'badge' + (u.verified ? ' verified' : '');
-            document.getElementById('dashStatusBadge').textContent = u.frozen ? '❄️ Frozen' : '✅ Active';
-            document.getElementById('dashStatusBadge').className = 'badge' + (u.frozen ? ' frozen' : '');
+            
+            const verifyBadge = document.getElementById('dashVerifyBadge');
+            verifyBadge.textContent = u.verified ? '✅ Verified' : '🔴 Unverified';
+            verifyBadge.className = 'badge' + (u.verified ? ' verified' : '');
+            
+            const statusBadge = document.getElementById('dashStatusBadge');
+            statusBadge.textContent = u.frozen ? '❄️ Frozen' : '✅ Active';
+            statusBadge.className = 'badge' + (u.frozen ? ' frozen' : '');
+            
             document.getElementById('dashUserName').textContent = u.name;
         }
 
@@ -1466,25 +1590,24 @@
             document.getElementById('ovBalance').textContent = '₹' + u.balance.toFixed(2);
             document.getElementById('ovCredit').textContent = '⭐ ' + u.creditScore;
             document.getElementById('ovPortfolio').textContent = '₹' + portfolioValue.toFixed(2);
-            // Simple P&L simulation
+            
             const pnl = (Math.random() * 200 - 100);
             const pnlEl = document.getElementById('ovPnL');
             pnlEl.textContent = (pnl >= 0 ? '+' : '') + '₹' + pnl.toFixed(2);
             pnlEl.className = 'value ' + (pnl >= 0 ? 'green' : 'red');
 
-            // Stock table
             const body = document.getElementById('overviewStockBody');
             body.innerHTML = '';
-            data.stocks.forEach(s => {
+            data.stocks.slice(0, 10).forEach(s => {
                 const change = ((Math.random() - 0.45) * 4).toFixed(2);
                 const cls = parseFloat(change) >= 0 ? 'price-up' : 'price-down';
                 body.innerHTML += `<tr>
-              <td><strong>${s.symbol}</strong></td>
-              <td>${s.name}</td>
-              <td>₹${s.price.toFixed(2)}</td>
-              <td class="${cls}">${parseFloat(change)>=0?'+':''}${change}%</td>
-              <td>${Math.floor(Math.random()*50000+10000)}</td>
-            </tr>`;
+                    <td><strong>${s.symbol}</strong></td>
+                    <td>${s.name}</td>
+                    <td>₹${s.price.toFixed(2)}</td>
+                    <td class="${cls}">${parseFloat(change)>=0?'+':''}${change}%</td>
+                    <td>${Math.floor(Math.random()*50000+10000).toLocaleString()}</td>
+                </tr>`;
             });
             updateDashboard();
         }
@@ -1541,15 +1664,15 @@
                 const pnl = (current - avgPrice) * qty;
                 total += pnl;
                 body.innerHTML += `<tr>
-              <td><strong>${symbol}</strong></td>
-              <td>${qty}</td>
-              <td>₹${avgPrice.toFixed(2)}</td>
-              <td>₹${current.toFixed(2)}</td>
-              <td class="${pnl>=0?'text-green':'text-red'}">${pnl>=0?'+':''}₹${pnl.toFixed(2)}</td>
-            </tr>`;
+                    <td><strong>${symbol}</strong></td>
+                    <td>${qty}</td>
+                    <td>₹${avgPrice.toFixed(2)}</td>
+                    <td>₹${current.toFixed(2)}</td>
+                    <td class="${pnl>=0?'text-green':'text-red'}">${pnl>=0?'+':''}₹${pnl.toFixed(2)}</td>
+                </tr>`;
             }
             if (!body.innerHTML) {
-                body.innerHTML = `<tr><td colspan="5" class="text-muted text-center">No holdings yet.</td></tr>`;
+                body.innerHTML = `<tr><td colspan="5" class="text-muted text-center" style="padding:30px;">No holdings yet. Start trading!</td></tr>`;
             }
         }
 
@@ -1560,15 +1683,15 @@
                 const change = ((Math.random() - 0.45) * 4).toFixed(2);
                 const cls = parseFloat(change) >= 0 ? 'price-up' : 'price-down';
                 body.innerHTML += `<tr>
-              <td><strong>${s.symbol}</strong></td>
-              <td>${s.name}</td>
-              <td>₹${s.price.toFixed(2)}</td>
-              <td class="${cls}">${parseFloat(change)>=0?'+':''}${change}%</td>
-              <td>
-                <button class="action-btn buy" onclick="quickTrade('${s.symbol}','buy')">Buy</button>
-                <button class="action-btn sell" onclick="quickTrade('${s.symbol}','sell')">Sell</button>
-              </td>
-            </tr>`;
+                    <td><strong>${s.symbol}</strong></td>
+                    <td>${s.name}</td>
+                    <td>₹${s.price.toFixed(2)}</td>
+                    <td class="${cls}">${parseFloat(change)>=0?'+':''}${change}%</td>
+                    <td>
+                        <button class="action-btn buy" onclick="quickTrade('${s.symbol}','buy')">📈 Buy</button>
+                        <button class="action-btn sell" onclick="quickTrade('${s.symbol}','sell')">📉 Sell</button>
+                    </td>
+                </tr>`;
             });
         }
 
@@ -1583,7 +1706,7 @@
             if (!currentUser) return;
             const u = currentUser;
             if (u.frozen) {
-                toast('Account frozen. Cannot trade.', 'error');
+                toast('❌ Account frozen. Cannot trade.', 'error');
                 return;
             }
             const symbol = document.getElementById('tradeStockSelect').value;
@@ -1600,18 +1723,16 @@
             if (type === 'buy') {
                 if (u.balance < total) {
                     msgEl.textContent = '❌ Insufficient balance.';
-                    msgEl.style.color = '#f6465d';
+                    msgEl.style.color = '#ef4444';
                     return;
                 }
-                // Check credit score impact
                 if (u.creditScore < 400) {
                     msgEl.textContent = '❌ Credit score too low (min 400).';
-                    msgEl.style.color = '#f6465d';
+                    msgEl.style.color = '#ef4444';
                     return;
                 }
                 u.balance -= total;
                 holdings[symbol] = (holdings[symbol] || 0) + qty;
-                // Track avg price
                 if (!u.holdingsAvg) u.holdingsAvg = {};
                 const oldQty = currentQty;
                 const oldAvg = u.holdingsAvg[symbol] || stock.price;
@@ -1624,12 +1745,12 @@
                 addTransaction(u, 'buy', symbol, qty, stock.price, total);
                 saveData();
                 msgEl.textContent = '✅ Bought ' + qty + ' shares of ' + symbol + ' for ₹' + total.toFixed(2);
-                msgEl.style.color = '#0ecb81';
-                toast('Bought ' + qty + ' ' + symbol, 'success');
+                msgEl.style.color = '#10b981';
+                toast('📈 Bought ' + qty + ' ' + symbol, 'success');
             } else if (type === 'sell') {
                 if (currentQty < qty) {
                     msgEl.textContent = '❌ You only have ' + currentQty + ' shares.';
-                    msgEl.style.color = '#f6465d';
+                    msgEl.style.color = '#ef4444';
                     return;
                 }
                 u.balance += total;
@@ -1642,8 +1763,8 @@
                 addTransaction(u, 'sell', symbol, qty, stock.price, total);
                 saveData();
                 msgEl.textContent = '✅ Sold ' + qty + ' shares of ' + symbol + ' for ₹' + total.toFixed(2);
-                msgEl.style.color = '#f0b90b';
-                toast('Sold ' + qty + ' ' + symbol, 'info');
+                msgEl.style.color = '#f59e0b';
+                toast('📉 Sold ' + qty + ' ' + symbol, 'info');
             }
             updateDashboard();
             renderHoldings();
@@ -1676,31 +1797,32 @@
         function handleDeposit() {
             if (!currentUser) return;
             const u = currentUser;
-            if (u.frozen) { toast('Account frozen.', 'error'); return; }
+            if (u.frozen) { toast('❌ Account frozen.', 'error'); return; }
             const amount = parseFloat(document.getElementById('depositAmount').value);
             if (!amount || amount <= 0) { toast('Enter valid amount.', 'error'); return; }
             const method = document.getElementById('depositMethod').value;
             let ref = '';
             if (method === 'upi') {
                 ref = document.getElementById('depositUpi').value.trim() || 'smartex@pay';
+                u.upi = ref;
             } else {
                 ref = document.getElementById('depositBank').value.trim() || 'HDFC-1234';
+                u.bank = ref;
             }
             u.balance += amount;
             addDeposit(u, amount, method, ref);
             saveData();
             document.getElementById('depositMsg').textContent = '✅ Deposited ₹' + amount.toFixed(2) + ' via ' + method.toUpperCase();
-            document.getElementById('depositMsg').style.color = '#0ecb81';
+            document.getElementById('depositMsg').style.color = '#10b981';
             document.getElementById('depositAmount').value = '';
             updateDashboard();
-            toast('₹' + amount.toFixed(2) + ' deposited!', 'success');
+            toast('💰 ₹' + amount.toFixed(2) + ' deposited!', 'success');
         }
 
         // ─── WITHDRAW ───
         function updateWithdrawUI() {
             toggleWithdrawFields(document.getElementById('withdrawMethod').value);
             document.getElementById('withdrawMsg').textContent = '';
-            // Show saved details
             const u = currentUser;
             document.getElementById('savedUpi').textContent = u.upi || 'Not set';
             document.getElementById('savedBank').textContent = u.bank || 'Not set';
@@ -1721,11 +1843,11 @@
         function handleWithdraw() {
             if (!currentUser) return;
             const u = currentUser;
-            if (u.frozen) { toast('Account frozen.', 'error'); return; }
+            if (u.frozen) { toast('❌ Account frozen.', 'error'); return; }
             const amount = parseFloat(document.getElementById('withdrawAmount').value);
             if (!amount || amount <= 0) { toast('Enter valid amount.', 'error'); return; }
-            if (amount < 100) { toast('Minimum withdraw: ₹100', 'error'); return; }
-            if (amount > u.balance) { toast('Insufficient balance.', 'error'); return; }
+            if (amount < 100) { toast('⚠️ Minimum withdraw: ₹100', 'error'); return; }
+            if (amount > u.balance) { toast('❌ Insufficient balance.', 'error'); return; }
             const method = document.getElementById('withdrawMethod').value;
             let ref = '';
             if (method === 'upi') {
@@ -1740,10 +1862,10 @@
             saveData();
             document.getElementById('withdrawMsg').textContent = '✅ Withdrawal request of ₹' + amount.toFixed(2) +
                 ' via ' + method.toUpperCase() + ' submitted.';
-            document.getElementById('withdrawMsg').style.color = '#f0b90b';
+            document.getElementById('withdrawMsg').style.color = '#f59e0b';
             document.getElementById('withdrawAmount').value = '';
             updateDashboard();
-            toast('Withdraw request submitted.', 'info');
+            toast('🏦 Withdraw request submitted.', 'info');
         }
 
         // ─── HISTORY ───
@@ -1754,21 +1876,22 @@
             body.innerHTML = '';
             const txs = data.transactions.filter(t => t.userPhone === u.phone).reverse();
             if (txs.length === 0) {
-                body.innerHTML = `<tr><td colspan="6" class="text-muted text-center">No transactions yet.</td></tr>`;
+                body.innerHTML = `<tr><td colspan="6" class="text-muted text-center" style="padding:30px;">No transactions yet.</td></tr>`;
                 return;
             }
             txs.slice(0, 50).forEach(t => {
-                const typeClass = t.type === 'buy' ? 'buy-type' : t.type === 'sell' ? 'sell-type' : '';
+                const typeClass = t.type === 'buy' ? 'buy-type' : t.type === 'sell' ? 'sell-type' : 
+                                 t.type === 'deposit' ? 'deposit-type' : 'withdraw-type';
                 const label = t.type.charAt(0).toUpperCase() + t.type.slice(1);
                 const date = new Date(t.date).toLocaleString();
                 body.innerHTML += `<tr>
-              <td>${date}</td>
-              <td class="${typeClass}">${label}</td>
-              <td>${t.stock || t.method || '-'}</td>
-              <td>${t.qty || t.ref || '-'}</td>
-              <td>₹${t.amount.toFixed(2)}</td>
-              <td>${t.status || 'completed'}</td>
-            </tr>`;
+                    <td>${date}</td>
+                    <td class="${typeClass}">${label}</td>
+                    <td>${t.stock || t.method || '-'}</td>
+                    <td>${t.qty || t.ref || '-'}</td>
+                    <td>₹${t.amount.toFixed(2)}</td>
+                    <td><span style="color:${t.status === 'completed' ? '#10b981' : '#f59e0b'};">${t.status || 'completed'}</span></td>
+                </tr>`;
             });
         }
 
@@ -1794,7 +1917,7 @@
             saveData();
             renderAccount();
             updateDashboard();
-            toast('Account verified! +50 credit score.', 'success');
+            toast('✅ Account verified! +50 credit score.', 'success');
         }
 
         function handleFreezeToggle() {
@@ -1804,7 +1927,7 @@
             saveData();
             renderAccount();
             updateDashboard();
-            toast(u.frozen ? 'Account frozen.' : 'Account unfrozen.', 'info');
+            toast(u.frozen ? '❄️ Account frozen.' : '✅ Account unfrozen.', 'info');
         }
 
         function adjustScore(delta) {
@@ -1814,7 +1937,7 @@
             saveData();
             renderAccount();
             updateDashboard();
-            toast('Credit score ' + (delta > 0 ? '+' : '') + delta, 'info');
+            toast('⭐ Credit score ' + (delta > 0 ? '+' : '') + delta, 'info');
         }
 
         function adjustBalance(delta) {
@@ -1824,7 +1947,7 @@
             saveData();
             renderAccount();
             updateDashboard();
-            toast('Balance ' + (delta > 0 ? '+' : '') + '₹' + delta, 'info');
+            toast('💰 Balance ' + (delta > 0 ? '+' : '') + '₹' + delta, 'info');
         }
 
         // ─── ADMIN ───
@@ -1837,21 +1960,21 @@
                 const div = document.createElement('div');
                 div.className = 'admin-user-row';
                 div.innerHTML = `
-              <div class="info">
-                <span class="name">${u.name}</span>
-                <span class="phone">📱 ${u.phone}</span>
-                <span class="badge-sm ${u.verified?'verified':''}">${u.verified?'✅ Verified':'🔴 Unverified'}</span>
-                <span class="badge-sm ${u.frozen?'frozen':''}">${u.frozen?'❄️ Frozen':'✅ Active'}</span>
-                <span style="color:#f0b90b;font-weight:600;">₹${u.balance.toFixed(2)}</span>
-                <span style="color:#848e9c;font-size:12px;">⭐ ${u.creditScore}</span>
-                <span style="color:#848e9c;font-size:12px;">📊 ${holdingCount} holdings</span>
-              </div>
-              <div class="actions">
-                <button class="btn btn-sm btn-outline" onclick="adminToggleFreeze('${u.phone}')">${u.frozen?'Unfreeze':'Freeze'}</button>
-                <button class="btn btn-sm btn-outline" onclick="adminVerify('${u.phone}')">Verify</button>
-                <button class="btn btn-sm btn-outline" onclick="adminAddBalance('${u.phone}')">+₹500</button>
-              </div>
-            `;
+                    <div class="info">
+                        <span class="name">${u.name}</span>
+                        <span class="phone">📱 ${u.phone}</span>
+                        <span class="badge-sm ${u.verified?'verified':''}">${u.verified?'✅ Verified':'🔴 Unverified'}</span>
+                        <span class="badge-sm ${u.frozen?'frozen':''}">${u.frozen?'❄️ Frozen':'✅ Active'}</span>
+                        <span style="color:#f59e0b;font-weight:600;">₹${u.balance.toFixed(2)}</span>
+                        <span style="color:#6b7280;font-size:12px;">⭐ ${u.creditScore}</span>
+                        <span style="color:#6b7280;font-size:12px;">📊 ${holdingCount} holdings</span>
+                    </div>
+                    <div class="actions">
+                        <button class="btn btn-sm btn-outline" onclick="adminToggleFreeze('${u.phone}')">${u.frozen?'Unfreeze':'Freeze'}</button>
+                        <button class="btn btn-sm btn-outline" onclick="adminVerify('${u.phone}')">Verify</button>
+                        <button class="btn btn-sm btn-gold" onclick="adminAddBalance('${u.phone}')">+₹500</button>
+                    </div>
+                `;
                 list.appendChild(div);
             });
             document.getElementById('adminTotalUsers').textContent = data.users.length;
@@ -1869,7 +1992,7 @@
             u.frozen = !u.frozen;
             saveData();
             renderAdmin();
-            toast(u.frozen ? 'User frozen.' : 'User unfrozen.', 'info');
+            toast(u.frozen ? '❄️ User frozen.' : '✅ User unfrozen.', 'info');
         }
 
         function adminVerify(phone) {
@@ -1879,7 +2002,7 @@
             u.creditScore = Math.min(u.creditScore + 30, 900);
             saveData();
             renderAdmin();
-            toast('User verified.', 'success');
+            toast('✅ User verified.', 'success');
         }
 
         function adminAddBalance(phone) {
@@ -1888,7 +2011,7 @@
             u.balance += 500;
             saveData();
             renderAdmin();
-            toast('Added ₹500 to user.', 'success');
+            toast('💰 Added ₹500 to user.', 'success');
         }
 
         // ─── PRICE SIMULATION ───
@@ -1901,7 +2024,6 @@
                     s.price = Math.round(s.price * 100) / 100;
                 });
                 saveData();
-                // Update UI if on relevant tabs
                 if (currentTab === 'overview') renderOverview();
                 if (currentTab === 'trading') {
                     updateTradePrice();
@@ -1921,7 +2043,7 @@
             container.appendChild(el);
             setTimeout(() => {
                 el.style.opacity = '0';
-                el.style.transform = 'translateX(40px)';
+                el.style.transform = 'translateX(50px)';
                 setTimeout(() => el.remove(), 300);
             }, 3500);
         }
