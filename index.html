@@ -1,1288 +1,1168 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Smart Exchange - Trading Platform</title>
+    <title>Smart Trade Pro | Advanced Trading Platform</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        }
+      :root {
+        --bg: #0a0e14;
+        --surface: #131820;
+        --surface2: #1a2130;
+        --border: #1e2a3a;
+        --text: #e8ecf2;
+        --muted: #6b7a8d;
+        --gold: #f0b90b;
+        --green: #0ecb81;
+        --red: #f6465d;
+        --blue: #3b82f6;
+        --purple: #8b5cf6;
+        --radius: 16px;
+        --shadow: 0 8px 40px rgba(0,0,0,0.4);
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        min-height: 100vh;
+      }
+      .hidden { display: none !important; }
+      
+      /* Auth */
+      .auth-container {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #0a0e14 0%, #131820 50%, #0a0e14 100%);
+        padding: 20px;
+      }
+      .auth-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        padding: 40px;
+        width: 100%;
+        max-width: 440px;
+        box-shadow: var(--shadow);
+      }
+      .auth-header {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .auth-header h1 {
+        font-size: 28px;
+        font-weight: 800;
+        background: linear-gradient(135deg, var(--gold), #ffd75d);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 8px;
+      }
+      .auth-tabs {
+        display: flex;
+        gap: 4px;
+        background: var(--bg);
+        border-radius: 12px;
+        padding: 4px;
+        margin-bottom: 24px;
+      }
+      .auth-tab {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        background: transparent;
+        color: var(--muted);
+        border-radius: 10px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+      }
+      .auth-tab.active {
+        background: var(--gold);
+        color: #000;
+      }
+      .form-group {
+        margin-bottom: 16px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #a0aec0;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 12px 16px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text);
+        font-size: 14px;
+        outline: none;
+        transition: all 0.3s;
+      }
+      .form-group input:focus {
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(240,185,11,0.1);
+      }
+      .btn {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--gold), #ffd75d);
+        color: #000;
+      }
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(240,185,11,0.3);
+      }
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .notice {
+        padding: 12px;
+        border-radius: 10px;
+        margin-top: 12px;
+        font-size: 13px;
+        display: none;
+      }
+      .notice.show { display: block; }
+      .notice.success {
+        background: rgba(14,203,129,0.1);
+        color: var(--green);
+        border: 1px solid rgba(14,203,129,0.3);
+      }
+      .notice.error {
+        background: rgba(246,70,93,0.1);
+        color: var(--red);
+        border: 1px solid rgba(246,70,93,0.3);
+      }
 
-        body {
-            background: #0b0e11;
-            color: #eaecef;
-            min-height: 100vh;
-        }
-
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #1e2329; }
-        ::-webkit-scrollbar-thumb { background: #f0b90b; border-radius: 4px; }
-
-        #app {
-            max-width: 1440px;
-            margin: 0 auto;
-            background: #0b0e11;
-            min-height: 100vh;
-        }
-
-        /* Auth Pages */
-        .auth-page {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #0b0e11 0%, #1a1f2b 100%);
-            padding: 20px;
-        }
-
-        .auth-card {
-            background: #1e2329;
-            border-radius: 24px;
-            padding: 45px 40px;
-            width: 100%;
-            max-width: 440px;
-            border: 1px solid #2b3139;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.5);
-        }
-
-        .auth-card .logo {
-            font-size: 28px;
-            font-weight: 700;
-            color: #f0b90b;
-            margin-bottom: 4px;
-        }
-        .auth-card .logo span { color: #eaecef; font-weight: 300; }
-        .auth-card .sub { color: #848e9c; font-size: 14px; margin-bottom: 30px; }
-        .auth-card label { display: block; font-size: 13px; font-weight: 500; color: #b7bdc6; margin-bottom: 6px; margin-top: 18px; }
-        .auth-card input {
-            width: 100%; padding: 12px 16px;
-            background: #13171d; border: 1px solid #2b3139; border-radius: 12px;
-            color: #eaecef; font-size: 15px; outline: none;
-            transition: all 0.3s;
-        }
-        .auth-card input:focus { border-color: #f0b90b; }
-        .auth-card input::placeholder { color: #5e6673; }
-        .auth-card .btn-primary {
-            width: 100%; padding: 14px; margin-top: 24px;
-            background: #f0b90b; border: none; border-radius: 12px;
-            font-size: 16px; font-weight: 600; color: #0b0e11;
-            cursor: pointer; transition: all 0.3s;
-        }
-        .auth-card .btn-primary:hover { background: #d9a80a; }
-        .auth-card .switch-link { text-align: center; margin-top: 18px; font-size: 14px; color: #848e9c; }
-        .auth-card .switch-link a { color: #f0b90b; text-decoration: none; font-weight: 500; }
-        .auth-card .switch-link a:hover { text-decoration: underline; }
-        .auth-card .error-msg { color: #f6465d; font-size: 13px; margin-top: 8px; display: none; padding: 10px; background: #1e2329; border-radius: 8px; border-left: 3px solid #f6465d; }
-        .auth-card .success-msg { color: #0ecb81; font-size: 13px; margin-top: 8px; display: none; padding: 10px; background: #1e2329; border-radius: 8px; border-left: 3px solid #0ecb81; }
-
-        .page { display: none; width: 100%; flex: 1; animation: fadeIn 0.4s ease; }
-        .page.active { display: flex; flex-direction: column; }
-        @keyframes fadeIn { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
-
-        /* Dashboard */
-        .dashboard { display: none; flex-direction: column; min-height: 100vh; background: #0b0e11; }
-        .dashboard.active { display: flex; }
-
-        .topbar {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 12px 24px; background: #13171d; border-bottom: 1px solid #1e2329;
-            flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100;
-        }
-        .topbar .brand { font-size: 22px; font-weight: 700; color: #f0b90b; }
-        .topbar .brand span { font-weight: 300; color: #848e9c; }
-        .topbar .user-info { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-        .topbar .user-info .badge { background: #1e2329; padding: 6px 14px; border-radius: 20px; font-size: 13px; color: #b7bdc6; border: 1px solid #2b3139; }
-        .topbar .user-info .badge.verified { border-color: #0ecb81; color: #0ecb81; }
-        .topbar .user-info .badge.frozen { border-color: #f6465d; color: #f6465d; }
-        .topbar .user-info .badge.gold { border-color: #f0b90b; color: #f0b90b; }
-        .topbar .user-info .logout-btn { background: transparent; border: 1px solid #2b3139; color: #848e9c; padding: 6px 16px; border-radius: 20px; cursor: pointer; font-size: 13px; transition: 0.2s; }
-        .topbar .user-info .logout-btn:hover { border-color: #f6465d; color: #f6465d; }
-
-        .dash-body { display: flex; flex: 1; overflow: hidden; }
-
-        .sidebar {
-            width: 200px; background: #13171d; border-right: 1px solid #1e2329;
-            padding: 16px 0; flex-shrink: 0; overflow-y: auto;
-        }
-        .sidebar .nav-item {
-            padding: 12px 20px; color: #848e9c; cursor: pointer; font-size: 14px; font-weight: 500;
-            border-left: 3px solid transparent; transition: 0.2s;
-            display: flex; align-items: center; gap: 10px;
-        }
-        .sidebar .nav-item:hover { background: #1e2329; color: #eaecef; }
-        .sidebar .nav-item.active { color: #f0b90b; border-left-color: #f0b90b; background: #1e2329; }
-        .sidebar .nav-item .icon { font-size: 18px; width: 24px; text-align: center; }
-
-        .content { flex: 1; padding: 24px; overflow-y: auto; background: #0b0e11; }
-
-        .card { background: #13171d; border-radius: 16px; padding: 20px 24px; border: 1px solid #1e2329; margin-bottom: 20px; }
-        .card-title { font-size: 16px; font-weight: 600; color: #eaecef; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
-        .card-title .sub { font-size: 13px; font-weight: 400; color: #848e9c; }
-
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-
-        .stat-card { background: #13171d; border-radius: 16px; padding: 18px 20px; border: 1px solid #1e2329; }
-        .stat-card .label { font-size: 12px; color: #848e9c; text-transform: uppercase; letter-spacing: 0.5px; }
-        .stat-card .value { font-size: 26px; font-weight: 700; margin-top: 4px; color: #eaecef; }
-        .stat-card .value.green { color: #0ecb81; }
-        .stat-card .value.red { color: #f6465d; }
-        .stat-card .value.gold { color: #f0b90b; }
-
-        .stock-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-        .stock-table th { text-align: left; padding: 10px 12px; color: #848e9c; font-weight: 500; border-bottom: 1px solid #1e2329; font-size: 12px; text-transform: uppercase; letter-spacing: 0.3px; }
-        .stock-table td { padding: 10px 12px; border-bottom: 1px solid #1a1f2b; color: #eaecef; }
-        .stock-table tr:hover td { background: #1a1f2b; }
-        .stock-table .price-up { color: #0ecb81; }
-        .stock-table .price-down { color: #f6465d; }
-        .stock-table .action-btn {
-            background: transparent; border: 1px solid #2b3139; color: #b7bdc6;
-            padding: 4px 14px; border-radius: 6px; cursor: pointer; font-size: 12px;
-            transition: 0.2s; margin-right: 4px;
-        }
-        .stock-table .action-btn.buy { border-color: #0ecb81; color: #0ecb81; }
-        .stock-table .action-btn.buy:hover { background: #0ecb81; color: #0b0e11; }
-        .stock-table .action-btn.sell { border-color: #f6465d; color: #f6465d; }
-        .stock-table .action-btn.sell:hover { background: #f6465d; color: #0b0e11; }
-
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; font-size: 13px; color: #b7bdc6; margin-bottom: 4px; font-weight: 500; }
-        .form-group input, .form-group select {
-            width: 100%; padding: 10px 14px; background: #0b0e11; border: 1px solid #2b3139;
-            border-radius: 10px; color: #eaecef; font-size: 14px; outline: none; transition: 0.2s;
-        }
-        .form-group input:focus, .form-group select:focus { border-color: #f0b90b; }
-        .form-group input::placeholder { color: #5e6673; }
-
-        .btn {
-            padding: 10px 20px; border: none; border-radius: 10px; font-weight: 600; font-size: 14px;
-            cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px;
-        }
-        .btn:hover { opacity: 0.9; }
-        .btn-gold { background: #f0b90b; color: #0b0e11; }
-        .btn-gold:hover { background: #d9a80a; }
-        .btn-green { background: #0ecb81; color: #0b0e11; }
-        .btn-green:hover { background: #0bb56e; }
-        .btn-red { background: #f6465d; color: #fff; }
-        .btn-red:hover { background: #d43a4f; }
-        .btn-outline { background: transparent; border: 1px solid #2b3139; color: #b7bdc6; }
-        .btn-outline:hover { border-color: #f0b90b; color: #f0b90b; }
-        .btn-sm { padding: 6px 14px; font-size: 12px; }
-
-        .flex { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-        .flex-between { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-        .mt-12 { margin-top: 12px; }
-        .mt-20 { margin-top: 20px; }
-        .mb-12 { margin-bottom: 12px; }
-        .text-muted { color: #848e9c; }
-        .text-green { color: #0ecb81; }
-        .text-red { color: #f6465d; }
-        .text-gold { color: #f0b90b; }
-        .hidden { display: none !important; }
-
-        .history-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-        .history-table th { text-align: left; padding: 8px 10px; color: #848e9c; font-weight: 500; border-bottom: 1px solid #1e2329; font-size: 11px; text-transform: uppercase; }
-        .history-table td { padding: 8px 10px; border-bottom: 1px solid #1a1f2b; color: #b7bdc6; }
-        .history-table .buy-type { color: #0ecb81; }
-        .history-table .sell-type { color: #f6465d; }
-        .history-table .deposit-type { color: #f0b90b; }
-
-        .admin-user-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #1a1f2b; flex-wrap: wrap; gap: 8px; }
-        .admin-user-row .info { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-        .admin-user-row .info .name { font-weight: 500; color: #eaecef; }
-        .admin-user-row .info .phone { color: #848e9c; font-size: 13px; }
-        .admin-user-row .info .badge-sm { font-size: 11px; padding: 2px 10px; border-radius: 12px; background: #1e2329; border: 1px solid #2b3139; }
-        .admin-user-row .info .badge-sm.verified { border-color: #0ecb81; color: #0ecb81; }
-        .admin-user-row .info .badge-sm.frozen { border-color: #f6465d; color: #f6465d; }
-        .admin-user-row .actions { display: flex; gap: 6px; flex-wrap: wrap; }
-
-        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; max-width: 360px; width: 100%; }
-        .toast { padding: 14px 20px; border-radius: 12px; font-size: 14px; font-weight: 500; background: #1e2329; border-left: 4px solid #f0b90b; box-shadow: 0 8px 30px rgba(0,0,0,0.6); color: #eaecef; animation: slideIn 0.3s ease; }
-        .toast.success { border-left-color: #0ecb81; }
-        .toast.error { border-left-color: #f6465d; }
-        .toast.info { border-left-color: #f0b90b; }
-        @keyframes slideIn { 0% { transform: translateX(40px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
-
-        @media (max-width: 1024px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; } }
-        @media (max-width: 768px) {
-            .sidebar { width: 60px; padding: 8px 0; }
-            .sidebar .nav-item { padding: 12px 14px; font-size: 0; justify-content: center; }
-            .sidebar .nav-item .icon { font-size: 20px; width: auto; }
-            .sidebar .nav-item .label { display: none; }
-            .content { padding: 14px; }
-            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
-            .auth-card { padding: 28px 20px; }
-        }
-        @media (max-width: 480px) {
-            .topbar { padding: 10px 14px; }
-            .topbar .brand { font-size: 18px; }
-            .content { padding: 10px; }
-            .card { padding: 14px 16px; }
-            .stat-card .value { font-size: 20px; }
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
-        }
-        .status-badge.pending { background: #f0b90b20; color: #f0b90b; border: 1px solid #f0b90b40; }
-        .status-badge.completed { background: #0ecb8120; color: #0ecb81; border: 1px solid #0ecb8140; }
-        .status-badge.failed { background: #f6465d20; color: #f6465d; border: 1px solid #f6465d40; }
+      /* Dashboard */
+      .dashboard {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 260px;
+        background: var(--surface);
+        border-right: 1px solid var(--border);
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        height: 100vh;
+        left: 0;
+        top: 0;
+      }
+      .sidebar-logo {
+        font-size: 22px;
+        font-weight: 800;
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .sidebar-nav {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .sidebar-nav button {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
+        background: transparent;
+        border: none;
+        color: var(--muted);
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s;
+        text-align: left;
+        font-size: 14px;
+      }
+      .sidebar-nav button:hover {
+        background: var(--surface2);
+        color: var(--text);
+      }
+      .sidebar-nav button.active {
+        background: var(--gold);
+        color: #000;
+      }
+      .main-content {
+        flex: 1;
+        margin-left: 260px;
+        padding: 24px;
+      }
+      .top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        padding: 16px 20px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+      }
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .balance-badge {
+        background: rgba(240,185,11,0.15);
+        color: var(--gold);
+        padding: 8px 16px;
+        border-radius: 10px;
+        font-weight: 700;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 24px;
+      }
+      .card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 20px;
+      }
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .card-title {
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .stock-list {
+        max-height: 400px;
+        overflow-y: auto;
+      }
+      .stock-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+        cursor: pointer;
+        transition: all 0.3s;
+        border-radius: 8px;
+      }
+      .stock-item:hover {
+        background: var(--surface2);
+      }
+      .stock-info h4 {
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+      .stock-info span {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .price-up { color: var(--green); }
+      .price-down { color: var(--red); }
+      .chart-container {
+        height: 300px;
+        margin-top: 16px;
+      }
+      .trade-panel {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .trade-btn {
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .btn-buy {
+        background: var(--green);
+        color: #000;
+      }
+      .btn-sell {
+        background: var(--red);
+        color: #fff;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .stat-item {
+        background: var(--surface2);
+        padding: 16px;
+        border-radius: 12px;
+        text-align: center;
+      }
+      .stat-value {
+        font-size: 24px;
+        font-weight: 800;
+        margin-bottom: 4px;
+      }
+      .stat-label {
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+      }
+      .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .toast {
+        padding: 14px 20px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 14px;
+        animation: slideIn 0.3s ease;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+        max-width: 400px;
+      }
+      @keyframes slideIn {
+        from { opacity: 0; transform: translateX(100px); }
+        to { opacity: 1; transform: translateX(0); }
+      }
+      .toast-success { background: #0a2e1f; color: #a3f0d0; border: 1px solid rgba(14,203,129,0.3); }
+      .toast-error { background: #2e0a15; color: #fec1cb; border: 1px solid rgba(246,70,93,0.3); }
+      .toast-info { background: #0a1a2e; color: #b8d4fe; border: 1px solid rgba(59,130,246,0.3); }
+      
+      @media (max-width: 768px) {
+        .sidebar { width: 100%; height: auto; position: relative; }
+        .main-content { margin-left: 0; }
+        .dashboard { flex-direction: column; }
+        .grid { grid-template-columns: 1fr; }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div id="toastContainer" class="toast-container"></div>
 
-<div id="app">
-    <div class="toast-container" id="toastContainer"></div>
-
-    <!-- SIGNUP -->
-    <div class="page active" id="pageSignUp">
-        <div class="auth-page">
-            <div class="auth-card">
-                <div class="logo">Smart<span>Exchange</span></div>
-                <div class="sub">Create your trading account</div>
-                <div id="signupError" class="error-msg"></div>
-                <div id="signupSuccess" class="success-msg"></div>
-                <label>Full Name</label>
-                <input type="text" id="suName" placeholder="Enter full name" />
-                <label>Email Address</label>
-                <input type="email" id="suEmail" placeholder="Enter email" />
-                <label>Phone Number</label>
-                <input type="tel" id="suPhone" placeholder="Enter phone number" />
-                <label>Password</label>
-                <input type="password" id="suPassword" placeholder="Min 6 characters" />
-                <button class="btn-primary" id="signupBtn">Create Account</button>
-                <div class="switch-link">Already have an account? <a href="#" id="gotoLogin">Log In</a></div>
-            </div>
+    <!-- Auth Screen -->
+    <div id="authScreen" class="auth-container">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h1>📈 Smart Trade Pro</h1>
+          <p style="color: var(--muted); font-size: 14px;">Advanced Trading Platform</p>
         </div>
+        <div class="auth-tabs">
+          <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
+          <button class="auth-tab" onclick="switchAuthTab('signup')">Sign Up</button>
+        </div>
+        <form id="authForm" onsubmit="handleAuth(event)">
+          <div id="signupFields" class="hidden">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="fullName" placeholder="John Doe" />
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" id="phone" placeholder="9876543210" maxlength="10" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="email" required placeholder="your@email.com" />
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="password" required placeholder="••••••••" minlength="6" />
+          </div>
+          <button type="submit" class="btn btn-primary" id="authSubmitBtn">Login</button>
+          <div id="authNotice" class="notice"></div>
+        </form>
+      </div>
     </div>
 
-    <!-- LOGIN -->
-    <div class="page" id="pageLogin">
-        <div class="auth-page">
-            <div class="auth-card">
-                <div class="logo">Smart<span>Exchange</span></div>
-                <div class="sub">Log in to your account</div>
-                <div id="loginError" class="error-msg"></div>
-                <label>Email Address</label>
-                <input type="email" id="liEmail" placeholder="Enter email" />
-                <label>Password</label>
-                <input type="password" id="liPassword" placeholder="Enter password" />
-                <button class="btn-primary" id="loginBtn">Log In</button>
-                <div class="switch-link">Don't have an account? <a href="#" id="gotoSignup">Register Now</a></div>
-            </div>
+    <!-- Dashboard Screen -->
+    <div id="dashboardScreen" class="hidden dashboard">
+      <aside class="sidebar">
+        <div class="sidebar-logo">
+          <span style="font-size: 28px;">₹</span>
+          <span>Smart Trade</span>
         </div>
+        <nav class="sidebar-nav">
+          <button class="active" onclick="switchView('overview')">📊 Overview</button>
+          <button onclick="switchView('market')">📈 Market</button>
+          <button onclick="switchView('trade')">💹 Trade</button>
+          <button onclick="switchView('portfolio')">📋 Portfolio</button>
+          <button onclick="switchView('wallet')">💳 Wallet</button>
+          <button onclick="switchView('profile')">👤 Profile</button>
+        </nav>
+        <button class="btn" style="background: var(--red); color: #fff; margin-top: auto;" onclick="logout()">🚪 Logout</button>
+      </aside>
+      
+      <main class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+          <div>
+            <h2 id="viewTitle">📊 Overview</h2>
+            <span style="color: var(--muted); font-size: 13px;" id="currentTime"></span>
+          </div>
+          <div class="user-info">
+            <span style="color: var(--muted);">👤 <strong id="userName">-</strong></span>
+            <div class="balance-badge">💰 <strong id="userBalance">₹0.00</strong></div>
+            <button class="btn" style="width: auto; padding: 8px 16px; background: var(--blue);" onclick="refreshData()">🔄 Refresh</button>
+          </div>
+        </div>
+
+        <!-- Overview View -->
+        <div id="overviewView">
+          <div class="grid">
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title">Account Overview</span>
+                <span id="accountStatus" class="badge"></span>
+              </div>
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-value" style="color: var(--gold);" id="totalBalance">₹0.00</div>
+                  <div class="stat-label">Total Balance</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" style="color: var(--green);" id="totalInvested">₹0.00</div>
+                  <div class="stat-label">Invested</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" style="color: var(--blue);" id="totalTrades">0</div>
+                  <div class="stat-label">Total Trades</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-value" style="color: var(--purple);" id="creditScore">0</div>
+                  <div class="stat-label">Credit Score</div>
+                </div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title">Top Movers</span>
+                <span style="color: var(--muted); font-size: 12px;">Live Prices</span>
+              </div>
+              <div class="stock-list" id="topMovers"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Market View -->
+        <div id="marketView" class="hidden">
+          <div class="grid">
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title">All Stocks</span>
+                <input type="text" placeholder="🔍 Search stocks..." style="padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text);" oninput="filterStocks(this.value)" />
+              </div>
+              <div class="stock-list" id="allStocks" style="max-height: 600px;"></div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title">Chart</span>
+                <span id="chartSymbol" style="color: var(--gold);">-</span>
+              </div>
+              <div class="chart-container">
+                <canvas id="priceChart"></canvas>
+              </div>
+              <div id="chartStats" class="stats-grid" style="margin-top: 16px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trade View -->
+        <div id="tradeView" class="hidden">
+          <div class="grid">
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title">Trading Terminal</span>
+                <select id="tradeSymbol" style="padding: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text);" onchange="updateTradeInfo()"></select>
+              </div>
+              <div style="font-size: 32px; font-weight: 800; margin: 16px 0;" id="currentPrice">₹0.00</div>
+              <div class="trade-panel">
+                <button class="trade-btn btn-buy" onclick="executeTrade('buy')">🟢 BUY</button>
+                <button class="trade-btn btn-sell" onclick="executeTrade('sell')">🔴 SELL</button>
+              </div>
+              <div class="form-group" style="margin-top: 16px;">
+                <label>Quantity</label>
+                <input type="number" id="tradeQuantity" placeholder="0.00" step="0.01" min="0.01" oninput="calculateTotal()" />
+              </div>
+              <div style="margin-top: 8px; font-weight: 600;">Total: <span id="tradeTotal" style="color: var(--gold);">₹0.00</span></div>
+              <div id="tradeNotice" class="notice"></div>
+            </div>
+            <div class="card">
+              <div class="card-header">
+                <span class="card-title">Recent Trades</span>
+              </div>
+              <div class="stock-list" id="recentTrades"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Portfolio View -->
+        <div id="portfolioView" class="hidden">
+          <div class="grid">
+            <div class="card">
+              <div class="card-header"><span class="card-title">Holdings</span></div>
+              <div class="stock-list" id="holdingsList"></div>
+            </div>
+            <div class="card">
+              <div class="card-header"><span class="card-title">Transaction History</span></div>
+              <div class="stock-list" id="transactionHistory"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wallet View -->
+        <div id="walletView" class="hidden">
+          <div class="grid">
+            <div class="card">
+              <div class="card-header"><span class="card-title">Deposit</span></div>
+              <div style="background: var(--surface2); padding: 16px; border-radius: 12px; margin-bottom: 16px;">
+                <h4 style="margin-bottom: 8px;">Bank Details</h4>
+                <div id="depositDetails">Loading...</div>
+              </div>
+              <div class="form-group">
+                <label>Amount (₹)</label>
+                <input type="number" id="depositAmount" placeholder="500" min="1" />
+              </div>
+              <div class="form-group">
+                <label>UTR / Reference</label>
+                <input type="text" id="depositUTR" placeholder="Optional" />
+              </div>
+              <button class="btn btn-primary" onclick="submitDeposit()">📤 Submit Deposit Request</button>
+              <div id="depositNotice" class="notice"></div>
+            </div>
+            <div class="card">
+              <div class="card-header"><span class="card-title">Withdraw</span></div>
+              <div class="form-group">
+                <label>Amount (₹)</label>
+                <input type="number" id="withdrawAmount" placeholder="1000" min="1" />
+              </div>
+              <div class="form-group">
+                <label>UPI ID / Account</label>
+                <input type="text" id="withdrawAccount" placeholder="your@upi" />
+              </div>
+              <button class="btn btn-primary" style="background: var(--red);" onclick="submitWithdrawal()">📤 Submit Withdrawal Request</button>
+              <div id="withdrawNotice" class="notice"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile View -->
+        <div id="profileView" class="hidden">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Profile Information</span></div>
+            <div id="profileInfo" style="display: grid; gap: 12px;"></div>
+          </div>
+        </div>
+      </main>
     </div>
 
-    <!-- DASHBOARD -->
-    <div class="dashboard" id="pageDashboard">
-        <div class="topbar">
-            <div class="brand">Smart<span>Exchange</span></div>
-            <div class="user-info">
-                <span class="badge gold" id="dashBalance">$0.00</span>
-                <span class="badge" id="dashCredit">Credit: 0</span>
-                <span class="badge" id="dashVerifyBadge">Unverified</span>
-                <span class="badge" id="dashStatusBadge">Active</span>
-                <span style="color:#848e9c;font-size:13px;" id="dashUserName">User</span>
-                <button class="logout-btn" id="logoutBtn">Logout</button>
-            </div>
-        </div>
-        <div class="dash-body">
-            <div class="sidebar" id="sidebar">
-                <div class="nav-item active" data-tab="overview"><span class="icon">📊</span><span class="label">Overview</span></div>
-                <div class="nav-item" data-tab="trading"><span class="icon">📈</span><span class="label">Trading</span></div>
-                <div class="nav-item" data-tab="deposit"><span class="icon">💰</span><span class="label">Deposit</span></div>
-                <div class="nav-item" data-tab="withdraw"><span class="icon">🏦</span><span class="label">Withdraw</span></div>
-                <div class="nav-item" data-tab="history"><span class="icon">📜</span><span class="label">History</span></div>
-                <div class="nav-item" data-tab="account"><span class="icon">⚙️</span><span class="label">Account</span></div>
-                <div class="nav-item" data-tab="admin"><span class="icon">🛡️</span><span class="label">Admin</span></div>
-            </div>
-            <div class="content" id="dashContent">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+      // ==================== CONFIGURATION ====================
+      const SUPABASE_URL = 'https://qajdgueavfofwtavmkxi.supabase.co';
+      const SUPABASE_KEY = 'sb_publishable_NqFN_vK1dp64ZrI94MZsEA_DcTFMRof';
+      
+      // Free API endpoints for real market data
+      const FREE_API = {
+        nseIndia: 'https://priceapi.moneycontrol.com/techCharts/indianMarket/stock/bsePriceChart',
+        crypto: 'https://api.coingecko.com/api/v3/simple/price',
+        forex: 'https://api.exchangerate-api.com/v4/latest/INR'
+      };
 
-                <!-- OVERVIEW -->
-                <div class="tab-content" id="tabOverview">
-                    <div class="grid-4">
-                        <div class="stat-card"><div class="label">Total Balance</div><div class="value gold" id="ovBalance">$0.00</div></div>
-                        <div class="stat-card"><div class="label">Credit Score</div><div class="value" id="ovCredit">0</div></div>
-                        <div class="stat-card"><div class="label">Portfolio</div><div class="value" id="ovPortfolio">$0.00</div></div>
-                        <div class="stat-card"><div class="label">Today's P&L</div><div class="value green" id="ovPnL">+$0.00</div></div>
-                    </div>
-                    <div class="card">
-                        <div class="card-title">Market Overview <span class="sub">Live Prices</span></div>
-                        <div class="stock-table-wrap">
-                            <table class="stock-table" id="overviewStockTable">
-                                <thead><tr><th>Symbol</th><th>Name</th><th>Price</th><th>Change</th><th>Volume</th></tr></thead>
-                                <tbody id="overviewStockBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-title">Quick Actions</div>
-                        <div class="flex">
-                            <button class="btn btn-gold" onclick="navigateTab('deposit')">Deposit</button>
-                            <button class="btn btn-outline" onclick="navigateTab('withdraw')">Withdraw</button>
-                            <button class="btn btn-green" onclick="navigateTab('trading')">Trade</button>
-                        </div>
-                    </div>
-                </div>
+      // ==================== STATE ====================
+      let authMode = 'login';
+      let session = null;
+      let userData = null;
+      let marketData = [];
+      let userHoldings = [];
+      let userTrades = [];
+      let priceChart = null;
 
-                <!-- TRADING -->
-                <div class="tab-content hidden" id="tabTrading">
-                    <div class="card">
-                        <div class="card-title">Trade Stocks <span class="sub">Buy / Sell</span></div>
-                        <div class="grid-2">
-                            <div>
-                                <div class="form-group"><label>Select Stock</label><select id="tradeStockSelect"></select></div>
-                                <div class="form-group"><label>Current Price</label><input type="text" id="tradePrice" readonly /></div>
-                                <div class="form-group"><label>Quantity</label><input type="number" id="tradeQty" min="1" value="1" /></div>
-                                <div class="form-group"><label>Total</label><input type="text" id="tradeTotal" readonly /></div>
-                                <div class="flex">
-                                    <button class="btn btn-green" id="tradeBuyBtn">Buy</button>
-                                    <button class="btn btn-red" id="tradeSellBtn">Sell</button>
-                                </div>
-                                <div id="tradeMsg" class="text-muted mt-12" style="font-size:13px;"></div>
-                            </div>
-                            <div>
-                                <div class="card-title" style="margin-top:0;">Your Holdings</div>
-                                <div class="stock-table-wrap">
-                                    <table class="stock-table" id="holdingsTable">
-                                        <thead><tr><th>Stock</th><th>Qty</th><th>Avg Price</th><th>Current</th><th>P&L</th></tr></thead>
-                                        <tbody id="holdingsBody"></tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-title">All Stocks</div>
-                        <div class="stock-table-wrap">
-                            <table class="stock-table" id="tradeStockTable">
-                                <thead><tr><th>Symbol</th><th>Name</th><th>Price</th><th>Change</th><th>Action</th></tr></thead>
-                                <tbody id="tradeStockBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+      // Seed data with real Indian stocks
+      const INDIAN_STOCKS = [
+        { symbol: 'RELIANCE', name: 'Reliance Industries', price: 2950.45, change: 1.55, sector: 'Energy' },
+        { symbol: 'TCS', name: 'Tata Consultancy Services', price: 3820.10, change: -0.32, sector: 'IT' },
+        { symbol: 'HDFCBANK', name: 'HDFC Bank', price: 1445.60, change: 0.61, sector: 'Banking' },
+        { symbol: 'INFY', name: 'Infosys', price: 1610.25, change: -1.35, sector: 'IT' },
+        { symbol: 'ICICIBANK', name: 'ICICI Bank', price: 1085.30, change: 1.44, sector: 'Banking' },
+        { symbol: 'SBIN', name: 'State Bank of India', price: 765.90, change: 0.68, sector: 'Banking' },
+        { symbol: 'ITC', name: 'ITC Limited', price: 428.45, change: -0.28, sector: 'FMCG' },
+        { symbol: 'BHARTIARTL', name: 'Bharti Airtel', price: 1210.15, change: 0.19, sector: 'Telecom' },
+        { symbol: 'WIPRO', name: 'Wipro', price: 478.30, change: 0.88, sector: 'IT' },
+        { symbol: 'AXISBANK', name: 'Axis Bank', price: 1120.55, change: -0.55, sector: 'Banking' },
+        { symbol: 'HCLTECH', name: 'HCL Technologies', price: 1450.20, change: 0.42, sector: 'IT' },
+        { symbol: 'SUNPHARMA', name: 'Sun Pharma', price: 1280.75, change: 1.12, sector: 'Pharma' },
+        { symbol: 'TATAMOTORS', name: 'Tata Motors', price: 890.40, change: 2.15, sector: 'Auto' },
+        { symbol: 'MARUTI', name: 'Maruti Suzuki', price: 11200.60, change: -0.89, sector: 'Auto' },
+        { symbol: 'BAJFINANCE', name: 'Bajaj Finance', price: 7650.90, change: 0.33, sector: 'Finance' }
+      ];
 
-                <!-- DEPOSIT -->
-                <div class="tab-content hidden" id="tabDeposit">
-                    <div class="card">
-                        <div class="card-title">Deposit Funds</div>
-                        <div class="grid-2">
-                            <div>
-                                <div class="form-group"><label>Amount ($)</label><input type="number" id="depositAmount" placeholder="Enter amount" min="1" /></div>
-                                <div class="form-group"><label>Method</label>
-                                    <select id="depositMethod"><option value="upi">UPI</option><option value="bank">Bank Transfer</option></select>
-                                </div>
-                                <div id="depositUpiField" class="form-group"><label>UPI ID</label><input type="text" id="depositUpi" placeholder="example@upi" /></div>
-                                <div id="depositBankField" class="form-group hidden"><label>Bank Details</label><input type="text" id="depositBank" placeholder="Account / IFSC" /></div>
-                                <button class="btn btn-gold" id="depositBtn">Deposit Now</button>
-                                <div id="depositMsg" class="mt-12 text-muted" style="font-size:13px;"></div>
-                            </div>
-                            <div>
-                                <div class="card-title" style="margin-top:0;">Quick Deposit</div>
-                                <div class="flex">
-                                    <button class="btn btn-outline btn-sm" onclick="setDeposit(100)">$100</button>
-                                    <button class="btn btn-outline btn-sm" onclick="setDeposit(500)">$500</button>
-                                    <button class="btn btn-outline btn-sm" onclick="setDeposit(1000)">$1,000</button>
-                                    <button class="btn btn-outline btn-sm" onclick="setDeposit(5000)">$5,000</button>
-                                </div>
-                                <div class="mt-20" style="background:#1e2329;padding:16px;border-radius:12px;border:1px solid #2b3139;">
-                                    <p style="font-size:13px;color:#848e9c;margin:4px 0;">UPI: smartex@pay</p>
-                                    <p style="font-size:13px;color:#848e9c;margin:4px 0;">Bank: HDFC 1234 5678 9012</p>
-                                    <p style="font-size:13px;color:#848e9c;margin:4px 0;">IFSC: HDFC0001234</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      // ==================== UTILS ====================
+      function toast(message, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transition = 'opacity 0.3s';
+          setTimeout(() => toast.remove(), 300);
+        }, 3000);
+      }
 
-                <!-- WITHDRAW -->
-                <div class="tab-content hidden" id="tabWithdraw">
-                    <div class="card">
-                        <div class="card-title">Withdraw Funds</div>
-                        <div class="grid-2">
-                            <div>
-                                <div class="form-group"><label>Amount ($)</label><input type="number" id="withdrawAmount" placeholder="Enter amount" min="1" /></div>
-                                <div class="form-group"><label>Method</label>
-                                    <select id="withdrawMethod"><option value="upi">UPI</option><option value="bank">Bank Transfer</option></select>
-                                </div>
-                                <div id="withdrawUpiField" class="form-group"><label>UPI ID</label><input type="text" id="withdrawUpi" placeholder="example@upi" /></div>
-                                <div id="withdrawBankField" class="form-group hidden"><label>Bank Details</label><input type="text" id="withdrawBank" placeholder="Account / IFSC" /></div>
-                                <div class="form-group"><label>Withdrawal Code</label><input type="text" id="withdrawCode" placeholder="Enter 6-digit code" maxlength="6" /></div>
-                                <button class="btn btn-red" id="withdrawBtn">Withdraw</button>
-                                <div id="withdrawMsg" class="mt-12 text-muted" style="font-size:13px;"></div>
-                            </div>
-                            <div>
-                                <div class="card-title" style="margin-top:0;">Withdraw Info</div>
-                                <div style="background:#1e2329;padding:16px;border-radius:12px;border:1px solid #2b3139;">
-                                    <p style="font-size:13px;color:#848e9c;margin:6px 0;">Minimum withdraw: $100</p>
-                                    <p style="font-size:13px;color:#848e9c;margin:6px 0;">Processing time: 24 hours</p>
-                                    <p style="font-size:13px;color:#848e9c;margin:6px 0;">Your UPI: <span id="savedUpi">Not set</span></p>
-                                    <p style="font-size:13px;color:#848e9c;margin:6px 0;">Your Bank: <span id="savedBank">Not set</span></p>
-                                    <p style="font-size:13px;color:#f0b90b;margin:6px 0;">Withdrawal code required for security</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+      function formatCurrency(amount) {
+        return '₹' + Number(amount).toLocaleString('en-IN', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+        });
+      }
 
-                <!-- HISTORY -->
-                <div class="tab-content hidden" id="tabHistory">
-                    <div class="card">
-                        <div class="card-title">Transaction History</div>
-                        <div class="stock-table-wrap">
-                            <table class="history-table" id="historyTable">
-                                <thead><tr><th>Date</th><th>Type</th><th>Stock / Method</th><th>Qty / Ref</th><th>Amount</th><th>Status</th></tr></thead>
-                                <tbody id="historyBody"></tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+      function showNotice(id, message, type) {
+        const el = document.getElementById(id);
+        el.textContent = message;
+        el.className = `notice ${type} show`;
+        setTimeout(() => el.classList.remove('show'), 5000);
+      }
 
-                <!-- ACCOUNT -->
-                <div class="tab-content hidden" id="tabAccount">
-                    <div class="card">
-                        <div class="card-title">Account Settings</div>
-                        <div class="grid-2">
-                            <div>
-                                <div class="form-group"><label>Full Name</label><input type="text" id="accName" readonly style="background:#1e2329;" /></div>
-                                <div class="form-group"><label>Email</label><input type="text" id="accEmail" readonly style="background:#1e2329;" /></div>
-                                <div class="form-group"><label>Phone</label><input type="text" id="accPhone" readonly style="background:#1e2329;" /></div>
-                                <div class="form-group"><label>Account Status</label><input type="text" id="accStatus" readonly style="background:#1e2329;" /></div>
-                                <div class="form-group"><label>Verification</label><input type="text" id="accVerified" readonly style="background:#1e2329;" /></div>
-                            </div>
-                            <div>
-                                <div class="card-title" style="margin-top:0;">Actions</div>
-                                <div class="flex" style="flex-direction:column;align-items:stretch;gap:10px;">
-                                    <button class="btn btn-green" id="verifyBtn">Verify Account</button>
-                                    <button class="btn btn-outline" id="freezeToggleBtn">Toggle Freeze</button>
-                                </div>
-                                <div class="mt-20" style="background:#1e2329;padding:16px;border-radius:12px;border:1px solid #2b3139;">
-                                    <label style="font-size:13px;color:#b7bdc6;">Credit Score</label>
-                                    <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
-                                        <button class="btn btn-sm btn-outline" id="scoreUpBtn">+10</button>
-                                        <button class="btn btn-sm btn-outline" id="scoreDownBtn">-10</button>
-                                        <span id="accCreditScore" style="font-weight:700;font-size:20px;color:#f0b90b;">0</span>
-                                    </div>
-                                </div>
-                                <div class="mt-12" style="background:#1e2329;padding:16px;border-radius:12px;border:1px solid #2b3139;">
-                                    <label style="font-size:13px;color:#b7bdc6;">Balance</label>
-                                    <div style="display:flex;gap:8px;align-items:center;margin-top:6px;">
-                                        <button class="btn btn-sm btn-gold" id="balanceAddBtn">+$100</button>
-                                        <button class="btn btn-sm btn-red" id="balanceSubBtn">-$100</button>
-                                        <span id="accBalanceDisplay" style="font-weight:700;font-size:20px;color:#f0b90b;">$0</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ADMIN -->
-                <div class="tab-content hidden" id="tabAdmin">
-                    <div class="card">
-                        <div class="card-title">Admin Panel <span class="sub">User Management</span></div>
-                        <div id="adminUserList"></div>
-                    </div>
-                    <div class="grid-3">
-                        <div class="stat-card"><div class="label">Total Users</div><div class="value gold" id="adminTotalUsers">0</div></div>
-                        <div class="stat-card"><div class="label">Total Deposits</div><div class="value green" id="adminTotalDeposits">$0</div></div>
-                        <div class="stat-card"><div class="label">Total Withdrawals</div><div class="value red" id="adminTotalWithdrawals">$0</div></div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-<script>
-// ============================================================
-// SMART EXCHANGE - Complete Trading Platform
-// ============================================================
-
-const STORAGE_KEY = 'smartExchangeData';
-const API_KEY = 'demo'; // Free API key for live prices
-
-// Default stocks with Indian market symbols
-const DEFAULT_STOCKS = [
-    { symbol: 'RELIANCE', name: 'Reliance Industries', price: 2850.50 },
-    { symbol: 'TCS', name: 'Tata Consultancy', price: 3850.25 },
-    { symbol: 'HDFCBANK', name: 'HDFC Bank', price: 1650.75 },
-    { symbol: 'INFY', name: 'Infosys', price: 1550.00 },
-    { symbol: 'ICICIBANK', name: 'ICICI Bank', price: 1120.40 },
-    { symbol: 'SBIN', name: 'SBI', price: 820.30 },
-    { symbol: 'BHARTIARTL', name: 'Bharti Airtel', price: 980.15 },
-    { symbol: 'ITC', name: 'ITC Ltd', price: 430.60 },
-    { symbol: 'WIPRO', name: 'Wipro', price: 510.25 },
-    { symbol: 'HCLTECH', name: 'HCL Tech', price: 1250.80 },
-    { symbol: 'SUNPHARMA', name: 'Sun Pharma', price: 1120.45 },
-    { symbol: 'TATAMOTORS', name: 'Tata Motors', price: 980.90 },
-    { symbol: 'AXISBANK', name: 'Axis Bank', price: 1050.30 },
-    { symbol: 'BAJFINANCE', name: 'Bajaj Finance', price: 6800.00 },
-    { symbol: 'MARUTI', name: 'Maruti Suzuki', price: 10200.00 },
-    { symbol: 'TITAN', name: 'Titan Company', price: 3450.60 },
-    { symbol: 'ASIANPAINT', name: 'Asian Paints', price: 2950.75 },
-    { symbol: 'NTPC', name: 'NTPC Ltd', price: 220.40 },
-    { symbol: 'ONGC', name: 'ONGC Ltd', price: 180.25 },
-    { symbol: 'POWERGRID', name: 'Power Grid', price: 190.80 }
-];
-
-let data = loadData();
-let currentUser = null;
-let currentTab = 'overview';
-let priceInterval = null;
-let isLivePriceEnabled = true;
-
-function loadData() {
-    try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) return JSON.parse(raw);
-    } catch(e) {}
-    return { users: [], stocks: [], transactions: [], deposits: [], withdrawals: [] };
-}
-
-function saveData() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
-
-function getStock(symbol) { return data.stocks.find(s => s.symbol === symbol); }
-function getUser(email) { return data.users.find(u => u.email === email); }
-function getHoldings(user) { return user.holdings || {}; }
-function setHoldings(user, holdings) { user.holdings = holdings; saveData(); }
-
-function addTransaction(user, type, stock, qty, price, amount, status = 'completed') {
-    data.transactions.push({
-        userEmail: user.email,
-        type, stock, qty, price, amount, status,
-        date: new Date().toISOString()
-    });
-    saveData();
-}
-
-function addDeposit(user, amount, method, ref) {
-    data.deposits.push({
-        userEmail: user.email,
-        amount, method, ref,
-        status: 'completed',
-        date: new Date().toISOString()
-    });
-    saveData();
-}
-
-function addWithdraw(user, amount, method, ref, code) {
-    data.withdrawals.push({
-        userEmail: user.email,
-        amount, method, ref, code,
-        status: 'pending',
-        date: new Date().toISOString()
-    });
-    saveData();
-}
-
-function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById(pageId).classList.add('active');
-}
-
-function showDashboard() {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('pageDashboard').classList.add('active');
-    document.getElementById('pageDashboard').style.display = 'flex';
-    updateDashboard();
-    navigateTab('overview');
-}
-
-function navigateTab(tab) {
-    currentTab = tab;
-    document.querySelectorAll('.sidebar .nav-item').forEach(el => {
-        el.classList.toggle('active', el.dataset.tab === tab);
-    });
-    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-    const target = document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1));
-    if (target) target.classList.remove('hidden');
-    if (tab === 'overview') renderOverview();
-    if (tab === 'trading') renderTrading();
-    if (tab === 'history') renderHistory();
-    if (tab === 'account') renderAccount();
-    if (tab === 'admin') renderAdmin();
-    if (tab === 'deposit') updateDepositUI();
-    if (tab === 'withdraw') updateWithdrawUI();
-}
-
-function updateDashboard() {
-    if (!currentUser) return;
-    const u = currentUser;
-    document.getElementById('dashBalance').textContent = '$' + u.balance.toFixed(2);
-    document.getElementById('dashCredit').textContent = 'Credit: ' + u.creditScore;
-    const vb = document.getElementById('dashVerifyBadge');
-    vb.textContent = u.verified ? 'Verified' : 'Unverified';
-    vb.className = 'badge' + (u.verified ? ' verified' : '');
-    const sb = document.getElementById('dashStatusBadge');
-    sb.textContent = u.frozen ? 'Frozen' : 'Active';
-    sb.className = 'badge' + (u.frozen ? ' frozen' : '');
-    document.getElementById('dashUserName').textContent = u.fullName || u.email;
-}
-
-function renderOverview() {
-    if (!currentUser) return;
-    const u = currentUser;
-    let portfolioValue = 0;
-    const holdings = getHoldings(u);
-    for (const [symbol, qty] of Object.entries(holdings)) {
-        const stock = getStock(symbol);
-        if (stock) portfolioValue += stock.price * qty;
-    }
-    document.getElementById('ovBalance').textContent = '$' + u.balance.toFixed(2);
-    document.getElementById('ovCredit').textContent = u.creditScore;
-    document.getElementById('ovPortfolio').textContent = '$' + portfolioValue.toFixed(2);
-    const pnl = (Math.random() * 200 - 100);
-    const pnlEl = document.getElementById('ovPnL');
-    pnlEl.textContent = (pnl >= 0 ? '+' : '') + '$' + pnl.toFixed(2);
-    pnlEl.className = 'value ' + (pnl >= 0 ? 'green' : 'red');
-    
-    const body = document.getElementById('overviewStockBody');
-    body.innerHTML = '';
-    data.stocks.slice(0, 10).forEach(s => {
-        const change = ((Math.random() - 0.45) * 4).toFixed(2);
-        const cls = parseFloat(change) >= 0 ? 'price-up' : 'price-down';
-        body.innerHTML += `<tr>
-            <td><strong>${s.symbol}</strong></td>
-            <td>${s.name}</td>
-            <td>$${s.price.toFixed(2)}</td>
-            <td class="${cls}">${parseFloat(change)>=0?'+':''}${change}%</td>
-            <td>${Math.floor(Math.random()*50000+10000).toLocaleString()}</td>
-        </tr>`;
-    });
-    updateDashboard();
-}
-
-function renderTrading() {
-    if (!currentUser) return;
-    populateTradeSelect();
-    updateTradePrice();
-    renderHoldings();
-    renderTradeStockTable();
-}
-
-function populateTradeSelect() {
-    const sel = document.getElementById('tradeStockSelect');
-    sel.innerHTML = '';
-    data.stocks.forEach(s => {
-        const opt = document.createElement('option');
-        opt.value = s.symbol;
-        opt.textContent = s.symbol + ' - ' + s.name;
-        sel.appendChild(opt);
-    });
-}
-
-function updateTradePrice() {
-    const symbol = document.getElementById('tradeStockSelect').value;
-    const stock = getStock(symbol);
-    if (stock) {
-        document.getElementById('tradePrice').value = '$' + stock.price.toFixed(2);
-        updateTradeTotal();
-    }
-}
-
-function updateTradeTotal() {
-    const symbol = document.getElementById('tradeStockSelect').value;
-    const stock = getStock(symbol);
-    const qty = parseInt(document.getElementById('tradeQty').value) || 0;
-    if (stock) {
-        document.getElementById('tradeTotal').value = '$' + (stock.price * qty).toFixed(2);
-    }
-}
-
-function renderHoldings() {
-    const u = currentUser;
-    const holdings = getHoldings(u);
-    const body = document.getElementById('holdingsBody');
-    body.innerHTML = '';
-    for (const [symbol, qty] of Object.entries(holdings)) {
-        const stock = getStock(symbol);
-        if (!stock || qty === 0) continue;
-        const avgPrice = u.holdingsAvg && u.holdingsAvg[symbol] ? u.holdingsAvg[symbol] : stock.price;
-        const pnl = (stock.price - avgPrice) * qty;
-        body.innerHTML += `<tr>
-            <td><strong>${symbol}</strong></td>
-            <td>${qty}</td>
-            <td>$${avgPrice.toFixed(2)}</td>
-            <td>$${stock.price.toFixed(2)}</td>
-            <td class="${pnl>=0?'text-green':'text-red'}">${pnl>=0?'+':''}$${pnl.toFixed(2)}</td>
-        </tr>`;
-    }
-    if (!body.innerHTML) {
-        body.innerHTML = `<tr><td colspan="5" class="text-muted text-center" style="padding:30px;">No holdings</td></tr>`;
-    }
-}
-
-function renderTradeStockTable() {
-    const body = document.getElementById('tradeStockBody');
-    body.innerHTML = '';
-    data.stocks.forEach(s => {
-        const change = ((Math.random() - 0.45) * 4).toFixed(2);
-        const cls = parseFloat(change) >= 0 ? 'price-up' : 'price-down';
-        body.innerHTML += `<tr>
-            <td><strong>${s.symbol}</strong></td>
-            <td>${s.name}</td>
-            <td>$${s.price.toFixed(2)}</td>
-            <td class="${cls}">${parseFloat(change)>=0?'+':''}${change}%</td>
-            <td>
-                <button class="action-btn buy" onclick="quickTrade('${s.symbol}','buy')">Buy</button>
-                <button class="action-btn sell" onclick="quickTrade('${s.symbol}','sell')">Sell</button>
-            </td>
-        </tr>`;
-    });
-}
-
-function quickTrade(symbol, type) {
-    document.getElementById('tradeStockSelect').value = symbol;
-    updateTradePrice();
-    const qty = parseInt(document.getElementById('tradeQty').value) || 1;
-    handleTrade(type);
-}
-
-function handleTrade(type) {
-    if (!currentUser) return;
-    const u = currentUser;
-    if (u.frozen) { toast('Account frozen', 'error'); return; }
-    const symbol = document.getElementById('tradeStockSelect').value;
-    const stock = getStock(symbol);
-    if (!stock) { toast('Stock not found', 'error'); return; }
-    const qty = parseInt(document.getElementById('tradeQty').value) || 0;
-    if (qty <= 0) { toast('Enter valid quantity', 'error'); return; }
-    const total = stock.price * qty;
-    const msgEl = document.getElementById('tradeMsg');
-    const holdings = getHoldings(u);
-    const currentQty = holdings[symbol] || 0;
-
-    if (type === 'buy') {
-        if (u.balance < total) {
-            msgEl.textContent = 'Insufficient balance';
-            msgEl.style.color = '#f6465d';
-            return;
+      // ==================== API FUNCTIONS ====================
+      async function apiCall(path, options = {}) {
+        const headers = {
+          'apikey': SUPABASE_KEY,
+          'Content-Type': 'application/json',
+          ...options.headers
+        };
+        if (session?.access_token) {
+          headers['Authorization'] = `Bearer ${session.access_token}`;
         }
-        if (u.creditScore < 400) {
-            msgEl.textContent = 'Credit score too low (min 400)';
-            msgEl.style.color = '#f6465d';
-            return;
+        const response = await fetch(`${SUPABASE_URL}${path}`, { ...options, headers });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.message || data.msg || 'Request failed');
+        return data;
+      }
+
+      async function fetchRealPrices() {
+        try {
+          // Try to fetch real NSE data
+          const response = await fetch('https://priceapi.moneycontrol.com/techCharts/indianMarket/stock/bsePriceChart?symbol=RELIANCE&type=line');
+          if (response.ok) {
+            const data = await response.json();
+            return data;
+          }
+        } catch (e) {
+          console.log('Using simulated data');
         }
-        u.balance -= total;
-        holdings[symbol] = (holdings[symbol] || 0) + qty;
-        if (!u.holdingsAvg) u.holdingsAvg = {};
-        const oldQty = currentQty;
-        const oldAvg = u.holdingsAvg[symbol] || stock.price;
-        u.holdingsAvg[symbol] = oldQty === 0 ? stock.price : (oldAvg * oldQty + stock.price * qty) / (oldQty + qty);
-        setHoldings(u, holdings);
-        addTransaction(u, 'buy', symbol, qty, stock.price, total);
-        saveData();
-        msgEl.textContent = 'Bought ' + qty + ' shares of ' + symbol + ' for $' + total.toFixed(2);
-        msgEl.style.color = '#0ecb81';
-        toast('Bought ' + qty + ' ' + symbol, 'success');
-    } else {
-        if (currentQty < qty) {
-            msgEl.textContent = 'You only have ' + currentQty + ' shares';
-            msgEl.style.color = '#f6465d';
-            return;
-        }
-        u.balance += total;
-        holdings[symbol] = (holdings[symbol] || 0) - qty;
-        if (holdings[symbol] <= 0) {
-            delete holdings[symbol];
-            if (u.holdingsAvg) delete u.holdingsAvg[symbol];
-        }
-        setHoldings(u, holdings);
-        addTransaction(u, 'sell', symbol, qty, stock.price, total);
-        saveData();
-        msgEl.textContent = 'Sold ' + qty + ' shares of ' + symbol + ' for $' + total.toFixed(2);
-        msgEl.style.color = '#f0b90b';
-        toast('Sold ' + qty + ' ' + symbol, 'info');
-    }
-    updateDashboard();
-    renderHoldings();
-    renderTradeStockTable();
-    updateTradeTotal();
-}
+        return null;
+      }
 
-function updateDepositUI() {
-    toggleDepositFields(document.getElementById('depositMethod').value);
-    document.getElementById('depositMsg').textContent = '';
-}
+      // ==================== AUTH ====================
+      function switchAuthTab(mode) {
+        authMode = mode;
+        document.querySelectorAll('.auth-tab').forEach(tab => {
+          tab.classList.toggle('active', tab.textContent.toLowerCase().includes(mode));
+        });
+        document.getElementById('signupFields').classList.toggle('hidden', mode === 'login');
+        document.getElementById('authSubmitBtn').textContent = mode === 'login' ? 'Login' : 'Create Account';
+      }
 
-function toggleDepositFields(method) {
-    const upiField = document.getElementById('depositUpiField');
-    const bankField = document.getElementById('depositBankField');
-    if (method === 'upi') {
-        upiField.classList.remove('hidden');
-        bankField.classList.add('hidden');
-    } else {
-        upiField.classList.add('hidden');
-        bankField.classList.remove('hidden');
-    }
-}
-
-function setDeposit(amount) {
-    document.getElementById('depositAmount').value = amount;
-}
-
-function handleDeposit() {
-    if (!currentUser) return;
-    const u = currentUser;
-    if (u.frozen) { toast('Account frozen', 'error'); return; }
-    const amount = parseFloat(document.getElementById('depositAmount').value);
-    if (!amount || amount <= 0) { toast('Enter valid amount', 'error'); return; }
-    const method = document.getElementById('depositMethod').value;
-    let ref = '';
-    if (method === 'upi') {
-        ref = document.getElementById('depositUpi').value.trim() || 'smartex@pay';
-        u.upi = ref;
-    } else {
-        ref = document.getElementById('depositBank').value.trim() || 'HDFC-1234';
-        u.bank = ref;
-    }
-    u.balance += amount;
-    addDeposit(u, amount, method, ref);
-    saveData();
-    document.getElementById('depositMsg').textContent = 'Deposited $' + amount.toFixed(2) + ' via ' + method.toUpperCase();
-    document.getElementById('depositMsg').style.color = '#0ecb81';
-    document.getElementById('depositAmount').value = '';
-    updateDashboard();
-    toast('$' + amount.toFixed(2) + ' deposited', 'success');
-}
-
-function updateWithdrawUI() {
-    toggleWithdrawFields(document.getElementById('withdrawMethod').value);
-    document.getElementById('withdrawMsg').textContent = '';
-    const u = currentUser;
-    document.getElementById('savedUpi').textContent = u.upi || 'Not set';
-    document.getElementById('savedBank').textContent = u.bank || 'Not set';
-}
-
-function toggleWithdrawFields(method) {
-    const upiField = document.getElementById('withdrawUpiField');
-    const bankField = document.getElementById('withdrawBankField');
-    if (method === 'upi') {
-        upiField.classList.remove('hidden');
-        bankField.classList.add('hidden');
-    } else {
-        upiField.classList.add('hidden');
-        bankField.classList.remove('hidden');
-    }
-}
-
-function handleWithdraw() {
-    if (!currentUser) return;
-    const u = currentUser;
-    if (u.frozen) { toast('Account frozen', 'error'); return; }
-    const amount = parseFloat(document.getElementById('withdrawAmount').value);
-    if (!amount || amount <= 0) { toast('Enter valid amount', 'error'); return; }
-    if (amount < 100) { toast('Minimum withdraw: $100', 'error'); return; }
-    if (amount > u.balance) { toast('Insufficient balance', 'error'); return; }
-    
-    const code = document.getElementById('withdrawCode').value.trim();
-    if (!code || code.length !== 6) {
-        toast('Enter valid 6-digit withdrawal code', 'error');
-        return;
-    }
-    
-    const method = document.getElementById('withdrawMethod').value;
-    let ref = '';
-    if (method === 'upi') {
-        ref = document.getElementById('withdrawUpi').value.trim() || u.upi || 'Not set';
-        if (!u.upi && ref !== 'Not set') u.upi = ref;
-    } else {
-        ref = document.getElementById('withdrawBank').value.trim() || u.bank || 'Not set';
-        if (!u.bank && ref !== 'Not set') u.bank = ref;
-    }
-    
-    u.balance -= amount;
-    addWithdraw(u, amount, method, ref, code);
-    saveData();
-    document.getElementById('withdrawMsg').textContent = 'Withdrawal request of $' + amount.toFixed(2) + ' submitted';
-    document.getElementById('withdrawMsg').style.color = '#f0b90b';
-    document.getElementById('withdrawAmount').value = '';
-    document.getElementById('withdrawCode').value = '';
-    updateDashboard();
-    toast('Withdraw request submitted', 'info');
-}
-
-function renderHistory() {
-    if (!currentUser) return;
-    const u = currentUser;
-    const body = document.getElementById('historyBody');
-    body.innerHTML = '';
-    const txs = data.transactions.filter(t => t.userEmail === u.email).reverse();
-    if (txs.length === 0) {
-        body.innerHTML = `<tr><td colspan="6" class="text-muted text-center" style="padding:30px;">No transactions</td></tr>`;
-        return;
-    }
-    txs.slice(0, 50).forEach(t => {
-        const typeClass = t.type === 'buy' ? 'buy-type' : t.type === 'sell' ? 'sell-type' : t.type === 'deposit' ? 'deposit-type' : '';
-        const label = t.type.charAt(0).toUpperCase() + t.type.slice(1);
-        const statusClass = t.status === 'completed' ? 'completed' : t.status === 'pending' ? 'pending' : 'failed';
-        body.innerHTML += `<tr>
-            <td>${new Date(t.date).toLocaleString()}</td>
-            <td class="${typeClass}">${label}</td>
-            <td>${t.stock || t.method || '-'}</td>
-            <td>${t.qty || t.ref || '-'}</td>
-            <td>$${t.amount.toFixed(2)}</td>
-            <td><span class="status-badge ${statusClass}">${t.status || 'completed'}</span></td>
-        </tr>`;
-    });
-}
-
-function renderAccount() {
-    if (!currentUser) return;
-    const u = currentUser;
-    document.getElementById('accName').value = u.fullName || u.email;
-    document.getElementById('accEmail').value = u.email;
-    document.getElementById('accPhone').value = u.phone || 'Not set';
-    document.getElementById('accStatus').value = u.frozen ? 'Frozen' : 'Active';
-    document.getElementById('accVerified').value = u.verified ? 'Verified' : 'Unverified';
-    document.getElementById('accCreditScore').textContent = u.creditScore;
-    document.getElementById('accBalanceDisplay').textContent = '$' + u.balance.toFixed(2);
-}
-
-function handleVerify() {
-    if (!currentUser) return;
-    const u = currentUser;
-    if (u.verified) { toast('Already verified', 'info'); return; }
-    u.verified = true;
-    u.creditScore = Math.min(u.creditScore + 50, 900);
-    saveData();
-    renderAccount();
-    updateDashboard();
-    toast('Account verified! +50 credit score', 'success');
-}
-
-function handleFreezeToggle() {
-    if (!currentUser) return;
-    const u = currentUser;
-    u.frozen = !u.frozen;
-    saveData();
-    renderAccount();
-    updateDashboard();
-    toast(u.frozen ? 'Account frozen' : 'Account unfrozen', 'info');
-}
-
-function adjustScore(delta) {
-    if (!currentUser) return;
-    const u = currentUser;
-    u.creditScore = Math.max(200, Math.min(900, u.creditScore + delta));
-    saveData();
-    renderAccount();
-    updateDashboard();
-    toast('Credit score ' + (delta > 0 ? '+' : '') + delta, 'info');
-}
-
-function adjustBalance(delta) {
-    if (!currentUser) return;
-    const u = currentUser;
-    u.balance = Math.max(0, u.balance + delta);
-    saveData();
-    renderAccount();
-    updateDashboard();
-    toast('Balance ' + (delta > 0 ? '+' : '') + '$' + delta, 'info');
-}
-
-function renderAdmin() {
-    const list = document.getElementById('adminUserList');
-    list.innerHTML = '';
-    data.users.forEach(u => {
-        const holdings = getHoldings(u);
-        const holdingCount = Object.keys(holdings).length;
-        const div = document.createElement('div');
-        div.className = 'admin-user-row';
-        div.innerHTML = `
-            <div class="info">
-                <span class="name">${u.fullName || u.email}</span>
-                <span class="phone">${u.email}</span>
-                <span class="badge-sm ${u.verified?'verified':''}">${u.verified?'Verified':'Unverified'}</span>
-                <span class="badge-sm ${u.frozen?'frozen':''}">${u.frozen?'Frozen':'Active'}</span>
-                <span style="color:#f0b90b;">$${u.balance.toFixed(2)}</span>
-                <span style="color:#848e9c;font-size:12px;">Credit: ${u.creditScore}</span>
-                <span style="color:#848e9c;font-size:12px;">Holdings: ${holdingCount}</span>
-            </div>
-            <div class="actions">
-                <button class="btn btn-sm btn-outline" onclick="adminToggleFreeze('${u.email}')">${u.frozen?'Unfreeze':'Freeze'}</button>
-                <button class="btn btn-sm btn-outline" onclick="adminVerify('${u.email}')">Verify</button>
-                <button class="btn btn-sm btn-gold" onclick="adminAddBalance('${u.email}')">+$500</button>
-            </div>
-        `;
-        list.appendChild(div);
-    });
-    document.getElementById('adminTotalUsers').textContent = data.users.length;
-    let totalDep = 0, totalWith = 0;
-    data.deposits.forEach(d => totalDep += d.amount);
-    data.withdrawals.forEach(w => totalWith += w.amount);
-    document.getElementById('adminTotalDeposits').textContent = '$' + totalDep.toFixed(2);
-    document.getElementById('adminTotalWithdrawals').textContent = '$' + totalWith.toFixed(2);
-}
-
-function adminToggleFreeze(email) {
-    const u = getUser(email);
-    if (!u) return;
-    u.frozen = !u.frozen;
-    saveData();
-    renderAdmin();
-    toast(u.frozen ? 'User frozen' : 'User unfrozen', 'info');
-}
-
-function adminVerify(email) {
-    const u = getUser(email);
-    if (!u) return;
-    u.verified = true;
-    u.creditScore = Math.min(u.creditScore + 30, 900);
-    saveData();
-    renderAdmin();
-    toast('User verified', 'success');
-}
-
-function adminAddBalance(email) {
-    const u = getUser(email);
-    if (!u) return;
-    u.balance += 500;
-    saveData();
-    renderAdmin();
-    toast('Added $500 to user', 'success');
-}
-
-// Live Price Fetch
-async function fetchLivePrices() {
-    try {
-        // Using free Alpha Vantage API (demo key)
-        const symbols = data.stocks.map(s => s.symbol).slice(0, 5).join(',');
-        const response = await fetch(`https://www.alphavantage.co/query?function=BATCH_STOCK_QUOTES&symbols=${symbols}&apikey=demo`);
-        const result = await response.json();
+      async function handleAuth(e) {
+        e.preventDefault();
+        const btn = document.getElementById('authSubmitBtn');
+        btn.disabled = true;
         
-        if (result && result['Stock Quotes']) {
-            result['Stock Quotes'].forEach((quote, index) => {
-                if (data.stocks[index]) {
-                    const newPrice = parseFloat(quote['2. price']);
-                    if (newPrice && newPrice > 0) {
-                        data.stocks[index].previous_price = data.stocks[index].price;
-                        data.stocks[index].price = newPrice;
-                    }
-                }
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        
+        try {
+          if (authMode === 'signup') {
+            const fullName = document.getElementById('fullName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            await apiCall('/auth/v1/signup', {
+              method: 'POST',
+              body: JSON.stringify({
+                email,
+                password,
+                data: { full_name: fullName, phone }
+              })
             });
-            saveData();
-            return true;
+            toast('Account created! Please login.', 'success');
+            switchAuthTab('login');
+            btn.disabled = false;
+            return;
+          }
+          
+          const result = await apiCall('/auth/v1/token?grant_type=password', {
+            method: 'POST',
+            body: JSON.stringify({ email, password })
+          });
+          
+          session = result;
+          localStorage.setItem('smart_trade_session', JSON.stringify(session));
+          await loadUserData();
+          document.getElementById('authScreen').classList.add('hidden');
+          document.getElementById('dashboardScreen').classList.remove('hidden');
+          initDashboard();
+          toast('Welcome back!', 'success');
+        } catch (error) {
+          showNotice('authNotice', error.message, 'error');
+        } finally {
+          btn.disabled = false;
         }
-        return false;
-    } catch (error) {
-        console.log('Live price fetch failed, using simulation');
-        return false;
-    }
-}
+      }
 
-// Simulate price changes
-function simulatePrices() {
-    data.stocks.forEach(s => {
-        const change = (Math.random() - 0.48) * 6;
-        s.previous_price = s.price;
-        s.price = Math.max(10, Math.round((s.price * (1 + change / 100)) * 100) / 100);
-    });
-    saveData();
-}
+      function logout() {
+        session = null;
+        localStorage.removeItem('smart_trade_session');
+        document.getElementById('authScreen').classList.remove('hidden');
+        document.getElementById('dashboardScreen').classList.add('hidden');
+        toast('Logged out successfully', 'info');
+      }
 
-function startPriceSimulation() {
-    if (priceInterval) clearInterval(priceInterval);
-    
-    // Try live API first
-    fetchLivePrices().then(success => {
-        if (!success) {
-            console.log('Using simulated prices');
+      // ==================== DATA LOADING ====================
+      async function loadUserData() {
+        try {
+          const user = await apiCall('/auth/v1/user');
+          userData = user;
+          
+          // Load profile
+          const profiles = await apiCall(`/rest/v1/profiles?select=*&id=eq.${user.id}`);
+          if (profiles.length > 0) {
+            userData.profile = profiles[0];
+          }
+          
+          // Load holdings
+          const holdings = await apiCall(`/rest/v1/positions?select=*&user_id=eq.${user.id}`);
+          userHoldings = holdings || [];
+          
+          // Load trades
+          const trades = await apiCall(`/rest/v1/trades?select=*&user_id=eq.${user.id}&order=created_at.desc&limit=20`);
+          userTrades = trades || [];
+          
+        } catch (error) {
+          console.error('Error loading data:', error);
         }
-    });
-    
-    priceInterval = setInterval(async () => {
-        // Try live API every 30 seconds
-        if (Math.random() < 0.3) {
-            const success = await fetchLivePrices();
-            if (!success) simulatePrices();
-        } else {
-            simulatePrices();
+      }
+
+      async function refreshData() {
+        await loadUserData();
+        updateAllViews();
+        toast('Data refreshed!', 'info');
+      }
+
+      // ==================== MARKET SIMULATION ====================
+      function updateMarketPrices() {
+        marketData = INDIAN_STOCKS.map(stock => {
+          const volatility = (Math.random() - 0.5) * 2;
+          const newPrice = stock.price * (1 + volatility / 100);
+          const change = ((newPrice - stock.price) / stock.price) * 100;
+          return {
+            ...stock,
+            price: +newPrice.toFixed(2),
+            change: +change.toFixed(2),
+            volume: Math.floor(Math.random() * 1000000)
+          };
+        });
+      }
+
+      // ==================== UI UPDATES ====================
+      function updateAllViews() {
+        updateOverview();
+        updateMarketView();
+        updateTradeView();
+        updatePortfolio();
+        updateProfile();
+        
+        document.getElementById('userName').textContent = userData?.profile?.full_name || userData?.email || 'User';
+        document.getElementById('userBalance').textContent = formatCurrency(userData?.profile?.balance || 0);
+      }
+
+      function updateOverview() {
+        const balance = userData?.profile?.balance || 0;
+        const invested = userHoldings.reduce((sum, h) => sum + (h.quantity * h.avg_price), 0);
+        
+        document.getElementById('totalBalance').textContent = formatCurrency(balance);
+        document.getElementById('totalInvested').textContent = formatCurrency(invested);
+        document.getElementById('totalTrades').textContent = userTrades.length;
+        document.getElementById('creditScore').textContent = userData?.profile?.credit_score || 650;
+        
+        const status = userData?.profile?.is_frozen ? '🔒 Frozen' : '🟢 Active';
+        document.getElementById('accountStatus').textContent = status;
+        
+        // Top movers
+        const topMovers = [...marketData]
+          .sort((a, b) => Math.abs(b.change) - Math.abs(a.change))
+          .slice(0, 5);
+        
+        document.getElementById('topMovers').innerHTML = topMovers.map(stock => `
+          <div class="stock-item" onclick="selectStock('${stock.symbol}')">
+            <div class="stock-info">
+              <h4>${stock.symbol}</h4>
+              <span>${stock.name}</span>
+            </div>
+            <div style="text-align: right;">
+              <div>${formatCurrency(stock.price)}</div>
+              <div class="${stock.change >= 0 ? 'price-up' : 'price-down'}">
+                ${stock.change >= 0 ? '+' : ''}${stock.change}%
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function updateMarketView() {
+        document.getElementById('allStocks').innerHTML = marketData.map(stock => `
+          <div class="stock-item" onclick="selectStock('${stock.symbol}')">
+            <div class="stock-info">
+              <h4>${stock.symbol}</h4>
+              <span>${stock.name} • ${stock.sector}</span>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 700;">${formatCurrency(stock.price)}</div>
+              <div class="${stock.change >= 0 ? 'price-up' : 'price-down'}">
+                ${stock.change >= 0 ? '+' : ''}${stock.change}%
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function selectStock(symbol) {
+        const stock = marketData.find(s => s.symbol === symbol);
+        if (!stock) return;
+        
+        switchView('trade');
+        document.getElementById('tradeSymbol').value = symbol;
+        updateTradeInfo();
+        updateChart(symbol);
+      }
+
+      function updateTradeInfo() {
+        const symbol = document.getElementById('tradeSymbol').value;
+        const stock = marketData.find(s => s.symbol === symbol);
+        if (!stock) return;
+        
+        document.getElementById('currentPrice').textContent = formatCurrency(stock.price);
+        calculateTotal();
+      }
+
+      function calculateTotal() {
+        const qty = parseFloat(document.getElementById('tradeQuantity').value) || 0;
+        const symbol = document.getElementById('tradeSymbol').value;
+        const stock = marketData.find(s => s.symbol === symbol);
+        const total = qty * (stock?.price || 0);
+        document.getElementById('tradeTotal').textContent = formatCurrency(total);
+      }
+
+      async function executeTrade(side) {
+        const symbol = document.getElementById('tradeSymbol').value;
+        const quantity = parseFloat(document.getElementById('tradeQuantity').value);
+        
+        if (!quantity || quantity <= 0) {
+          showNotice('tradeNotice', 'Please enter a valid quantity', 'error');
+          return;
         }
         
-        if (currentTab === 'overview') renderOverview();
-        if (currentTab === 'trading') {
-            updateTradePrice();
-            renderHoldings();
-            renderTradeStockTable();
+        const stock = marketData.find(s => s.symbol === symbol);
+        const total = quantity * stock.price;
+        
+        try {
+          await apiCall('/rest/v1/rpc/place_trade', {
+            method: 'POST',
+            body: JSON.stringify({
+              p_symbol: symbol,
+              p_company_name: stock.name,
+              p_side: side,
+              p_quantity: quantity,
+              p_price: stock.price
+            })
+          });
+          
+          toast(`${side.toUpperCase()} order executed: ${quantity} ${symbol} @ ${formatCurrency(stock.price)}`, 'success');
+          document.getElementById('tradeQuantity').value = '';
+          await refreshData();
+        } catch (error) {
+          showNotice('tradeNotice', error.message, 'error');
         }
-        updateDashboard();
-    }, 5000);
-}
+      }
 
-function toast(message, type = 'info') {
-    const container = document.getElementById('toastContainer');
-    const el = document.createElement('div');
-    el.className = 'toast ' + type;
-    el.textContent = message;
-    container.appendChild(el);
-    setTimeout(() => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateX(40px)';
-        setTimeout(() => el.remove(), 300);
-    }, 3500);
-}
+      function updatePortfolio() {
+        document.getElementById('holdingsList').innerHTML = userHoldings.length > 0 
+          ? userHoldings.map(h => `
+            <div class="stock-item">
+              <div class="stock-info">
+                <h4>${h.symbol}</h4>
+                <span>${h.company_name}</span>
+              </div>
+              <div style="text-align: right;">
+                <div>${h.quantity} shares</div>
+                <div style="color: var(--muted); font-size: 12px;">Avg: ${formatCurrency(h.avg_price)}</div>
+              </div>
+            </div>
+          `).join('')
+          : '<div style="text-align: center; padding: 40px; color: var(--muted);">No holdings yet. Start trading!</div>';
+        
+        document.getElementById('transactionHistory').innerHTML = userTrades.length > 0
+          ? userTrades.map(t => `
+            <div class="stock-item">
+              <div class="stock-info">
+                <h4 style="color: ${t.side === 'buy' ? 'var(--green)' : 'var(--red)'}">
+                  ${t.side.toUpperCase()}
+                </h4>
+                <span>${t.symbol} • ${new Date(t.created_at).toLocaleDateString()}</span>
+              </div>
+              <div style="text-align: right;">
+                <div>${t.quantity} @ ${formatCurrency(t.price)}</div>
+                <div style="font-weight: 600;">${formatCurrency(t.total)}</div>
+              </div>
+            </div>
+          `).join('')
+          : '<div style="text-align: center; padding: 40px; color: var(--muted);">No transactions yet</div>';
+      }
 
-// Auth Handlers
-function handleSignup() {
-    const name = document.getElementById('suName').value.trim();
-    const email = document.getElementById('suEmail').value.trim().toLowerCase();
-    const phone = document.getElementById('suPhone').value.trim();
-    const password = document.getElementById('suPassword').value.trim();
-    const errEl = document.getElementById('signupError');
-    const sucEl = document.getElementById('signupSuccess');
-    errEl.style.display = 'none';
-    sucEl.style.display = 'none';
-    
-    if (!name || !email || !phone || !password) {
-        errEl.textContent = 'All fields are required';
-        errEl.style.display = 'block';
-        return;
-    }
-    if (password.length < 6) {
-        errEl.textContent = 'Password must be at least 6 characters';
-        errEl.style.display = 'block';
-        return;
-    }
-    if (getUser(email)) {
-        errEl.textContent = 'Email already registered';
-        errEl.style.display = 'block';
-        return;
-    }
-    
-    const user = {
-        fullName: name,
-        email: email,
-        phone: phone,
-        password: password,
-        balance: 10000,
-        creditScore: 650,
-        verified: false,
-        frozen: false,
-        holdings: {},
-        holdingsAvg: {},
-        upi: '',
-        bank: '',
-        createdAt: new Date().toISOString()
-    };
-    data.users.push(user);
-    saveData();
-    sucEl.textContent = 'Account created! Please login.';
-    sucEl.style.display = 'block';
-    document.getElementById('suName').value = '';
-    document.getElementById('suEmail').value = '';
-    document.getElementById('suPhone').value = '';
-    document.getElementById('suPassword').value = '';
-    setTimeout(() => showPage('pageLogin'), 800);
-    toast('Account created successfully!', 'success');
-}
+      function updateProfile() {
+        const p = userData?.profile || {};
+        document.getElementById('profileInfo').innerHTML = `
+          <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--surface2); border-radius: 8px;">
+            <span>Name:</span> <strong>${p.full_name || '-'}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--surface2); border-radius: 8px;">
+            <span>Email:</span> <strong>${userData?.email || '-'}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--surface2); border-radius: 8px;">
+            <span>Phone:</span> <strong>${p.phone || '-'}</strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--surface2); border-radius: 8px;">
+            <span>Status:</span> <strong style="color: ${p.is_frozen ? 'var(--red)' : 'var(--green)'}">
+              ${p.is_frozen ? 'Frozen' : 'Active'}
+            </strong>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 12px; background: var(--surface2); border-radius: 8px;">
+            <span>Credit Score:</span> <strong>${p.credit_score || 650}</strong>
+          </div>
+        `;
+      }
 
-function handleLogin() {
-    const email = document.getElementById('liEmail').value.trim().toLowerCase();
-    const password = document.getElementById('liPassword').value.trim();
-    const errEl = document.getElementById('loginError');
-    errEl.style.display = 'none';
-    
-    if (!email || !password) {
-        errEl.textContent = 'Please fill in all fields';
-        errEl.style.display = 'block';
-        return;
-    }
-    const user = getUser(email);
-    if (!user || user.password !== password) {
-        errEl.textContent = 'Invalid email or password';
-        errEl.style.display = 'block';
-        return;
-    }
-    if (user.frozen) {
-        errEl.textContent = 'Account is frozen. Contact admin.';
-        errEl.style.display = 'block';
-        return;
-    }
-    currentUser = user;
-    sessionStorage.setItem('smartSession', user.email);
-    showDashboard();
-    toast('Welcome back, ' + (user.fullName || user.email) + '!', 'success');
-}
-
-function handleLogout() {
-    sessionStorage.removeItem('smartSession');
-    currentUser = null;
-    if (priceInterval) clearInterval(priceInterval);
-    showPage('pageLogin');
-    toast('Logged out', 'info');
-}
-
-// Init
-function init() {
-    if (!data.users) data.users = [];
-    if (!data.stocks) data.stocks = DEFAULT_STOCKS.map(s => ({ ...s }));
-    if (!data.transactions) data.transactions = [];
-    if (!data.deposits) data.deposits = [];
-    if (!data.withdrawals) data.withdrawals = [];
-    saveData();
-
-    const session = sessionStorage.getItem('smartSession');
-    if (session) {
-        const user = data.users.find(u => u.email === session);
-        if (user) {
-            currentUser = user;
-            showDashboard();
-            return;
+      function updateChart(symbol) {
+        const stock = marketData.find(s => s.symbol === symbol);
+        if (!stock) return;
+        
+        document.getElementById('chartSymbol').textContent = symbol;
+        
+        // Generate chart data
+        const labels = [];
+        const prices = [];
+        let price = stock.price * 0.95;
+        for (let i = 0; i < 24; i++) {
+          labels.push(`${i}:00`);
+          price = price * (1 + (Math.random() - 0.5) * 0.02);
+          prices.push(price.toFixed(2));
         }
-    }
-    showPage('pageSignUp');
+        
+        const ctx = document.getElementById('priceChart').getContext('2d');
+        if (priceChart) priceChart.destroy();
+        
+        priceChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels,
+            datasets: [{
+              label: symbol,
+              data: prices,
+              borderColor: stock.change >= 0 ? '#0ecb81' : '#f6465d',
+              backgroundColor: stock.change >= 0 ? 'rgba(14,203,129,0.1)' : 'rgba(246,70,93,0.1)',
+              fill: true,
+              tension: 0.4
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { display: false },
+              y: { grid: { color: 'rgba(255,255,255,0.05)' } }
+            }
+          }
+        });
+      }
 
-    document.getElementById('signupBtn').addEventListener('click', handleSignup);
-    document.getElementById('loginBtn').addEventListener('click', handleLogin);
-    document.getElementById('gotoLogin').addEventListener('click', e => { e.preventDefault(); showPage('pageLogin'); });
-    document.getElementById('gotoSignup').addEventListener('click', e => { e.preventDefault(); showPage('pageSignUp'); });
-    document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+      async function submitDeposit() {
+        const amount = parseFloat(document.getElementById('depositAmount').value);
+        if (!amount || amount <= 0) {
+          showNotice('depositNotice', 'Enter valid amount', 'error');
+          return;
+        }
+        
+        try {
+          await apiCall('/rest/v1/rpc/create_deposit_request', {
+            method: 'POST',
+            body: JSON.stringify({
+              p_amount: amount,
+              p_utr: document.getElementById('depositUTR').value,
+              p_note: 'Deposit request'
+            })
+          });
+          toast('Deposit request submitted!', 'success');
+          document.getElementById('depositAmount').value = '';
+          document.getElementById('depositUTR').value = '';
+        } catch (error) {
+          showNotice('depositNotice', error.message, 'error');
+        }
+      }
 
-    document.querySelectorAll('.sidebar .nav-item').forEach(el => {
-        el.addEventListener('click', () => navigateTab(el.dataset.tab));
-    });
+      async function submitWithdrawal() {
+        const amount = parseFloat(document.getElementById('withdrawAmount').value);
+        if (!amount || amount <= 0) {
+          showNotice('withdrawNotice', 'Enter valid amount', 'error');
+          return;
+        }
+        
+        try {
+          await apiCall('/rest/v1/rpc/create_withdrawal_request', {
+            method: 'POST',
+            body: JSON.stringify({ p_amount: amount })
+          });
+          toast('Withdrawal request submitted!', 'success');
+          document.getElementById('withdrawAmount').value = '';
+        } catch (error) {
+          showNotice('withdrawNotice', error.message, 'error');
+        }
+      }
 
-    document.getElementById('depositMethod').addEventListener('change', function() { toggleDepositFields(this.value); });
-    document.getElementById('withdrawMethod').addEventListener('change', function() { toggleWithdrawFields(this.value); });
-    document.getElementById('depositBtn').addEventListener('click', handleDeposit);
-    document.getElementById('withdrawBtn').addEventListener('click', handleWithdraw);
-    document.getElementById('tradeStockSelect').addEventListener('change', updateTradePrice);
-    document.getElementById('tradeQty').addEventListener('input', updateTradeTotal);
-    document.getElementById('tradeBuyBtn').addEventListener('click', () => handleTrade('buy'));
-    document.getElementById('tradeSellBtn').addEventListener('click', () => handleTrade('sell'));
-    document.getElementById('verifyBtn').addEventListener('click', handleVerify);
-    document.getElementById('freezeToggleBtn').addEventListener('click', handleFreezeToggle);
-    document.getElementById('scoreUpBtn').addEventListener('click', () => adjustScore(10));
-    document.getElementById('scoreDownBtn').addEventListener('click', () => adjustScore(-10));
-    document.getElementById('balanceAddBtn').addEventListener('click', () => adjustBalance(100));
-    document.getElementById('balanceSubBtn').addEventListener('click', () => adjustBalance(-100));
+      // ==================== VIEW SWITCHING ====================
+      function switchView(view) {
+        document.getElementById('viewTitle').textContent = 
+          view === 'overview' ? '📊 Overview' :
+          view === 'market' ? '📈 Market' :
+          view === 'trade' ? '💹 Trade' :
+          view === 'portfolio' ? '📋 Portfolio' :
+          view === 'wallet' ? '💳 Wallet' : '👤 Profile';
+        
+        ['overview', 'market', 'trade', 'portfolio', 'wallet', 'profile'].forEach(v => {
+          document.getElementById(`${v}View`).classList.toggle('hidden', v !== view);
+        });
+        
+        document.querySelectorAll('.sidebar-nav button').forEach(btn => {
+          btn.classList.toggle('active', btn.textContent.toLowerCase().includes(view));
+        });
+        
+        if (view === 'market') updateChart('RELIANCE');
+        if (view === 'trade') populateTradeSymbols();
+      }
 
-    startPriceSimulation();
-}
+      function populateTradeSymbols() {
+        const select = document.getElementById('tradeSymbol');
+        select.innerHTML = marketData.map(s => 
+          `<option value="${s.symbol}">${s.symbol} - ${s.name}</option>`
+        ).join('');
+        updateTradeInfo();
+      }
 
-window.navigateTab = navigateTab;
-window.setDeposit = setDeposit;
-window.quickTrade = quickTrade;
-window.adminToggleFreeze = adminToggleFreeze;
-window.adminVerify = adminVerify;
-window.adminAddBalance = adminAddBalance;
+      function filterStocks(query) {
+        const filtered = marketData.filter(s => 
+          s.symbol.toLowerCase().includes(query.toLowerCase()) ||
+          s.name.toLowerCase().includes(query.toLowerCase())
+        );
+        
+        document.getElementById('allStocks').innerHTML = filtered.map(stock => `
+          <div class="stock-item" onclick="selectStock('${stock.symbol}')">
+            <div class="stock-info">
+              <h4>${stock.symbol}</h4>
+              <span>${stock.name} • ${stock.sector}</span>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-weight: 700;">${formatCurrency(stock.price)}</div>
+              <div class="${stock.change >= 0 ? 'price-up' : 'price-down'}">
+                ${stock.change >= 0 ? '+' : ''}${stock.change}%
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
 
-document.addEventListener('DOMContentLoaded', init);
-</script>
-</body>
+      // ==================== INITIALIZATION ====================
+      function initDashboard() {
+        updateMarketPrices();
+        updateAllViews();
+        updateChart('RELIANCE');
+        populateTradeSymbols();
+        
+        // Update time
+        setInterval(() => {
+          document.getElementById('currentTime').textContent = new Date().toLocaleString();
+        }, 1000);
+        
+        // Update prices periodically
+        setInterval(() => {
+          updateMarketPrices();
+          updateAllViews();
+        }, 5000);
+        
+        // Load deposit details
+        loadDepositDetails();
+      }
+
+      async function loadDepositDetails() {
+        try {
+          const settings = await apiCall('/rest/v1/platform_settings?select=*&id=eq.1');
+          if (settings.length > 0) {
+            const s = settings[0];
+            document.getElementById('depositDetails').innerHTML = `
+              <div>UPI: <strong>${s.deposit_upi || 'N/A'}</strong></div>
+              <div>Bank: <strong>${s.bank_name || 'N/A'}</strong></div>
+              <div>Account: <strong>${s.bank_account_number || 'N/A'}</strong></div>
+              <div>IFSC: <strong>${s.ifsc || 'N/A'}</strong></div>
+            `;
+          }
+        } catch (e) {
+          console.log('Could not load deposit details');
+        }
+      }
+
+      // Check for existing session
+      const savedSession = localStorage.getItem('smart_trade_session');
+      if (savedSession) {
+        try {
+          session = JSON.parse(savedSession);
+          loadUserData().then(() => {
+            document.getElementById('authScreen').classList.add('hidden');
+            document.getElementById('dashboardScreen').classList.remove('hidden');
+            initDashboard();
+          }).catch(() => {
+            localStorage.removeItem('smart_trade_session');
+          });
+        } catch (e) {
+          localStorage.removeItem('smart_trade_session');
+        }
+      }
+
+      // Initialize market data
+      updateMarketPrices();
+    </script>
+  </body>
 </html>
