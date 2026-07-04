@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cryptex Pro | Trading Dashboard</title>
+    <title>Cryptex Pro | Advanced Trading Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -21,47 +21,54 @@
             --blue: #3772ff;
             --purple: #a855f7;
             --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 20px rgba(0,0,0,0.3);
+            --transition: 0.2s ease;
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
+        * { margin:0; padding:0; box-sizing:border-box; }
         body {
             font-family: 'Inter', sans-serif;
             background: var(--bg);
             color: var(--text);
             font-size: 14px;
+            line-height: 1.5;
             min-height: 100vh;
+            overflow-x: hidden;
         }
-
         .hidden { display: none !important; }
+        ::-webkit-scrollbar { width:5px; height:5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius:5px; }
 
-        /* Auth Screen */
+        /* Auth */
         .auth-screen {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #0a0d14, #111620, #0a0d14);
+            background: radial-gradient(circle at 30% 20%, rgba(240,185,11,0.08), transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(14,203,129,0.06), transparent 50%),
+                        var(--bg);
             padding: 20px;
         }
-
         .auth-card {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 40px;
             width: 100%;
             max-width: 440px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
         }
-
         .auth-logo {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 32px;
             font-size: 32px;
             font-weight: 900;
-            color: var(--gold);
+            letter-spacing: -1px;
         }
-
+        .auth-logo span { color: var(--gold); }
         .auth-tabs {
             display: flex;
             background: var(--surface2);
@@ -69,7 +76,6 @@
             margin-bottom: 24px;
             padding: 4px;
         }
-
         .auth-tab {
             flex: 1;
             padding: 12px;
@@ -80,27 +86,26 @@
             border: none;
             background: transparent;
             color: var(--text2);
-            transition: 0.3s;
+            transition: var(--transition);
             font-size: 14px;
         }
-
         .auth-tab.active {
             background: var(--gold);
             color: #000;
+            font-weight: 700;
         }
-
         .form-group {
             margin-bottom: 16px;
         }
-
         .form-group label {
             display: block;
             margin-bottom: 6px;
             color: var(--text2);
             font-size: 12px;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-
         .form-group input {
             width: 100%;
             padding: 12px 16px;
@@ -110,13 +115,12 @@
             color: var(--text);
             font-size: 14px;
             outline: none;
-            transition: 0.3s;
+            transition: var(--transition);
         }
-
         .form-group input:focus {
             border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(240,185,11,0.1);
         }
-
         .btn {
             width: 100%;
             padding: 14px;
@@ -125,88 +129,130 @@
             font-weight: 700;
             font-size: 15px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: var(--transition);
+            letter-spacing: 0.3px;
         }
-
         .btn-gold {
             background: linear-gradient(135deg, var(--gold), #ffd75d);
             color: #000;
         }
-
         .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(240,185,11,0.3); }
         .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
-
         .alert {
             padding: 12px;
             border-radius: 10px;
             margin-top: 12px;
             font-size: 13px;
             display: none;
+            animation: fadeIn 0.3s;
         }
-
         .alert.show { display: block; }
         .alert-error { background: rgba(246,70,93,0.1); color: var(--red); border: 1px solid rgba(246,70,93,0.3); }
         .alert-success { background: rgba(14,203,129,0.1); color: var(--green); border: 1px solid rgba(14,203,129,0.3); }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:translateY(0); } }
 
-        /* Dashboard */
+        /* Dashboard Layout */
         .dashboard {
             display: flex;
             height: 100vh;
+            overflow: hidden;
         }
-
         .sidebar {
-            width: 250px;
+            width: 260px;
             background: var(--surface);
             border-right: 1px solid var(--border);
             display: flex;
             flex-direction: column;
+            flex-shrink: 0;
+            z-index: 10;
         }
-
         .sidebar-header {
-            padding: 20px;
+            padding: 24px 20px;
             border-bottom: 1px solid var(--border);
             font-size: 20px;
             font-weight: 800;
-            color: var(--gold);
+            letter-spacing: -0.5px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
-
+        .sidebar-header .logo-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--gold), #ffd75d);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #000;
+        }
         .sidebar-nav {
             flex: 1;
-            padding: 12px;
+            padding: 16px 12px;
             overflow-y: auto;
         }
-
+        .nav-section { margin-bottom: 16px; }
+        .nav-section-title {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text3);
+            padding: 8px 12px;
+            font-weight: 700;
+        }
         .nav-item {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 12px 16px;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
             cursor: pointer;
-            border-radius: 10px;
+            transition: var(--transition);
             color: var(--text2);
-            transition: 0.2s;
-            margin-bottom: 4px;
             font-weight: 500;
+            margin-bottom: 2px;
             border: none;
             background: transparent;
             width: 100%;
             text-align: left;
             font-size: 13px;
         }
-
         .nav-item:hover { background: rgba(255,255,255,0.03); color: var(--text); }
         .nav-item.active { background: var(--gold); color: #000; font-weight: 700; }
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+        }
+        .user-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: var(--surface2);
+            border-radius: var(--radius);
+        }
+        .user-avatar {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--blue), var(--purple));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .user-info { min-width: 0; }
+        .user-name { font-weight: 600; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .user-email { font-size: 11px; color: var(--text3); }
 
+        /* Main Content */
         .main-content {
             flex: 1;
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
-
         .topbar {
             background: var(--surface);
             border-bottom: 1px solid var(--border);
@@ -214,97 +260,142 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
-
+        .topbar-left { display: flex; align-items: center; gap: 20px; }
+        .page-title { font-size: 18px; font-weight: 700; }
+        .breadcrumb { font-size: 12px; color: var(--text3); }
+        .breadcrumb span { color: var(--text2); }
+        .topbar-right { display: flex; align-items: center; gap: 12px; }
         .badge {
-            padding: 6px 12px;
-            border-radius: 8px;
+            padding: 6px 14px;
+            border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-
-        .badge-gold { background: rgba(240,185,11,0.15); color: var(--gold); }
-        .badge-green { background: rgba(14,203,129,0.15); color: var(--green); }
-        .badge-red { background: rgba(246,70,93,0.15); color: var(--red); }
-
+        .badge-gold { background: rgba(240,185,11,0.12); color: var(--gold); border: 1px solid rgba(240,185,11,0.2); }
+        .badge-green { background: rgba(14,203,129,0.12); color: var(--green); border: 1px solid rgba(14,203,129,0.2); }
+        .badge-red { background: rgba(246,70,93,0.12); color: var(--red); border: 1px solid rgba(246,70,93,0.2); }
+        .btn-icon {
+            width: 38px; height: 38px;
+            border-radius: var(--radius-sm);
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 18px;
+            color: var(--text2);
+            position: relative;
+        }
+        .btn-icon:hover { background: var(--border); color: var(--text); }
+        .notification-dot {
+            position: absolute;
+            top: 8px; right: 8px;
+            width: 8px; height: 8px;
+            background: var(--red);
+            border-radius: 50%;
+            border: 2px solid var(--surface2);
+        }
         .content-area {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
+            padding: 24px;
         }
 
-        .grid { display: grid; gap: 16px; }
-        .grid-4 { grid-template-columns: repeat(4, 1fr); }
-        .grid-2 { grid-template-columns: 1fr 1fr; }
-
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
         .stat-card {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 20px;
-            transition: 0.3s;
+            padding: 20px 24px;
+            position: relative;
+            overflow: hidden;
             cursor: pointer;
+            transition: var(--transition);
         }
-
         .stat-card:hover {
             border-color: var(--border);
             transform: translateY(-2px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow);
         }
-
         .stat-icon {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 18px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
         }
-
         .stat-icon.gold { background: rgba(240,185,11,0.15); color: var(--gold); }
         .stat-icon.green { background: rgba(14,203,129,0.15); color: var(--green); }
         .stat-icon.blue { background: rgba(55,114,255,0.15); color: var(--blue); }
         .stat-icon.purple { background: rgba(168,85,247,0.15); color: var(--purple); }
-
+        .stat-change {
+            font-size: 12px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        .stat-change.up { background: rgba(14,203,129,0.15); color: var(--green); }
+        .stat-change.down { background: rgba(246,70,93,0.15); color: var(--red); }
         .stat-value {
-            font-size: 28px;
+            font-size: 30px;
             font-weight: 800;
+            letter-spacing: -1px;
             margin-bottom: 4px;
         }
-
         .stat-label {
             font-size: 11px;
             color: var(--text3);
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+        .sparkline {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 60px;
+            opacity: 0.3;
         }
 
+        /* Cards */
         .card {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             overflow: hidden;
         }
-
         .card-header {
             padding: 16px 20px;
             border-bottom: 1px solid var(--border);
-            font-weight: 700;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-weight: 700;
         }
-
         .card-body { padding: 20px; }
         .card-body.no-pad { padding: 0; }
 
+        /* Market Table */
         table {
             width: 100%;
             border-collapse: collapse;
         }
-
         th {
             padding: 12px 20px;
             text-align: left;
@@ -312,69 +403,61 @@
             font-weight: 700;
             color: var(--text3);
             text-transform: uppercase;
+            letter-spacing: 1px;
             background: var(--surface2);
             border-bottom: 1px solid var(--border);
         }
-
         td {
             padding: 14px 20px;
             border-bottom: 1px solid rgba(30,41,59,0.5);
             font-size: 13px;
         }
-
-        tr:hover td { background: rgba(255,255,255,0.01); }
-
+        tr:hover td { background: rgba(255,255,255,0.02); }
         .coin-info {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
         }
-
         .coin-icon {
-            width: 36px;
-            height: 36px;
+            width: 36px; height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 800;
             font-size: 16px;
+            flex-shrink: 0;
         }
-
         .coin-icon.btc { background: rgba(247,147,26,0.2); color: #f7931a; }
         .coin-icon.eth { background: rgba(98,126,234,0.2); color: #627eea; }
         .coin-icon.sol { background: rgba(153,69,255,0.2); color: #9945ff; }
-
-        .price-up { color: var(--green); }
-        .price-down { color: var(--red); }
-
-        .btn-sm {
-            padding: 6px 14px;
+        .price-up { color: var(--green); font-weight: 600; }
+        .price-down { color: var(--red); font-weight: 600; }
+        .btn-trade {
+            padding: 6px 16px;
             border-radius: 6px;
             font-size: 11px;
             font-weight: 700;
             cursor: pointer;
             border: none;
-            transition: 0.2s;
             background: rgba(14,203,129,0.15);
             color: var(--green);
+            transition: var(--transition);
         }
+        .btn-trade:hover { background: rgba(14,203,129,0.25); }
 
-        .btn-sm:hover { background: rgba(14,203,129,0.25); }
-
+        /* Trade Panel */
         .trade-box {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
         }
-
         .trade-tabs {
             display: flex;
             background: var(--surface2);
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             padding: 3px;
         }
-
         .trade-tab {
             flex: 1;
             padding: 10px;
@@ -385,42 +468,50 @@
             border: none;
             background: transparent;
             color: var(--text2);
-            transition: 0.2s;
+            transition: var(--transition);
+            font-size: 14px;
         }
-
         .trade-tab.active.buy { background: var(--green); color: #000; }
         .trade-tab.active.sell { background: var(--red); color: #fff; }
-
         .input-group {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
         }
-
         .input-group label {
             font-size: 11px;
             color: var(--text3);
             font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
-
-        .input-group input {
-            padding: 10px 14px;
+        .input-with-suffix {
+            position: relative;
+        }
+        .input-with-suffix input {
+            width: 100%;
+            padding: 12px 50px 12px 14px;
             background: var(--surface2);
             border: 1px solid var(--border);
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             color: var(--text);
             font-size: 14px;
             outline: none;
         }
-
-        .input-group input:focus { border-color: var(--gold); }
-
+        .input-suffix {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text3);
+            font-weight: 600;
+            font-size: 13px;
+        }
         .pct-btns {
             display: flex;
             gap: 4px;
+            margin-top: 4px;
         }
-
         .pct-btn {
             flex: 1;
             padding: 6px;
@@ -431,23 +522,23 @@
             cursor: pointer;
             font-size: 10px;
             font-weight: 600;
-            transition: 0.2s;
+            transition: var(--transition);
         }
-
         .pct-btn:hover { border-color: var(--gold); color: var(--gold); }
-
         .order-btn {
-            padding: 12px;
+            padding: 14px;
             border: none;
-            border-radius: 8px;
+            border-radius: var(--radius-sm);
             font-weight: 700;
             cursor: pointer;
-            font-size: 14px;
+            font-size: 15px;
+            transition: var(--transition);
         }
-
         .order-btn.buy { background: var(--green); color: #000; }
         .order-btn.sell { background: var(--red); color: #fff; }
+        .order-btn:hover { filter: brightness(1.1); }
 
+        /* Toast */
         .toast-container {
             position: fixed;
             top: 20px;
@@ -457,7 +548,6 @@
             flex-direction: column;
             gap: 8px;
         }
-
         .toast {
             padding: 14px 20px;
             border-radius: 10px;
@@ -465,28 +555,28 @@
             font-size: 13px;
             animation: slideIn 0.3s ease;
             box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+            max-width: 400px;
         }
-
-        @keyframes slideIn {
-            from { transform: translateX(100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
+        @keyframes slideIn { from { transform: translateX(100px); opacity:0; } to { transform: translateX(0); opacity:1; } }
         .toast-success { background: #0a2e1f; color: #a3f0d0; border: 1px solid rgba(14,203,129,0.3); }
         .toast-error { background: #2e0a15; color: #fec1cb; border: 1px solid rgba(246,70,93,0.3); }
         .toast-info { background: #0a1a2e; color: #b8d4fe; border: 1px solid rgba(55,114,255,0.3); }
 
-        @media (max-width: 1024px) {
-            .grid-4 { grid-template-columns: repeat(2, 1fr); }
-            .grid-2 { grid-template-columns: 1fr; }
+        @media (max-width: 1200px) {
+            .stats-grid { grid-template-columns: repeat(2,1fr); }
         }
-
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
+            .sidebar { width: 70px; }
+            .sidebar .logo-text, .sidebar .nav-section-title, .sidebar .nav-item span,
+            .sidebar .user-info, .sidebar .nav-badge { display: none; }
+            .sidebar .nav-item { justify-content: center; padding: 12px; }
+            .sidebar .nav-icon { margin: 0; }
+        }
+        @media (max-width: 600px) {
             .dashboard { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; }
-            .sidebar-nav { display: flex; flex-direction: row; overflow-x: auto; }
-            .nav-item { white-space: nowrap; }
-            .grid-4 { grid-template-columns: 1fr; }
+            .sidebar { width: 100%; height: auto; flex-direction: row; }
+            .sidebar-nav { display: flex; flex-direction: row; }
+            .stats-grid { grid-template-columns: 1fr; }
             .topbar { flex-direction: column; gap: 10px; }
         }
     </style>
@@ -497,7 +587,7 @@
     <!-- Auth Screen -->
     <div id="authScreen" class="auth-screen">
         <div class="auth-card">
-            <div class="auth-logo">◈ CryptexPro</div>
+            <div class="auth-logo">◈ Cryptex<span>Pro</span></div>
             <div class="auth-tabs">
                 <button class="auth-tab active" onclick="switchAuthTab('login')">Login</button>
                 <button class="auth-tab" onclick="switchAuthTab('register')">Register</button>
@@ -534,61 +624,95 @@
     <!-- Dashboard -->
     <div id="dashboardScreen" class="dashboard hidden">
         <aside class="sidebar">
-            <div class="sidebar-header">◈ CryptexPro</div>
+            <div class="sidebar-header">
+                <div class="logo-icon">◈</div>
+                <span class="logo-text">CryptexPro</span>
+            </div>
             <nav class="sidebar-nav">
-                <button class="nav-item active" onclick="switchView('overview')">📊 Overview</button>
-                <button class="nav-item" onclick="switchView('market')">📈 Market</button>
-                <button class="nav-item" onclick="switchView('trade')">💹 Trade</button>
-                <button class="nav-item" onclick="switchView('portfolio')">💼 Portfolio</button>
-                <button class="nav-item" onclick="switchView('wallet')">💰 Wallet</button>
+                <div class="nav-section">
+                    <div class="nav-section-title">Main</div>
+                    <button class="nav-item active" onclick="switchView('overview')">
+                        <span class="nav-icon">📊</span> <span>Overview</span>
+                    </button>
+                    <button class="nav-item" onclick="switchView('market')">
+                        <span class="nav-icon">📈</span> <span>Market</span>
+                    </button>
+                    <button class="nav-item" onclick="switchView('trade')">
+                        <span class="nav-icon">💹</span> <span>Trade</span>
+                    </button>
+                </div>
+                <div class="nav-section">
+                    <div class="nav-section-title">Account</div>
+                    <button class="nav-item" onclick="switchView('portfolio')">
+                        <span class="nav-icon">💼</span> <span>Portfolio</span>
+                    </button>
+                    <button class="nav-item" onclick="switchView('wallet')">
+                        <span class="nav-icon">💰</span> <span>Wallet</span>
+                    </button>
+                </div>
             </nav>
-            <div style="padding:16px;">
-                <button class="btn" style="background:var(--red);color:#fff;" onclick="logout()">🚪 Logout</button>
+            <div class="sidebar-footer">
+                <div class="user-card">
+                    <div class="user-avatar" id="sidebarAvatar">U</div>
+                    <div class="user-info">
+                        <div class="user-name" id="sidebarName">User</div>
+                        <div class="user-email" id="sidebarEmail">email</div>
+                    </div>
+                </div>
+                <button class="btn" style="margin-top:12px; background: var(--red); color:#fff;" onclick="logout()">🚪 Logout</button>
             </div>
         </aside>
 
         <main class="main-content">
             <header class="topbar">
-                <div>
-                    <span style="font-weight:700;" id="pageTitle">📊 Overview</span>
-                    <span class="badge badge-green" style="margin-left:10px;">● Live</span>
+                <div class="topbar-left">
+                    <div class="page-title" id="pageTitle">📊 Overview</div>
+                    <div class="breadcrumb"><span>Dashboard</span> / <span id="breadcrumbView">Overview</span></div>
                 </div>
-                <div style="display:flex;align-items:center;gap:12px;">
-                    <span style="color:var(--text2);">👤 <strong id="displayName">-</strong></span>
-                    <span class="badge badge-gold">💰 <strong id="displayBalance">₹0</strong></span>
-                    <span class="badge" id="verifyBadge" style="background:rgba(246,70,93,0.15);color:var(--red);">⏳</span>
-                    <button class="btn btn-gold" style="width:auto;padding:8px 16px;" onclick="refreshAll()">🔄</button>
+                <div class="topbar-right">
+                    <div class="badge badge-gold">💰 <strong id="topBalance">₹0.00</strong></div>
+                    <div class="badge" id="verifyBadge" style="background:rgba(246,70,93,0.12);color:var(--red);">⏳ Unverified</div>
+                    <button class="btn-icon" onclick="refreshAll()">🔄</button>
+                    <button class="btn-icon">
+                        🔔
+                        <span class="notification-dot"></span>
+                    </button>
                 </div>
             </header>
 
             <div class="content-area">
                 <!-- Overview -->
                 <div id="overviewView">
-                    <div class="grid grid-4" style="margin-bottom:20px;">
+                    <div class="stats-grid">
                         <div class="stat-card">
                             <div class="stat-icon gold">💰</div>
-                            <div class="stat-value" style="color:var(--gold);" id="ovBalance">₹0</div>
+                            <span class="stat-change up">+12.5%</span>
+                            <div class="stat-value" style="color:var(--gold);" id="ovBalance">₹0.00</div>
                             <div class="stat-label">Total Balance</div>
+                            <svg class="sparkline" viewBox="0 0 200 60"><polyline points="0,50 20,45 40,48 60,40 80,42 100,30 120,35 140,25 160,28 180,15 200,20" fill="none" stroke="#f0b90b" stroke-width="2"/></svg>
                         </div>
                         <div class="stat-card">
                             <div class="stat-icon green">📈</div>
+                            <span class="stat-change up">+8.3%</span>
                             <div class="stat-value" style="color:var(--green);" id="ovTrades">0</div>
                             <div class="stat-label">Total Trades</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-icon blue">💎</div>
-                            <div class="stat-value" style="color:var(--blue);" id="ovLoan">₹0</div>
-                            <div class="stat-label">Loan Amount</div>
+                            <span class="stat-change down">-3.1%</span>
+                            <div class="stat-value" style="color:var(--blue);" id="ovLoan">₹0.00</div>
+                            <div class="stat-label">Active Loan</div>
                         </div>
                         <div class="stat-card">
                             <div class="stat-icon purple">⭐</div>
-                            <div class="stat-value" style="color:var(--purple);" id="ovStatus">-</div>
+                            <span class="stat-change up">Active</span>
+                            <div class="stat-value" style="color:var(--purple);" id="ovStatus">none</div>
                             <div class="stat-label">Loan Status</div>
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header">📈 Live Market</div>
-                        <div class="card-body" id="marketOverview"></div>
+                        <div class="card-header">📈 Live Market Overview</div>
+                        <div class="card-body" id="marketOverviewList"></div>
                     </div>
                 </div>
 
@@ -597,11 +721,11 @@
                     <div class="card">
                         <div class="card-header">
                             <span>All Markets</span>
-                            <input type="text" placeholder="Search..." style="padding:8px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);width:200px;" oninput="filterMarket(this.value)">
+                            <input type="text" placeholder="Search..." style="padding:8px 14px; background:var(--surface2); border:1px solid var(--border); border-radius:8px; color:var(--text); width:240px;" oninput="filterMarket(this.value)">
                         </div>
                         <div class="card-body no-pad">
                             <table>
-                                <thead><tr><th>Pair</th><th>Price</th><th>24h Change</th><th>Action</th></tr></thead>
+                                <thead><tr><th>Pair</th><th>Last Price</th><th>24h Change</th><th>Action</th></tr></thead>
                                 <tbody id="marketTable"></tbody>
                             </table>
                         </div>
@@ -610,15 +734,15 @@
 
                 <!-- Trade -->
                 <div id="tradeView" class="hidden">
-                    <div class="grid grid-2">
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
                         <div class="card">
                             <div class="card-header">
                                 <span>Chart</span>
-                                <select id="tradeSymbol" style="padding:8px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:8px;" onchange="updateTradeInfo()"></select>
+                                <select id="tradeSymbol" style="padding:8px; background:var(--surface2); border:1px solid var(--border); color:var(--text); border-radius:8px;" onchange="updateTradeInfo()"></select>
                             </div>
                             <div class="card-body">
-                                <div style="font-size:36px;font-weight:800;margin:10px 0;" id="currentPrice">₹0</div>
-                                <canvas id="priceChart" height="250"></canvas>
+                                <div style="font-size:36px; font-weight:800; margin-bottom:12px;" id="currentPrice">₹0.00</div>
+                                <canvas id="priceChart" height="280"></canvas>
                             </div>
                         </div>
                         <div class="card">
@@ -626,22 +750,25 @@
                             <div class="card-body">
                                 <div class="trade-box">
                                     <div class="trade-tabs">
-                                        <button class="trade-tab active buy" onclick="setTradeMode('buy')">Buy</button>
-                                        <button class="trade-tab sell" onclick="setTradeMode('sell')">Sell</button>
+                                        <button class="trade-tab active buy" onclick="setTradeMode('buy')">🟢 Buy</button>
+                                        <button class="trade-tab sell" onclick="setTradeMode('sell')">🔴 Sell</button>
                                     </div>
                                     <div class="input-group">
                                         <label>Quantity</label>
-                                        <input type="number" id="tradeQty" placeholder="0.00" step="0.01" oninput="calcTotal()">
-                                    </div>
-                                    <div class="pct-btns">
-                                        <button class="pct-btn" onclick="setPct(25)">25%</button>
-                                        <button class="pct-btn" onclick="setPct(50)">50%</button>
-                                        <button class="pct-btn" onclick="setPct(75)">75%</button>
-                                        <button class="pct-btn" onclick="setPct(100)">100%</button>
+                                        <div class="input-with-suffix">
+                                            <input type="number" id="tradeQty" placeholder="0.00" step="0.0001" oninput="calcTotal()">
+                                            <span class="input-suffix" id="tradeSuffix">BTC</span>
+                                        </div>
+                                        <div class="pct-btns">
+                                            <button class="pct-btn" onclick="setPct(25)">25%</button>
+                                            <button class="pct-btn" onclick="setPct(50)">50%</button>
+                                            <button class="pct-btn" onclick="setPct(75)">75%</button>
+                                            <button class="pct-btn" onclick="setPct(100)">100%</button>
+                                        </div>
                                     </div>
                                     <div class="input-group">
                                         <label>Total</label>
-                                        <input type="text" id="tradeTotal" readonly>
+                                        <input type="text" id="tradeTotal" readonly style="background:var(--surface2); padding:12px;">
                                     </div>
                                     <button class="order-btn buy" id="orderBtn" onclick="executeTrade()">Buy</button>
                                     <div class="alert" id="tradeAlert"></div>
@@ -654,10 +781,10 @@
                 <!-- Portfolio -->
                 <div id="portfolioView" class="hidden">
                     <div class="card">
-                        <div class="card-header">Holdings</div>
+                        <div class="card-header">Your Holdings</div>
                         <div class="card-body no-pad">
                             <table>
-                                <thead><tr><th>Symbol</th><th>Quantity</th><th>Buy Price</th><th>Current</th><th>P&L</th></tr></thead>
+                                <thead><tr><th>Symbol</th><th>Quantity</th><th>Avg Price</th><th>Current</th><th>P&L</th></tr></thead>
                                 <tbody id="holdingsTable"></tbody>
                             </table>
                         </div>
@@ -666,26 +793,26 @@
 
                 <!-- Wallet -->
                 <div id="walletView" class="hidden">
-                    <div class="grid grid-2">
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
                         <div class="card">
-                            <div class="card-header">Deposit</div>
+                            <div class="card-header">Deposit Funds</div>
                             <div class="card-body">
                                 <div class="input-group">
                                     <label>Amount (₹)</label>
                                     <input type="number" id="depositAmt" placeholder="500">
                                 </div>
-                                <button class="btn btn-gold" style="margin-top:12px;" onclick="deposit()">Deposit</button>
+                                <button class="btn btn-gold" style="margin-top:16px;" onclick="deposit()">Deposit</button>
                                 <div class="alert" id="depositAlert"></div>
                             </div>
                         </div>
                         <div class="card">
-                            <div class="card-header">Withdraw</div>
+                            <div class="card-header">Withdraw Funds</div>
                             <div class="card-body">
                                 <div class="input-group">
                                     <label>Amount (₹)</label>
                                     <input type="number" id="withdrawAmt" placeholder="1000">
                                 </div>
-                                <button class="btn" style="margin-top:12px;background:var(--red);color:#fff;" onclick="withdraw()">Withdraw</button>
+                                <button class="btn" style="margin-top:16px; background:var(--red); color:#fff;" onclick="withdraw()">Withdraw</button>
                                 <div class="alert" id="withdrawAlert"></div>
                             </div>
                         </div>
@@ -695,23 +822,23 @@
         </main>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script>
-        // ==================== CONFIG ====================
+        // ==================== CONFIGURATION ====================
         const SUPABASE_URL = 'https://qajdgueavfofwtavmkxi.supabase.co';
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFhamRndWVhdmZvZnd0YXZta3hpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTY4MDY0MDAsImV4cCI6MjAzMjM4MjQwMH0.iJhVXqWQlGqPqHqQlGqPqHqQlGqPqHqQlGqPqHqQ';
+        const SUPABASE_KEY = 'sb_publishable_NqFN_vK1dp64ZrI94MZsEA_DcTFMRof';
 
         // ==================== STATE ====================
         let authMode = 'login';
         let currentUser = null;
         let tradeMode = 'buy';
         let chart = null;
-        let holdings = [];
+        let holdings = []; // Local holdings storage
 
-        // Market data
+        // Real-time market data (simulated)
         const stocks = [
-            { symbol: 'BTC/INR', name: 'Bitcoin', price: 4500000, change: 2.45, icon: '₿', class: 'btc' },
-            { symbol: 'ETH/INR', name: 'Ethereum', price: 280000, change: -1.32, icon: '⟠', class: 'eth' },
+            { symbol: 'BTC/INR', name: 'Bitcoin', price: 4580000, change: 2.45, icon: '₿', class: 'btc' },
+            { symbol: 'ETH/INR', name: 'Ethereum', price: 284000, change: -1.32, icon: '⟠', class: 'eth' },
             { symbol: 'SOL/INR', name: 'Solana', price: 15420, change: 5.67, icon: '◎', class: 'sol' },
             { symbol: 'RELIANCE', name: 'Reliance Ind.', price: 2950, change: 1.55, icon: '₹', class: 'btc' },
             { symbol: 'TCS', name: 'TCS Ltd', price: 3820, change: -0.32, icon: '💻', class: 'eth' },
@@ -723,15 +850,13 @@
         // ==================== UTILS ====================
         function $(id) { return document.getElementById(id); }
         function fmt(n) { return '₹' + Number(n).toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2}); }
-
         function toast(msg, type='info') {
             const t = document.createElement('div');
             t.className = `toast toast-${type}`;
             t.textContent = msg;
             $('toastContainer').appendChild(t);
-            setTimeout(() => { t.style.opacity='0'; t.style.transition='0.3s'; setTimeout(() => t.remove(),300); }, 3000);
+            setTimeout(() => { t.style.opacity='0'; t.style.transition='0.3s'; setTimeout(() => t.remove(),300); }, 3500);
         }
-
         function showAlert(id, msg, type) {
             const el = $(id);
             if (!el) return;
@@ -740,66 +865,75 @@
             setTimeout(() => el.classList.remove('show'), 4000);
         }
 
-        // ==================== API ====================
-        async function api(path, options={}) {
+        // ==================== SUPABASE API ====================
+        async function api(path, options = {}) {
             const headers = {
                 'apikey': SUPABASE_KEY,
                 'Content-Type': 'application/json',
                 'Prefer': 'return=representation',
                 ...options.headers
             };
-            const res = await fetch(SUPABASE_URL + path, {...options, headers});
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.message || data.msg || 'Request failed');
+            const response = await fetch(SUPABASE_URL + path, { ...options, headers });
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || data.msg || 'Request failed');
+            }
             return data;
         }
 
         // ==================== AUTH ====================
         function switchAuthTab(tab) {
             authMode = tab;
-            document.querySelectorAll('.auth-tab').forEach(b => {
-                b.classList.toggle('active', b.textContent.toLowerCase().includes(tab));
+            document.querySelectorAll('.auth-tab').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase().includes(tab));
             });
-            $('registerFields').classList.toggle('hidden', tab==='login');
-            $('authBtn').textContent = tab==='login' ? 'Login' : 'Register';
+            $('registerFields').classList.toggle('hidden', tab === 'login');
+            $('authBtn').textContent = tab === 'login' ? 'Login' : 'Register';
+            showAlert('authAlert', '', '');
         }
 
         async function handleAuth(e) {
             e.preventDefault();
             const btn = $('authBtn');
             btn.disabled = true;
-
             const email = $('email').value.trim();
             const password = $('password').value.trim();
 
             try {
                 if (authMode === 'register') {
                     const slot = Math.floor(Math.random() * 90000) + 10000;
-                    const newUser = {
-                        slot, email, password,
+                    const userData = {
+                        slot,
+                        email,
+                        password,
                         full_name: $('fullName').value.trim(),
                         id_name: $('idName').value.trim(),
                         id_number: $('idNumber').value.trim(),
-                        balance: 0, loan_status: 'none', loan_amount: 0, verified: false
+                        balance: 0,
+                        loan_status: 'none',
+                        loan_amount: 0,
+                        verified: false
                     };
-                    await api('/rest/v1/users', {method:'POST', body:JSON.stringify(newUser)});
+                    await api('/rest/v1/users', { method:'POST', body: JSON.stringify(userData) });
                     toast('Registration successful! Please login.', 'success');
                     switchAuthTab('login');
                     btn.disabled = false;
                     return;
                 }
 
+                // Login
                 const users = await api(`/rest/v1/users?email=eq.${encodeURIComponent(email)}&select=*`);
                 if (users.length === 0) throw new Error('User not found');
                 if (users[0].password !== password) throw new Error('Invalid password');
 
                 currentUser = users[0];
                 localStorage.setItem('cryptex_user', JSON.stringify(currentUser));
+                loadHoldingsFromStorage();
 
                 $('authScreen').classList.add('hidden');
                 $('dashboardScreen').classList.remove('hidden');
                 initDashboard();
-                toast(`Welcome ${currentUser.full_name || currentUser.email}!`, 'success');
+                toast(`Welcome, ${currentUser.full_name || currentUser.email}!`, 'success');
             } catch (error) {
                 showAlert('authAlert', error.message, 'error');
             } finally {
@@ -812,55 +946,74 @@
             localStorage.removeItem('cryptex_user');
             $('dashboardScreen').classList.add('hidden');
             $('authScreen').classList.remove('hidden');
-            toast('Logged out', 'info');
+            toast('Logged out successfully', 'info');
         }
 
-        // ==================== DASHBOARD ====================
+        function loadHoldingsFromStorage() {
+            const stored = localStorage.getItem('cryptex_holdings_' + currentUser.id);
+            holdings = stored ? JSON.parse(stored) : [];
+        }
+
+        function saveHoldingsToStorage() {
+            localStorage.setItem('cryptex_holdings_' + currentUser.id, JSON.stringify(holdings));
+        }
+
+        // ==================== DASHBOARD INIT ====================
         async function initDashboard() {
-            await loadUser();
-            updateAll();
-            populateSymbols();
+            await loadUserData();
+            updateAllViews();
+            populateTradeSymbols();
             updateTradeInfo();
             updateChart();
-            setInterval(updatePrices, 3000);
-            setInterval(updateAll, 5000);
+            setInterval(updateMarketPrices, 3000);
+            setInterval(updateAllViews, 5000);
         }
 
-        async function loadUser() {
+        async function loadUserData() {
             try {
                 const users = await api(`/rest/v1/users?email=eq.${encodeURIComponent(currentUser.email)}&select=*`);
                 if (users.length > 0) {
                     currentUser = users[0];
                     localStorage.setItem('cryptex_user', JSON.stringify(currentUser));
                 }
-            } catch(e) { console.error(e); }
+            } catch (e) { console.error(e); }
         }
 
-        function updatePrices() {
+        function updateMarketPrices() {
             stocks.forEach(s => {
-                s.price = +(s.price * (1 + (Math.random()-0.5)*0.02)).toFixed(2);
-                s.change = +(s.change + (Math.random()-0.5)*0.3).toFixed(2);
+                const volatility = (Math.random() - 0.5) * 1.5;
+                s.price = +(s.price * (1 + volatility/100)).toFixed(2);
+                s.change = +(s.change + (Math.random() - 0.5) * 0.3).toFixed(2);
             });
         }
 
-        function updateAll() {
-            $('displayName').textContent = currentUser?.full_name || currentUser?.email || '-';
-            $('displayBalance').textContent = fmt(currentUser?.balance || 0);
+        function updateAllViews() {
+            if (!currentUser) return;
+            // Topbar
+            $('topBalance').textContent = fmt(currentUser.balance || 0);
             const vb = $('verifyBadge');
-            vb.textContent = currentUser?.verified ? '✅ Verified' : '⏳ Unverified';
-            vb.style.background = currentUser?.verified ? 'rgba(14,203,129,0.15)' : 'rgba(246,70,93,0.15)';
-            vb.style.color = currentUser?.verified ? 'var(--green)' : 'var(--red)';
+            vb.textContent = currentUser.verified ? '✅ Verified' : '⏳ Unverified';
+            vb.style.background = currentUser.verified ? 'rgba(14,203,129,0.12)' : 'rgba(246,70,93,0.12)';
+            vb.style.color = currentUser.verified ? 'var(--green)' : 'var(--red)';
+            $('sidebarName').textContent = currentUser.full_name || 'User';
+            $('sidebarEmail').textContent = currentUser.email;
+            $('sidebarAvatar').textContent = (currentUser.full_name?.[0] || 'U').toUpperCase();
 
-            $('ovBalance').textContent = fmt(currentUser?.balance || 0);
-            $('ovTrades').textContent = holdings.length;
-            $('ovLoan').textContent = fmt(currentUser?.loan_amount || 0);
-            $('ovStatus').textContent = currentUser?.loan_status || 'none';
+            // Overview
+            $('ovBalance').textContent = fmt(currentUser.balance);
+            $('ovTrades').textContent = holdings.reduce((sum, h) => sum + h.qty, 0);
+            $('ovLoan').textContent = fmt(currentUser.loan_amount || 0);
+            $('ovStatus').textContent = currentUser.loan_status || 'none';
 
-            $('marketOverview').innerHTML = stocks.slice(0,6).map(s => `
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:14px;border-bottom:1px solid var(--border);">
-                    <div style="display:flex;align-items:center;gap:10px;">
-                        <div class="coin-icon ${s.class||'btc'}">${s.icon||'●'}</div>
-                        <div><strong>${s.symbol}</strong><br><small style="color:var(--text3);">${s.name}</small></div>
+            // Market overview list
+            $('marketOverviewList').innerHTML = stocks.slice(0,6).map(s => `
+                <div style="display:flex; justify-content:space-between; align-items:center; padding:14px; border-bottom:1px solid var(--border);">
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <div class="coin-icon ${s.class}">${s.icon}</div>
+                        <div>
+                            <div style="font-weight:600;">${s.symbol}</div>
+                            <div style="font-size:11px; color:var(--text3);">${s.name}</div>
+                        </div>
                     </div>
                     <div style="text-align:right;">
                         <div style="font-weight:600;">${fmt(s.price)}</div>
@@ -869,33 +1022,38 @@
                 </div>
             `).join('');
 
+            // Market table
             $('marketTable').innerHTML = stocks.map(s => `
                 <tr>
                     <td>
                         <div class="coin-info">
-                            <div class="coin-icon ${s.class||'btc'}">${s.icon||'●'}</div>
-                            <div><strong>${s.symbol}</strong><br><small style="color:var(--text3);">${s.name}</small></div>
+                            <div class="coin-icon ${s.class}">${s.icon}</div>
+                            <div>
+                                <div style="font-weight:600;">${s.symbol}</div>
+                                <div style="font-size:11px; color:var(--text3);">${s.name}</div>
+                            </div>
                         </div>
                     </td>
                     <td style="font-weight:600;">${fmt(s.price)}</td>
                     <td class="${s.change>=0?'price-up':'price-down'}">${s.change>=0?'+':''}${s.change}%</td>
-                    <td><button class="btn-sm" onclick="goTrade('${s.symbol}')">Trade</button></td>
+                    <td><button class="btn-trade" onclick="goToTrade('${s.symbol}')">Trade</button></td>
                 </tr>
             `).join('');
 
+            // Portfolio holdings
             if (holdings.length === 0) {
-                $('holdingsTable').innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text3);">No holdings</td></tr>';
+                $('holdingsTable').innerHTML = '<tr><td colspan="5" style="text-align:center; padding:40px; color:var(--text3);">No holdings yet</td></tr>';
             } else {
                 $('holdingsTable').innerHTML = holdings.map(h => {
                     const stock = stocks.find(s => s.symbol === h.symbol);
-                    const cp = stock?.price || h.price;
-                    const pnl = (cp - h.price) * h.qty;
+                    const currentPrice = stock ? stock.price : h.avgPrice;
+                    const pnl = (currentPrice - h.avgPrice) * h.qty;
                     return `
                         <tr>
                             <td><strong>${h.symbol}</strong></td>
                             <td>${h.qty}</td>
-                            <td>${fmt(h.price)}</td>
-                            <td>${fmt(cp)}</td>
+                            <td>${fmt(h.avgPrice)}</td>
+                            <td>${fmt(currentPrice)}</td>
                             <td class="${pnl>=0?'price-up':'price-down'}">${pnl>=0?'+':''}${fmt(pnl)}</td>
                         </tr>
                     `;
@@ -903,12 +1061,13 @@
             }
         }
 
-        // ==================== TRADE ====================
-        function populateSymbols() {
-            $('tradeSymbol').innerHTML = stocks.map(s => `<option value="${s.symbol}">${s.symbol} - ${s.name}</option>`).join('');
+        // ==================== TRADING ====================
+        function populateTradeSymbols() {
+            const select = $('tradeSymbol');
+            select.innerHTML = stocks.map(s => `<option value="${s.symbol}">${s.symbol} - ${s.name}</option>`).join('');
         }
 
-        function goTrade(symbol) {
+        function goToTrade(symbol) {
             switchView('trade');
             $('tradeSymbol').value = symbol;
             updateTradeInfo();
@@ -917,11 +1076,9 @@
 
         function setTradeMode(mode) {
             tradeMode = mode;
-            document.querySelectorAll('.trade-tab').forEach(t => {
-                t.classList.remove('active', 'buy', 'sell');
-            });
-            const btn = mode === 'buy' ? document.querySelector('.trade-tab:first-child') : document.querySelector('.trade-tab:last-child');
-            btn.classList.add('active', mode);
+            document.querySelectorAll('.trade-tab').forEach(t => t.classList.remove('active','buy','sell'));
+            const active = mode === 'buy' ? document.querySelector('.trade-tab.buy') : document.querySelector('.trade-tab.sell');
+            active.classList.add('active', mode);
             $('orderBtn').className = `order-btn ${mode}`;
             $('orderBtn').textContent = mode === 'buy' ? 'Buy' : 'Sell';
         }
@@ -929,20 +1086,22 @@
         function updateTradeInfo() {
             const symbol = $('tradeSymbol').value;
             const stock = stocks.find(s => s.symbol === symbol);
-            if (stock) $('currentPrice').textContent = fmt(stock.price);
+            if (!stock) return;
+            $('currentPrice').textContent = fmt(stock.price);
+            $('tradeSuffix').textContent = symbol.split('/')[0] || symbol;
             calcTotal();
         }
 
         function calcTotal() {
             const qty = parseFloat($('tradeQty').value) || 0;
             const stock = stocks.find(s => s.symbol === $('tradeSymbol').value);
-            $('tradeTotal').value = fmt(qty * (stock?.price || 0));
+            $('tradeTotal').value = fmt(qty * (stock ? stock.price : 0));
         }
 
         function setPct(pct) {
             const stock = stocks.find(s => s.symbol === $('tradeSymbol').value);
             if (!stock || tradeMode !== 'buy') return;
-            const maxQty = (currentUser?.balance || 0) / stock.price;
+            const maxQty = (currentUser.balance || 0) / stock.price;
             $('tradeQty').value = (maxQty * pct / 100).toFixed(4);
             calcTotal();
         }
@@ -951,36 +1110,45 @@
             const symbol = $('tradeSymbol').value;
             const qty = parseFloat($('tradeQty').value);
             const stock = stocks.find(s => s.symbol === symbol);
-
-            if (!qty || qty <= 0) { showAlert('tradeAlert', 'Enter valid quantity', 'error'); return; }
+            if (!qty || qty <= 0) return showAlert('tradeAlert', 'Enter valid quantity', 'error');
             const total = qty * stock.price;
 
-            if (tradeMode === 'buy' && total > (currentUser?.balance || 0)) {
-                showAlert('tradeAlert', 'Insufficient balance', 'error');
-                return;
+            if (tradeMode === 'buy' && total > (currentUser.balance || 0)) {
+                return showAlert('tradeAlert', 'Insufficient balance', 'error');
             }
 
             try {
                 const newBalance = tradeMode === 'buy' ? currentUser.balance - total : currentUser.balance + total;
+                // Update balance in Supabase
                 await api(`/rest/v1/users?email=eq.${encodeURIComponent(currentUser.email)}`, {
-                    method:'PATCH', body:JSON.stringify({balance:+newBalance.toFixed(2)})
+                    method: 'PATCH',
+                    body: JSON.stringify({ balance: +newBalance.toFixed(2) })
                 });
 
+                // Update local holdings
                 if (tradeMode === 'buy') {
                     const existing = holdings.find(h => h.symbol === symbol);
                     if (existing) {
-                        existing.price = ((existing.price * existing.qty) + total) / (existing.qty + qty);
+                        existing.avgPrice = ((existing.avgPrice * existing.qty) + total) / (existing.qty + qty);
                         existing.qty += qty;
                     } else {
-                        holdings.push({symbol, qty, price: stock.price});
+                        holdings.push({ symbol, qty, avgPrice: stock.price });
+                    }
+                } else {
+                    // Sell logic: reduce or remove holding (assume enough quantity)
+                    const existing = holdings.find(h => h.symbol === symbol);
+                    if (existing) {
+                        existing.qty -= qty;
+                        if (existing.qty <= 0) holdings = holdings.filter(h => h.symbol !== symbol);
                     }
                 }
+                saveHoldingsToStorage();
 
-                await loadUser();
-                updateAll();
+                await loadUserData(); // refresh local user data
+                updateAllViews();
                 $('tradeQty').value = '';
                 toast(`${tradeMode.toUpperCase()} ${qty} ${symbol} @ ${fmt(stock.price)}`, 'success');
-            } catch(error) {
+            } catch (error) {
                 showAlert('tradeAlert', error.message, 'error');
             }
         }
@@ -988,107 +1156,118 @@
         // ==================== WALLET ====================
         async function deposit() {
             const amount = parseFloat($('depositAmt').value);
-            if (!amount || amount <= 0) { showAlert('depositAlert', 'Enter valid amount', 'error'); return; }
+            if (!amount || amount <= 0) return showAlert('depositAlert', 'Enter valid amount', 'error');
             try {
-                const newBalance = (currentUser.balance||0) + amount;
+                const newBalance = (currentUser.balance || 0) + amount;
                 await api(`/rest/v1/users?email=eq.${encodeURIComponent(currentUser.email)}`, {
-                    method:'PATCH', body:JSON.stringify({balance:+newBalance.toFixed(2)})
+                    method: 'PATCH', body: JSON.stringify({ balance: +newBalance.toFixed(2) })
                 });
-                await loadUser();
-                updateAll();
+                await loadUserData();
+                updateAllViews();
                 $('depositAmt').value = '';
                 toast(`Deposited ${fmt(amount)}`, 'success');
-            } catch(error) { showAlert('depositAlert', error.message, 'error'); }
+            } catch (e) { showAlert('depositAlert', e.message, 'error'); }
         }
 
         async function withdraw() {
             const amount = parseFloat($('withdrawAmt').value);
-            if (!amount || amount <= 0) { showAlert('withdrawAlert', 'Enter valid amount', 'error'); return; }
-            if (amount > (currentUser?.balance||0)) { showAlert('withdrawAlert', 'Insufficient balance', 'error'); return; }
+            if (!amount || amount <= 0) return showAlert('withdrawAlert', 'Enter valid amount', 'error');
+            if (amount > (currentUser.balance || 0)) return showAlert('withdrawAlert', 'Insufficient balance', 'error');
             try {
                 const newBalance = currentUser.balance - amount;
                 await api(`/rest/v1/users?email=eq.${encodeURIComponent(currentUser.email)}`, {
-                    method:'PATCH', body:JSON.stringify({balance:+newBalance.toFixed(2)})
+                    method: 'PATCH', body: JSON.stringify({ balance: +newBalance.toFixed(2) })
                 });
-                await loadUser();
-                updateAll();
+                await loadUserData();
+                updateAllViews();
                 $('withdrawAmt').value = '';
                 toast(`Withdrawn ${fmt(amount)}`, 'success');
-            } catch(error) { showAlert('withdrawAlert', error.message, 'error'); }
+            } catch (e) { showAlert('withdrawAlert', e.message, 'error'); }
         }
 
-        // ==================== CHART ====================
+        // ==================== CHART (Chart.js) ====================
         function updateChart() {
             const symbol = $('tradeSymbol').value;
             const stock = stocks.find(s => s.symbol === symbol);
             if (!stock) return;
-
-            const labels = [], prices = [];
+            const labels = [];
+            const prices = [];
             let p = stock.price * 0.9;
-            for (let i=0; i<24; i++) {
-                labels.push(i+':00');
-                p *= (1 + (Math.random()-0.5)*0.03);
+            for (let i = 0; i < 30; i++) {
+                labels.push(i);
+                p *= (1 + (Math.random() - 0.5) * 0.03);
                 prices.push(p.toFixed(2));
             }
-
-            const ctx = $('priceChart');
-            if (!ctx) return;
+            const ctx = $('priceChart').getContext('2d');
             if (chart) chart.destroy();
-
             chart = new Chart(ctx, {
-                type:'line',
-                data:{labels, datasets:[{
-                    data:prices,
-                    borderColor:stock.change>=0?'#0ecb81':'#f6465d',
-                    backgroundColor:stock.change>=0?'rgba(14,203,129,0.1)':'rgba(246,70,93,0.1)',
-                    fill:true,tension:0.4,pointRadius:0,borderWidth:2
-                }]},
-                options:{
-                    responsive:true,maintainAspectRatio:false,
-                    plugins:{legend:{display:false}},
-                    scales:{x:{display:false},y:{grid:{color:'rgba(255,255,255,0.05)'}}}
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        data: prices,
+                        borderColor: stock.change >= 0 ? '#0ecb81' : '#f6465d',
+                        backgroundColor: stock.change >= 0 ? 'rgba(14,203,129,0.1)' : 'rgba(246,70,93,0.1)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 0,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { display: false },
+                        y: { grid: { color: 'rgba(255,255,255,0.05)' } }
+                    }
                 }
             });
         }
 
-        // ==================== VIEWS ====================
+        // ==================== VIEW SWITCHING ====================
         function switchView(view) {
-            const titles = {overview:'📊 Overview',market:'📈 Market',trade:'💹 Trade',portfolio:'💼 Portfolio',wallet:'💰 Wallet'};
-            $('pageTitle').textContent = titles[view] || view;
-            ['overview','market','trade','portfolio','wallet'].forEach(v => $(v+'View').classList.toggle('hidden', v!==view));
+            const titles = { overview: '📊 Overview', market: '📈 Market', trade: '💹 Trade', portfolio: '💼 Portfolio', wallet: '💰 Wallet' };
+            $('pageTitle').textContent = titles[view];
+            $('breadcrumbView').textContent = view.charAt(0).toUpperCase() + view.slice(1);
+            ['overview','market','trade','portfolio','wallet'].forEach(v => $(v+'View').classList.toggle('hidden', v !== view));
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.toggle('active', item.textContent.toLowerCase().includes(view));
             });
-            if (view==='trade') { updateTradeInfo(); updateChart(); }
+            if (view === 'trade') { updateTradeInfo(); updateChart(); }
         }
 
-        function filterMarket(q) {
-            const filtered = stocks.filter(s => s.symbol.toLowerCase().includes(q.toLowerCase()) || s.name.toLowerCase().includes(q.toLowerCase()));
+        function filterMarket(query) {
+            const filtered = stocks.filter(s => s.symbol.toLowerCase().includes(query.toLowerCase()) || s.name.toLowerCase().includes(query.toLowerCase()));
             $('marketTable').innerHTML = filtered.map(s => `
                 <tr>
-                    <td><div class="coin-info"><div class="coin-icon ${s.class||'btc'}">${s.icon||'●'}</div><div><strong>${s.symbol}</strong><br><small style="color:var(--text3);">${s.name}</small></div></div></td>
+                    <td><div class="coin-info"><div class="coin-icon ${s.class}">${s.icon}</div><div><strong>${s.symbol}</strong><br><small style="color:var(--text3);">${s.name}</small></div></div></td>
                     <td style="font-weight:600;">${fmt(s.price)}</td>
                     <td class="${s.change>=0?'price-up':'price-down'}">${s.change>=0?'+':''}${s.change}%</td>
-                    <td><button class="btn-sm" onclick="goTrade('${s.symbol}')">Trade</button></td>
+                    <td><button class="btn-trade" onclick="goToTrade('${s.symbol}')">Trade</button></td>
                 </tr>
             `).join('');
         }
 
-        async function refreshAll() { await loadUser(); updateAll(); toast('Refreshed', 'info'); }
+        async function refreshAll() { await loadUserData(); updateAllViews(); toast('Dashboard refreshed', 'info'); }
 
         // ==================== INIT ====================
-        const saved = localStorage.getItem('cryptex_user');
-        if (saved) {
+        const savedUser = localStorage.getItem('cryptex_user');
+        if (savedUser) {
             try {
-                currentUser = JSON.parse(saved);
+                currentUser = JSON.parse(savedUser);
+                loadHoldingsFromStorage();
                 $('authScreen').classList.add('hidden');
                 $('dashboardScreen').classList.remove('hidden');
                 initDashboard();
-            } catch(e) { localStorage.removeItem('cryptex_user'); }
+            } catch (e) {
+                localStorage.removeItem('cryptex_user');
+            }
         }
 
-        updatePrices();
-        setInterval(updatePrices, 3000);
+        // Initial price update loop
+        setInterval(updateMarketPrices, 3000);
     </script>
 </body>
 </html>
