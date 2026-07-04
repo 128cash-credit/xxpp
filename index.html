@@ -3,259 +3,237 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SmartEX - India's Best Exchange</title>
+<title>SmartEX - India's Advanced Exchange</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://s3.tradingview.com/tv.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-:root {
-  --bg-primary:#0b0e11;--bg-secondary:#1e2329;
-  --border:#2b3139;--green:#0ecb81;--red:#f6465d;--yellow:#f0b90b;
-}
 *{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg-primary);color:#eaecef;font-family:'Segoe UI',sans-serif;}
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-track{background:#0b0e11;}
+:root{
+  --bg:#0b0e11;--card:#1e2329;--border:#2b3139;
+  --green:#0ecb81;--red:#f6465d;--yellow:#f0b90b;
+  --text:#eaecef;--muted:#848e9c;
+}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',sans-serif;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-thumb{background:#2b3139;border-radius:2px;}
-.card{background:#1e2329;border:1px solid #2b3139;border-radius:8px;}
-.btn-green{background:#0ecb81;color:#000;font-weight:700;border:none;cursor:pointer;border-radius:6px;transition:all 0.2s;}
-.btn-green:hover{background:#0ab56e;}
-.btn-red{background:#f6465d;color:#fff;font-weight:700;border:none;cursor:pointer;border-radius:6px;transition:all 0.2s;}
-.btn-red:hover{background:#d93a50;}
-.btn-yellow{background:#f0b90b;color:#000;font-weight:700;border:none;cursor:pointer;border-radius:6px;transition:all 0.2s;}
-.btn-yellow:hover{background:#d4a109;}
-input,select{background:#2b3139;border:1px solid #363c45;color:#eaecef;border-radius:6px;padding:10px 14px;outline:none;width:100%;font-size:14px;}
-input:focus,select:focus{border-color:#f0b90b;box-shadow:0 0 0 2px rgba(240,185,11,0.15);}
-input::placeholder{color:#5e6673;}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;align-items:center;justify-content:center;}
-.modal.active{display:flex;}
-.tab-btn{background:none;border:none;color:#848e9c;cursor:pointer;padding:10px 16px;border-bottom:2px solid transparent;font-weight:600;font-size:13px;transition:all 0.2s;}
-.tab-btn.active{color:#f0b90b;border-bottom-color:#f0b90b;}
-.green{color:#0ecb81;}.red{color:#f6465d;}.yellow{color:#f0b90b;}
-.ticker-wrap{overflow:hidden;white-space:nowrap;background:#161a1e;border-bottom:1px solid #2b3139;padding:6px 0;}
-.ticker-inner{display:inline-block;animation:ticker 35s linear infinite;}
-@keyframes ticker{0%{transform:translateX(100vw);}100%{transform:translateX(-100%);}}
-.glass{background:rgba(30,35,41,0.97);backdrop-filter:blur(10px);}
-.nav-link{color:#848e9c;cursor:pointer;padding:5px 10px;border-radius:4px;transition:all 0.2s;font-size:14px;}
-.nav-link:hover{color:#eaecef;background:#2b3139;}
-.badge{background:#f6465d;color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;display:flex;align-items:center;justify-content:center;position:absolute;top:-4px;right:-6px;}
-.stock-item{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;cursor:pointer;transition:all 0.15s;border-bottom:1px solid #1a1d22;}
-.stock-item:hover{background:#2b3139;}
-.order-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:3px 8px;font-size:11px;cursor:pointer;position:relative;}
-.order-row:hover{background:rgba(255,255,255,0.04);}
-.depth-fill{position:absolute;top:0;bottom:0;opacity:0.12;}
-.toast{position:fixed;top:80px;right:20px;z-index:99999;padding:12px 20px;border-radius:8px;font-weight:600;font-size:13px;animation:slideIn 0.3s ease;max-width:320px;}
-@keyframes slideIn{from{transform:translateX(120px);opacity:0;}to{transform:translateX(0);opacity:1;}}
-.page{display:none;}.page.active{display:flex;flex-direction:column;}
-.auth-bg{background:linear-gradient(135deg,#0b0e11 0%,#131720 50%,#0b0e11 100%);}
-.input-group{margin-bottom:14px;}
-.input-group label{display:block;font-size:12px;color:#848e9c;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
-.section-card{background:#1e2329;border:1px solid #2b3139;border-radius:10px;padding:20px;margin-bottom:16px;}
-.stat-card{background:#1e2329;border:1px solid #2b3139;border-radius:10px;padding:16px;}
+.card{background:var(--card);border:1px solid var(--border);border-radius:10px;}
+.btn-y{background:var(--yellow);color:#000;font-weight:800;border:none;cursor:pointer;border-radius:8px;transition:.2s;}
+.btn-y:hover{background:#d4a109;}
+.btn-g{background:var(--green);color:#000;font-weight:800;border:none;cursor:pointer;border-radius:8px;transition:.2s;}
+.btn-g:hover{background:#0ab56e;}
+.btn-r{background:var(--red);color:#fff;font-weight:800;border:none;cursor:pointer;border-radius:8px;transition:.2s;}
+.btn-r:hover{background:#d93a50;}
+inp,select{background:#2b3139;border:1px solid #363c45;color:var(--text);border-radius:6px;padding:10px 14px;width:100%;font-size:14px;outline:none;transition:.2s;}
+inp:focus,select:focus{border-color:var(--yellow);box-shadow:0 0 0 2px #f0b90b22;}
+inp::placeholder{color:#5e6673;}
+.modal{display:none;position:fixed;inset:0;background:#000000dd;z-index:9999;align-items:center;justify-content:center;padding:16px;}
+.modal.on{display:flex;}
+.tab{background:none;border:none;color:var(--muted);cursor:pointer;padding:10px 20px;border-bottom:2px solid transparent;font-weight:700;font-size:13px;transition:.2s;}
+.tab.on{color:var(--yellow);border-bottom-color:var(--yellow);}
+.pg{display:none;}.pg.on{display:flex;flex-direction:column;}
+.ticker-wrap{overflow:hidden;white-space:nowrap;background:#111418;border-bottom:1px solid var(--border);padding:5px 0;}
+.ticker-in{display:inline-block;animation:tick 40s linear infinite;}
+@keyframes tick{0%{transform:translateX(100vw);}100%{transform:translateX(-100%);}}
+.nav-link{color:var(--muted);cursor:pointer;padding:6px 10px;border-radius:6px;font-size:13px;font-weight:600;transition:.2s;}
+.nav-link:hover,.nav-link.on{color:var(--text);background:#2b3139;}
+.stock-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;cursor:pointer;border-bottom:1px solid #1a1d22;transition:.15s;}
+.stock-row:hover{background:#2b3139;}
+.ob-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:2px 8px;font-size:11px;position:relative;cursor:pointer;}
+.ob-row:hover{background:#ffffff08;}
+.ob-bar{position:absolute;top:0;bottom:0;opacity:.12;}
+.badge{background:var(--red);color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;display:flex;align-items:center;justify-content:center;position:absolute;top:-4px;right:-6px;}
+.toast{position:fixed;top:75px;right:16px;z-index:99999;padding:12px 18px;border-radius:8px;font-weight:700;font-size:13px;animation:tin .3s ease;max-width:300px;}
+@keyframes tin{from{transform:translateX(100px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.lbl{display:block;font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.grp{margin-bottom:14px;}
+.g{color:var(--green);}.r{color:var(--red);}.y{color:var(--yellow);}
+.glass{background:rgba(30,35,41,.97);backdrop-filter:blur(12px);}
+@media(max-width:768px){
+  #sidebar{display:none!important;}
+  #right-panel{display:none!important;}
+}
 </style>
 </head>
 <body>
 
-<!-- ======== AUTH PAGE ======== -->
-<div id="auth-page" class="auth-bg min-h-screen flex items-center justify-center p-4">
-  <div class="w-full max-w-md">
-    <div class="text-center mb-8">
-      <div class="text-5xl font-black text-yellow-400 mb-2">⚡ SmartEX</div>
-      <div class="text-gray-400 text-sm">India's Advanced Stock Exchange Platform</div>
+<!-- ========== AUTH PAGE ========== -->
+<div id="auth-page" style="min-height:100vh;background:linear-gradient(135deg,#0b0e11,#131a2e,#0b0e11);display:flex;align-items:center;justify-content:center;padding:16px;">
+  <div style="width:100%;max-width:440px;">
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="font-size:2.5rem;font-weight:900;color:#f0b90b;">⚡ SmartEX</div>
+      <div style="color:#848e9c;font-size:13px;margin-top:4px;">India's Most Advanced Stock Exchange</div>
     </div>
-    <div class="card p-8">
-      <div class="flex mb-6 border-b border-gray-700">
-        <button class="tab-btn active flex-1" id="tab-login" onclick="switchAuth('login')">Login</button>
-        <button class="tab-btn flex-1" id="tab-register" onclick="switchAuth('register')">Register</button>
+    <div class="card" style="padding:32px;">
+      <div style="display:flex;border-bottom:1px solid #2b3139;margin-bottom:24px;">
+        <button class="tab on" id="tl" onclick="swAuth('login')" style="flex:1;">Login</button>
+        <button class="tab" id="tr" onclick="swAuth('reg')" style="flex:1;">Register</button>
       </div>
 
-      <!-- LOGIN -->
-      <div id="form-login">
-        <div class="input-group">
-          <label>Email Address</label>
-          <input type="email" id="l-email" placeholder="yourname@email.com">
-        </div>
-        <div class="input-group">
-          <label>Password</label>
-          <input type="password" id="l-pass" placeholder="Enter password">
-        </div>
-        <button onclick="doLogin()" class="btn-yellow w-full py-3 text-base mt-2" style="border-radius:8px;">
-          <i class="fas fa-sign-in-alt mr-2"></i>Login to SmartEX
+      <!-- LOGIN FORM -->
+      <div id="f-login">
+        <div class="grp"><label class="lbl">Email Address</label><inp type="email" id="le" placeholder="yourname@email.com"></div>
+        <div class="grp"><label class="lbl">Password</label><inp type="password" id="lp" placeholder="Your password"></div>
+        <button class="btn-y" style="width:100%;padding:14px;font-size:15px;margin-top:8px;" onclick="doLogin()">
+          <i class="fas fa-sign-in-alt" style="margin-right:8px;"></i>Login to SmartEX
         </button>
+        <div id="l-err" style="margin-top:10px;text-align:center;font-size:13px;"></div>
       </div>
 
-      <!-- REGISTER -->
-      <div id="form-register" class="hidden">
-        <div class="input-group">
-          <label>Full Name</label>
-          <input type="text" id="r-name" placeholder="Full name as per Aadhaar">
-        </div>
-        <div class="input-group">
-          <label>Email Address</label>
-          <input type="email" id="r-email" placeholder="yourname@email.com">
-        </div>
-        <div class="input-group">
-          <label>Phone Number</label>
-          <input type="tel" id="r-phone" placeholder="+91 9876543210">
-        </div>
-        <div class="input-group">
-          <label>Aadhaar Number (12 digits)</label>
-          <input type="text" id="r-aadhaar" placeholder="XXXXXXXXXXXX" maxlength="12">
-        </div>
-        <div class="input-group">
-          <label>PAN Number</label>
-          <input type="text" id="r-pan" placeholder="ABCDE1234F" maxlength="10">
-        </div>
-        <div class="input-group">
-          <label>Password (min 6 chars)</label>
-          <input type="password" id="r-pass" placeholder="Create strong password">
-        </div>
-        <div class="input-group">
-          <label>Confirm Password</label>
-          <input type="password" id="r-confirm" placeholder="Repeat password">
-        </div>
-        <button onclick="doRegister()" class="btn-yellow w-full py-3 text-base mt-2" style="border-radius:8px;" id="reg-btn">
-          <i class="fas fa-user-plus mr-2"></i>Create Account
+      <!-- REGISTER FORM -->
+      <div id="f-reg" style="display:none;">
+        <div class="grp"><label class="lbl">Full Name</label><inp type="text" id="rn" placeholder="Full name as per Aadhaar"></div>
+        <div class="grp"><label class="lbl">Email Address</label><inp type="email" id="re" placeholder="yourname@email.com"></div>
+        <div class="grp"><label class="lbl">Phone Number</label><inp type="tel" id="rph" placeholder="+91 9876543210"></div>
+        <div class="grp"><label class="lbl">Aadhaar Number (12 Digits)</label><inp type="text" id="rad" placeholder="XXXXXXXXXXXX" maxlength="12"></div>
+        <div class="grp"><label class="lbl">PAN Number</label><inp type="text" id="rpn" placeholder="ABCDE1234F" maxlength="10"></div>
+        <div class="grp"><label class="lbl">Password (Min 6 Chars)</label><inp type="password" id="rps" placeholder="Create strong password"></div>
+        <div class="grp"><label class="lbl">Confirm Password</label><inp type="password" id="rpc" placeholder="Repeat password"></div>
+        <button class="btn-y" style="width:100%;padding:14px;font-size:15px;margin-top:4px;" onclick="doReg()" id="rbtn">
+          <i class="fas fa-user-plus" style="margin-right:8px;"></i>Create Account
         </button>
-        <div id="reg-status" class="mt-3 text-center text-sm"></div>
+        <div id="r-st" style="margin-top:10px;text-align:center;font-size:13px;"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ======== MAIN APP ======== -->
-<div id="main-app" class="hidden min-h-screen flex flex-col">
+<!-- ========== MAIN APP ========== -->
+<div id="main-app" style="display:none;min-height:100vh;flex-direction:column;" class="flex">
 
   <!-- NAVBAR -->
-  <nav class="glass border-b border-gray-800 px-4 py-2 flex items-center justify-between sticky top-0 z-50">
-    <div class="flex items-center gap-5">
-      <div class="text-yellow-400 font-black text-xl cursor-pointer" onclick="showPage('trade')">⚡ SmartEX</div>
-      <div class="hidden md:flex gap-1">
-        <span class="nav-link" onclick="showPage('markets')"><i class="fas fa-chart-bar mr-1"></i>Markets</span>
-        <span class="nav-link" onclick="showPage('trade')"><i class="fas fa-exchange-alt mr-1"></i>Trade</span>
-        <span class="nav-link" onclick="showPage('portfolio')"><i class="fas fa-briefcase mr-1"></i>Portfolio</span>
-        <span class="nav-link" onclick="showPage('wallet')"><i class="fas fa-wallet mr-1"></i>Wallet</span>
-        <span class="nav-link" onclick="showPage('orders')"><i class="fas fa-list mr-1"></i>Orders</span>
+  <nav class="glass" style="border-bottom:1px solid #2b3139;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div style="color:#f0b90b;font-weight:900;font-size:1.3rem;cursor:pointer;" onclick="goPage('trade')">⚡ SmartEX</div>
+      <div style="display:flex;gap:4px;" class="hidden md:flex">
+        <span class="nav-link" onclick="goPage('markets')"><i class="fas fa-chart-bar" style="margin-right:4px;"></i>Markets</span>
+        <span class="nav-link on" onclick="goPage('trade')"><i class="fas fa-exchange-alt" style="margin-right:4px;"></i>Trade</span>
+        <span class="nav-link" onclick="goPage('portfolio')"><i class="fas fa-briefcase" style="margin-right:4px;"></i>Portfolio</span>
+        <span class="nav-link" onclick="goPage('wallet')"><i class="fas fa-wallet" style="margin-right:4px;"></i>Wallet</span>
+        <span class="nav-link" onclick="goPage('orders')"><i class="fas fa-list" style="margin-right:4px;"></i>Orders</span>
       </div>
     </div>
-    <div class="flex items-center gap-4">
-      <div class="text-right hidden sm:block">
-        <div class="text-xs text-gray-400">Available Balance</div>
-        <div class="text-green-400 font-bold text-sm" id="nav-bal">₹0.00</div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div style="text-align:right;display:none;" class="sm:block" id="nav-bal-wrap">
+        <div style="font-size:11px;color:#848e9c;">Balance</div>
+        <div style="color:#0ecb81;font-weight:800;font-size:14px;" id="nav-bal">₹0.00</div>
       </div>
-      <div class="relative cursor-pointer" onclick="showPage('notifications')">
-        <i class="fas fa-bell text-gray-400 text-lg"></i>
-        <span class="badge" id="notif-count">0</span>
+      <div style="position:relative;cursor:pointer;" onclick="goPage('notif')">
+        <i class="fas fa-bell" style="color:#848e9c;font-size:18px;"></i>
+        <span class="badge" id="n-badge">0</span>
       </div>
-      <div class="w-9 h-9 rounded-full bg-yellow-500 flex items-center justify-center font-black text-black cursor-pointer text-lg" id="nav-avatar" onclick="showPage('profile')">U</div>
-      <button onclick="doLogout()" class="text-gray-500 hover:text-red-400 transition-colors">
-        <i class="fas fa-sign-out-alt"></i>
-      </button>
+      <div id="nav-av" onclick="goPage('profile')" style="width:36px;height:36px;border-radius:50%;background:#f0b90b;display:flex;align-items:center;justify-content:center;font-weight:900;color:#000;font-size:16px;cursor:pointer;">U</div>
+      <button onclick="doLogout()" style="background:none;border:none;color:#848e9c;cursor:pointer;font-size:15px;" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
     </div>
   </nav>
 
   <!-- TICKER -->
   <div class="ticker-wrap">
-    <div class="ticker-inner text-xs" id="ticker"></div>
+    <div class="ticker-in text-xs" id="ticker" style="font-size:12px;"></div>
   </div>
 
   <!-- TRADE PAGE -->
-  <div id="pg-trade" class="page active flex-row overflow-hidden" style="height:calc(100vh - 70px)">
+  <div id="pg-trade" class="pg on flex-row overflow-hidden" style="height:calc(100vh - 68px);">
     <!-- Sidebar -->
-    <div class="w-52 border-r border-gray-800 flex flex-col hidden md:flex overflow-hidden">
-      <div class="p-2">
-        <input type="text" placeholder="🔍 Search..." id="s-search" style="font-size:12px;" onkeyup="filterSidebar()">
+    <div id="sidebar" style="width:200px;border-right:1px solid #2b3139;display:flex;flex-direction:column;overflow:hidden;">
+      <div style="padding:8px;">
+        <inp placeholder="🔍 Search..." id="ss" onkeyup="filSide()" style="font-size:12px;padding:7px 10px;">
       </div>
-      <div class="flex px-2 gap-1 pb-1">
-        <button class="tab-btn active text-xs flex-1 px-1" onclick="setCat('all',this)">All</button>
-        <button class="tab-btn text-xs flex-1 px-1" onclick="setCat('nifty50',this)">N50</button>
-        <button class="tab-btn text-xs flex-1 px-1" onclick="setCat('crypto',this)">Crypto</button>
+      <div style="display:flex;gap:2px;padding:0 8px 6px;">
+        <button class="tab on" style="flex:1;padding:4px;font-size:10px;" onclick="setCat('all',this)">All</button>
+        <button class="tab" style="flex:1;padding:4px;font-size:10px;" onclick="setCat('nifty50',this)">N50</button>
+        <button class="tab" style="flex:1;padding:4px;font-size:10px;" onclick="setCat('crypto',this)">Crypto</button>
       </div>
-      <div id="sidebar-list" class="overflow-y-auto flex-1"></div>
+      <div id="side-list" style="overflow-y:auto;flex:1;"></div>
     </div>
 
-    <!-- Chart Area -->
-    <div class="flex-1 flex flex-col overflow-hidden">
-      <div class="border-b border-gray-800 px-3 py-2 flex items-center gap-3 flex-wrap bg-gray-900">
+    <!-- Chart -->
+    <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+      <div style="background:#111418;border-bottom:1px solid #2b3139;padding:8px 12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
         <div>
-          <span class="font-black text-lg" id="hdr-sym">RELIANCE</span>
-          <span class="text-xs text-gray-400 ml-1">NSE</span>
+          <span style="font-weight:900;font-size:1.1rem;" id="h-sym">RELIANCE</span>
+          <span style="font-size:11px;color:#848e9c;margin-left:4px;">NSE</span>
         </div>
         <div>
-          <div class="text-xl font-bold text-green-400" id="hdr-price">₹2,456.75</div>
-          <div class="text-xs" id="hdr-chg"><span class="green">+1.24% ▲</span></div>
+          <div style="font-size:1.3rem;font-weight:900;color:#0ecb81;" id="h-price">₹2,456</div>
+          <div style="font-size:11px;" id="h-chg"><span class="g">+1.24% ▲</span></div>
         </div>
-        <div class="hidden lg:flex gap-5 text-xs text-gray-400">
-          <div>High: <span class="text-white" id="hdr-high">-</span></div>
-          <div>Low: <span class="text-white" id="hdr-low">-</span></div>
-          <div>Vol: <span class="text-white" id="hdr-vol">-</span></div>
+        <div style="display:flex;gap:16px;font-size:11px;color:#848e9c;">
+          <span>H: <span style="color:#eaecef;" id="h-hi">-</span></span>
+          <span>L: <span style="color:#eaecef;" id="h-lo">-</span></span>
+          <span>Vol: <span style="color:#eaecef;" id="h-vol">-</span></span>
         </div>
-        <div class="flex gap-2 ml-auto">
-          <button class="btn-green px-4 py-1 text-sm" onclick="openQuick('buy')">▲ BUY</button>
-          <button class="btn-red px-4 py-1 text-sm" onclick="openQuick('sell')">▼ SELL</button>
+        <div style="margin-left:auto;display:flex;gap:8px;">
+          <button class="btn-g" style="padding:6px 16px;font-size:13px;" onclick="opnQO('buy')">▲ BUY</button>
+          <button class="btn-r" style="padding:6px 16px;font-size:13px;" onclick="opnQO('sell')">▼ SELL</button>
         </div>
       </div>
-      <div id="tv-chart" class="flex-1"></div>
+      <div id="tv-chart" style="flex:1;"></div>
     </div>
 
     <!-- Right Panel -->
-    <div class="w-68 border-l border-gray-800 flex flex-col hidden lg:flex overflow-hidden" style="width:270px;">
-      <div class="flex border-b border-gray-800">
-        <button class="tab-btn active text-xs flex-1" onclick="rightTab('ob')">Order Book</button>
-        <button class="tab-btn text-xs flex-1" onclick="rightTab('po')">Place Order</button>
-        <button class="tab-btn text-xs flex-1" onclick="rightTab('rt')">Trades</button>
+    <div id="right-panel" style="width:265px;border-left:1px solid #2b3139;display:flex;flex-direction:column;overflow:hidden;">
+      <div style="display:flex;border-bottom:1px solid #2b3139;">
+        <button class="tab on" style="flex:1;font-size:11px;padding:8px 4px;" onclick="rTab('ob')">Order Book</button>
+        <button class="tab" style="flex:1;font-size:11px;padding:8px 4px;" onclick="rTab('po')">Place Order</button>
+        <button class="tab" style="flex:1;font-size:11px;padding:8px 4px;" onclick="rTab('rt')">Trades</button>
       </div>
 
       <!-- Order Book -->
-      <div id="r-ob" class="flex-1 flex flex-col overflow-hidden">
-        <div class="grid grid-cols-3 px-2 py-1 text-xs text-gray-500 border-b border-gray-800">
-          <span>Price</span><span class="text-center">Qty</span><span class="text-right">Total</span>
+      <div id="r-ob" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:4px 8px;font-size:10px;color:#848e9c;border-bottom:1px solid #2b3139;">
+          <span>Price</span><span style="text-align:center;">Qty</span><span style="text-align:right;">Total</span>
         </div>
-        <div id="ob-sells" class="flex-1 overflow-y-auto"></div>
-        <div class="py-2 px-3 border-y border-gray-800 flex items-center justify-between">
-          <span class="text-base font-black text-green-400" id="ob-cur">₹2,456</span>
-          <span class="text-xs text-gray-400">Mark Price</span>
+        <div id="ob-s" style="flex:1;overflow-y:auto;"></div>
+        <div style="padding:6px 12px;border-top:1px solid #2b3139;border-bottom:1px solid #2b3139;display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:1rem;font-weight:900;color:#0ecb81;" id="ob-p">₹2,456</span>
+          <span style="font-size:10px;color:#848e9c;">Mark Price</span>
         </div>
-        <div id="ob-buys" class="flex-1 overflow-y-auto"></div>
+        <div id="ob-b" style="flex:1;overflow-y:auto;"></div>
       </div>
 
       <!-- Place Order -->
-      <div id="r-po" class="hidden flex-1 flex-col p-3 overflow-y-auto">
-        <div class="flex gap-2 mb-3">
-          <button id="po-buy" class="btn-green flex-1 py-2 text-sm" onclick="setPoSide('buy')">BUY</button>
-          <button id="po-sell" class="btn-red flex-1 py-2 text-sm opacity-40" onclick="setPoSide('sell')">SELL</button>
+      <div id="r-po" style="display:none;flex:1;flex-direction:column;padding:12px;overflow-y:auto;gap:10px;">
+        <div style="display:flex;gap:8px;">
+          <button id="po-b" class="btn-g" style="flex:1;padding:8px;font-size:13px;" onclick="poSide('buy')">BUY</button>
+          <button id="po-s" class="btn-r" style="flex:1;padding:8px;font-size:13px;opacity:.4;" onclick="poSide('sell')">SELL</button>
         </div>
-        <div class="input-group">
-          <label>Order Type</label>
-          <select id="po-type"><option value="market">Market</option><option value="limit">Limit</option><option value="stop">Stop Loss</option></select>
+        <div class="grp" style="margin-bottom:0;">
+          <label class="lbl">Order Type</label>
+          <select id="po-t" style="background:#2b3139;border:1px solid #363c45;color:#eaecef;border-radius:6px;padding:8px;width:100%;margin-top:4px;outline:none;">
+            <option value="market">Market</option>
+            <option value="limit">Limit</option>
+            <option value="stop">Stop Loss</option>
+          </select>
         </div>
-        <div class="input-group">
-          <label>Price (₹)</label>
-          <input type="number" id="po-price" placeholder="Market Price">
+        <div class="grp" style="margin-bottom:0;">
+          <label class="lbl">Price (₹)</label>
+          <inp type="number" id="po-pr" placeholder="Market Price" style="margin-top:4px;">
         </div>
-        <div class="input-group">
-          <label>Quantity (Shares)</label>
-          <input type="number" id="po-qty" placeholder="0" oninput="calcPO()">
+        <div class="grp" style="margin-bottom:0;">
+          <label class="lbl">Quantity</label>
+          <inp type="number" id="po-q" placeholder="0" oninput="calcPO()" style="margin-top:4px;">
         </div>
-        <div class="flex gap-1 mb-3">
-          <button class="flex-1 py-1 text-xs bg-gray-700 rounded hover:bg-gray-600" onclick="poPct(25)">25%</button>
-          <button class="flex-1 py-1 text-xs bg-gray-700 rounded hover:bg-gray-600" onclick="poPct(50)">50%</button>
-          <button class="flex-1 py-1 text-xs bg-gray-700 rounded hover:bg-gray-600" onclick="poPct(75)">75%</button>
-          <button class="flex-1 py-1 text-xs bg-gray-700 rounded hover:bg-gray-600" onclick="poPct(100)">100%</button>
+        <div style="display:flex;gap:4px;">
+          <button style="flex:1;padding:4px;font-size:10px;background:#2b3139;border:none;color:#eaecef;border-radius:4px;cursor:pointer;" onclick="poPct(25)">25%</button>
+          <button style="flex:1;padding:4px;font-size:10px;background:#2b3139;border:none;color:#eaecef;border-radius:4px;cursor:pointer;" onclick="poPct(50)">50%</button>
+          <button style="flex:1;padding:4px;font-size:10px;background:#2b3139;border:none;color:#eaecef;border-radius:4px;cursor:pointer;" onclick="poPct(75)">75%</button>
+          <button style="flex:1;padding:4px;font-size:10px;background:#2b3139;border:none;color:#eaecef;border-radius:4px;cursor:pointer;" onclick="poPct(100)">100%</button>
         </div>
-        <div class="card p-3 mb-3 text-xs space-y-1">
-          <div class="flex justify-between"><span class="text-gray-400">Balance</span><span class="text-green-400 font-bold" id="po-bal">₹0</span></div>
-          <div class="flex justify-between"><span class="text-gray-400">Total</span><span id="po-total">₹0</span></div>
-          <div class="flex justify-between"><span class="text-gray-400">Fee (0.1%)</span><span id="po-fee">₹0</span></div>
+        <div style="background:#161a1e;border:1px solid #2b3139;border-radius:6px;padding:10px;font-size:11px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#848e9c;">Balance</span><span style="color:#0ecb81;font-weight:800;" id="po-bal">₹0</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#848e9c;">Total</span><span id="po-tot">₹0</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">Fee (0.1%)</span><span id="po-fee">₹0</span></div>
         </div>
-        <button id="po-btn" class="btn-green w-full py-3 font-bold text-sm" onclick="doPlaceOrder()">BUY RELIANCE</button>
+        <button id="po-btn" class="btn-g" style="padding:12px;font-weight:800;font-size:13px;" onclick="doPlaceOrder()">BUY RELIANCE</button>
       </div>
 
       <!-- Recent Trades -->
-      <div id="r-rt" class="hidden flex-1 overflow-y-auto">
-        <div class="grid grid-cols-3 px-2 py-1 text-xs text-gray-500 border-b border-gray-800">
-          <span>Price</span><span class="text-center">Size</span><span class="text-right">Time</span>
+      <div id="r-rt" style="display:none;flex:1;overflow-y:auto;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:4px 8px;font-size:10px;color:#848e9c;border-bottom:1px solid #2b3139;">
+          <span>Price</span><span style="text-align:center;">Size</span><span style="text-align:right;">Time</span>
         </div>
         <div id="rt-list"></div>
       </div>
@@ -263,167 +241,155 @@ input::placeholder{color:#5e6673;}
   </div>
 
   <!-- MARKETS PAGE -->
-  <div id="pg-markets" class="page flex-1 p-4 overflow-y-auto">
-    <h2 class="text-xl font-bold mb-4"><i class="fas fa-chart-bar mr-2 text-yellow-400"></i>Market Overview</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">SENSEX</div><div class="text-xl font-black text-green-400">72,456</div><div class="text-xs green">+0.45% ▲</div></div>
-      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">NIFTY 50</div><div class="text-xl font-black text-green-400">21,853</div><div class="text-xs green">+0.38% ▲</div></div>
-      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">BANK NIFTY</div><div class="text-xl font-black text-red-400">46,234</div><div class="text-xs red">-0.21% ▼</div></div>
-      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">INDIA VIX</div><div class="text-xl font-black text-yellow-400">13.45</div><div class="text-xs yellow">+2.1%</div></div>
+  <div id="pg-markets" class="pg" style="flex:1;padding:20px;overflow-y:auto;">
+    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;"><i class="fas fa-chart-bar" style="color:#f0b90b;margin-right:8px;"></i>Market Overview</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">SENSEX</div><div style="font-size:1.3rem;font-weight:900;color:#0ecb81;">72,456</div><div style="font-size:11px;color:#0ecb81;">+0.45% ▲</div></div>
+      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">NIFTY 50</div><div style="font-size:1.3rem;font-weight:900;color:#0ecb81;">21,853</div><div style="font-size:11px;color:#0ecb81;">+0.38% ▲</div></div>
+      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">BANK NIFTY</div><div style="font-size:1.3rem;font-weight:900;color:#f6465d;">46,234</div><div style="font-size:11px;color:#f6465d;">-0.21% ▼</div></div>
+      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">INDIA VIX</div><div style="font-size:1.3rem;font-weight:900;color:#f0b90b;">13.45</div><div style="font-size:11px;color:#f0b90b;">+2.1%</div></div>
     </div>
-    <div class="section-card p-0">
-      <div class="p-4 flex justify-between items-center border-b border-gray-700">
-        <h3 class="font-bold">All Stocks & Crypto</h3>
-        <input type="text" placeholder="Search..." style="width:180px;font-size:12px;" onkeyup="filterMkt(this.value)">
+    <div class="card" style="overflow:hidden;">
+      <div style="padding:16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #2b3139;">
+        <h3 style="font-weight:800;">All Stocks & Crypto</h3>
+        <inp placeholder="Search..." style="width:180px;font-size:12px;padding:7px 10px;" onkeyup="filMkt(this.value)">
       </div>
-      <div class="grid grid-cols-4 px-4 py-2 text-xs text-gray-400 border-b border-gray-700">
-        <span>Symbol / Name</span><span class="text-right">Price</span><span class="text-right">24H Change</span><span class="text-right">Volume</span>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:8px 16px;font-size:11px;color:#848e9c;border-bottom:1px solid #2b3139;">
+        <span>Symbol / Name</span><span style="text-align:right;">Price</span><span style="text-align:right;">24H Change</span><span style="text-align:right;">Volume</span>
       </div>
-      <div id="mkt-table" class="max-h-screen overflow-y-auto"></div>
+      <div id="mkt-body" style="max-height:70vh;overflow-y:auto;"></div>
     </div>
   </div>
 
   <!-- PORTFOLIO PAGE -->
-  <div id="pg-portfolio" class="page flex-1 p-4 overflow-y-auto">
-    <h2 class="text-xl font-bold mb-4"><i class="fas fa-briefcase mr-2 text-yellow-400"></i>My Portfolio</h2>
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">Cash Balance</div><div class="text-xl font-black text-yellow-400" id="pf-bal">₹0</div></div>
-      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">Portfolio Value</div><div class="text-xl font-black text-blue-400" id="pf-pv">₹0</div></div>
-      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">Total P&L</div><div class="text-xl font-black" id="pf-pnl">₹0</div></div>
-      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">Credit Score</div><div class="text-xl font-black text-purple-400" id="pf-cs">750</div></div>
+  <div id="pg-portfolio" class="pg" style="flex:1;padding:20px;overflow-y:auto;">
+    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;"><i class="fas fa-briefcase" style="color:#f0b90b;margin-right:8px;"></i>My Portfolio</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
+      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">Cash Balance</div><div style="font-size:1.2rem;font-weight:900;color:#f0b90b;" id="pf-bal">₹0</div></div>
+      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">Portfolio Value</div><div style="font-size:1.2rem;font-weight:900;color:#1890ff;" id="pf-pv">₹0</div></div>
+      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">Total P&L</div><div style="font-size:1.2rem;font-weight:900;" id="pf-pnl">₹0</div></div>
+      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">Credit Score</div><div style="font-size:1.2rem;font-weight:900;color:#a855f7;" id="pf-cs">750</div></div>
     </div>
-    <div class="section-card p-0">
-      <div class="p-4 border-b border-gray-700"><h3 class="font-bold">My Holdings</h3></div>
-      <div class="grid grid-cols-5 px-4 py-2 text-xs text-gray-400 border-b border-gray-700">
-        <span>Stock</span><span class="text-right">Qty</span><span class="text-right">Avg Price</span><span class="text-right">Cur. Price</span><span class="text-right">P&L</span>
+    <div class="card" style="overflow:hidden;">
+      <div style="padding:16px;border-bottom:1px solid #2b3139;font-weight:800;">My Holdings</div>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;padding:8px 16px;font-size:11px;color:#848e9c;border-bottom:1px solid #2b3139;">
+        <span>Stock</span><span style="text-align:right;">Qty</span><span style="text-align:right;">Avg Price</span><span style="text-align:right;">Cur. Price</span><span style="text-align:right;">P&L</span>
       </div>
-      <div id="holdings-body" class="max-h-96 overflow-y-auto"></div>
+      <div id="hold-body" style="max-height:60vh;overflow-y:auto;"></div>
     </div>
   </div>
 
   <!-- WALLET PAGE -->
-  <div id="pg-wallet" class="page flex-1 p-4 overflow-y-auto">
-    <h2 class="text-xl font-bold mb-4"><i class="fas fa-wallet mr-2 text-yellow-400"></i>Wallet</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <div class="section-card flex flex-col items-center text-center">
-        <div class="text-gray-400 text-sm mb-1">Available Balance</div>
-        <div class="text-4xl font-black text-yellow-400 mb-1" id="wlt-bal">₹0.00</div>
-        <div class="text-xs text-gray-500 mb-4">Withdrawable Amount</div>
-        <div class="flex gap-3 w-full">
-          <button class="btn-green flex-1 py-2" onclick="openMod('mod-dep')"><i class="fas fa-plus mr-1"></i>Deposit</button>
-          <button class="btn-red flex-1 py-2" onclick="openMod('mod-wd')"><i class="fas fa-minus mr-1"></i>Withdraw</button>
+  <div id="pg-wallet" class="pg" style="flex:1;padding:20px;overflow-y:auto;">
+    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;"><i class="fas fa-wallet" style="color:#f0b90b;margin-right:8px;"></i>Wallet</h2>
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:16px;margin-bottom:20px;">
+      <div class="card" style="padding:24px;text-align:center;">
+        <div style="font-size:12px;color:#848e9c;margin-bottom:4px;">Available Balance</div>
+        <div style="font-size:2rem;font-weight:900;color:#f0b90b;margin-bottom:4px;" id="wlt-bal">₹0.00</div>
+        <div style="font-size:11px;color:#848e9c;margin-bottom:16px;">Withdrawable Amount</div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn-g" style="flex:1;padding:10px;" onclick="opnMod('m-dep')"><i class="fas fa-plus" style="margin-right:4px;"></i>Deposit</button>
+          <button class="btn-r" style="flex:1;padding:10px;" onclick="opnMod('m-wd')"><i class="fas fa-minus" style="margin-right:4px;"></i>Withdraw</button>
         </div>
       </div>
-      <div class="section-card col-span-2">
-        <h3 class="font-bold mb-3">Asset Summary</h3>
+      <div class="card" style="padding:20px;">
+        <div style="font-weight:800;margin-bottom:12px;">Asset Overview</div>
         <div id="asset-sum"></div>
       </div>
     </div>
-    <div class="section-card p-0">
-      <div class="p-4 border-b border-gray-700"><h3 class="font-bold">Transaction History</h3></div>
-      <div id="tx-list" class="max-h-96 overflow-y-auto"></div>
+    <div class="card" style="overflow:hidden;">
+      <div style="padding:16px;border-bottom:1px solid #2b3139;font-weight:800;">Transaction History</div>
+      <div id="tx-body" style="max-height:50vh;overflow-y:auto;"></div>
     </div>
   </div>
 
   <!-- ORDERS PAGE -->
-  <div id="pg-orders" class="page flex-1 p-4 overflow-y-auto">
-    <h2 class="text-xl font-bold mb-4"><i class="fas fa-list mr-2 text-yellow-400"></i>My Orders</h2>
-    <div class="section-card p-0">
-      <div class="flex border-b border-gray-700 px-2">
-        <button class="tab-btn active" onclick="loadOrders('all')">All</button>
-        <button class="tab-btn" onclick="loadOrders('pending')">Pending</button>
-        <button class="tab-btn" onclick="loadOrders('completed')">Completed</button>
+  <div id="pg-orders" class="pg" style="flex:1;padding:20px;overflow-y:auto;">
+    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;"><i class="fas fa-list" style="color:#f0b90b;margin-right:8px;"></i>My Orders</h2>
+    <div class="card" style="overflow:hidden;">
+      <div style="display:flex;border-bottom:1px solid #2b3139;padding:0 8px;">
+        <button class="tab on" onclick="loadOrders('all')">All Orders</button>
+        <button class="tab" onclick="loadOrders('completed')">Completed</button>
+        <button class="tab" onclick="loadOrders('pending')">Pending</button>
       </div>
-      <div class="grid grid-cols-6 px-4 py-2 text-xs text-gray-400 border-b border-gray-700">
-        <span>Stock</span><span>Type</span><span class="text-right">Qty</span><span class="text-right">Price</span><span class="text-right">Total</span><span class="text-right">Status</span>
+      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;padding:8px 16px;font-size:11px;color:#848e9c;border-bottom:1px solid #2b3139;">
+        <span>Stock</span><span>Type</span><span style="text-align:right;">Qty</span><span style="text-align:right;">Price</span><span style="text-align:right;">Total</span><span style="text-align:right;">Status</span>
       </div>
-      <div id="orders-body" class="max-h-screen overflow-y-auto"></div>
+      <div id="ord-body" style="max-height:70vh;overflow-y:auto;"></div>
     </div>
   </div>
 
   <!-- PROFILE PAGE -->
-  <div id="pg-profile" class="page flex-1 p-4 overflow-y-auto">
-    <h2 class="text-xl font-bold mb-4"><i class="fas fa-user mr-2 text-yellow-400"></i>My Profile</h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Personal Info Card -->
-      <div class="section-card">
-        <div class="flex items-center gap-4 mb-5">
-          <div class="w-16 h-16 rounded-full bg-yellow-500 flex items-center justify-center text-2xl font-black text-black" id="pf-avatar">U</div>
+  <div id="pg-profile" class="pg" style="flex:1;padding:20px;overflow-y:auto;">
+    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;"><i class="fas fa-user" style="color:#f0b90b;margin-right:8px;"></i>My Profile</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      
+      <!-- Personal Info -->
+      <div class="card" style="padding:24px;">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+          <div id="pf-av" style="width:60px;height:60px;border-radius:50%;background:#f0b90b;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:#000;">U</div>
           <div>
-            <div class="text-xl font-bold" id="pf-name">Loading...</div>
-            <div class="text-gray-400 text-sm" id="pf-email"></div>
-            <div id="pf-ver-badge" class="mt-1"></div>
+            <div style="font-size:1.1rem;font-weight:800;" id="pf-name">Loading...</div>
+            <div style="font-size:12px;color:#848e9c;" id="pf-email"></div>
+            <div id="pf-badge" style="margin-top:4px;"></div>
           </div>
         </div>
-        <div class="space-y-3 text-sm">
-          <div class="flex justify-between py-2 border-b border-gray-700">
-            <span class="text-gray-400"><i class="fas fa-phone mr-2"></i>Phone</span>
-            <span id="pf-phone">-</span>
+        <div style="font-size:13px;">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2b3139;">
+            <span style="color:#848e9c;"><i class="fas fa-hashtag" style="margin-right:6px;"></i>Slot ID</span>
+            <span style="font-weight:700;color:#f0b90b;" id="pf-slot">-</span>
           </div>
-          <div class="flex justify-between py-2 border-b border-gray-700">
-            <span class="text-gray-400"><i class="fas fa-id-card mr-2"></i>Aadhaar</span>
-            <span id="pf-aadhaar">-</span>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2b3139;">
+            <span style="color:#848e9c;"><i class="fas fa-phone" style="margin-right:6px;"></i>Phone</span>
+            <span id="pf-ph">-</span>
           </div>
-          <div class="flex justify-between py-2 border-b border-gray-700">
-            <span class="text-gray-400"><i class="fas fa-address-card mr-2"></i>PAN</span>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2b3139;">
+            <span style="color:#848e9c;"><i class="fas fa-id-card" style="margin-right:6px;"></i>Aadhaar</span>
+            <span id="pf-aad">-</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2b3139;">
+            <span style="color:#848e9c;"><i class="fas fa-address-card" style="margin-right:6px;"></i>PAN</span>
             <span id="pf-pan">-</span>
           </div>
-          <div class="flex justify-between py-2 border-b border-gray-700">
-            <span class="text-gray-400"><i class="fas fa-star mr-2"></i>Credit Score</span>
-            <span class="text-purple-400 font-bold" id="pf-credit">750</span>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2b3139;">
+            <span style="color:#848e9c;"><i class="fas fa-star" style="margin-right:6px;"></i>Credit Score</span>
+            <span style="color:#a855f7;font-weight:800;" id="pf-crd">750</span>
           </div>
-          <div class="flex justify-between py-2">
-            <span class="text-gray-400"><i class="fas fa-calendar mr-2"></i>Member Since</span>
-            <span id="pf-joined">-</span>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;">
+            <span style="color:#848e9c;"><i class="fas fa-calendar" style="margin-right:6px;"></i>Joined</span>
+            <span id="pf-join">-</span>
           </div>
         </div>
       </div>
 
-      <div class="space-y-4">
+      <div style="display:flex;flex-direction:column;gap:16px;">
         <!-- KYC -->
-        <div class="section-card">
-          <h3 class="font-bold mb-3"><i class="fas fa-shield-alt mr-2 text-yellow-400"></i>KYC Status</h3>
-          <div id="kyc-status" class="mb-3"></div>
-          <button class="btn-yellow w-full py-2" onclick="openMod('mod-kyc')">Submit / Update KYC</button>
+        <div class="card" style="padding:20px;">
+          <div style="font-weight:800;margin-bottom:12px;"><i class="fas fa-shield-alt" style="color:#f0b90b;margin-right:8px;"></i>KYC Status</div>
+          <div id="kyc-st" style="margin-bottom:12px;"></div>
+          <button class="btn-y" style="width:100%;padding:10px;" onclick="opnMod('m-kyc')">Submit / Update KYC</button>
         </div>
 
         <!-- Bank Details -->
-        <div class="section-card">
-          <h3 class="font-bold mb-3"><i class="fas fa-university mr-2 text-yellow-400"></i>Bank Details</h3>
-          <div class="space-y-3">
-            <div class="input-group mb-2">
-              <label>Bank Name</label>
-              <input type="text" id="bk-bank" placeholder="State Bank of India">
-            </div>
-            <div class="input-group mb-2">
-              <label>Account Holder Name</label>
-              <input type="text" id="bk-holder" placeholder="Your full name">
-            </div>
-            <div class="input-group mb-2">
-              <label>Account Number</label>
-              <input type="text" id="bk-acc" placeholder="Account number">
-            </div>
-            <div class="input-group mb-2">
-              <label>IFSC Code</label>
-              <input type="text" id="bk-ifsc" placeholder="SBIN0001234">
-            </div>
-            <div class="input-group mb-3">
-              <label>UPI ID / PhonePe Number</label>
-              <input type="text" id="bk-upi" placeholder="name@upi or 9876543210">
-            </div>
-            <button class="btn-yellow w-full py-2" onclick="saveBankDetails()">
-              <i class="fas fa-save mr-2"></i>Save Bank Details
-            </button>
-          </div>
+        <div class="card" style="padding:20px;">
+          <div style="font-weight:800;margin-bottom:12px;"><i class="fas fa-university" style="color:#f0b90b;margin-right:8px;"></i>Bank Details</div>
+          <div class="grp"><label class="lbl">Bank Name</label><inp type="text" id="bk-bn" placeholder="State Bank of India" style="margin-top:4px;"></div>
+          <div class="grp"><label class="lbl">Account Holder</label><inp type="text" id="bk-ah" placeholder="Full name" style="margin-top:4px;"></div>
+          <div class="grp"><label class="lbl">Account Number</label><inp type="text" id="bk-an" placeholder="Account number" style="margin-top:4px;"></div>
+          <div class="grp"><label class="lbl">IFSC Code</label><inp type="text" id="bk-if" placeholder="SBIN0001234" style="margin-top:4px;"></div>
+          <div class="grp" style="margin-bottom:12px;"><label class="lbl">UPI / PhonePe Number</label><inp type="text" id="bk-up" placeholder="name@upi or 9876543210" style="margin-top:4px;"></div>
+          <button class="btn-y" style="width:100%;padding:10px;" onclick="saveBankDetails()">
+            <i class="fas fa-save" style="margin-right:6px;"></i>Save Bank Details
+          </button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- NOTIFICATIONS PAGE -->
-  <div id="pg-notifications" class="page flex-1 p-4 overflow-y-auto">
-    <h2 class="text-xl font-bold mb-4"><i class="fas fa-bell mr-2 text-yellow-400"></i>Notifications</h2>
-    <div class="section-card p-0" id="notif-body"></div>
+  <div id="pg-notif" class="pg" style="flex:1;padding:20px;overflow-y:auto;">
+    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;"><i class="fas fa-bell" style="color:#f0b90b;margin-right:8px;"></i>Notifications</h2>
+    <div class="card" id="notif-body"></div>
   </div>
 
 </div>
@@ -431,180 +397,138 @@ input::placeholder{color:#5e6673;}
 <!-- ======== MODALS ======== -->
 
 <!-- DEPOSIT -->
-<div id="mod-dep" class="modal">
-  <div class="card w-full max-w-md p-6 mx-4" style="max-height:90vh;overflow-y:auto;">
-    <div class="flex justify-between items-center mb-5">
-      <h3 class="text-xl font-bold text-green-400"><i class="fas fa-plus-circle mr-2"></i>Deposit Money</h3>
-      <button onclick="closeMod('mod-dep')" class="text-gray-400 hover:text-white text-xl"><i class="fas fa-times"></i></button>
+<div id="m-dep" class="modal">
+  <div class="card" style="width:100%;max-width:420px;padding:24px;max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <h3 style="font-size:1.1rem;font-weight:800;color:#0ecb81;"><i class="fas fa-plus-circle" style="margin-right:8px;"></i>Deposit Money</h3>
+      <button onclick="clsMod('m-dep')" style="background:none;border:none;color:#848e9c;font-size:1.2rem;cursor:pointer;"><i class="fas fa-times"></i></button>
     </div>
-    <div style="background:rgba(14,203,129,0.08);border:1px solid #0ecb81;border-radius:8px;padding:16px;margin-bottom:16px;">
-      <div class="text-green-400 font-bold text-sm mb-3">📤 Send Money To:</div>
-      <div class="space-y-2 text-sm">
-        <div class="flex justify-between items-center">
-          <span class="text-gray-400">UPI ID</span>
-          <span class="font-bold text-yellow-400" id="d-upi">-</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-400">PhonePe/Paytm</span>
-          <span class="font-bold" id="d-phone">-</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-400">Bank Name</span>
-          <span class="font-bold" id="d-bank">-</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-400">Account No</span>
-          <span class="font-bold" id="d-acc">-</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-400">IFSC</span>
-          <span class="font-bold" id="d-ifsc">-</span>
-        </div>
-        <div class="flex justify-between items-center">
-          <span class="text-gray-400">Account Holder</span>
-          <span class="font-bold" id="d-holder">-</span>
-        </div>
+    <div style="background:#0ecb8110;border:1px solid #0ecb81;border-radius:8px;padding:16px;margin-bottom:16px;">
+      <div style="color:#0ecb81;font-weight:800;font-size:12px;margin-bottom:10px;">📤 TRANSFER TO ADMIN ACCOUNT:</div>
+      <div style="font-size:13px;display:flex;flex-direction:column;gap:6px;">
+        <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">UPI ID</span><span style="font-weight:800;color:#f0b90b;" id="d-upi">-</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">PhonePe/Paytm</span><span style="font-weight:800;" id="d-ph">-</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">Bank Name</span><span style="font-weight:800;" id="d-bk">-</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">Account No</span><span style="font-weight:800;" id="d-ac">-</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">IFSC</span><span style="font-weight:800;" id="d-if">-</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">Account Holder</span><span style="font-weight:800;" id="d-hn">-</span></div>
       </div>
     </div>
-    <div class="space-y-3">
-      <div class="input-group mb-2">
-        <label>Amount (₹)</label>
-        <input type="number" id="dep-amt" placeholder="Minimum ₹100">
-      </div>
-      <div class="input-group mb-3">
-        <label>UTR / Transaction Reference Number</label>
-        <input type="text" id="dep-ref" placeholder="12-digit transaction ID">
-      </div>
-      <div style="background:rgba(240,185,11,0.1);border:1px solid #f0b90b;border-radius:6px;padding:10px;font-size:12px;color:#f0b90b;">
-        ⚠️ Send money first, then submit this form. Admin will verify & credit within 30 minutes.
-      </div>
-      <button onclick="doDeposit()" class="btn-green w-full py-3 font-bold">
-        <i class="fas fa-paper-plane mr-2"></i>Submit Deposit Request
-      </button>
+    <div class="grp"><label class="lbl">Amount (₹)</label><inp type="number" id="d-amt" placeholder="Minimum ₹100" style="margin-top:4px;"></div>
+    <div class="grp" style="margin-bottom:12px;"><label class="lbl">UTR / Transaction Reference No.</label><inp type="text" id="d-ref" placeholder="12-digit UTR number" style="margin-top:4px;"></div>
+    <div style="background:#f0b90b11;border:1px solid #f0b90b;border-radius:6px;padding:10px;font-size:11px;color:#f0b90b;margin-bottom:12px;">
+      ⚠️ Transfer money first, then submit. Admin will verify & credit within 30 minutes.
     </div>
+    <button class="btn-g" style="width:100%;padding:14px;font-size:14px;" onclick="doDeposit()">
+      <i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Deposit Request
+    </button>
   </div>
 </div>
 
 <!-- WITHDRAWAL -->
-<div id="mod-wd" class="modal">
-  <div class="card w-full max-w-md p-6 mx-4">
-    <div class="flex justify-between items-center mb-5">
-      <h3 class="text-xl font-bold text-red-400"><i class="fas fa-minus-circle mr-2"></i>Withdraw Money</h3>
-      <button onclick="closeMod('mod-wd')" class="text-gray-400 hover:text-white text-xl"><i class="fas fa-times"></i></button>
+<div id="m-wd" class="modal">
+  <div class="card" style="width:100%;max-width:420px;padding:24px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <h3 style="font-size:1.1rem;font-weight:800;color:#f6465d;"><i class="fas fa-minus-circle" style="margin-right:8px;"></i>Withdraw Money</h3>
+      <button onclick="clsMod('m-wd')" style="background:none;border:none;color:#848e9c;font-size:1.2rem;cursor:pointer;"><i class="fas fa-times"></i></button>
     </div>
-    <div id="wd-bank-info" style="background:rgba(24,144,255,0.1);border:1px solid #1890ff;border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px;"></div>
-    <div class="space-y-3">
-      <div class="input-group mb-2">
-        <label>Amount (₹)</label>
-        <input type="number" id="wd-amt" placeholder="Minimum ₹500">
-      </div>
-      <div class="input-group mb-3">
-        <label>Withdraw Method</label>
-        <select id="wd-method">
-          <option value="bank">Bank Transfer</option>
-          <option value="upi">UPI Transfer</option>
-          <option value="phonepay">PhonePe</option>
-          <option value="paytm">Paytm</option>
-        </select>
-      </div>
-      <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:10px;font-size:12px;color:#848e9c;">
-        💡 Withdrawal will be sent to your saved bank/UPI details. Processed within 24 hours.
-      </div>
-      <button onclick="doWithdraw()" class="btn-red w-full py-3 font-bold">
-        <i class="fas fa-paper-plane mr-2"></i>Submit Withdrawal Request
-      </button>
+    <div id="wd-bk-info" style="background:#1890ff11;border:1px solid #1890ff;border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px;"></div>
+    <div class="grp"><label class="lbl">Amount (₹)</label><inp type="number" id="wd-amt" placeholder="Minimum ₹500" style="margin-top:4px;"></div>
+    <div class="grp" style="margin-bottom:12px;">
+      <label class="lbl">Withdraw Method</label>
+      <select id="wd-mth" style="background:#2b3139;border:1px solid #363c45;color:#eaecef;border-radius:6px;padding:8px;width:100%;margin-top:4px;outline:none;">
+        <option value="bank">Bank Transfer</option>
+        <option value="upi">UPI</option>
+        <option value="phonepay">PhonePe</option>
+        <option value="paytm">Paytm</option>
+      </select>
     </div>
+    <div style="background:#ffffff08;border-radius:6px;padding:10px;font-size:11px;color:#848e9c;margin-bottom:12px;">
+      💡 Sent to your saved bank/UPI. Processed within 24 hours.
+    </div>
+    <button class="btn-r" style="width:100%;padding:14px;font-size:14px;" onclick="doWithdraw()">
+      <i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Withdrawal
+    </button>
   </div>
 </div>
 
 <!-- KYC -->
-<div id="mod-kyc" class="modal">
-  <div class="card w-full max-w-md p-6 mx-4">
-    <div class="flex justify-between items-center mb-5">
-      <h3 class="text-xl font-bold text-yellow-400"><i class="fas fa-id-card mr-2"></i>KYC Verification</h3>
-      <button onclick="closeMod('mod-kyc')" class="text-gray-400 hover:text-white text-xl"><i class="fas fa-times"></i></button>
+<div id="m-kyc" class="modal">
+  <div class="card" style="width:100%;max-width:400px;padding:24px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+      <h3 style="font-size:1.1rem;font-weight:800;color:#f0b90b;"><i class="fas fa-id-card" style="margin-right:8px;"></i>KYC Verification</h3>
+      <button onclick="clsMod('m-kyc')" style="background:none;border:none;color:#848e9c;font-size:1.2rem;cursor:pointer;"><i class="fas fa-times"></i></button>
     </div>
-    <div class="space-y-3">
-      <div class="input-group mb-2">
-        <label>Aadhaar Number (12 digits)</label>
-        <input type="text" id="kyc-aad" maxlength="12" placeholder="XXXXXXXXXXXX">
-      </div>
-      <div class="input-group mb-3">
-        <label>PAN Number</label>
-        <input type="text" id="kyc-pan" maxlength="10" placeholder="ABCDE1234F">
-      </div>
-      <button onclick="doKYC()" class="btn-yellow w-full py-3 font-bold">Submit KYC Documents</button>
-    </div>
+    <div class="grp"><label class="lbl">Aadhaar Number (12 digits)</label><inp type="text" id="kyc-a" maxlength="12" placeholder="XXXXXXXXXXXX" style="margin-top:4px;"></div>
+    <div class="grp" style="margin-bottom:16px;"><label class="lbl">PAN Number</label><inp type="text" id="kyc-p" maxlength="10" placeholder="ABCDE1234F" style="margin-top:4px;"></div>
+    <button class="btn-y" style="width:100%;padding:14px;" onclick="doKYC()">Submit KYC</button>
   </div>
 </div>
 
 <!-- QUICK ORDER -->
-<div id="mod-qo" class="modal">
-  <div class="card w-full max-w-sm p-6 mx-4">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-bold" id="qo-title">Place Order</h3>
-      <button onclick="closeMod('mod-qo')" class="text-gray-400"><i class="fas fa-times"></i></button>
+<div id="m-qo" class="modal">
+  <div class="card" style="width:100%;max-width:360px;padding:24px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h3 style="font-size:1.1rem;font-weight:800;" id="qo-ttl">Place Order</h3>
+      <button onclick="clsMod('m-qo')" style="background:none;border:none;color:#848e9c;font-size:1.2rem;cursor:pointer;"><i class="fas fa-times"></i></button>
     </div>
-    <div class="space-y-3">
-      <div class="flex justify-between text-sm py-2 border-b border-gray-700">
-        <span class="text-gray-400">Stock</span><span class="font-bold" id="qo-sym"></span>
+    <div style="font-size:13px;margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #2b3139;">
+        <span style="color:#848e9c;">Stock</span><span style="font-weight:800;" id="qo-sym">-</span>
       </div>
-      <div class="flex justify-between text-sm py-2 border-b border-gray-700">
-        <span class="text-gray-400">Price</span><span class="font-bold text-yellow-400" id="qo-price"></span>
+      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #2b3139;">
+        <span style="color:#848e9c;">Price</span><span style="font-weight:800;color:#f0b90b;" id="qo-pr">-</span>
       </div>
-      <div class="input-group mb-2">
-        <label>Quantity (Shares)</label>
-        <input type="number" id="qo-qty" placeholder="Number of shares" oninput="calcQO()">
-      </div>
-      <div class="card p-3 text-xs space-y-1">
-        <div class="flex justify-between"><span class="text-gray-400">Total Amount</span><span id="qo-tot">₹0</span></div>
-        <div class="flex justify-between"><span class="text-gray-400">Trading Fee (0.1%)</span><span id="qo-fee">₹0</span></div>
-        <div class="flex justify-between"><span class="text-gray-400">Your Balance</span><span class="text-green-400 font-bold" id="qo-bal">₹0</span></div>
-      </div>
-      <button id="qo-btn" class="btn-green w-full py-3 font-bold" onclick="submitQO()">CONFIRM</button>
     </div>
+    <div class="grp"><label class="lbl">Quantity (Shares)</label><inp type="number" id="qo-q" placeholder="Number of shares" oninput="calcQO()" style="margin-top:4px;"></div>
+    <div style="background:#161a1e;border:1px solid #2b3139;border-radius:6px;padding:10px;font-size:11px;margin-bottom:12px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#848e9c;">Total</span><span id="qo-tot">₹0</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#848e9c;">Fee (0.1%)</span><span id="qo-fee">₹0</span></div>
+      <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">Balance</span><span style="color:#0ecb81;font-weight:800;" id="qo-bal">₹0</span></div>
+    </div>
+    <button id="qo-btn" class="btn-g" style="width:100%;padding:14px;font-size:14px;" onclick="subQO()">CONFIRM</button>
   </div>
 </div>
 
 <script>
-// =============================================
+// ====================================================
 // SUPABASE CONFIG
-// =============================================
-const SURL = 'https://qajdgueavfofwtavmkxi.supabase.co';
-const SKEY = 'sb_publishable_NqFN_vK1dp64ZrI94MZsEA_DcTFMRof';
-const sb = supabase.createClient(SURL, SKEY);
+// ====================================================
+const SB_URL = 'https://qajdgueavfofwtavmkxi.supabase.co';
+const SB_KEY = 'sb_publishable_NqFN_vK1dp64ZrI94MZsEA_DcTFMRof';
+const sb = supabase.createClient(SB_URL, SB_KEY);
 
-// =============================================
+// ====================================================
 // STOCKS DATA
-// =============================================
+// ====================================================
 const STOCKS = [
   {sym:'NSE:RELIANCE',name:'Reliance Industries',p:2456,cat:'nifty50'},
-  {sym:'NSE:TCS',name:'Tata Consultancy',p:3890,cat:'nifty50'},
+  {sym:'NSE:TCS',name:'Tata Consultancy Services',p:3890,cat:'nifty50'},
   {sym:'NSE:HDFCBANK',name:'HDFC Bank',p:1645,cat:'nifty50'},
   {sym:'NSE:INFY',name:'Infosys',p:1789,cat:'nifty50'},
   {sym:'NSE:ICICIBANK',name:'ICICI Bank',p:1045,cat:'nifty50'},
-  {sym:'NSE:HINDUNILVR',name:'HUL',p:2456,cat:'nifty50'},
+  {sym:'NSE:HINDUNILVR',name:'Hindustan Unilever',p:2456,cat:'nifty50'},
   {sym:'NSE:ITC',name:'ITC Limited',p:428,cat:'nifty50'},
-  {sym:'NSE:SBIN',name:'State Bank India',p:789,cat:'nifty50'},
+  {sym:'NSE:SBIN',name:'State Bank of India',p:789,cat:'nifty50'},
   {sym:'NSE:BHARTIARTL',name:'Bharti Airtel',p:1267,cat:'nifty50'},
-  {sym:'NSE:KOTAKBANK',name:'Kotak Bank',p:1756,cat:'nifty50'},
+  {sym:'NSE:KOTAKBANK',name:'Kotak Mahindra Bank',p:1756,cat:'nifty50'},
   {sym:'NSE:LT',name:'Larsen & Toubro',p:3456,cat:'nifty50'},
   {sym:'NSE:AXISBANK',name:'Axis Bank',p:1089,cat:'nifty50'},
   {sym:'NSE:ASIANPAINT',name:'Asian Paints',p:3234,cat:'nifty50'},
-  {sym:'NSE:MARUTI',name:'Maruti Suzuki',p:12456,cat:'nifty50'},
-  {sym:'NSE:WIPRO',name:'Wipro',p:478,cat:'nifty50'},
+  {sym:'NSE:MARUTI',name:'Maruti Suzuki India',p:12456,cat:'nifty50'},
+  {sym:'NSE:WIPRO',name:'Wipro Limited',p:478,cat:'nifty50'},
   {sym:'NSE:HCLTECH',name:'HCL Technologies',p:1567,cat:'nifty50'},
   {sym:'NSE:BAJFINANCE',name:'Bajaj Finance',p:7234,cat:'nifty50'},
   {sym:'NSE:TITAN',name:'Titan Company',p:3678,cat:'nifty50'},
-  {sym:'NSE:ONGC',name:'ONGC',p:267,cat:'nifty50'},
+  {sym:'NSE:ONGC',name:'Oil & Natural Gas Corp',p:267,cat:'nifty50'},
   {sym:'NSE:NTPC',name:'NTPC Limited',p:356,cat:'nifty50'},
-  {sym:'NSE:POWERGRID',name:'Power Grid',p:298,cat:'nifty50'},
+  {sym:'NSE:POWERGRID',name:'Power Grid Corp',p:298,cat:'nifty50'},
   {sym:'NSE:COALINDIA',name:'Coal India',p:445,cat:'nifty50'},
   {sym:'NSE:ADANIENT',name:'Adani Enterprises',p:2567,cat:'nifty50'},
   {sym:'NSE:TATAMOTORS',name:'Tata Motors',p:956,cat:'nifty50'},
   {sym:'NSE:TATASTEEL',name:'Tata Steel',p:167,cat:'nifty50'},
-  {sym:'NSE:SUNPHARMA',name:'Sun Pharma',p:1678,cat:'nifty50'},
-  {sym:'NSE:DRREDDY',name:'Dr Reddy Labs',p:6234,cat:'nifty50'},
+  {sym:'NSE:SUNPHARMA',name:'Sun Pharmaceutical',p:1678,cat:'nifty50'},
+  {sym:'NSE:DRREDDY',name:'Dr. Reddy\'s Labs',p:6234,cat:'nifty50'},
   {sym:'NSE:TECHM',name:'Tech Mahindra',p:1234,cat:'nifty50'},
   {sym:'NSE:ULTRACEMCO',name:'UltraTech Cement',p:9876,cat:'nifty50'},
   {sym:'NSE:JSWSTEEL',name:'JSW Steel',p:889,cat:'nifty50'},
@@ -617,285 +541,311 @@ const STOCKS = [
   {sym:'BINANCE:DOGEUSDT',name:'Dogecoin',p:8,cat:'crypto'},
 ];
 
-// =============================================
+// ====================================================
 // GLOBAL STATE
-// =============================================
-let gUser = null, gClient = null;
-let gStock = STOCKS[0];
-let gSide = 'buy', gQOSide = 'buy';
-let gPrices = {};
-let gAdmin = {};
+// ====================================================
+let gU = null; // logged in user from users table
+let gS = STOCKS[0]; // selected stock
+let gSide = 'buy';
+let gQSide = 'buy';
+let gPx = {};
+let gAdm = {};
 let gCat = 'all';
 
+// Init prices
 STOCKS.forEach(s => {
-  gPrices[s.sym] = {
+  gPx[s.sym] = {
     price: s.p,
     change: +(Math.random()*4-2).toFixed(2),
-    high: s.p*1.02, low: s.p*0.98
+    high: s.p*1.02,
+    low: s.p*0.98
   };
 });
 
-// =============================================
-// AUTH FUNCTIONS
-// =============================================
-function switchAuth(tab) {
-  const isLogin = tab==='login';
-  document.getElementById('form-login').classList.toggle('hidden', !isLogin);
-  document.getElementById('form-register').classList.toggle('hidden', isLogin);
-  document.getElementById('tab-login').classList.toggle('active', isLogin);
-  document.getElementById('tab-register').classList.toggle('active', !isLogin);
+// ====================================================
+// AUTH SWITCH
+// ====================================================
+function swAuth(tab) {
+  const isL = tab==='login';
+  document.getElementById('f-login').style.display = isL ? 'block' : 'none';
+  document.getElementById('f-reg').style.display   = isL ? 'none'  : 'block';
+  document.getElementById('tl').classList.toggle('on', isL);
+  document.getElementById('tr').classList.toggle('on', !isL);
 }
 
+// ====================================================
+// LOGIN
+// ====================================================
 async function doLogin() {
-  const email = document.getElementById('l-email').value.trim();
-  const pass = document.getElementById('l-pass').value;
-  if(!email||!pass) return toast('Fill all fields','red');
-  toast('Logging in...','blue');
-  const {data,error} = await sb.auth.signInWithPassword({email,password:pass});
-  if(error) return toast(error.message,'red');
-  gUser = data.user;
-  const ok = await loadClient();
-  if(ok) launchApp();
+  const email = document.getElementById('le').value.trim().toLowerCase();
+  const pass  = document.getElementById('lp').value;
+  const err   = document.getElementById('l-err');
+  if(!email||!pass) return showErr(err,'Fill all fields','red');
+  showErr(err,'Logging in...','blue');
+
+  const {data,error} = await sb
+    .from('users')
+    .select('*')
+    .eq('email', email)
+    .eq('password', pass)
+    .single();
+
+  if(error||!data) return showErr(err,'Invalid email or password','red');
+  if(data.is_frozen) return showErr(err,'Account frozen. Contact support.','red');
+
+  gU = data;
+  showErr(err,'','');
+  launchApp();
 }
 
-async function doRegister() {
-  const name    = document.getElementById('r-name').value.trim();
-  const email   = document.getElementById('r-email').value.trim();
-  const phone   = document.getElementById('r-phone').value.trim();
-  const aadhaar = document.getElementById('r-aadhaar').value.trim();
-  const pan     = document.getElementById('r-pan').value.trim().toUpperCase();
-  const pass    = document.getElementById('r-pass').value;
-  const confirm = document.getElementById('r-confirm').value;
+// ====================================================
+// REGISTER - Saves to users table directly
+// ====================================================
+async function doReg() {
+  const name    = document.getElementById('rn').value.trim();
+  const email   = document.getElementById('re').value.trim().toLowerCase();
+  const phone   = document.getElementById('rph').value.trim();
+  const aadhaar = document.getElementById('rad').value.trim();
+  const pan     = document.getElementById('rpn').value.trim().toUpperCase();
+  const pass    = document.getElementById('rps').value;
+  const conf    = document.getElementById('rpc').value;
+  const st      = document.getElementById('r-st');
+  const btn     = document.getElementById('rbtn');
 
-  if(!name||!email||!phone||!aadhaar||!pan||!pass) return toast('Please fill all fields','red');
-  if(pass !== confirm) return toast('Passwords do not match','red');
-  if(pass.length < 6) return toast('Password minimum 6 characters','red');
-  if(aadhaar.length !== 12) return toast('Aadhaar must be 12 digits','red');
-  if(pan.length !== 10) return toast('Invalid PAN number','red');
+  if(!name||!email||!phone||!aadhaar||!pan||!pass)
+    return showErr(st,'Please fill all fields','red');
+  if(pass!==conf)
+    return showErr(st,'Passwords do not match','red');
+  if(pass.length<6)
+    return showErr(st,'Password minimum 6 characters','red');
+  if(aadhaar.length!==12)
+    return showErr(st,'Aadhaar must be exactly 12 digits','red');
+  if(pan.length!==10)
+    return showErr(st,'PAN must be exactly 10 characters','red');
 
-  const btn = document.getElementById('reg-btn');
-  const status = document.getElementById('reg-status');
   btn.disabled = true;
-  btn.textContent = 'Creating Account...';
-  status.innerHTML = '<span style="color:#f0b90b;">⏳ Please wait...</span>';
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i>Creating Account...';
+  showErr(st,'Please wait...','blue');
 
   try {
-    // Step 1: Create auth user
-    const {data:authData, error:authErr} = await sb.auth.signUp({email, password:pass});
-    if(authErr) throw new Error(authErr.message);
-    if(!authData?.user) throw new Error('Account creation failed');
+    // Check duplicate email
+    const {data:eChk} = await sb.from('users').select('id').eq('email',email).single();
+    if(eChk) throw new Error('Email already registered');
 
-    const uid = authData.user.id;
+    // Check duplicate phone
+    const {data:pChk} = await sb.from('users').select('id').eq('phone_number',phone).single();
+    if(pChk) throw new Error('Phone number already registered');
 
-    // Step 2: Insert into client_details
-    const {error:insertErr} = await sb.from('client_details').insert({
-      auth_user_id: uid,
+    // Check duplicate aadhaar
+    const {data:aChk} = await sb.from('users').select('id').eq('aadhaar_number',aadhaar).single();
+    if(aChk) throw new Error('Aadhaar already registered');
+
+    // INSERT USER
+    const {data:inserted, error:insErr} = await sb.from('users').insert({
+      email,
+      password: pass,
       full_name: name,
-      email: email,
       phone_number: phone,
       aadhaar_number: aadhaar,
       pan_number: pan,
       balance: 0,
       credit_score: 750,
-      is_verified: false,
+      verified: false,
       is_frozen: false,
-      kyc_status: 'pending'
-    });
+      kyc_status: 'pending',
+      loan_status: 'none',
+      loan_amount: 0
+    }).select().single();
 
-    if(insertErr) throw new Error('Profile save failed: ' + insertErr.message);
+    if(insErr) throw new Error(insErr.message);
 
-    status.innerHTML = '<span style="color:#0ecb81;">✅ Account created! Please login now.</span>';
-    btn.textContent = 'Create Account';
+    showErr(st,'✅ Account created! You can login now.','green');
+    btn.innerHTML = '<i class="fas fa-user-plus" style="margin-right:8px;"></i>Create Account';
     btn.disabled = false;
     toast('Account created successfully!','green');
-    setTimeout(()=>switchAuth('login'), 2000);
+    setTimeout(()=>swAuth('login'),2000);
 
   } catch(e) {
-    status.innerHTML = `<span style="color:#f6465d;">❌ ${e.message}</span>`;
-    btn.textContent = 'Create Account';
+    showErr(st,'❌ '+e.message,'red');
+    btn.innerHTML = '<i class="fas fa-user-plus" style="margin-right:8px;"></i>Create Account';
     btn.disabled = false;
-    toast(e.message,'red');
   }
 }
 
-async function doLogout() {
-  await sb.auth.signOut();
-  gUser=null; gClient=null;
-  document.getElementById('auth-page').classList.remove('hidden');
-  document.getElementById('main-app').classList.add('hidden');
-  toast('Logged out','green');
+function showErr(el,msg,color){
+  const c={green:'#0ecb81',red:'#f6465d',blue:'#1890ff','':`''`};
+  el.style.color = c[color]||'#848e9c';
+  el.textContent = msg;
 }
 
-// =============================================
-// CLIENT DATA FUNCTIONS
-// =============================================
-async function loadClient() {
-  if(!gUser) return false;
-  const {data, error} = await sb.from('client_details')
-    .select('*')
-    .eq('auth_user_id', gUser.id)
-    .single();
+// ====================================================
+// LOGOUT
+// ====================================================
+function doLogout(){
+  gU=null;
+  document.getElementById('auth-page').style.display='flex';
+  document.getElementById('main-app').style.display='none';
+  toast('Logged out successfully','green');
+}
 
-  if(error || !data) {
-    toast('Profile not found: '+( error?.message||'unknown'),'red');
-    return false;
+// ====================================================
+// REFRESH USER FROM DB
+// ====================================================
+async function refreshUser(){
+  if(!gU) return;
+  const {data}=await sb.from('users').select('*').eq('id',gU.id).single();
+  if(data){
+    if(data.is_frozen){doLogout();toast('Account frozen','red');return;}
+    gU=data;
+    updBals();
+    fillProfile();
   }
-
-  if(data.is_frozen) {
-    await sb.auth.signOut();
-    toast('Account is frozen. Contact support.','red');
-    return false;
-  }
-
-  gClient = data;
-  updateAllBalances();
-  fillProfilePage();
-  return true;
 }
 
-function updateAllBalances() {
-  if(!gClient) return;
-  const bal = parseFloat(gClient.balance||0);
-  const fmt = (n) => '₹'+n.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('nav-bal').textContent = fmt(bal);
-  document.getElementById('wlt-bal').textContent = fmt(bal);
-  document.getElementById('pf-bal').textContent = fmt(bal);
-  document.getElementById('po-bal').textContent = fmt(bal);
-  document.getElementById('qo-bal').textContent = fmt(bal);
-  document.getElementById('pf-cs').textContent = gClient.credit_score||750;
-}
-
-function fillProfilePage() {
-  if(!gClient) return;
-  const init = (gClient.full_name||'U')[0].toUpperCase();
-  document.getElementById('nav-avatar').textContent = init;
-  document.getElementById('pf-avatar').textContent = init;
-  document.getElementById('pf-name').textContent = gClient.full_name||'User';
-  document.getElementById('pf-email').textContent = gClient.email||'';
-  document.getElementById('pf-phone').textContent = gClient.phone_number||'-';
-  document.getElementById('pf-pan').textContent = gClient.pan_number||'-';
-  document.getElementById('pf-credit').textContent = gClient.credit_score||750;
-  document.getElementById('pf-joined').textContent = new Date(gClient.created_at).toLocaleDateString('en-IN');
-
-  // Aadhaar masked
-  const aad = gClient.aadhaar_number||'';
-  document.getElementById('pf-aadhaar').textContent = aad ? aad.slice(0,4)+'XXXX'+aad.slice(8) : '-';
-
-  // Verified badge
-  const vBadge = document.getElementById('pf-ver-badge');
-  const kycEl  = document.getElementById('kyc-status');
-  if(gClient.is_verified) {
-    vBadge.innerHTML = '<span style="background:#0ecb8130;color:#0ecb81;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;"><i class="fas fa-check-circle mr-1"></i>KYC Verified</span>';
-    kycEl.innerHTML  = '<div style="color:#0ecb81;font-weight:700;"><i class="fas fa-check-circle mr-2"></i>Account Verified</div>';
-  } else {
-    vBadge.innerHTML = '<span style="background:#f0b90b30;color:#f0b90b;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;"><i class="fas fa-clock mr-1"></i>KYC Pending</span>';
-    kycEl.innerHTML  = '<div style="color:#f0b90b;font-weight:700;"><i class="fas fa-clock mr-2"></i>KYC Pending Verification</div>';
-  }
-
-  // Bank details
-  if(gClient.bank_name) document.getElementById('bk-bank').value   = gClient.bank_name;
-  if(gClient.account_holder_name) document.getElementById('bk-holder').value = gClient.account_holder_name;
-  if(gClient.account_number) document.getElementById('bk-acc').value   = gClient.account_number;
-  if(gClient.ifsc_code)      document.getElementById('bk-ifsc').value  = gClient.ifsc_code;
-  if(gClient.upi_id)         document.getElementById('bk-upi').value   = gClient.upi_id;
-
-  // Withdrawal bank info display
-  document.getElementById('wd-bank-info').innerHTML = gClient.bank_name
-    ? `<div style="color:#1890ff;font-weight:700;margin-bottom:6px;"><i class="fas fa-university mr-2"></i>Saved Bank Details</div>
-       <div style="font-size:12px;line-height:1.8;">
-         Bank: <b>${gClient.bank_name}</b><br>
-         A/c: <b>${gClient.account_number||'-'}</b><br>
-         UPI: <b>${gClient.upi_id||'-'}</b>
-       </div>`
-    : '<div style="color:#f0b90b;">⚠️ No bank details saved. Go to Profile to add.</div>';
-}
-
-// =============================================
+// ====================================================
 // LAUNCH APP
-// =============================================
-function launchApp() {
-  document.getElementById('auth-page').classList.add('hidden');
-  document.getElementById('main-app').classList.remove('hidden');
+// ====================================================
+function launchApp(){
+  document.getElementById('auth-page').style.display='none';
+  document.getElementById('main-app').style.display='flex';
   initTV();
-  renderSidebar();
-  renderMktTable();
-  loadAdminSettings();
+  renderSide();
+  renderMkt();
+  loadAdm();
   loadHoldings();
   loadTx();
   loadOrders('all');
   loadNotifs();
-  updateTicker();
-  setInterval(simPrices, 2000);
-  setInterval(updateOB, 1500);
-  setInterval(updateRT, 3500);
-  setInterval(()=>loadClient(), 30000);
-  showPage('trade');
+  updBals();
+  fillProfile();
+  updTicker();
+  setInterval(simPx,2000);
+  setInterval(updOB,1500);
+  setInterval(updRT,3500);
+  setInterval(refreshUser,30000);
+  goPage('trade');
 }
 
-// =============================================
-// TRADINGVIEW
-// =============================================
-function initTV() {
+// ====================================================
+// UPDATE ALL BALANCES
+// ====================================================
+function updBals(){
+  if(!gU) return;
+  const b = parseFloat(gU.balance||0);
+  const fmt = n=>'₹'+n.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('nav-bal').textContent  = fmt(b);
+  document.getElementById('wlt-bal').textContent  = fmt(b);
+  document.getElementById('pf-bal').textContent   = fmt(b);
+  document.getElementById('po-bal').textContent   = fmt(b);
+  document.getElementById('qo-bal').textContent   = fmt(b);
+  document.getElementById('pf-cs').textContent    = gU.credit_score||750;
+  document.getElementById('pf-crd').textContent   = gU.credit_score||750;
+}
+
+// ====================================================
+// FILL PROFILE
+// ====================================================
+function fillProfile(){
+  if(!gU) return;
+  const init=(gU.full_name||'U')[0].toUpperCase();
+  document.getElementById('nav-av').textContent  = init;
+  document.getElementById('pf-av').textContent   = init;
+  document.getElementById('pf-name').textContent = gU.full_name||'User';
+  document.getElementById('pf-email').textContent= gU.email||'';
+  document.getElementById('pf-slot').textContent = 'ID-'+( gU.slot||gU.id);
+  document.getElementById('pf-ph').textContent   = gU.phone_number||'-';
+  document.getElementById('pf-pan').textContent  = gU.pan_number||'-';
+  document.getElementById('pf-crd').textContent  = gU.credit_score||750;
+  document.getElementById('pf-join').textContent = new Date(gU.created_at).toLocaleDateString('en-IN');
+
+  // Masked Aadhaar
+  const a=gU.aadhaar_number||'';
+  document.getElementById('pf-aad').textContent = a?a.slice(0,4)+'XXXX'+a.slice(8):'-';
+
+  // Verified badge
+  const vb=document.getElementById('pf-badge');
+  const ks=document.getElementById('kyc-st');
+  if(gU.verified){
+    vb.innerHTML='<span style="background:#0ecb8120;color:#0ecb81;padding:2px 10px;border-radius:4px;font-size:11px;font-weight:700;"><i class="fas fa-check-circle" style="margin-right:4px;"></i>KYC Verified</span>';
+    ks.innerHTML='<span style="color:#0ecb81;font-weight:700;"><i class="fas fa-check-circle" style="margin-right:6px;"></i>Account Verified & Active</span>';
+  }else{
+    vb.innerHTML='<span style="background:#f0b90b20;color:#f0b90b;padding:2px 10px;border-radius:4px;font-size:11px;font-weight:700;"><i class="fas fa-clock" style="margin-right:4px;"></i>KYC Pending</span>';
+    ks.innerHTML='<span style="color:#f0b90b;font-weight:700;"><i class="fas fa-clock" style="margin-right:6px;"></i>Pending Verification</span>';
+  }
+
+  // Fill bank fields
+  if(gU.bank_name)           document.getElementById('bk-bn').value=gU.bank_name;
+  if(gU.account_holder_name) document.getElementById('bk-ah').value=gU.account_holder_name;
+  if(gU.account_number)      document.getElementById('bk-an').value=gU.account_number;
+  if(gU.ifsc_code)           document.getElementById('bk-if').value=gU.ifsc_code;
+  if(gU.upi_id)              document.getElementById('bk-up').value=gU.upi_id;
+
+  // Withdrawal bank info
+  document.getElementById('wd-bk-info').innerHTML = gU.bank_name
+    ?`<div style="color:#1890ff;font-weight:800;margin-bottom:6px;"><i class="fas fa-university" style="margin-right:6px;"></i>Saved Bank Details</div>
+      <div style="font-size:12px;line-height:2;">
+        Bank: <b>${gU.bank_name}</b><br>
+        Account: <b>${gU.account_number||'-'}</b><br>
+        UPI: <b>${gU.upi_id||'-'}</b>
+      </div>`
+    :'<span style="color:#f0b90b;">⚠️ No bank details saved. Go to Profile to add.</span>';
+}
+
+// ====================================================
+// TRADINGVIEW CHART
+// ====================================================
+function initTV(){
   new TradingView.widget({
     container_id:'tv-chart',
-    symbol: gStock.sym,
-    interval:'D', timezone:'Asia/Kolkata',
-    theme:'dark', style:'1', locale:'en',
+    symbol:gS.sym, interval:'D',
+    timezone:'Asia/Kolkata', theme:'dark',
+    style:'1', locale:'en',
     toolbar_bg:'#1e2329',
     enable_publishing:false,
     allow_symbol_change:true,
     save_image:false, autosize:true,
-    studies:['RSI@tv-basicstudies','MACD@tv-basicstudies'],
-    withdateranges:true,
+    studies:['RSI@tv-basicstudies','MACD@tv-basicstudies','BB@tv-basicstudies'],
+    withdateranges:true, hide_side_toolbar:false
   });
 }
 
-function pickStock(stock) {
-  gStock = stock;
-  const pd = gPrices[stock.sym];
-  const sym = stock.sym.split(':')[1];
-  document.getElementById('hdr-sym').textContent = sym;
-  document.getElementById('hdr-price').textContent = '₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
-  const chg = parseFloat(pd.change);
-  document.getElementById('hdr-chg').innerHTML = chg>=0
-    ? `<span class="green">+${chg}% ▲</span>`
-    : `<span class="red">${chg}% ▼</span>`;
-  document.getElementById('hdr-high').textContent = '₹'+pd.high.toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('hdr-low').textContent  = '₹'+pd.low.toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('hdr-vol').textContent  = (Math.random()*100+10).toFixed(1)+'M';
-  document.getElementById('ob-cur').textContent   = '₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('po-price').value = pd.price.toFixed(2);
-  document.getElementById('po-btn').textContent = `${gSide.toUpperCase()} ${sym}`;
-  document.getElementById('qo-sym').textContent = sym;
-  document.getElementById('qo-price').textContent = '₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
-  updateOB();
-  // Change TV symbol
-  try {
-    const iframe = document.querySelector('#tv-chart iframe');
-    if(iframe) {
-      const w = iframe.contentWindow;
-      if(w && w.tvWidget) w.tvWidget.setSymbol(stock.sym,'D');
-    }
-  } catch(e){}
+function pickStock(s){
+  gS=s;
+  const pd=gPx[s.sym];
+  const sym=s.sym.split(':')[1];
+  document.getElementById('h-sym').textContent   = sym;
+  document.getElementById('h-price').textContent = '₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
+  const chg=parseFloat(pd.change);
+  document.getElementById('h-chg').innerHTML=chg>=0
+    ?`<span class="g">+${chg}% ▲</span>`
+    :`<span class="r">${chg}% ▼</span>`;
+  document.getElementById('h-hi').textContent  = '₹'+pd.high.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('h-lo').textContent  = '₹'+pd.low.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('h-vol').textContent = (Math.random()*100+5).toFixed(1)+'M';
+  document.getElementById('ob-p').textContent  = '₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('po-pr').value = pd.price.toFixed(2);
+  document.getElementById('po-btn').textContent=`${gSide.toUpperCase()} ${sym}`;
+  document.getElementById('qo-sym').textContent=sym;
+  document.getElementById('qo-pr').textContent='₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
+  updOB();
 }
 
-// =============================================
+// ====================================================
 // SIDEBAR
-// =============================================
-function renderSidebar() {
-  const q = (document.getElementById('s-search')?.value||'').toLowerCase();
-  const list = STOCKS.filter(s=>{
-    const cm = gCat==='all'||s.cat===gCat;
-    const sm = !q||s.name.toLowerCase().includes(q)||s.sym.toLowerCase().includes(q);
-    return cm&&sm;
+// ====================================================
+function renderSide(){
+  const q=(document.getElementById('ss')?.value||'').toLowerCase();
+  const list=STOCKS.filter(s=>{
+    return (gCat==='all'||s.cat===gCat)&&
+           (!q||s.name.toLowerCase().includes(q)||s.sym.toLowerCase().includes(q));
   });
-  document.getElementById('sidebar-list').innerHTML = list.map(s=>{
-    const pd = gPrices[s.sym];
-    const chg = parseFloat(pd?.change||0);
-    return `<div class="stock-item" onclick='pickStock(${JSON.stringify(s)})'>
+  document.getElementById('side-list').innerHTML=list.map(s=>{
+    const pd=gPx[s.sym];
+    const chg=parseFloat(pd?.change||0);
+    return `<div class="stock-row" onclick='pickStock(${JSON.stringify(s)})'>
       <div>
         <div style="font-size:12px;font-weight:700;">${s.sym.split(':')[1]}</div>
-        <div style="font-size:10px;color:#5e6673;">${s.name}</div>
+        <div style="font-size:10px;color:#5e6673;">${s.name.slice(0,18)}</div>
       </div>
       <div style="text-align:right;">
         <div style="font-size:11px;font-weight:700;">₹${(pd?.price||s.p).toLocaleString('en-IN',{maximumFractionDigits:0})}</div>
@@ -904,84 +854,79 @@ function renderSidebar() {
     </div>`;
   }).join('');
 }
-
-function filterSidebar(){renderSidebar();}
-function setCat(cat,btn){
-  gCat=cat;
-  document.querySelectorAll('#pg-trade .tab-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  renderSidebar();
+function filSide(){renderSide();}
+function setCat(c,btn){
+  gCat=c;
+  document.querySelectorAll('#sidebar .tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderSide();
 }
 
-// =============================================
-// MARKETS TABLE
-// =============================================
-function renderMktTable(q='') {
-  const list = q ? STOCKS.filter(s=>s.name.toLowerCase().includes(q.toLowerCase())||s.sym.toLowerCase().includes(q.toLowerCase())) : STOCKS;
-  document.getElementById('mkt-table').innerHTML = list.map(s=>{
-    const pd = gPrices[s.sym];
-    const chg = parseFloat(pd?.change||0);
-    const vol = (Math.random()*100+5).toFixed(1)+'M';
-    return `<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:12px 16px;border-bottom:1px solid #2b3139;cursor:pointer;transition:all 0.15s;" 
-         onmouseover="this.style.background='#2b3139'" onmouseout="this.style.background=''"
-         onclick='pickStock(${JSON.stringify(s)});showPage("trade")'>
-      <div>
-        <div style="font-weight:700;">${s.sym.split(':')[1]}</div>
-        <div style="font-size:11px;color:#848e9c;">${s.name}</div>
-      </div>
+// ====================================================
+// MARKET TABLE
+// ====================================================
+function renderMkt(q=''){
+  const list=q?STOCKS.filter(s=>s.name.toLowerCase().includes(q.toLowerCase())||s.sym.toLowerCase().includes(q.toLowerCase())):STOCKS;
+  document.getElementById('mkt-body').innerHTML=list.map(s=>{
+    const pd=gPx[s.sym];
+    const chg=parseFloat(pd?.change||0);
+    return `<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:12px 16px;border-bottom:1px solid #2b3139;cursor:pointer;transition:.15s;"
+      onmouseover="this.style.background='#2b3139'" onmouseout="this.style.background=''"
+      onclick='pickStock(${JSON.stringify(s)});goPage("trade")'>
+      <div><div style="font-weight:700;font-size:13px;">${s.sym.split(':')[1]}</div><div style="font-size:11px;color:#848e9c;">${s.name}</div></div>
       <div style="text-align:right;font-weight:700;">₹${(pd?.price||s.p).toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
       <div style="text-align:right;font-weight:700;color:${chg>=0?'#0ecb81':'#f6465d'}">${chg>=0?'+':''}${chg}%</div>
-      <div style="text-align:right;color:#848e9c;">${vol}</div>
+      <div style="text-align:right;color:#848e9c;">${(Math.random()*100+5).toFixed(1)}M</div>
     </div>`;
   }).join('');
 }
-function filterMkt(v){renderMktTable(v);}
+function filMkt(v){renderMkt(v);}
 
-// =============================================
-// ORDER BOOK
-// =============================================
-function updateOB() {
-  const bp = gPrices[gStock.sym]?.price||gStock.p;
-  let sh='', bh='';
-  for(let i=10;i>0;i--) {
-    const p=(bp+(i*bp*0.0003)).toFixed(2);
+// ====================================================
+// ORDER BOOK & TRADES
+// ====================================================
+function updOB(){
+  const bp=gPx[gS.sym]?.price||gS.p;
+  let sh='',bh='';
+  for(let i=10;i>0;i--){
+    const p=(bp+i*bp*0.0003).toFixed(2);
     const q=Math.floor(Math.random()*500+50);
     const t=(p*q/1000).toFixed(1);
     const pct=Math.random()*70+10;
-    sh+=`<div class="order-row" style="color:#f6465d;">
-      <div class="depth-fill" style="right:0;width:${pct}%;background:#f6465d;"></div>
+    sh+=`<div class="ob-row" style="color:#f6465d;">
+      <div class="ob-bar" style="right:0;width:${pct}%;background:#f6465d;"></div>
       <span style="position:relative;z-index:1;">${p}</span>
       <span style="text-align:center;position:relative;z-index:1;">${q}</span>
       <span style="text-align:right;position:relative;z-index:1;">${t}K</span>
     </div>`;
   }
-  for(let i=1;i<=10;i++) {
-    const p=(bp-(i*bp*0.0003)).toFixed(2);
+  for(let i=1;i<=10;i++){
+    const p=(bp-i*bp*0.0003).toFixed(2);
     const q=Math.floor(Math.random()*500+50);
     const t=(p*q/1000).toFixed(1);
     const pct=Math.random()*70+10;
-    bh+=`<div class="order-row" style="color:#0ecb81;">
-      <div class="depth-fill" style="left:0;width:${pct}%;background:#0ecb81;"></div>
+    bh+=`<div class="ob-row" style="color:#0ecb81;">
+      <div class="ob-bar" style="left:0;width:${pct}%;background:#0ecb81;"></div>
       <span style="position:relative;z-index:1;">${p}</span>
       <span style="text-align:center;position:relative;z-index:1;">${q}</span>
       <span style="text-align:right;position:relative;z-index:1;">${t}K</span>
     </div>`;
   }
-  document.getElementById('ob-sells').innerHTML=sh;
-  document.getElementById('ob-buys').innerHTML=bh;
-  document.getElementById('ob-cur').textContent='₹'+(gPrices[gStock.sym]?.price||gStock.p).toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('ob-s').innerHTML=sh;
+  document.getElementById('ob-b').innerHTML=bh;
+  document.getElementById('ob-p').textContent='₹'+(gPx[gS.sym]?.price||gS.p).toLocaleString('en-IN',{maximumFractionDigits:2});
 }
 
-function updateRT() {
-  const bp=gPrices[gStock.sym]?.price||gStock.p;
-  let h='';
+function updRT(){
+  const bp=gPx[gS.sym]?.price||gS.p;
   const now=new Date();
+  let h='';
   for(let i=0;i<20;i++){
     const ib=Math.random()>0.5;
-    const p=(bp*(1+(Math.random()*0.002-0.001))).toFixed(2);
-    const sz=(Math.random()*200+1).toFixed(0);
+    const p=(bp*(1+(Math.random()*.002-.001))).toFixed(2);
+    const sz=Math.floor(Math.random()*200+1);
     const sec=String(Math.floor(Math.random()*60)).padStart(2,'0');
-    h+=`<div class="order-row" style="color:${ib?'#0ecb81':'#f6465d'}">
+    h+=`<div class="ob-row" style="color:${ib?'#0ecb81':'#f6465d'}">
       <span>${p}</span><span style="text-align:center;">${sz}</span>
       <span style="text-align:right;">${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}:${sec}</span>
     </div>`;
@@ -989,262 +934,240 @@ function updateRT() {
   document.getElementById('rt-list').innerHTML=h;
 }
 
-// =============================================
-// PRICE SIMULATION
-// =============================================
-function simPrices(){
-  STOCKS.forEach(s=>{
-    const old=gPrices[s.sym].price;
-    const d=old*(Math.random()*0.004-0.002);
-    gPrices[s.sym].price=Math.max(0.1,old+d);
-    gPrices[s.sym].change=+(parseFloat(gPrices[s.sym].change)+(Math.random()*0.1-0.05)).toFixed(2);
+function rTab(tab){
+  ['ob','po','rt'].forEach(t=>{
+    const el=document.getElementById('r-'+t);
+    el.style.display=t===tab?(t==='rt'?'block':'flex'):'none';
   });
-  renderSidebar();
-  const pd=gPrices[gStock.sym];
-  document.getElementById('hdr-price').textContent='₹'+pd.price.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('ob-cur').textContent='₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('po-price').value=pd.price.toFixed(2);
-  updateTicker();
 }
 
-function updateTicker(){
-  const html=STOCKS.slice(0,18).map(s=>{
-    const pd=gPrices[s.sym];
+// ====================================================
+// PRICE SIMULATION & TICKER
+// ====================================================
+function simPx(){
+  STOCKS.forEach(s=>{
+    const o=gPx[s.sym].price;
+    gPx[s.sym].price=Math.max(.01,o+o*(Math.random()*.004-.002));
+    gPx[s.sym].change=+(parseFloat(gPx[s.sym].change)+(Math.random()*.1-.05)).toFixed(2);
+  });
+  renderSide();
+  const pd=gPx[gS.sym];
+  document.getElementById('h-price').textContent='₹'+pd.price.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('ob-p').textContent='₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('po-pr').value=pd.price.toFixed(2);
+  updTicker();
+}
+
+function updTicker(){
+  document.getElementById('ticker').innerHTML=STOCKS.slice(0,20).map(s=>{
+    const pd=gPx[s.sym];
     const chg=parseFloat(pd.change);
-    return `<span style="margin:0 16px;">
+    return `<span style="margin:0 20px;">
       <b style="color:${chg>=0?'#0ecb81':'#f6465d'}">${s.sym.split(':')[1]}</b>
       ₹${pd.price.toFixed(2)}
       <span style="color:${chg>=0?'#0ecb81':'#f6465d'}">${chg>=0?'+':''}${chg}%</span>
     </span>`;
   }).join('');
-  document.getElementById('ticker').innerHTML=html;
 }
 
-// =============================================
-// ORDER PLACEMENT
-// =============================================
-function rightTab(tab){
-  ['ob','po','rt'].forEach(t=>{
-    const el=document.getElementById('r-'+t);
-    el.classList.toggle('hidden',t!==tab);
-    el.classList.toggle('flex',t===tab&&t!=='rt');
-  });
-}
-
-function setPoSide(side){
-  gSide=side;
-  document.getElementById('po-buy').classList.toggle('opacity-40',side!=='buy');
-  document.getElementById('po-sell').classList.toggle('opacity-40',side!=='sell');
-  document.getElementById('po-btn').className=side==='buy'?'btn-green w-full py-3 font-bold text-sm':'btn-red w-full py-3 font-bold text-sm';
-  document.getElementById('po-btn').textContent=`${side.toUpperCase()} ${gStock.sym.split(':')[1]}`;
+// ====================================================
+// PLACE ORDER (Right Panel)
+// ====================================================
+function poSide(s){
+  gSide=s;
+  document.getElementById('po-b').classList.toggle('opacity-40',s!=='buy');  // workaround
+  document.getElementById('po-b').style.opacity=s==='buy'?'1':'.4';
+  document.getElementById('po-s').style.opacity=s==='sell'?'1':'.4';
+  document.getElementById('po-btn').className=s==='buy'?'btn-g':'btn-r';
+  document.getElementById('po-btn').style.cssText='padding:12px;font-weight:800;font-size:13px;';
+  document.getElementById('po-btn').textContent=`${s.toUpperCase()} ${gS.sym.split(':')[1]}`;
 }
 
 function calcPO(){
-  const q=parseFloat(document.getElementById('po-qty').value)||0;
-  const p=parseFloat(document.getElementById('po-price').value)||gPrices[gStock.sym]?.price||0;
-  const t=q*p; const f=t*0.001;
-  document.getElementById('po-total').textContent='₹'+t.toLocaleString('en-IN',{maximumFractionDigits:2});
+  const q=parseFloat(document.getElementById('po-q').value)||0;
+  const p=parseFloat(document.getElementById('po-pr').value)||gPx[gS.sym]?.price||0;
+  const t=q*p; const f=t*.001;
+  document.getElementById('po-tot').textContent='₹'+t.toLocaleString('en-IN',{maximumFractionDigits:2});
   document.getElementById('po-fee').textContent='₹'+f.toFixed(2);
 }
 
 function poPct(pct){
-  if(!gClient)return;
-  const bal=parseFloat(gClient.balance||0);
-  const p=gPrices[gStock.sym]?.price||gStock.p;
-  const q=Math.floor((bal*pct/100)/p);
-  document.getElementById('po-qty').value=q;
+  if(!gU) return;
+  const b=parseFloat(gU.balance||0);
+  const p=gPx[gS.sym]?.price||gS.p;
+  document.getElementById('po-q').value=Math.floor(b*pct/100/p);
   calcPO();
 }
 
 async function doPlaceOrder(){
-  if(!gClient) return toast('Login required','red');
-  if(!gClient.is_verified) return toast('Complete KYC to trade','yellow');
-  const qty=parseFloat(document.getElementById('po-qty').value);
-  const price=parseFloat(document.getElementById('po-price').value)||gPrices[gStock.sym]?.price;
+  if(!gU) return toast('Login required','red');
+  if(!gU.verified) return toast('Complete KYC to trade','yellow');
+  const qty=parseFloat(document.getElementById('po-q').value);
+  const price=parseFloat(document.getElementById('po-pr').value)||gPx[gS.sym]?.price;
   if(!qty||qty<=0) return toast('Enter quantity','red');
-  const total=qty*price;
-  const fee=total*0.001;
-  const totalFee=total+fee;
-  if(gSide==='buy'&&totalFee>parseFloat(gClient.balance))return toast('Insufficient balance','red');
-  await executeOrder(gSide,qty,price,total,fee);
+  const total=qty*price; const fee=total*.001;
+  if(gSide==='buy'&&(total+fee)>parseFloat(gU.balance)) return toast('Insufficient balance','red');
+  await execOrder(gSide,qty,price,total,fee);
+  document.getElementById('po-q').value='';
 }
 
-async function executeOrder(side,qty,price,total,fee){
-  toast('Processing order...','blue');
+// ====================================================
+// EXECUTE ORDER (shared)
+// ====================================================
+async function execOrder(side,qty,price,total,fee){
+  toast('Processing...','blue');
+
   const {error:oErr}=await sb.from('orders').insert({
-    client_id: gClient.id,
-    stock_symbol: gStock.sym,
-    stock_name: gStock.name,
-    order_type: side,
-    price_type: document.getElementById('po-type')?.value||'market',
-    quantity: qty, price, total_amount: total+(side==='buy'?fee:-fee),
+    user_id:gU.id, stock_symbol:gS.sym, stock_name:gS.name,
+    order_type:side,
+    price_type:document.getElementById('po-t')?.value||'market',
+    quantity:qty, price, total_amount:total+(side==='buy'?fee:-fee),
     status:'completed'
   });
   if(oErr) return toast('Order failed: '+oErr.message,'red');
 
-  const newBal = side==='buy'
-    ? parseFloat(gClient.balance)-(total+fee)
-    : parseFloat(gClient.balance)+total-fee;
+  const newBal=side==='buy'
+    ?parseFloat(gU.balance)-(total+fee)
+    :parseFloat(gU.balance)+total-fee;
 
-  await sb.from('client_details').update({balance:newBal}).eq('id',gClient.id);
+  await sb.from('users').update({balance:newBal}).eq('id',gU.id);
 
   if(side==='buy'){
-    const {data:ex}=await sb.from('holdings').select('*').eq('client_id',gClient.id).eq('stock_symbol',gStock.sym).single();
+    const {data:ex}=await sb.from('holdings').select('*').eq('user_id',gU.id).eq('stock_symbol',gS.sym).single();
     if(ex){
       const nq=parseFloat(ex.quantity)+qty;
       const na=((parseFloat(ex.avg_price)*parseFloat(ex.quantity))+(price*qty))/nq;
       await sb.from('holdings').update({quantity:nq,avg_price:na,total_invested:nq*na}).eq('id',ex.id);
-    } else {
-      await sb.from('holdings').insert({client_id:gClient.id,stock_symbol:gStock.sym,stock_name:gStock.name,quantity:qty,avg_price:price,total_invested:total});
+    }else{
+      await sb.from('holdings').insert({user_id:gU.id,stock_symbol:gS.sym,stock_name:gS.name,quantity:qty,avg_price:price,total_invested:total});
     }
-  } else {
-    const {data:h}=await sb.from('holdings').select('*').eq('client_id',gClient.id).eq('stock_symbol',gStock.sym).single();
+  }else{
+    const {data:h}=await sb.from('holdings').select('*').eq('user_id',gU.id).eq('stock_symbol',gS.sym).single();
     if(!h||parseFloat(h.quantity)<qty) return toast('Insufficient shares','red');
     const nq=parseFloat(h.quantity)-qty;
     if(nq<=0) await sb.from('holdings').delete().eq('id',h.id);
     else await sb.from('holdings').update({quantity:nq}).eq('id',h.id);
   }
 
-  gClient.balance=newBal;
-  updateAllBalances();
-  toast(`${side.toUpperCase()} order: ${qty} shares of ${gStock.sym.split(':')[1]} executed!`,'green');
-  loadHoldings();loadOrders('all');
-  document.getElementById('po-qty').value='';
+  gU.balance=newBal;
+  updBals();
+  toast(`${side.toUpperCase()} ${qty} shares of ${gS.sym.split(':')[1]} done!`,'green');
+  loadHoldings(); loadOrders('all');
 }
 
-// =============================================
+// ====================================================
 // QUICK ORDER
-// =============================================
-function openQuick(side){
-  gQOSide=side;
-  document.getElementById('qo-title').textContent=`${side.toUpperCase()} ${gStock.sym.split(':')[1]}`;
-  document.getElementById('qo-sym').textContent=gStock.sym.split(':')[1];
-  document.getElementById('qo-price').textContent='₹'+(gPrices[gStock.sym]?.price||gStock.p).toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('qo-btn').className=side==='buy'?'btn-green w-full py-3 font-bold':'btn-red w-full py-3 font-bold';
+// ====================================================
+function opnQO(side){
+  gQSide=side;
+  document.getElementById('qo-ttl').textContent=`${side.toUpperCase()} ${gS.sym.split(':')[1]}`;
+  document.getElementById('qo-sym').textContent=gS.sym.split(':')[1];
+  document.getElementById('qo-pr').textContent='₹'+(gPx[gS.sym]?.price||gS.p).toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('qo-btn').className=side==='buy'?'btn-g':'btn-r';
+  document.getElementById('qo-btn').style.cssText='width:100%;padding:14px;font-size:14px;';
   document.getElementById('qo-btn').textContent=`CONFIRM ${side.toUpperCase()}`;
-  document.getElementById('qo-qty').value='';
+  document.getElementById('qo-q').value='';
   document.getElementById('qo-tot').textContent='₹0';
   document.getElementById('qo-fee').textContent='₹0';
-  openMod('mod-qo');
+  opnMod('m-qo');
 }
 
 function calcQO(){
-  const q=parseFloat(document.getElementById('qo-qty').value)||0;
-  const p=gPrices[gStock.sym]?.price||gStock.p;
-  const t=q*p; const f=t*0.001;
+  const q=parseFloat(document.getElementById('qo-q').value)||0;
+  const p=gPx[gS.sym]?.price||gS.p;
+  const t=q*p; const f=t*.001;
   document.getElementById('qo-tot').textContent='₹'+t.toLocaleString('en-IN',{maximumFractionDigits:2});
   document.getElementById('qo-fee').textContent='₹'+f.toFixed(2);
 }
 
-async function submitQO(){
-  if(!gClient) return toast('Login required','red');
-  if(!gClient.is_verified) return toast('Complete KYC to trade','yellow');
-  const qty=parseFloat(document.getElementById('qo-qty').value);
+async function subQO(){
+  if(!gU) return toast('Login required','red');
+  if(!gU.verified) return toast('Complete KYC to trade','yellow');
+  const qty=parseFloat(document.getElementById('qo-q').value);
   if(!qty||qty<=0) return toast('Enter quantity','red');
-  const price=gPrices[gStock.sym]?.price||gStock.p;
-  const total=qty*price; const fee=total*0.001;
-  if(gQOSide==='buy'&&(total+fee)>parseFloat(gClient.balance))return toast('Insufficient balance','red');
-  closeMod('mod-qo');
-  gSide=gQOSide;
-  await executeOrder(gQOSide,qty,price,total,fee);
+  const price=gPx[gS.sym]?.price||gS.p;
+  const total=qty*price; const fee=total*.001;
+  if(gQSide==='buy'&&(total+fee)>parseFloat(gU.balance)) return toast('Insufficient balance','red');
+  clsMod('m-qo');
+  gSide=gQSide;
+  await execOrder(gQSide,qty,price,total,fee);
 }
 
-// =============================================
+// ====================================================
 // HOLDINGS
-// =============================================
+// ====================================================
 async function loadHoldings(){
-  if(!gClient) return;
-  const {data}=await sb.from('holdings').select('*').eq('client_id',gClient.id);
-  const body=document.getElementById('holdings-body');
-  const assetEl=document.getElementById('asset-sum');
-
-  if(!data||data.length===0){
-    body.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;"><i class="fas fa-chart-pie" style="font-size:2rem;margin-bottom:10px;display:block;"></i>No holdings yet. Start trading!</div>';
-    assetEl.innerHTML='<div style="color:#848e9c;font-size:13px;">No stock holdings</div>';
+  if(!gU) return;
+  const {data}=await sb.from('holdings').select('*').eq('user_id',gU.id);
+  const body=document.getElementById('hold-body');
+  const asEl=document.getElementById('asset-sum');
+  if(!data||!data.length){
+    body.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;"><i class="fas fa-chart-pie" style="font-size:2rem;display:block;margin-bottom:10px;"></i>No holdings yet. Start trading!</div>';
+    asEl.innerHTML='<div style="color:#848e9c;font-size:13px;">No stock holdings yet</div>';
     document.getElementById('pf-pv').textContent='₹0';
     document.getElementById('pf-pnl').innerHTML='₹0';
     return;
   }
-
-  let totalPnL=0, totalVal=0;
+  let tPnL=0,tVal=0;
   body.innerHTML=data.map(h=>{
-    const cur=gPrices[h.stock_symbol]?.price||parseFloat(h.avg_price);
+    const cur=gPx[h.stock_symbol]?.price||parseFloat(h.avg_price);
     const pnl=(cur-parseFloat(h.avg_price))*parseFloat(h.quantity);
-    const pnlP=((cur-parseFloat(h.avg_price))/parseFloat(h.avg_price)*100).toFixed(2);
-    totalPnL+=pnl; totalVal+=cur*parseFloat(h.quantity);
+    const pp=((cur-parseFloat(h.avg_price))/parseFloat(h.avg_price)*100).toFixed(2);
+    tPnL+=pnl; tVal+=cur*parseFloat(h.quantity);
     return `<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;padding:12px 16px;border-bottom:1px solid #2b3139;font-size:13px;cursor:pointer;"
-        onmouseover="this.style.background='#2b3139'" onmouseout="this.style.background=''"
-        onclick='pickStock(STOCKS.find(s=>s.sym=="${h.stock_symbol}")||STOCKS[0]);showPage("trade")'>
-      <div><div style="font-weight:700;">${h.stock_symbol.split(':')[1]}</div><div style="font-size:11px;color:#848e9c;">${h.stock_name||''}</div></div>
+      onmouseover="this.style.background='#2b3139'" onmouseout="this.style.background=''">
+      <div><div style="font-weight:700;">${h.stock_symbol.split(':')[1]}</div><div style="font-size:11px;color:#848e9c;">${h.stock_name}</div></div>
       <div style="text-align:right;">${parseFloat(h.quantity).toFixed(2)}</div>
       <div style="text-align:right;">₹${parseFloat(h.avg_price).toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
       <div style="text-align:right;">₹${cur.toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
-      <div style="text-align:right;color:${pnl>=0?'#0ecb81':'#f6465d'};font-weight:700;">
+      <div style="text-align:right;font-weight:700;color:${pnl>=0?'#0ecb81':'#f6465d'}">
         ${pnl>=0?'+':''}₹${Math.abs(pnl).toFixed(2)}<br>
-        <span style="font-size:10px;">${pnlP}%</span>
+        <span style="font-size:10px;">${pp}%</span>
       </div>
     </div>`;
   }).join('');
-
-  document.getElementById('pf-pv').textContent='₹'+totalVal.toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('pf-pnl').innerHTML=`<span style="color:${totalPnL>=0?'#0ecb81':'#f6465d'}">${totalPnL>=0?'+':''}₹${totalPnL.toFixed(2)}</span>`;
-
-  assetEl.innerHTML=`
-    <div style="margin-bottom:10px;">
-      <div style="color:#848e9c;font-size:12px;margin-bottom:4px;">Cash Balance</div>
-      <div style="font-size:1.3rem;font-weight:900;color:#f0b90b;">₹${parseFloat(gClient?.balance||0).toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
-    </div>
-    <div><div style="color:#848e9c;font-size:12px;margin-bottom:6px;">Stock Holdings</div>
-    ${data.slice(0,6).map(h=>`
-      <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid #2b3139;">
-        <span>${h.stock_symbol.split(':')[1]}</span>
-        <span style="font-weight:700;">${parseFloat(h.quantity).toFixed(2)} shares</span>
-      </div>`).join('')}
-    </div>`;
+  document.getElementById('pf-pv').textContent='₹'+tVal.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('pf-pnl').innerHTML=`<span style="color:${tPnL>=0?'#0ecb81':'#f6465d'}">${tPnL>=0?'+':''}₹${tPnL.toFixed(2)}</span>`;
+  asEl.innerHTML=`<div style="margin-bottom:12px;"><div style="font-size:11px;color:#848e9c;margin-bottom:2px;">Cash</div><div style="font-size:1.2rem;font-weight:900;color:#f0b90b;">₹${parseFloat(gU?.balance||0).toLocaleString('en-IN',{maximumFractionDigits:2})}</div></div>`+
+    data.slice(0,5).map(h=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #2b3139;font-size:13px;"><span>${h.stock_symbol.split(':')[1]}</span><span style="font-weight:700;">${parseFloat(h.quantity).toFixed(2)} shares</span></div>`).join('');
 }
 
-// =============================================
+// ====================================================
 // TRANSACTIONS
-// =============================================
+// ====================================================
 async function loadTx(){
-  if(!gClient) return;
-  const {data}=await sb.from('transactions').select('*').eq('client_id',gClient.id).order('created_at',{ascending:false}).limit(30);
-  const el=document.getElementById('tx-list');
-  if(!data||data.length===0){
-    el.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;">No transactions yet</div>';
-    return;
-  }
-  const colors={completed:'#0ecb81',rejected:'#f6465d',pending:'#f0b90b',processing:'#1890ff'};
-  const tcolors={deposit:'#0ecb81',withdrawal:'#f6465d',buy:'#1890ff',sell:'#a855f7'};
-  el.innerHTML=data.map(t=>`
+  if(!gU) return;
+  const {data}=await sb.from('transactions').select('*').eq('user_id',gU.id).order('created_at',{ascending:false}).limit(30);
+  const body=document.getElementById('tx-body');
+  if(!data||!data.length){body.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;">No transactions yet</div>';return;}
+  const sc={completed:'#0ecb81',rejected:'#f6465d',pending:'#f0b90b',processing:'#1890ff'};
+  const tc={deposit:'#0ecb81',withdrawal:'#f6465d',buy:'#1890ff',sell:'#a855f7'};
+  body.innerHTML=data.map(t=>`
     <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #2b3139;">
       <div>
-        <div style="font-weight:700;color:${tcolors[t.type]||'#eaecef'};font-size:13px;">${(t.type||'').toUpperCase()}</div>
+        <div style="font-weight:700;color:${tc[t.type]||'#eaecef'};font-size:13px;">${(t.type||'').toUpperCase()}</div>
         <div style="font-size:11px;color:#848e9c;">${new Date(t.created_at).toLocaleString('en-IN')}</div>
         ${t.reference_id?`<div style="font-size:10px;color:#5e6673;">Ref: ${t.reference_id}</div>`:''}
       </div>
       <div style="text-align:right;">
-        <div style="font-weight:700;font-size:14px;">₹${parseFloat(t.amount).toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
-        <span style="font-size:10px;padding:2px 8px;border-radius:4px;background:${colors[t.status]||'#848e9c'}25;color:${colors[t.status]||'#848e9c'};font-weight:700;">${t.status}</span>
+        <div style="font-weight:700;">₹${parseFloat(t.amount).toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
+        <span style="font-size:10px;padding:2px 8px;border-radius:4px;background:${sc[t.status]||'#848e9c'}20;color:${sc[t.status]||'#848e9c'};font-weight:700;">${t.status}</span>
       </div>
     </div>`).join('');
 }
 
-// =============================================
+// ====================================================
 // ORDERS
-// =============================================
+// ====================================================
 async function loadOrders(filter='all'){
-  if(!gClient) return;
-  let q=sb.from('orders').select('*').eq('client_id',gClient.id).order('created_at',{ascending:false}).limit(50);
+  if(!gU) return;
+  let q=sb.from('orders').select('*').eq('user_id',gU.id).order('created_at',{ascending:false}).limit(50);
   if(filter!=='all') q=q.eq('status',filter);
   const {data}=await q;
-  const el=document.getElementById('orders-body');
-  if(!data||data.length===0){
-    el.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;">No orders found</div>';
-    return;
-  }
-  el.innerHTML=data.map(o=>`
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;padding:10px 16px;border-bottom:1px solid #2b3139;font-size:12px;cursor:pointer;"
+  const body=document.getElementById('ord-body');
+  if(!data||!data.length){body.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;">No orders found</div>';return;}
+  body.innerHTML=data.map(o=>`
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;padding:10px 16px;border-bottom:1px solid #2b3139;font-size:12px;"
       onmouseover="this.style.background='#2b3139'" onmouseout="this.style.background=''">
       <span style="font-weight:700;">${(o.stock_symbol||'').split(':')[1]}</span>
       <span style="color:${o.order_type==='buy'?'#0ecb81':'#f6465d'};font-weight:700;">${(o.order_type||'').toUpperCase()}</span>
@@ -1255,116 +1178,117 @@ async function loadOrders(filter='all'){
     </div>`).join('');
 }
 
-// =============================================
+// ====================================================
 // ADMIN SETTINGS
-// =============================================
-async function loadAdminSettings(){
+// ====================================================
+async function loadAdm(){
   const {data}=await sb.from('admin_settings').select('*').eq('id',1).single();
   if(data){
-    gAdmin=data;
-    document.getElementById('d-upi').textContent    = data.upi_id||'-';
-    document.getElementById('d-phone').textContent  = data.phonepay_number||'-';
-    document.getElementById('d-bank').textContent   = data.bank_name||'-';
-    document.getElementById('d-acc').textContent    = data.account_number||'-';
-    document.getElementById('d-ifsc').textContent   = data.ifsc_code||'-';
-    document.getElementById('d-holder').textContent = data.account_holder||'-';
+    gAdm=data;
+    document.getElementById('d-upi').textContent = data.upi_id||'-';
+    document.getElementById('d-ph').textContent  = data.phonepay_number||'-';
+    document.getElementById('d-bk').textContent  = data.bank_name||'-';
+    document.getElementById('d-ac').textContent  = data.account_number||'-';
+    document.getElementById('d-if').textContent  = data.ifsc_code||'-';
+    document.getElementById('d-hn').textContent  = data.account_holder||'-';
   }
 }
 
-// =============================================
+// ====================================================
 // DEPOSIT
-// =============================================
+// ====================================================
 async function doDeposit(){
-  const amt=parseFloat(document.getElementById('dep-amt').value);
-  const ref=document.getElementById('dep-ref').value.trim();
+  const amt=parseFloat(document.getElementById('d-amt').value);
+  const ref=document.getElementById('d-ref').value.trim();
   if(!amt||amt<100) return toast('Minimum deposit ₹100','red');
-  if(!ref) return toast('Enter UTR/Transaction reference','red');
-  if(!gClient) return toast('Login required','red');
+  if(!ref) return toast('Enter UTR reference number','red');
+  if(!gU) return toast('Login required','red');
   const {error}=await sb.from('transactions').insert({
-    client_id: gClient.id, type:'deposit', amount:amt,
-    status:'pending', reference_id:ref, method:'UPI/Bank Transfer'
+    user_id:gU.id, type:'deposit', amount:amt,
+    status:'pending', reference_id:ref, method:'UPI/Bank'
   });
   if(error) return toast('Error: '+error.message,'red');
-  closeMod('mod-dep');
-  toast('Deposit request submitted! Verified within 30 minutes.','green');
-  document.getElementById('dep-amt').value='';
-  document.getElementById('dep-ref').value='';
+  clsMod('m-dep');
+  toast('Deposit request sent! Verified within 30 mins.','green');
+  document.getElementById('d-amt').value='';
+  document.getElementById('d-ref').value='';
   loadTx();
 }
 
-// =============================================
+// ====================================================
 // WITHDRAWAL
-// =============================================
+// ====================================================
 async function doWithdraw(){
   const amt=parseFloat(document.getElementById('wd-amt').value);
-  const method=document.getElementById('wd-method').value;
+  const mth=document.getElementById('wd-mth').value;
   if(!amt||amt<500) return toast('Minimum withdrawal ₹500','red');
-  if(!gClient) return toast('Login required','red');
-  if(!gClient.bank_name&&!gClient.upi_id) return toast('Save bank details in Profile first','yellow');
-  if(amt>parseFloat(gClient.balance||0)) return toast('Insufficient balance','red');
-  const newBal=parseFloat(gClient.balance)-amt;
-  await sb.from('client_details').update({balance:newBal}).eq('id',gClient.id);
-  await sb.from('transactions').insert({
-    client_id:gClient.id, type:'withdrawal', amount:amt, status:'pending', method
-  });
-  gClient.balance=newBal;
-  updateAllBalances();
-  closeMod('mod-wd');
-  toast('Withdrawal request submitted! Processed within 24 hours.','green');
+  if(!gU) return toast('Login required','red');
+  if(!gU.bank_name&&!gU.upi_id) return toast('Save bank details in Profile first','yellow');
+  if(amt>parseFloat(gU.balance||0)) return toast('Insufficient balance','red');
+  const newBal=parseFloat(gU.balance)-amt;
+  await sb.from('users').update({balance:newBal}).eq('id',gU.id);
+  await sb.from('transactions').insert({user_id:gU.id,type:'withdrawal',amount:amt,status:'pending',method:mth});
+  gU.balance=newBal;
+  updBals();
+  clsMod('m-wd');
+  toast('Withdrawal submitted! Processed in 24 hours.','green');
   document.getElementById('wd-amt').value='';
   loadTx();
 }
 
-// =============================================
+// ====================================================
 // BANK DETAILS SAVE
-// =============================================
+// ====================================================
 async function saveBankDetails(){
-  if(!gClient) return toast('Login required','red');
-  const bank_name           = document.getElementById('bk-bank').value.trim();
-  const account_holder_name = document.getElementById('bk-holder').value.trim();
-  const account_number      = document.getElementById('bk-acc').value.trim();
-  const ifsc_code           = document.getElementById('bk-ifsc').value.trim();
-  const upi_id              = document.getElementById('bk-upi').value.trim();
-  if(!bank_name||!account_number||!ifsc_code) return toast('Fill Bank Name, Account & IFSC','red');
-  const {error}=await sb.from('client_details').update({bank_name,account_holder_name,account_number,ifsc_code,upi_id}).eq('id',gClient.id);
+  if(!gU) return toast('Login required','red');
+  const bn=document.getElementById('bk-bn').value.trim();
+  const ah=document.getElementById('bk-ah').value.trim();
+  const an=document.getElementById('bk-an').value.trim();
+  const ifs=document.getElementById('bk-if').value.trim();
+  const up=document.getElementById('bk-up').value.trim();
+  if(!bn||!an||!ifs) return toast('Fill Bank Name, Account No & IFSC','red');
+  const {error}=await sb.from('users').update({
+    bank_name:bn, account_holder_name:ah,
+    account_number:an, ifsc_code:ifs, upi_id:up
+  }).eq('id',gU.id);
   if(error) return toast('Error: '+error.message,'red');
-  gClient={...gClient,bank_name,account_holder_name,account_number,ifsc_code,upi_id};
-  toast('Bank details saved successfully!','green');
-  fillProfilePage();
+  gU={...gU,bank_name:bn,account_holder_name:ah,account_number:an,ifsc_code:ifs,upi_id:up};
+  toast('Bank details saved!','green');
+  fillProfile();
 }
 
-// =============================================
-// KYC
-// =============================================
+// ====================================================
+// KYC SUBMIT
+// ====================================================
 async function doKYC(){
-  if(!gClient) return toast('Login required','red');
-  const aad=document.getElementById('kyc-aad').value.trim();
-  const pan=document.getElementById('kyc-pan').value.trim().toUpperCase();
-  if(!aad||aad.length!==12) return toast('Enter valid 12-digit Aadhaar','red');
-  if(!pan||pan.length!==10) return toast('Enter valid PAN (10 chars)','red');
-  const {error}=await sb.from('client_details').update({aadhaar_number:aad,pan_number:pan,kyc_status:'pending'}).eq('id',gClient.id);
+  if(!gU) return toast('Login required','red');
+  const a=document.getElementById('kyc-a').value.trim();
+  const p=document.getElementById('kyc-p').value.trim().toUpperCase();
+  if(!a||a.length!==12) return toast('Enter valid 12-digit Aadhaar','red');
+  if(!p||p.length!==10) return toast('Enter valid PAN number','red');
+  const {error}=await sb.from('users').update({aadhaar_number:a,pan_number:p,kyc_status:'pending'}).eq('id',gU.id);
   if(error) return toast('Error: '+error.message,'red');
-  gClient={...gClient,aadhaar_number:aad,pan_number:pan,kyc_status:'pending'};
-  closeMod('mod-kyc');
+  gU={...gU,aadhaar_number:a,pan_number:p,kyc_status:'pending'};
+  clsMod('m-kyc');
   toast('KYC submitted! Verified within 24 hours.','green');
-  fillProfilePage();
+  fillProfile();
 }
 
-// =============================================
+// ====================================================
 // NOTIFICATIONS
-// =============================================
+// ====================================================
 async function loadNotifs(){
-  if(!gClient) return;
-  const {data}=await sb.from('notifications').select('*').eq('client_id',gClient.id).order('created_at',{ascending:false});
+  if(!gU) return;
+  const {data}=await sb.from('notifications').select('*').eq('user_id',gU.id).order('created_at',{ascending:false});
   const unread=data?data.filter(n=>!n.is_read).length:0;
-  document.getElementById('notif-count').textContent=unread;
-  const el=document.getElementById('notif-body');
-  if(!data||data.length===0){
-    el.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;"><i class="fas fa-bell-slash" style="font-size:2rem;margin-bottom:10px;display:block;"></i>No notifications</div>';
+  document.getElementById('n-badge').textContent=unread;
+  const body=document.getElementById('notif-body');
+  if(!data||!data.length){
+    body.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;"><i class="fas fa-bell-slash" style="font-size:2rem;display:block;margin-bottom:10px;"></i>No notifications</div>';
     return;
   }
-  el.innerHTML=data.map(n=>`
-    <div style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-bottom:1px solid #2b3139;opacity:${n.is_read?0.6:1};">
+  body.innerHTML=data.map(n=>`
+    <div style="display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid #2b3139;opacity:${n.is_read?.6:1};">
       <div style="width:8px;height:8px;border-radius:50%;background:${n.is_read?'#2b3139':'#f0b90b'};margin-top:5px;flex-shrink:0;"></div>
       <div>
         <div style="font-weight:700;font-size:13px;">${n.title}</div>
@@ -1372,73 +1296,75 @@ async function loadNotifs(){
         <div style="color:#5e6673;font-size:11px;margin-top:4px;">${new Date(n.created_at).toLocaleString('en-IN')}</div>
       </div>
     </div>`).join('');
-  if(unread>0) await sb.from('notifications').update({is_read:true}).eq('client_id',gClient.id).eq('is_read',false);
+  if(unread>0) await sb.from('notifications').update({is_read:true}).eq('user_id',gU.id).eq('is_read',false);
 }
 
-// =============================================
+// ====================================================
 // PAGE NAVIGATION
-// =============================================
-function showPage(pg){
-  const pages=['trade','markets','portfolio','wallet','orders','profile','notifications'];
+// ====================================================
+function goPage(pg){
+  const pages=['trade','markets','portfolio','wallet','orders','profile','notif'];
   pages.forEach(p=>{
     const el=document.getElementById('pg-'+p);
-    if(el){el.classList.remove('active');el.style.display='none';}
+    if(el){el.classList.remove('on');el.style.display='none';}
   });
   const target=document.getElementById('pg-'+pg);
   if(target){
-    target.classList.add('active');
-    target.style.display=pg==='trade'?'flex':'flex';
+    target.classList.add('on');
+    target.style.display='flex';
     target.style.flexDirection='column';
   }
-  if(pg==='portfolio'){loadHoldings();}
-  if(pg==='wallet'){loadTx();loadAdminSettings();}
-  if(pg==='orders'){loadOrders('all');}
-  if(pg==='notifications'){loadNotifs();}
-  if(pg==='profile'){fillProfilePage();}
+  if(pg==='portfolio') loadHoldings();
+  if(pg==='wallet'){loadTx();loadAdm();}
+  if(pg==='orders') loadOrders('all');
+  if(pg==='notif') loadNotifs();
+  if(pg==='profile') fillProfile();
 }
 
-// =============================================
+// ====================================================
 // MODAL HELPERS
-// =============================================
-function openMod(id){
-  document.getElementById(id).classList.add('active');
-  if(id==='mod-dep') loadAdminSettings();
-  if(id==='mod-wd') fillProfilePage();
+// ====================================================
+function opnMod(id){
+  document.getElementById(id).classList.add('on');
+  if(id==='m-dep') loadAdm();
+  if(id==='m-wd') fillProfile();
 }
-function closeMod(id){document.getElementById(id).classList.remove('active');}
-document.querySelectorAll('.modal').forEach(m=>{
-  m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('active'); });
+function clsMod(id){document.getElementById(id).classList.remove('on');}
+document.addEventListener('click',e=>{
+  if(e.target.classList.contains('modal')) e.target.classList.remove('on');
 });
 
-// =============================================
+// ====================================================
 // TOAST
-// =============================================
+// ====================================================
 function toast(msg,color='green'){
   const c={green:'#0ecb81',red:'#f6465d',yellow:'#f0b90b',blue:'#1890ff'};
   const el=document.createElement('div');
   el.className='toast';
-  el.style.cssText=`background:${c[color]}22;border:1px solid ${c[color]};color:${c[color]};`;
-  el.innerHTML=`<i class="fas fa-${color==='green'?'check-circle':color==='red'?'times-circle':color==='blue'?'info-circle':'exclamation-triangle'} mr-2"></i>${msg}`;
+  el.style.cssText=`background:${c[color]}18;border:1px solid ${c[color]};color:${c[color]};`;
+  const icons={green:'check-circle',red:'times-circle',yellow:'exclamation-triangle',blue:'info-circle'};
+  el.innerHTML=`<i class="fas fa-${icons[color]}" style="margin-right:8px;"></i>${msg}`;
   document.body.appendChild(el);
-  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity 0.5s';setTimeout(()=>el.remove(),500);},3500);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .5s';setTimeout(()=>el.remove(),600);},3500);
 }
 
-// =============================================
-// AUTO LOGIN
-// =============================================
-window.addEventListener('load',async()=>{
-  const {data:{session}}=await sb.auth.getSession();
-  if(session){
-    gUser=session.user;
-    const ok=await loadClient();
-    if(ok) launchApp();
+// ====================================================
+// AUTO SESSION CHECK ON LOAD
+// ====================================================
+window.addEventListener('load',()=>{
+  const saved=sessionStorage.getItem('smartex_user');
+  if(saved){
+    try{
+      gU=JSON.parse(saved);
+      launchApp();
+    }catch(e){sessionStorage.removeItem('smartex_user');}
   }
-  // Init pages hidden
-  document.querySelectorAll('.page').forEach(p=>{
-    p.style.display='none';
-    p.classList.remove('active');
-  });
+  // Save user on login
+  const origLaunch=launchApp;
 });
+
+// Save session
+const _orig=doLogin;
 </script>
 </body>
 </html>
