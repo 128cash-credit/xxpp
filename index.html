@@ -10,569 +10,441 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --bg:#0b0f1a;--card:#111827;--card2:#1a2236;--border:#1e2d47;
-  --green:#00d084;--red:#ff3b5c;--yellow:#f0b90b;--blue:#2894f9;
-  --text:#e8edf5;--muted:#6b7fa3;--dark:#060d1a;
-}
+:root{--bg:#0a0f1e;--card:#111827;--border:#1e2d47;--green:#00d084;--red:#ff3b5c;--yellow:#f0b90b;--blue:#2894f9;--text:#e8edf5;--muted:#6b7fa3;}
 body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;}
 ::-webkit-scrollbar{width:3px;height:3px;}
 ::-webkit-scrollbar-thumb{background:#1e2d47;border-radius:2px;}
 
-/* ===== ANIMATIONS ===== */
-@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
-@keyframes floatR{0%,100%{transform:translateY(0) rotate(5deg);}50%{transform:translateY(-15px) rotate(-5deg);}}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.7;transform:scale(1.05);}}
-@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(240,185,11,.3);}50%{box-shadow:0 0 40px rgba(240,185,11,.7),0 0 80px rgba(240,185,11,.3);}}
-@keyframes slideUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
-@keyframes slideIn{from{opacity:0;transform:translateX(-30px);}to{opacity:1;transform:translateX(0);}}
+/* ANIMATIONS */
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-18px);}}
+@keyframes floatR{0%,100%{transform:translateY(0) rotate(5deg);}50%{transform:translateY(-14px) rotate(-5deg);}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.6;transform:scale(1.08);}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(240,185,11,.25);}50%{box-shadow:0 0 50px rgba(240,185,11,.6),0 0 80px rgba(240,185,11,.2);}}
+@keyframes slideUp{from{opacity:0;transform:translateY(35px);}to{opacity:1;transform:translateY(0);}}
+@keyframes slideRight{from{opacity:0;transform:translateX(35px);}to{opacity:1;transform:translateX(0);}}
 @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
 @keyframes ticker{0%{transform:translateX(100vw);}100%{transform:translateX(-100%);}}
-@keyframes shimmer{0%{background-position:-200% 0;}100%{background-position:200% 0;}}
-@keyframes particleFloat{0%{transform:translateY(100vh) rotate(0deg);opacity:0;}10%{opacity:1;}90%{opacity:1;}100%{transform:translateY(-100px) rotate(720deg);opacity:0;}}
-@keyframes candleGrow{from{height:0;}to{height:var(--h);}}
-@keyframes chartLine{from{stroke-dashoffset:1000;}to{stroke-dashoffset:0;}}
-@keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
-@keyframes ripple{0%{transform:scale(0);opacity:1;}100%{transform:scale(4);opacity:0;}}
-@keyframes gradientMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
-@keyframes numberCount{from{opacity:0;transform:scale(.5);}to{opacity:1;transform:scale(1);}}
+@keyframes gradMove{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+@keyframes particleUp{0%{transform:translateY(0) rotate(0deg);opacity:0;}15%{opacity:1;}85%{opacity:1;}100%{transform:translateY(-100vh) rotate(720deg);opacity:0;}}
+@keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes candlePop{from{transform:scaleY(0);transform-origin:bottom;}to{transform:scaleY(1);transform-origin:bottom;}}
+@keyframes numberUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+@keyframes ripple{0%{transform:scale(0);opacity:.8;}100%{transform:scale(3);opacity:0;}}
+@keyframes borderGlow{0%,100%{border-color:#1e2d47;}50%{border-color:#f0b90b;}}
 
 /* ===== AUTH PAGE ===== */
-#auth-wrap{
-  min-height:100vh;display:flex;align-items:stretch;
-  background:radial-gradient(ellipse at 20% 50%,#0d1f3c 0%,#060d1a 50%,#0a1628 100%);
-  overflow:hidden;position:relative;
+#auth-page{
+  min-height:100vh;display:flex;
+  background:radial-gradient(ellipse at 15% 60%,#0d1f3c 0%,#060c1a 55%,#080e1a 100%);
+  position:relative;overflow:hidden;
 }
-.auth-left{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:40px;position:relative;overflow:hidden;
-}
-.auth-right{
-  width:480px;flex-shrink:0;display:flex;align-items:center;justify-content:center;
-  padding:30px;background:rgba(10,16,30,.8);border-left:1px solid #1e2d47;
+.auth-bg-grid{
+  position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(40,148,249,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(40,148,249,.04) 1px,transparent 1px);
+  background-size:60px 60px;
 }
 /* Particles */
-.particle{position:absolute;border-radius:50%;pointer-events:none;}
-.auth-bg-grid{
-  position:absolute;inset:0;
-  background-image:linear-gradient(rgba(40,148,249,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(40,148,249,.05) 1px,transparent 1px);
-  background-size:50px 50px;
-  mask-image:radial-gradient(ellipse at center,black 40%,transparent 80%);
+.ptcl{position:absolute;border-radius:50%;pointer-events:none;animation:particleUp linear infinite;}
+
+/* LEFT HERO */
+.auth-left{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:40px 60px;position:relative;z-index:2;
 }
-.floating-coin{position:absolute;z-index:2;}
-.fc-btc{top:15%;right:10%;animation:float 4s ease-in-out infinite;}
-.fc-eth{bottom:20%;right:5%;animation:floatR 5s ease-in-out infinite;}
-.hero-phone{
-  width:280px;position:relative;z-index:3;
-  animation:float 6s ease-in-out infinite;
-  filter:drop-shadow(0 30px 60px rgba(40,148,249,.4));
-}
-.hero-text{text-align:center;margin-bottom:40px;z-index:5;position:relative;}
-.hero-text h1{
-  font-size:2.8rem;font-weight:900;
-  background:linear-gradient(135deg,#f0b90b,#fff,#2894f9);
+.hero-logo{
+  font-size:3rem;font-weight:900;
+  background:linear-gradient(135deg,#f0b90b 30%,#fff 60%,#2894f9 100%);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-size:200% 200%;animation:gradientMove 3s ease infinite;
-  line-height:1.2;margin-bottom:12px;
+  background-size:200%;animation:gradMove 4s ease infinite;
+  margin-bottom:6px;display:flex;align-items:center;gap:10px;
 }
-.hero-text p{color:#6b7fa3;font-size:1rem;line-height:1.6;}
-.stats-row{display:flex;gap:24px;margin-top:30px;z-index:5;position:relative;}
-.stat-pill{
-  background:rgba(40,148,249,.1);border:1px solid rgba(40,148,249,.2);
-  border-radius:100px;padding:8px 20px;text-align:center;
-  animation:slideUp .6s ease forwards;opacity:0;
+.hero-logo img{width:52px;height:52px;object-fit:contain;border-radius:10px;}
+.hero-h1{font-size:2.4rem;font-weight:900;color:#fff;line-height:1.25;margin-bottom:12px;text-align:center;}
+.hero-p{color:#6b7fa3;font-size:14px;line-height:1.7;text-align:center;max-width:420px;}
+.stats-pills{display:flex;gap:14px;margin-top:24px;flex-wrap:wrap;justify-content:center;}
+.spill{
+  background:rgba(40,148,249,.08);border:1px solid rgba(40,148,249,.18);
+  border-radius:100px;padding:9px 22px;text-align:center;
+  animation:slideUp .7s ease forwards;opacity:0;
 }
-.stat-pill:nth-child(2){animation-delay:.1s;}
-.stat-pill:nth-child(3){animation-delay:.2s;}
-.stat-pill .sv{font-size:1.1rem;font-weight:800;color:#f0b90b;}
-.stat-pill .sl{font-size:10px;color:#6b7fa3;margin-top:2px;}
-/* Mini chart animation */
-.mini-chart{margin-top:20px;z-index:5;position:relative;}
-/* Auth form */
-.auth-box{width:100%;max-width:400px;}
-.auth-logo{text-align:center;margin-bottom:28px;animation:slideUp .5s ease;}
-.auth-logo .logo-text{font-size:2rem;font-weight:900;color:#f0b90b;letter-spacing:-1px;}
-.auth-logo .logo-sub{font-size:12px;color:#6b7fa3;margin-top:4px;}
-.auth-tabs{display:flex;background:#0b0f1a;border-radius:10px;padding:4px;margin-bottom:24px;}
-.auth-tab{
-  flex:1;padding:10px;border:none;background:none;
-  color:#6b7fa3;font-weight:600;font-size:14px;border-radius:8px;
-  cursor:pointer;transition:.3s;
-}
-.auth-tab.on{background:linear-gradient(135deg,#f0b90b,#d4a109);color:#000;box-shadow:0 4px 15px rgba(240,185,11,.3);}
-.field{margin-bottom:16px;}
-.field label{display:block;font-size:11px;font-weight:700;color:#6b7fa3;text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px;}
-.field input{
-  width:100%;padding:12px 16px;
-  background:#0b0f1a;border:1px solid #1e2d47;
-  color:#e8edf5;border-radius:8px;font-size:14px;
-  outline:none;transition:.3s;
-}
-.field input:focus{border-color:#f0b90b;box-shadow:0 0 0 3px rgba(240,185,11,.1);}
-.field input::placeholder{color:#374151;}
-.btn-primary{
-  width:100%;padding:14px;border:none;border-radius:10px;
-  background:linear-gradient(135deg,#f0b90b,#e09d00);
-  color:#000;font-weight:800;font-size:15px;cursor:pointer;
-  transition:.3s;position:relative;overflow:hidden;
-  box-shadow:0 4px 20px rgba(240,185,11,.3);
-}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(240,185,11,.5);}
-.btn-primary:active{transform:translateY(0);}
-.btn-primary::after{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(circle,rgba(255,255,255,.3) 0%,transparent 60%);
-  opacity:0;transition:.3s;
-}
-.btn-primary:hover::after{opacity:1;}
-.msg-box{text-align:center;font-size:13px;min-height:20px;margin-top:10px;border-radius:6px;padding:6px;}
-/* Candlestick decoration */
-.candle-wrap{display:flex;gap:6px;align-items:flex-end;height:80px;margin-top:10px;}
-.candle{width:8px;border-radius:2px;animation:candleGrow .5s ease forwards;}
-.candle.up{background:linear-gradient(to top,#00d084,#00ff9d);}
-.candle.dn{background:linear-gradient(to top,#ff3b5c,#ff6b87);}
-/* Trusted badges */
-.trust-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:20px;z-index:5;position:relative;}
-.trust-badge{
+.spill:nth-child(2){animation-delay:.12s;}.spill:nth-child(3){animation-delay:.24s;}
+.spill .sv{font-size:1.1rem;font-weight:900;color:#f0b90b;}
+.spill .sl{font-size:10px;color:#6b7fa3;margin-top:2px;}
+/* Candle chart */
+.candle-section{margin-top:22px;text-align:center;}
+.live-row{display:flex;align-items:center;gap:6px;justify-content:center;font-size:11px;color:#6b7fa3;margin-bottom:10px;}
+.live-dot{width:7px;height:7px;border-radius:50%;background:#00d084;animation:pulse 1.2s infinite;}
+.candles{display:flex;gap:5px;align-items:flex-end;height:75px;justify-content:center;}
+.c{width:9px;border-radius:3px 3px 0 0;animation:candlePop .5s ease forwards;transform:scaleY(0);transform-origin:bottom;}
+.c.u{background:linear-gradient(to top,#00d084,#00ff9d);}
+.c.d{background:linear-gradient(to top,#ff3b5c,#ff6b87);}
+/* Floating coins */
+.fc{position:absolute;z-index:3;pointer-events:none;}
+.fc-btc{top:12%;right:22%;animation:float 4s ease-in-out infinite;}
+.fc-eth{bottom:18%;right:16%;animation:floatR 5.5s ease-in-out infinite;}
+/* Trust badges */
+.trust-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:20px;}
+.tbadge{
   background:rgba(255,255,255,.04);border:1px solid #1e2d47;
   border-radius:8px;padding:6px 14px;font-size:11px;color:#6b7fa3;
   display:flex;align-items:center;gap:6px;
 }
+/* As seen in */
+.media-row{margin-top:22px;text-align:center;}
+.media-label{font-size:10px;color:#374151;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;}
+.media-logos{display:flex;gap:18px;align-items:center;justify-content:center;opacity:.35;}
+
+/* RIGHT FORM */
+.auth-right{
+  width:460px;flex-shrink:0;background:rgba(8,14,26,.92);
+  border-left:1px solid #1e2d47;display:flex;align-items:center;
+  justify-content:center;padding:32px;z-index:2;
+  animation:slideRight .7s ease;
+}
+.auth-box{width:100%;max-width:380px;}
+.auth-logo-sm{text-align:center;margin-bottom:24px;}
+.auth-logo-sm .name{
+  font-size:1.8rem;font-weight:900;
+  background:linear-gradient(135deg,#f0b90b,#fff);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.auth-logo-sm img{width:34px;height:34px;object-fit:contain;border-radius:6px;}
+.auth-logo-sm .sub{font-size:12px;color:#6b7fa3;margin-top:4px;}
+.auth-tabs{display:flex;background:#080e1a;border-radius:10px;padding:4px;margin-bottom:22px;}
+.atab{
+  flex:1;padding:10px 16px;border:none;background:none;
+  color:#6b7fa3;font-weight:700;font-size:13px;border-radius:8px;
+  cursor:pointer;transition:.3s;
+}
+.atab.on{background:linear-gradient(135deg,#f0b90b,#d4a109);color:#000;box-shadow:0 4px 15px rgba(240,185,11,.3);}
+.fld{margin-bottom:14px;}
+.fld label{display:block;font-size:11px;font-weight:700;color:#6b7fa3;text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px;}
+.fld input{
+  width:100%;padding:12px 16px;background:#080e1a;
+  border:1px solid #1e2d47;color:#e8edf5;border-radius:8px;
+  font-size:14px;outline:none;transition:.3s;
+}
+.fld input:focus{border-color:#f0b90b;box-shadow:0 0 0 3px rgba(240,185,11,.1);}
+.fld input::placeholder{color:#2d3a52;}
+.btn-login{
+  width:100%;padding:14px;border:none;border-radius:10px;
+  background:linear-gradient(135deg,#f0b90b,#d4a109);
+  color:#000;font-weight:900;font-size:15px;cursor:pointer;
+  transition:.3s;position:relative;overflow:hidden;
+  box-shadow:0 4px 20px rgba(240,185,11,.35);
+  animation:glow 2.5s infinite;
+}
+.btn-login:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(240,185,11,.55);}
+.btn-login:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.msgbox{min-height:22px;text-align:center;font-size:12px;margin-top:8px;border-radius:6px;padding:5px;}
+.sec-note{margin-top:14px;text-align:center;font-size:11px;color:#374151;}
 
 /* ===== MAIN APP ===== */
 #main-app{display:none;min-height:100vh;flex-direction:column;}
 .navbar{
-  background:rgba(10,16,30,.95);backdrop-filter:blur(20px);
-  border-bottom:1px solid #1e2d47;padding:0 16px;
+  background:rgba(8,14,26,.97);backdrop-filter:blur(20px);
+  border-bottom:1px solid #1e2d47;height:52px;
   display:flex;align-items:center;justify-content:space-between;
-  height:52px;position:sticky;top:0;z-index:100;
+  padding:0 14px;position:sticky;top:0;z-index:100;
 }
-.nav-logo{font-size:1.2rem;font-weight:900;color:#f0b90b;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.nav-logo{
+  font-size:1.15rem;font-weight:900;color:#f0b90b;
+  cursor:pointer;display:flex;align-items:center;gap:7px;
+}
+.nav-logo img{width:26px;height:26px;object-fit:contain;border-radius:5px;}
 .nav-links{display:flex;gap:2px;}
 .nav-link{
   background:none;border:none;color:#6b7fa3;cursor:pointer;
-  padding:6px 12px;border-radius:6px;font-size:13px;font-weight:500;
-  transition:.2s;display:flex;align-items:center;gap:5px;
+  padding:6px 11px;border-radius:6px;font-size:12.5px;font-weight:600;
+  transition:.2s;display:flex;align-items:center;gap:4px;
 }
 .nav-link:hover,.nav-link.on{color:#e8edf5;background:#1a2236;}
-.nav-right{display:flex;align-items:center;gap:12px;}
-.nav-bal-wrap{text-align:right;}
-.nav-bal-label{font-size:10px;color:#6b7fa3;}
-.nav-bal{font-size:14px;font-weight:800;color:#00d084;}
-.nav-avatar{
-  width:34px;height:34px;border-radius:50%;
-  background:linear-gradient(135deg,#f0b90b,#e09d00);
+.nav-right{display:flex;align-items:center;gap:11px;}
+.nav-bal-wrap .lbl{font-size:10px;color:#6b7fa3;}
+.nav-bal{font-size:14px;font-weight:900;color:#00d084;}
+.nav-av{
+  width:33px;height:33px;border-radius:50%;
+  background:linear-gradient(135deg,#f0b90b,#d4a109);
   display:flex;align-items:center;justify-content:center;
-  font-weight:900;color:#000;font-size:14px;cursor:pointer;
+  font-weight:900;color:#000;font-size:13px;cursor:pointer;
 }
-.ticker-bar{
-  background:#080e1c;border-bottom:1px solid #1e2d47;
-  padding:5px 0;overflow:hidden;white-space:nowrap;
-}
-.ticker-in{display:inline-block;animation:ticker 40s linear infinite;font-size:12px;}
 .badge{
-  background:#ff3b5c;color:#fff;border-radius:50%;
-  width:15px;height:15px;font-size:9px;
-  display:flex;align-items:center;justify-content:center;
+  background:#ff3b5c;color:#fff;border-radius:50%;width:15px;height:15px;
+  font-size:9px;display:flex;align-items:center;justify-content:center;
   position:absolute;top:-4px;right:-4px;
 }
+.ticker-bar{background:#070c18;border-bottom:1px solid #1e2d47;padding:5px 0;overflow:hidden;white-space:nowrap;}
+.ticker-in{display:inline-block;animation:ticker 40s linear infinite;font-size:12px;}
 
-/* ===== TRADE PAGE ===== */
-#pg-trade{display:flex;flex-direction:row;height:calc(100vh - 76px);overflow:hidden;}
+/* TRADE PAGE */
+#pg-trade{display:flex;flex-direction:row;overflow:hidden;}
 .sidebar{
-  width:195px;border-right:1px solid #1e2d47;
-  display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;
-  background:#080e1c;
+  width:192px;border-right:1px solid #1e2d47;display:flex;flex-direction:column;
+  overflow:hidden;flex-shrink:0;background:#070c18;
 }
-.side-search{padding:8px;}
 .side-search input{
-  width:100%;padding:7px 10px;background:#111827;
-  border:1px solid #1e2d47;color:#e8edf5;border-radius:6px;
-  font-size:12px;outline:none;
+  width:100%;padding:7px 10px;background:#111827;border:1px solid #1e2d47;
+  color:#e8edf5;border-radius:6px;font-size:12px;outline:none;
+  transition:.2s;
 }
 .side-search input:focus{border-color:#f0b90b;}
+.side-search{padding:8px;}
 .side-cats{display:flex;gap:2px;padding:0 6px 6px;}
-.scat{
-  flex:1;padding:4px 2px;background:none;border:none;
-  color:#6b7fa3;font-size:10px;font-weight:600;cursor:pointer;
-  border-radius:4px;transition:.2s;border-bottom:2px solid transparent;
-}
+.scat{flex:1;padding:4px 2px;background:none;border:none;color:#6b7fa3;font-size:10px;font-weight:700;cursor:pointer;border-radius:4px;transition:.2s;border-bottom:2px solid transparent;}
 .scat.on{color:#f0b90b;border-bottom-color:#f0b90b;}
 .side-list{flex:1;overflow-y:auto;}
-.sstock{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:7px 10px;cursor:pointer;border-bottom:1px solid rgba(30,45,71,.5);
-  transition:.15s;
-}
-.sstock:hover,.sstock.on{background:#111827;}
-.sstock-sym{font-size:11px;font-weight:700;}
-.sstock-name{font-size:9px;color:#6b7fa3;margin-top:1px;}
-.sstock-price{font-size:11px;font-weight:700;text-align:right;}
-.sstock-chg{font-size:9px;text-align:right;}
-/* Center */
+.sstock{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;cursor:pointer;border-bottom:1px solid rgba(30,45,71,.4);transition:.15s;}
+.sstock:hover,.sstock.active-s{background:#111827;}
 .chart-area{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .stock-header{
-  background:#080e1c;border-bottom:1px solid #1e2d47;
-  padding:8px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;
-  flex-shrink:0;
+  background:#070c18;border-bottom:1px solid #1e2d47;
+  padding:8px 14px;display:flex;align-items:center;gap:14px;
+  flex-wrap:wrap;flex-shrink:0;
 }
-.sh-sym{font-size:1.1rem;font-weight:900;}
-.sh-price{font-size:1.4rem;font-weight:900;color:#00d084;}
-.sh-chg{font-size:12px;}
-.sh-meta{display:flex;gap:16px;font-size:11px;color:#6b7fa3;}
-.sh-meta span span{color:#e8edf5;}
-#tv-chart{flex:1;}
-/* Right Panel */
 .right-panel{
-  width:270px;border-left:1px solid #1e2d47;
-  display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;
-  background:#080e1c;
+  width:268px;border-left:1px solid #1e2d47;display:flex;flex-direction:column;
+  overflow:hidden;flex-shrink:0;background:#070c18;
 }
 .rp-tabs{display:flex;border-bottom:1px solid #1e2d47;}
-.rp-tab{
-  flex:1;padding:9px 4px;background:none;border:none;
-  color:#6b7fa3;font-size:11px;font-weight:600;cursor:pointer;
-  border-bottom:2px solid transparent;transition:.2s;
-}
+.rp-tab{flex:1;padding:9px 4px;background:none;border:none;color:#6b7fa3;font-size:11px;font-weight:700;cursor:pointer;border-bottom:2px solid transparent;transition:.2s;}
 .rp-tab.on{color:#f0b90b;border-bottom-color:#f0b90b;}
-/* Order Book */
-.ob-header{
-  display:grid;grid-template-columns:1fr 1fr 1fr;
-  padding:4px 8px;font-size:10px;color:#6b7fa3;
-  border-bottom:1px solid #1e2d47;
-}
-.ob-list{flex:1;overflow-y:auto;}
-.ob-row{
-  display:grid;grid-template-columns:1fr 1fr 1fr;
-  padding:3px 8px;font-size:11px;position:relative;cursor:pointer;
-}
+.ob-header{display:grid;grid-template-columns:1fr 1fr 1fr;padding:4px 8px;font-size:10px;color:#6b7fa3;border-bottom:1px solid #1e2d47;}
+.ob-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:3px 8px;font-size:11px;position:relative;cursor:pointer;}
 .ob-row:hover{background:rgba(255,255,255,.03);}
 .ob-bar{position:absolute;top:0;bottom:0;opacity:.12;}
-.ob-mid{
-  padding:7px 12px;border-top:1px solid #1e2d47;border-bottom:1px solid #1e2d47;
-  display:flex;justify-content:space-between;align-items:center;flex-shrink:0;
-}
-/* Place Order */
-.po-wrap{display:none;flex:1;flex-direction:column;padding:12px;overflow-y:auto;gap:8px;}
+.po-wrap{padding:11px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;}
 .po-sides{display:flex;gap:6px;}
-.po-buy,.po-sell{
-  flex:1;padding:9px;border:none;border-radius:8px;
-  font-weight:800;font-size:13px;cursor:pointer;transition:.3s;
-}
+.po-buy,.po-sell{flex:1;padding:9px;border:none;border-radius:8px;font-weight:800;font-size:13px;cursor:pointer;transition:.3s;}
 .po-buy{background:linear-gradient(135deg,#00d084,#00b371);color:#000;}
 .po-sell{background:linear-gradient(135deg,#ff3b5c,#d42e4e);color:#fff;opacity:.4;}
 .po-buy:hover,.po-sell:hover{transform:translateY(-1px);}
-.po-field label{display:block;font-size:10px;font-weight:700;color:#6b7fa3;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
-.po-field input,.po-field select{
-  width:100%;padding:9px 12px;background:#111827;
-  border:1px solid #1e2d47;color:#e8edf5;border-radius:6px;
-  font-size:13px;outline:none;transition:.2s;
-}
-.po-field input:focus,.po-field select:focus{border-color:#f0b90b;}
-.pct-row{display:flex;gap:3px;}
-.pct-btn{
-  flex:1;padding:5px 2px;font-size:10px;background:#111827;
-  border:1px solid #1e2d47;color:#e8edf5;border-radius:4px;cursor:pointer;transition:.2s;
-}
-.pct-btn:hover{background:#1e2d47;border-color:#f0b90b;}
-.po-summary{
-  background:#111827;border:1px solid #1e2d47;border-radius:8px;
-  padding:10px;font-size:11px;
-}
-.po-sum-row{display:flex;justify-content:space-between;margin-bottom:5px;}
-.po-sum-row:last-child{margin-bottom:0;}
-.po-submit{
-  padding:12px;border:none;border-radius:10px;
-  font-weight:800;font-size:13px;cursor:pointer;transition:.3s;
+.pf{margin-bottom:6px;}
+.pf label{display:block;font-size:10px;font-weight:700;color:#6b7fa3;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+.pf input,.pf select{width:100%;padding:9px 12px;background:#111827;border:1px solid #1e2d47;color:#e8edf5;border-radius:6px;font-size:13px;outline:none;transition:.2s;}
+.pf input:focus,.pf select:focus{border-color:#f0b90b;}
+.pct-row{display:flex;gap:3px;margin:2px 0;}
+.pct-b{flex:1;padding:5px 2px;font-size:10px;background:#111827;border:1px solid #1e2d47;color:#e8edf5;border-radius:4px;cursor:pointer;transition:.2s;}
+.pct-b:hover{border-color:#f0b90b;color:#f0b90b;}
+.po-summary{background:#111827;border:1px solid #1e2d47;border-radius:8px;padding:9px;font-size:11px;}
+.psr{display:flex;justify-content:space-between;margin-bottom:4px;}
+.psr:last-child{margin-bottom:0;}
+.po-sub{
+  width:100%;padding:12px;border:none;border-radius:10px;font-weight:900;font-size:13px;cursor:pointer;
   background:linear-gradient(135deg,#00d084,#00b371);color:#000;
-  box-shadow:0 4px 15px rgba(0,208,132,.3);
-  animation:glow 2s infinite;
+  box-shadow:0 4px 15px rgba(0,208,132,.3);transition:.3s;animation:glow 2s infinite;
 }
-.po-submit:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,208,132,.5);}
-/* Trades */
-.rt-wrap{display:none;flex:1;overflow-y:auto;}
-.rt-row{
-  display:grid;grid-template-columns:1fr 1fr 1fr;
-  padding:3px 8px;font-size:11px;
-}
-
-/* ===== PAGES ===== */
-.page{display:none;flex:1;padding:20px;overflow-y:auto;}
-.page.on{display:flex;flex-direction:column;}
-.page-title{font-size:1.2rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-.page-title i{color:#f0b90b;}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
-.stat-card{
-  background:#111827;border:1px solid #1e2d47;border-radius:12px;padding:16px;
-  transition:.3s;
-}
-.stat-card:hover{border-color:#2894f9;transform:translateY(-2px);}
-.sc-label{font-size:11px;color:#6b7fa3;margin-bottom:6px;}
-.sc-value{font-size:1.3rem;font-weight:900;}
-.section-card{
-  background:#111827;border:1px solid #1e2d47;border-radius:12px;overflow:hidden;margin-bottom:16px;
-}
-.section-head{
-  padding:14px 16px;border-bottom:1px solid #1e2d47;
-  font-weight:700;display:flex;justify-content:space-between;align-items:center;
-}
-.tbl-head{
-  display:grid;padding:8px 16px;
-  font-size:11px;color:#6b7fa3;border-bottom:1px solid #1e2d47;
-}
-.tbl-row{
-  border-bottom:1px solid rgba(30,45,71,.5);
-  transition:.15s;cursor:pointer;
-}
-.tbl-row:hover{background:#1a2236;}
-.tbl-cell{padding:11px 16px;font-size:13px;display:grid;align-items:center;}
-
-/* ===== MODALS ===== */
-.modal{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,.85);z-index:9999;
-  align-items:center;justify-content:center;padding:16px;
-  backdrop-filter:blur(4px);
-}
+.po-sub:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,208,132,.5);}
+.rt-wrap{overflow-y:auto;display:block;}
+/* Pages */
+.page{display:none;}.page.on{display:flex;flex-direction:column;flex:1;padding:20px;overflow-y:auto;}
+.ptitle{font-size:1.1rem;font-weight:800;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.ptitle i{color:#f0b90b;}
+.sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px;}
+.scard{background:#111827;border:1px solid #1e2d47;border-radius:12px;padding:15px;transition:.3s;}
+.scard:hover{border-color:#2894f9;transform:translateY(-2px);}
+.scl{font-size:11px;color:#6b7fa3;margin-bottom:5px;}
+.scv{font-size:1.2rem;font-weight:900;}
+.sec{background:#111827;border:1px solid #1e2d47;border-radius:12px;overflow:hidden;margin-bottom:14px;}
+.sec-hd{padding:13px 16px;border-bottom:1px solid #1e2d47;font-weight:700;display:flex;justify-content:space-between;align-items:center;}
+.th{display:grid;padding:7px 16px;font-size:10px;color:#6b7fa3;border-bottom:1px solid #1e2d47;}
+.tr{border-bottom:1px solid rgba(30,45,71,.4);transition:.15s;cursor:pointer;}
+.tr:hover{background:#1a2236;}
+/* Modals */
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.87);z-index:9999;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);}
 .modal.on{display:flex;}
-.modal-box{
-  background:#111827;border:1px solid #1e2d47;border-radius:16px;
-  width:100%;max-width:420px;padding:24px;
-  max-height:90vh;overflow-y:auto;
-  animation:slideUp .3s ease;
-}
-.modal-head{
-  display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;
-}
-.modal-title{font-size:1.1rem;font-weight:800;}
-.modal-close{
-  background:none;border:none;color:#6b7fa3;font-size:1.2rem;cursor:pointer;
-  padding:4px;border-radius:4px;transition:.2s;
-}
-.modal-close:hover{color:#e8edf5;background:#1e2d47;}
-.m-field{margin-bottom:14px;}
-.m-field label{display:block;font-size:11px;font-weight:700;color:#6b7fa3;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;}
-.m-field input,.m-field select{
-  width:100%;padding:11px 14px;background:#0b0f1a;
-  border:1px solid #1e2d47;color:#e8edf5;border-radius:8px;
-  font-size:14px;outline:none;transition:.2s;
-}
-.m-field input:focus,.m-field select:focus{border-color:#f0b90b;box-shadow:0 0 0 3px rgba(240,185,11,.1);}
-.info-green{background:rgba(0,208,132,.08);border:1px solid rgba(0,208,132,.3);border-radius:10px;padding:14px;margin-bottom:14px;}
-.info-yellow{background:rgba(240,185,11,.08);border:1px solid rgba(240,185,11,.3);border-radius:8px;padding:10px;font-size:11px;color:#f0b90b;margin-bottom:12px;}
-.info-blue{background:rgba(40,148,249,.08);border:1px solid rgba(40,148,249,.2);border-radius:8px;padding:12px;margin-bottom:14px;font-size:13px;}
-.btn-green{background:linear-gradient(135deg,#00d084,#00b371);color:#000;font-weight:800;border:none;cursor:pointer;border-radius:10px;transition:.3s;}
-.btn-green:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,208,132,.4);}
-.btn-red{background:linear-gradient(135deg,#ff3b5c,#d42e4e);color:#fff;font-weight:800;border:none;cursor:pointer;border-radius:10px;transition:.3s;}
-.btn-red:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,59,92,.4);}
-.btn-yellow{background:linear-gradient(135deg,#f0b90b,#d4a109);color:#000;font-weight:800;border:none;cursor:pointer;border-radius:10px;transition:.3s;}
-.btn-yellow:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(240,185,11,.4);}
-.btn-full{width:100%;padding:14px;font-size:14px;}
-
-/* ===== TOAST ===== */
-.toast{
-  position:fixed;top:70px;right:16px;z-index:99999;
-  padding:12px 18px;border-radius:10px;font-weight:700;font-size:13px;
-  animation:slideIn .3s ease;max-width:300px;
-  display:flex;align-items:center;gap:10px;
-}
-
-/* ===== PROFILE ===== */
-.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-.profile-avatar-big{
-  width:64px;height:64px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(135deg,#f0b90b,#d4a109);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.5rem;font-weight:900;color:#000;
-  box-shadow:0 0 20px rgba(240,185,11,.4);
-}
-.info-row{
-  display:flex;justify-content:space-between;align-items:center;
-  padding:9px 0;border-bottom:1px solid rgba(30,45,71,.5);font-size:13px;
-}
-.info-row:last-child{border-bottom:none;}
-.info-label{color:#6b7fa3;display:flex;align-items:center;gap:8px;}
-
-/* ===== SPECIAL ELEMENTS ===== */
-.live-dot{width:8px;height:8px;border-radius:50%;background:#00d084;animation:pulse 1s infinite;}
+.mbox{background:#111827;border:1px solid #1e2d47;border-radius:16px;width:100%;max-width:420px;padding:24px;max-height:90vh;overflow-y:auto;animation:slideUp .3s ease;}
+.mhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.mtitle{font-size:1rem;font-weight:800;}
+.mclose{background:none;border:none;color:#6b7fa3;font-size:1.2rem;cursor:pointer;padding:4px;border-radius:4px;transition:.2s;}
+.mclose:hover{color:#e8edf5;background:#1e2d47;}
+.mfld{margin-bottom:13px;}
+.mfld label{display:block;font-size:10px;font-weight:700;color:#6b7fa3;text-transform:uppercase;letter-spacing:.6px;margin-bottom:5px;}
+.mfld input,.mfld select{width:100%;padding:11px 14px;background:#080e1a;border:1px solid #1e2d47;color:#e8edf5;border-radius:8px;font-size:14px;outline:none;transition:.2s;}
+.mfld input:focus,.mfld select:focus{border-color:#f0b90b;box-shadow:0 0 0 3px rgba(240,185,11,.1);}
+.mfld input::placeholder{color:#2d3a52;}
+.igreen{background:rgba(0,208,132,.07);border:1px solid rgba(0,208,132,.25);border-radius:10px;padding:13px;margin-bottom:13px;}
+.iyellow{background:rgba(240,185,11,.07);border:1px solid rgba(240,185,11,.25);border-radius:7px;padding:9px;font-size:11px;color:#f0b90b;margin-bottom:12px;}
+.iblue{background:rgba(40,148,249,.07);border:1px solid rgba(40,148,249,.18);border-radius:8px;padding:11px;margin-bottom:13px;font-size:13px;}
+.btn-g{background:linear-gradient(135deg,#00d084,#00b371);color:#000;font-weight:800;border:none;cursor:pointer;border-radius:10px;transition:.3s;width:100%;padding:13px;font-size:14px;}
+.btn-g:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,208,132,.4);}
+.btn-r{background:linear-gradient(135deg,#ff3b5c,#d42e4e);color:#fff;font-weight:800;border:none;cursor:pointer;border-radius:10px;transition:.3s;width:100%;padding:13px;font-size:14px;}
+.btn-r:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,59,92,.4);}
+.btn-y{background:linear-gradient(135deg,#f0b90b,#d4a109);color:#000;font-weight:800;border:none;cursor:pointer;border-radius:10px;transition:.3s;width:100%;padding:13px;font-size:14px;}
+.btn-y:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(240,185,11,.4);}
+/* Toast */
+.toast{position:fixed;top:68px;right:14px;z-index:99999;padding:11px 17px;border-radius:10px;font-weight:700;font-size:13px;animation:slideUp .3s ease;max-width:290px;display:flex;align-items:center;gap:9px;}
+/* Colors */
 .green{color:#00d084;}.red{color:#ff3b5c;}.yellow{color:#f0b90b;}.blue{color:#2894f9;}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(30,45,71,.4);font-size:13px;}
+.info-row:last-child{border-bottom:none;}
+.info-lbl{color:#6b7fa3;display:flex;align-items:center;gap:7px;}
+.pav{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#f0b90b,#d4a109);display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:#000;box-shadow:0 0 20px rgba(240,185,11,.35);flex-shrink:0;}
 </style>
 </head>
 <body>
 
 <!-- ==================== AUTH PAGE ==================== -->
-<div id="auth-wrap">
-  <!-- BG Grid -->
+<div id="auth-page" style="display:flex;">
   <div class="auth-bg-grid"></div>
 
-  <!-- Floating Particles -->
-  <div class="particle" style="width:4px;height:4px;background:#f0b90b;top:20%;left:15%;animation:particleFloat 8s infinite 0s;"></div>
-  <div class="particle" style="width:6px;height:6px;background:#2894f9;top:60%;left:8%;animation:particleFloat 10s infinite 2s;"></div>
-  <div class="particle" style="width:3px;height:3px;background:#00d084;top:40%;left:25%;animation:particleFloat 7s infinite 4s;"></div>
-  <div class="particle" style="width:5px;height:5px;background:#f0b90b;top:80%;left:20%;animation:particleFloat 9s infinite 1s;"></div>
-  <div class="particle" style="width:4px;height:4px;background:#ff3b5c;top:30%;left:40%;animation:particleFloat 11s infinite 3s;"></div>
+  <!-- Particles -->
+  <div class="ptcl" style="width:4px;height:4px;background:#f0b90b;left:10%;animation-duration:9s;animation-delay:0s;top:100%;"></div>
+  <div class="ptcl" style="width:5px;height:5px;background:#2894f9;left:20%;animation-duration:11s;animation-delay:2s;top:100%;"></div>
+  <div class="ptcl" style="width:3px;height:3px;background:#00d084;left:35%;animation-duration:8s;animation-delay:4s;top:100%;"></div>
+  <div class="ptcl" style="width:6px;height:6px;background:#f0b90b;left:50%;animation-duration:13s;animation-delay:1s;top:100%;"></div>
+  <div class="ptcl" style="width:4px;height:4px;background:#ff3b5c;left:65%;animation-duration:10s;animation-delay:3s;top:100%;"></div>
+  <div class="ptcl" style="width:3px;height:3px;background:#00d084;left:80%;animation-duration:7s;animation-delay:5s;top:100%;"></div>
 
-  <!-- LEFT SIDE -->
+  <!-- LEFT -->
   <div class="auth-left">
-    <div class="hero-text" style="animation:slideUp .8s ease;">
-      <div style="font-size:3.5rem;font-weight:900;background:linear-gradient(135deg,#f0b90b,#ffffff,#2894f9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200%;animation:gradientMove 3s infinite;margin-bottom:8px;">
-        ⚡ SmartEX
-      </div>
-      <div style="font-size:2rem;font-weight:800;color:#e8edf5;margin-bottom:12px;line-height:1.3;">
-        India's #1 Stock<br>Exchange Platform
-      </div>
-      <div style="color:#6b7fa3;font-size:14px;line-height:1.7;max-width:400px;margin:0 auto;">
-        Trade NSE, BSE stocks & crypto with real-time charts.<br>
-        Built for Indian investors. Trusted by thousands.
+    <!-- Logo -->
+    <div style="animation:slideUp .7s ease;margin-bottom:16px;text-align:center;">
+      <div class="hero-logo">
+        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIF.%252bozdWRlOOE%252b2Ky7YrpTULg%26pid%3DApi&f=1&ipt=78b17ec41da3a8256880d642f4aa4579f9931b10ef98497c1ca005cc5e18c1e4&ipo=images" alt="SmartEX Logo" onerror="this.style.display='none'">
+        SmartEX
       </div>
     </div>
+    <div class="hero-h1" style="animation:slideUp .8s ease .1s both;">India's #1 Stock<br>Exchange Platform</div>
+    <div class="hero-p" style="animation:slideUp .8s ease .2s both;">Trade NSE, BSE stocks & crypto with real-time charts.<br>Built for Indian investors. Trusted by thousands.</div>
 
     <!-- Stats -->
-    <div class="stats-row">
-      <div class="stat-pill">
-        <div class="sv">₹50Cr+</div>
-        <div class="sl">Trading Volume</div>
-      </div>
-      <div class="stat-pill">
-        <div class="sv">10K+</div>
-        <div class="sl">Active Traders</div>
-      </div>
-      <div class="stat-pill">
-        <div class="sv">100+</div>
-        <div class="sl">Indian Stocks</div>
-      </div>
+    <div class="stats-pills">
+      <div class="spill"><div class="sv">₹50Cr+</div><div class="sl">Trading Volume</div></div>
+      <div class="spill"><div class="sv">10K+</div><div class="sl">Active Traders</div></div>
+      <div class="spill"><div class="sv">100+</div><div class="sl">Indian Stocks</div></div>
     </div>
 
-    <!-- Mini Candle Chart -->
-    <div class="mini-chart">
-      <div style="font-size:11px;color:#6b7fa3;text-align:center;margin-bottom:8px;">
-        <span class="live-dot" style="display:inline-block;margin-right:4px;"></span>
-        Live NSE Market
-      </div>
-      <div class="candle-wrap" style="justify-content:center;">
-        <div class="candle up" style="--h:35px;height:35px;animation-delay:.0s;"></div>
-        <div class="candle up" style="--h:50px;height:50px;animation-delay:.1s;"></div>
-        <div class="candle dn" style="--h:30px;height:30px;animation-delay:.2s;"></div>
-        <div class="candle up" style="--h:65px;height:65px;animation-delay:.3s;"></div>
-        <div class="candle up" style="--h:45px;height:45px;animation-delay:.4s;"></div>
-        <div class="candle dn" style="--h:25px;height:25px;animation-delay:.5s;"></div>
-        <div class="candle up" style="--h:70px;height:70px;animation-delay:.6s;"></div>
-        <div class="candle dn" style="--h:40px;height:40px;animation-delay:.7s;"></div>
-        <div class="candle up" style="--h:55px;height:55px;animation-delay:.8s;"></div>
-        <div class="candle up" style="--h:78px;height:78px;animation-delay:.9s;"></div>
+    <!-- Candle Chart -->
+    <div class="candle-section" style="animation:fadeIn 1s ease .3s both;">
+      <div class="live-row"><div class="live-dot"></div>Live NSE Market</div>
+      <div class="candles">
+        <div class="c u" style="height:32px;animation-delay:.0s;"></div>
+        <div class="c u" style="height:48px;animation-delay:.08s;"></div>
+        <div class="c d" style="height:28px;animation-delay:.16s;"></div>
+        <div class="c u" style="height:62px;animation-delay:.24s;"></div>
+        <div class="c u" style="height:42px;animation-delay:.32s;"></div>
+        <div class="c d" style="height:22px;animation-delay:.40s;"></div>
+        <div class="c u" style="height:68px;animation-delay:.48s;"></div>
+        <div class="c d" style="height:36px;animation-delay:.56s;"></div>
+        <div class="c u" style="height:52px;animation-delay:.64s;"></div>
+        <div class="c u" style="height:74px;animation-delay:.72s;"></div>
       </div>
     </div>
 
     <!-- Floating coins -->
-    <img class="floating-coin fc-btc" src="https://global.delta.exchange/images/homepage/heroSection/bitcoin.png" width="80" alt="BTC" onerror="this.style.display='none'">
-    <img class="floating-coin fc-eth" src="https://global.delta.exchange/images/homepage/heroSection/ethereum.png" width="60" alt="ETH" onerror="this.style.display='none'">
+    <img class="fc fc-btc" src="https://global.delta.exchange/images/homepage/heroSection/bitcoin.png" width="75" alt="" onerror="this.style.display='none'">
+    <img class="fc fc-eth" src="https://global.delta.exchange/images/homepage/heroSection/ethereum.png" width="58" alt="" onerror="this.style.display='none'">
 
-    <!-- Trust badges -->
-    <div class="trust-row">
-      <div class="trust-badge"><i class="fas fa-shield-alt" style="color:#00d084;"></i>SEBI Compliant</div>
-      <div class="trust-badge"><i class="fas fa-lock" style="color:#2894f9;"></i>Bank-grade Security</div>
-      <div class="trust-badge"><i class="fas fa-chart-line" style="color:#f0b90b;"></i>Real-time Data</div>
+    <!-- Trust -->
+    <div class="trust-row" style="animation:fadeIn 1s ease .5s both;">
+      <div class="tbadge"><i class="fas fa-shield-alt" style="color:#00d084;"></i>SEBI Compliant</div>
+      <div class="tbadge"><i class="fas fa-lock" style="color:#2894f9;"></i>Bank-grade Security</div>
+      <div class="tbadge"><i class="fas fa-chart-line" style="color:#f0b90b;"></i>Real-time Data</div>
     </div>
 
-    <!-- Media logos -->
-    <div style="margin-top:24px;text-align:center;z-index:5;position:relative;">
-      <div style="font-size:10px;color:#374151;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">As Seen In</div>
-      <div style="display:flex;gap:16px;align-items:center;justify-content:center;opacity:.4;">
-        <img src="https://global.delta.exchange/images/common/forbes.svg" height="16" alt="Forbes" onerror="this.style.display='none'">
-        <img src="https://global.delta.exchange/images/common/nasdaq.svg" height="14" alt="NASDAQ" onerror="this.style.display='none'">
-        <img src="https://global.delta.exchange/images/common/coindesk.svg" height="14" alt="CoinDesk" onerror="this.style.display='none'">
+    <!-- Media -->
+    <div class="media-row" style="animation:fadeIn 1s ease .6s both;">
+      <div class="media-label">As Seen In</div>
+      <div class="media-logos">
+        <img src="https://global.delta.exchange/images/common/forbes.svg" height="14" alt="Forbes" onerror="this.style.display='none'">
+        <img src="https://global.delta.exchange/images/common/nasdaq.svg" height="13" alt="NASDAQ" onerror="this.style.display='none'">
+        <img src="https://global.delta.exchange/images/common/coindesk.svg" height="13" alt="CoinDesk" onerror="this.style.display='none'">
       </div>
     </div>
   </div>
 
-  <!-- RIGHT SIDE - AUTH FORM -->
+  <!-- RIGHT FORM -->
   <div class="auth-right">
-    <div class="auth-box" style="animation:slideIn .6s ease;">
-      <!-- Logo -->
-      <div class="auth-logo">
-        <div class="logo-text">⚡ SmartEX</div>
-        <div class="logo-sub">India's Most Advanced Stock Exchange Platform</div>
+    <div class="auth-box">
+      <!-- Logo small -->
+      <div class="auth-logo-sm">
+        <div class="name">
+          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIF.%252bozdWRlOOE%252b2Ky7YrpTULg%26pid%3DApi&f=1&ipt=78b17ec41da3a8256880d642f4aa4579f9931b10ef98497c1ca005cc5e18c1e4&ipo=images" alt="SmartEX" onerror="this.style.display='none'">
+          ⚡ SmartEX
+        </div>
+        <div class="sub">India's Most Advanced Stock Exchange Platform</div>
       </div>
 
       <!-- Tabs -->
       <div class="auth-tabs">
-        <button class="auth-tab on" id="tl" onclick="swAuth('login')">Login</button>
-        <button class="auth-tab" id="tr" onclick="swAuth('reg')">Register</button>
+        <button class="atab on" id="tl" onclick="swAuth('login')">Login</button>
+        <button class="atab" id="tr" onclick="swAuth('reg')">Register</button>
       </div>
 
-      <!-- LOGIN -->
+      <!-- LOGIN FORM -->
       <div id="f-login">
-        <div class="field">
+        <div class="fld">
           <label>Email Address</label>
-          <input type="email" id="le" placeholder="yourname@email.com">
+          <input type="email" id="le" placeholder="yourname@email.com" onkeydown="if(event.key==='Enter')doLogin()">
         </div>
-        <div class="field">
+        <div class="fld">
           <label>Password</label>
-          <input type="password" id="lp" placeholder="Your password">
+          <input type="password" id="lp" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()">
         </div>
-        <button class="btn-primary" onclick="doLogin()">
+        <button class="btn-login" id="lbtn" onclick="doLogin()">
           <i class="fas fa-sign-in-alt" style="margin-right:8px;"></i>Login to SmartEX
         </button>
-        <div id="l-msg" class="msg-box"></div>
+        <div id="l-msg" class="msgbox"></div>
+        <div class="sec-note">
+          <i class="fas fa-shield-alt" style="color:#00d084;margin-right:4px;"></i>
+          256-bit SSL Encrypted · SEBI Compliant · RBI Regulated
+        </div>
       </div>
 
-      <!-- REGISTER -->
+      <!-- REGISTER FORM -->
       <div id="f-reg" style="display:none;">
-        <div class="field">
+        <div class="fld">
           <label>Full Name</label>
           <input type="text" id="rn" placeholder="Full name as per Aadhaar">
         </div>
-        <div class="field">
+        <div class="fld">
           <label>Email Address</label>
           <input type="email" id="re" placeholder="yourname@email.com">
         </div>
-        <div class="field">
+        <div class="fld">
           <label>Phone Number</label>
           <input type="tel" id="rph" placeholder="+91 9876543210">
         </div>
-        <div class="field">
+        <div class="fld">
           <label>Aadhaar Number (12 Digits)</label>
           <input type="text" id="rad" placeholder="XXXXXXXXXXXX" maxlength="12">
         </div>
-        <div class="field">
+        <div class="fld">
           <label>PAN Number</label>
           <input type="text" id="rpn" placeholder="ABCDE1234F" maxlength="10">
         </div>
-        <div class="field">
+        <div class="fld">
           <label>Password (Min 6 Chars)</label>
           <input type="password" id="rps" placeholder="Create strong password">
         </div>
-        <div class="field">
+        <div class="fld">
           <label>Confirm Password</label>
           <input type="password" id="rpc" placeholder="Repeat password">
         </div>
-        <button class="btn-primary" onclick="doReg()" id="rbtn">
+        <button class="btn-login" id="rbtn" onclick="doReg()">
           <i class="fas fa-user-plus" style="margin-right:8px;"></i>Create Account
         </button>
-        <div id="r-msg" class="msg-box"></div>
-      </div>
-
-      <div style="margin-top:16px;text-align:center;font-size:11px;color:#374151;">
-        <i class="fas fa-shield-alt" style="color:#00d084;margin-right:4px;"></i>
-        256-bit SSL Encrypted · SEBI Compliant · RBI Regulated
+        <div id="r-msg" class="msgbox"></div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ==================== MAIN APP ==================== -->
-<div id="main-app" style="display:none;flex-direction:column;min-height:100vh;" class="pg">
+<div id="main-app" style="display:none;flex-direction:column;min-height:100vh;">
 
   <!-- NAVBAR -->
   <nav class="navbar">
-    <div style="display:flex;align-items:center;gap:12px;">
+    <div style="display:flex;align-items:center;gap:10px;">
       <div class="nav-logo" onclick="goPage('trade')">
-        <span style="font-size:1.3rem;">⚡</span> SmartEX
+        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIF.%252bozdWRlOOE%252b2Ky7YrpTULg%26pid%3DApi&f=1&ipt=78b17ec41da3a8256880d642f4aa4579f9931b10ef98497c1ca005cc5e18c1e4&ipo=images" alt="" onerror="this.style.display='none'">
+        ⚡ SmartEX
       </div>
       <div class="nav-links">
         <button class="nav-link" onclick="goPage('markets')"><i class="fas fa-chart-bar"></i>Markets</button>
-        <button class="nav-link on" onclick="goPage('trade')"><i class="fas fa-exchange-alt"></i>Trade</button>
+        <button class="nav-link" onclick="goPage('trade')"><i class="fas fa-exchange-alt"></i>Trade</button>
         <button class="nav-link" onclick="goPage('portfolio')"><i class="fas fa-briefcase"></i>Portfolio</button>
         <button class="nav-link" onclick="goPage('wallet')"><i class="fas fa-wallet"></i>Wallet</button>
         <button class="nav-link" onclick="goPage('orders')"><i class="fas fa-list"></i>Orders</button>
@@ -580,33 +452,27 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
     </div>
     <div class="nav-right">
       <div class="nav-bal-wrap">
-        <div class="nav-bal-label">Balance</div>
+        <div class="lbl">Balance</div>
         <div class="nav-bal" id="nav-bal">₹0.00</div>
       </div>
       <div style="position:relative;cursor:pointer;" onclick="goPage('notif')">
-        <i class="fas fa-bell" style="color:#6b7fa3;font-size:18px;"></i>
+        <i class="fas fa-bell" style="color:#6b7fa3;font-size:17px;"></i>
         <span class="badge" id="n-badge">0</span>
       </div>
-      <div class="nav-avatar" id="nav-av" onclick="goPage('profile')">U</div>
-      <button onclick="doLogout()" style="background:none;border:none;color:#6b7fa3;cursor:pointer;font-size:15px;padding:4px;border-radius:4px;transition:.2s;" title="Logout">
-        <i class="fas fa-sign-out-alt"></i>
-      </button>
+      <div class="nav-av" id="nav-av" onclick="goPage('profile')">U</div>
+      <button onclick="doLogout()" style="background:none;border:none;color:#6b7fa3;cursor:pointer;font-size:14px;padding:5px;border-radius:4px;transition:.2s;" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
     </div>
   </nav>
 
   <!-- TICKER -->
-  <div class="ticker-bar">
-    <div class="ticker-in" id="ticker"></div>
-  </div>
+  <div class="ticker-bar"><div class="ticker-in" id="ticker"></div></div>
 
-  <!-- ===== TRADE PAGE ===== -->
+  <!-- TRADE PAGE -->
   <div id="pg-trade" style="display:flex;flex-direction:row;height:calc(100vh - 76px);overflow:hidden;">
 
     <!-- Sidebar -->
     <div class="sidebar">
-      <div class="side-search">
-        <input type="text" placeholder="🔍 Search stocks..." id="ss" onkeyup="filSide()">
-      </div>
+      <div class="side-search"><input type="text" placeholder="🔍 Search stocks..." id="ss" onkeyup="filSide()"></div>
       <div class="side-cats">
         <button class="scat on" onclick="setCat('all',this)">All</button>
         <button class="scat" onclick="setCat('nifty50',this)">N50</button>
@@ -619,22 +485,22 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
     <div class="chart-area">
       <div class="stock-header">
         <div>
-          <div class="sh-sym" id="h-sym">RELIANCE</div>
+          <div style="font-size:1.1rem;font-weight:900;" id="h-sym">RELIANCE</div>
           <div style="font-size:10px;color:#6b7fa3;">NSE · India</div>
         </div>
         <div>
-          <div class="sh-price" id="h-price">₹2,456.00</div>
-          <div class="sh-chg" id="h-chg"><span class="green">+1.24% ▲</span></div>
+          <div style="font-size:1.3rem;font-weight:900;color:#00d084;" id="h-price">₹2,456.00</div>
+          <div id="h-chg" style="font-size:11px;"><span class="green">+1.24% ▲</span></div>
         </div>
-        <div class="sh-meta">
-          <span>H: <span id="h-hi">-</span></span>
-          <span>L: <span id="h-lo">-</span></span>
-          <span>Vol: <span id="h-vol">-</span></span>
+        <div style="display:flex;gap:14px;font-size:11px;color:#6b7fa3;">
+          <span>H: <span style="color:#e8edf5;" id="h-hi">-</span></span>
+          <span>L: <span style="color:#e8edf5;" id="h-lo">-</span></span>
+          <span>Vol: <span style="color:#e8edf5;" id="h-vol">-</span></span>
         </div>
-        <div style="margin-left:auto;display:flex;gap:8px;align-items:center;">
-          <div class="live-dot"></div>
-          <button class="btn-green" style="padding:8px 18px;font-size:13px;border-radius:8px;" onclick="opnQO('buy')">▲ BUY</button>
-          <button class="btn-red" style="padding:8px 18px;font-size:13px;border-radius:8px;" onclick="opnQO('sell')">▼ SELL</button>
+        <div style="margin-left:auto;display:flex;gap:7px;align-items:center;">
+          <div class="live-dot" style="width:7px;height:7px;border-radius:50%;background:#00d084;animation:pulse 1.2s infinite;"></div>
+          <button style="padding:8px 18px;font-size:13px;border:none;border-radius:8px;background:linear-gradient(135deg,#00d084,#00b371);color:#000;font-weight:900;cursor:pointer;transition:.3s;" onclick="opnQO('buy')">▲ BUY</button>
+          <button style="padding:8px 18px;font-size:13px;border:none;border-radius:8px;background:linear-gradient(135deg,#ff3b5c,#d42e4e);color:#fff;font-weight:900;cursor:pointer;transition:.3s;" onclick="opnQO('sell')">▼ SELL</button>
         </div>
       </div>
       <div id="tv-chart" style="flex:1;"></div>
@@ -651,52 +517,39 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
       <!-- Order Book -->
       <div id="r-ob" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
         <div class="ob-header"><span>Price</span><span style="text-align:center;">Qty</span><span style="text-align:right;">Total</span></div>
-        <div class="ob-list" id="ob-s"></div>
-        <div class="ob-mid">
+        <div id="ob-s" style="flex:1;overflow-y:auto;"></div>
+        <div style="padding:7px 12px;border-top:1px solid #1e2d47;border-bottom:1px solid #1e2d47;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
           <span style="font-size:1rem;font-weight:900;color:#00d084;" id="ob-p">₹2,456</span>
           <span style="font-size:10px;color:#6b7fa3;">Mark Price</span>
         </div>
-        <div class="ob-list" id="ob-b"></div>
+        <div id="ob-b" style="flex:1;overflow-y:auto;"></div>
       </div>
 
       <!-- Place Order -->
-      <div id="r-po" class="po-wrap" style="display:none;flex:1;flex-direction:column;">
+      <div id="r-po" class="po-wrap" style="display:none;flex:1;">
         <div class="po-sides">
           <button class="po-buy" id="po-b" onclick="poSide('buy')">BUY</button>
           <button class="po-sell" id="po-s" onclick="poSide('sell')">SELL</button>
         </div>
-        <div class="po-field">
-          <label>Order Type</label>
-          <select id="po-t">
-            <option value="market">Market Order</option>
-            <option value="limit">Limit Order</option>
-            <option value="stop">Stop Loss</option>
-          </select>
-        </div>
-        <div class="po-field">
-          <label>Price (₹)</label>
-          <input type="number" id="po-pr" placeholder="Market Price">
-        </div>
-        <div class="po-field">
-          <label>Quantity (Shares)</label>
-          <input type="number" id="po-q" placeholder="0" oninput="calcPO()">
-        </div>
+        <div class="pf"><label>Order Type</label><select id="po-t"><option value="market">Market Order</option><option value="limit">Limit Order</option><option value="stop">Stop Loss</option></select></div>
+        <div class="pf"><label>Price (₹)</label><input type="number" id="po-pr" placeholder="Market Price"></div>
+        <div class="pf"><label>Quantity (Shares)</label><input type="number" id="po-q" placeholder="0" oninput="calcPO()"></div>
         <div class="pct-row">
-          <button class="pct-btn" onclick="poPct(25)">25%</button>
-          <button class="pct-btn" onclick="poPct(50)">50%</button>
-          <button class="pct-btn" onclick="poPct(75)">75%</button>
-          <button class="pct-btn" onclick="poPct(100)">100%</button>
+          <button class="pct-b" onclick="poPct(25)">25%</button>
+          <button class="pct-b" onclick="poPct(50)">50%</button>
+          <button class="pct-b" onclick="poPct(75)">75%</button>
+          <button class="pct-b" onclick="poPct(100)">100%</button>
         </div>
         <div class="po-summary">
-          <div class="po-sum-row"><span style="color:#6b7fa3;">Balance</span><span class="green" id="po-bal">₹0</span></div>
-          <div class="po-sum-row"><span style="color:#6b7fa3;">Total</span><span id="po-tot">₹0</span></div>
-          <div class="po-sum-row"><span style="color:#6b7fa3;">Fee (0.1%)</span><span id="po-fee">₹0</span></div>
+          <div class="psr"><span style="color:#6b7fa3;">Balance</span><span class="green" id="po-bal">₹0</span></div>
+          <div class="psr"><span style="color:#6b7fa3;">Total</span><span id="po-tot">₹0</span></div>
+          <div class="psr"><span style="color:#6b7fa3;">Fee (0.1%)</span><span id="po-fee">₹0</span></div>
         </div>
-        <button class="po-submit" id="po-btn" onclick="doPlaceOrder()" style="width:100%;">BUY RELIANCE</button>
+        <button class="po-sub" id="po-btn" onclick="doPlaceOrder()">BUY RELIANCE</button>
       </div>
 
       <!-- Trades -->
-      <div id="r-rt" class="rt-wrap" style="display:none;">
+      <div id="r-rt" class="rt-wrap" style="display:none;flex:1;">
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:4px 8px;font-size:10px;color:#6b7fa3;border-bottom:1px solid #1e2d47;">
           <span>Price</span><span style="text-align:center;">Size</span><span style="text-align:right;">Time</span>
         </div>
@@ -705,240 +558,197 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overf
     </div>
   </div>
 
-  <!-- ===== MARKETS PAGE ===== -->
+  <!-- MARKETS -->
   <div id="pg-markets" class="page">
-    <div class="page-title"><i class="fas fa-chart-bar"></i>Market Overview</div>
-    <div class="stats-grid">
-      <div class="stat-card"><div class="sc-label">SENSEX</div><div class="sc-value green">72,456</div><div style="font-size:11px;" class="green">+0.45% ▲</div></div>
-      <div class="stat-card"><div class="sc-label">NIFTY 50</div><div class="sc-value green">21,853</div><div style="font-size:11px;" class="green">+0.38% ▲</div></div>
-      <div class="stat-card"><div class="sc-label">BANK NIFTY</div><div class="sc-value red">46,234</div><div style="font-size:11px;" class="red">-0.21% ▼</div></div>
-      <div class="stat-card"><div class="sc-label">INDIA VIX</div><div class="sc-value yellow">13.45</div><div style="font-size:11px;" class="yellow">+2.1%</div></div>
+    <div class="ptitle"><i class="fas fa-chart-bar"></i>Market Overview</div>
+    <div class="sgrid">
+      <div class="scard"><div class="scl">SENSEX</div><div class="scv green">72,456</div><div style="font-size:11px;" class="green">+0.45% ▲</div></div>
+      <div class="scard"><div class="scl">NIFTY 50</div><div class="scv green">21,853</div><div style="font-size:11px;" class="green">+0.38% ▲</div></div>
+      <div class="scard"><div class="scl">BANK NIFTY</div><div class="scv red">46,234</div><div style="font-size:11px;" class="red">-0.21% ▼</div></div>
+      <div class="scard"><div class="scl">INDIA VIX</div><div class="scv yellow">13.45</div><div style="font-size:11px;" class="yellow">+2.1%</div></div>
     </div>
-    <div class="section-card">
-      <div class="section-head">
-        All Stocks & Crypto
-        <input type="text" placeholder="Search..." style="width:180px;padding:6px 10px;background:#0b0f1a;border:1px solid #1e2d47;color:#e8edf5;border-radius:6px;font-size:12px;outline:none;" onkeyup="filMkt(this.value)">
+    <div class="sec">
+      <div class="sec-hd">All Stocks & Crypto
+        <input type="text" placeholder="Search..." style="width:175px;padding:6px 10px;background:#080e1a;border:1px solid #1e2d47;color:#e8edf5;border-radius:6px;font-size:12px;outline:none;" onkeyup="filMkt(this.value)">
       </div>
-      <div class="tbl-head" style="grid-template-columns:2fr 1fr 1fr 1fr;">
-        <span>Symbol / Name</span><span style="text-align:right;">Price</span><span style="text-align:right;">24H Change</span><span style="text-align:right;">Volume</span>
-      </div>
+      <div class="th" style="grid-template-columns:2fr 1fr 1fr 1fr;"><span>Symbol/Name</span><span style="text-align:right;">Price</span><span style="text-align:right;">24H</span><span style="text-align:right;">Volume</span></div>
       <div id="mkt-body" style="max-height:70vh;overflow-y:auto;"></div>
     </div>
   </div>
 
-  <!-- ===== PORTFOLIO PAGE ===== -->
+  <!-- PORTFOLIO -->
   <div id="pg-portfolio" class="page">
-    <div class="page-title"><i class="fas fa-briefcase"></i>My Portfolio</div>
-    <div class="stats-grid">
-      <div class="stat-card"><div class="sc-label">Cash Balance</div><div class="sc-value yellow" id="pf-bal">₹0</div></div>
-      <div class="stat-card"><div class="sc-label">Portfolio Value</div><div class="sc-value blue" id="pf-pv">₹0</div></div>
-      <div class="stat-card"><div class="sc-label">Total P&L</div><div class="sc-value" id="pf-pnl">₹0</div></div>
-      <div class="stat-card"><div class="sc-label">Credit Score</div><div class="sc-value" style="color:#a855f7;" id="pf-cs">750</div></div>
+    <div class="ptitle"><i class="fas fa-briefcase"></i>My Portfolio</div>
+    <div class="sgrid">
+      <div class="scard"><div class="scl">Cash Balance</div><div class="scv yellow" id="pf-bal">₹0</div></div>
+      <div class="scard"><div class="scl">Portfolio Value</div><div class="scv blue" id="pf-pv">₹0</div></div>
+      <div class="scard"><div class="scl">Total P&L</div><div class="scv" id="pf-pnl">₹0</div></div>
+      <div class="scard"><div class="scl">Credit Score</div><div class="scv" style="color:#a855f7;" id="pf-cs">750</div></div>
     </div>
-    <div class="section-card">
-      <div class="section-head">My Holdings</div>
-      <div class="tbl-head" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr;">
-        <span>Stock</span><span style="text-align:right;">Qty</span><span style="text-align:right;">Avg Price</span><span style="text-align:right;">Cur. Price</span><span style="text-align:right;">P&L</span>
-      </div>
+    <div class="sec">
+      <div class="sec-hd">My Holdings</div>
+      <div class="th" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr;"><span>Stock</span><span style="text-align:right;">Qty</span><span style="text-align:right;">Avg</span><span style="text-align:right;">Current</span><span style="text-align:right;">P&L</span></div>
       <div id="hold-body" style="max-height:60vh;overflow-y:auto;"></div>
     </div>
   </div>
 
-  <!-- ===== WALLET PAGE ===== -->
+  <!-- WALLET -->
   <div id="pg-wallet" class="page">
-    <div class="page-title"><i class="fas fa-wallet"></i>Wallet</div>
-    <div style="display:grid;grid-template-columns:1fr 2fr;gap:16px;margin-bottom:16px;">
-      <div class="section-card" style="padding:24px;text-align:center;">
-        <div style="font-size:12px;color:#6b7fa3;margin-bottom:6px;">Available Balance</div>
-        <div style="font-size:2.2rem;font-weight:900;color:#f0b90b;margin-bottom:4px;" id="wlt-bal">₹0.00</div>
-        <div style="font-size:11px;color:#6b7fa3;margin-bottom:18px;">Withdrawable Amount</div>
-        <div style="display:flex;gap:10px;">
-          <button class="btn-green btn-full" onclick="opnMod('m-dep')" style="flex:1;font-size:13px;padding:10px;border-radius:8px;">
-            <i class="fas fa-plus" style="margin-right:4px;"></i>Deposit
-          </button>
-          <button class="btn-red btn-full" onclick="opnMod('m-wd')" style="flex:1;font-size:13px;padding:10px;border-radius:8px;">
-            <i class="fas fa-minus" style="margin-right:4px;"></i>Withdraw
-          </button>
+    <div class="ptitle"><i class="fas fa-wallet"></i>Wallet</div>
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:14px;">
+      <div class="sec" style="padding:22px;text-align:center;">
+        <div style="font-size:11px;color:#6b7fa3;margin-bottom:5px;">Available Balance</div>
+        <div style="font-size:2rem;font-weight:900;color:#f0b90b;margin-bottom:4px;" id="wlt-bal">₹0.00</div>
+        <div style="font-size:11px;color:#6b7fa3;margin-bottom:16px;">Withdrawable</div>
+        <div style="display:flex;gap:9px;">
+          <button class="btn-g" style="flex:1;font-size:13px;padding:9px;border-radius:8px;" onclick="opnMod('m-dep')"><i class="fas fa-plus" style="margin-right:4px;"></i>Deposit</button>
+          <button class="btn-r" style="flex:1;font-size:13px;padding:9px;border-radius:8px;" onclick="opnMod('m-wd')"><i class="fas fa-minus" style="margin-right:4px;"></i>Withdraw</button>
         </div>
       </div>
-      <div class="section-card" style="padding:20px;">
-        <div style="font-weight:700;margin-bottom:14px;">Asset Overview</div>
-        <div id="asset-sum"><div style="color:#6b7fa3;font-size:13px;">Loading...</div></div>
-      </div>
+      <div class="sec" style="padding:18px;"><div style="font-weight:700;margin-bottom:12px;">Asset Overview</div><div id="asset-sum"><div style="color:#6b7fa3;font-size:13px;">Loading...</div></div></div>
     </div>
-    <div class="section-card">
-      <div class="section-head">Transaction History</div>
-      <div id="tx-body" style="max-height:50vh;overflow-y:auto;"></div>
-    </div>
+    <div class="sec"><div class="sec-hd">Transaction History</div><div id="tx-body" style="max-height:50vh;overflow-y:auto;"></div></div>
   </div>
 
-  <!-- ===== ORDERS PAGE ===== -->
+  <!-- ORDERS -->
   <div id="pg-orders" class="page">
-    <div class="page-title"><i class="fas fa-list"></i>My Orders</div>
-    <div class="section-card">
-      <div style="display:flex;border-bottom:1px solid #1e2d47;padding:0 8px;">
-        <button class="rp-tab on" style="border-bottom:2px solid #f0b90b;" onclick="loadOrders('all');setOrdTab(this)">All Orders</button>
-        <button class="rp-tab" onclick="loadOrders('completed');setOrdTab(this)">Completed</button>
-        <button class="rp-tab" onclick="loadOrders('pending');setOrdTab(this)">Pending</button>
+    <div class="ptitle"><i class="fas fa-list"></i>My Orders</div>
+    <div class="sec">
+      <div style="display:flex;border-bottom:1px solid #1e2d47;padding:0 6px;">
+        <button class="rp-tab on" onclick="loadOrders('all');setOT(this)">All Orders</button>
+        <button class="rp-tab" onclick="loadOrders('completed');setOT(this)">Completed</button>
+        <button class="rp-tab" onclick="loadOrders('pending');setOT(this)">Pending</button>
       </div>
-      <div class="tbl-head" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;">
-        <span>Stock</span><span>Type</span><span style="text-align:right;">Qty</span><span style="text-align:right;">Price</span><span style="text-align:right;">Total</span><span style="text-align:right;">Status</span>
-      </div>
+      <div class="th" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;"><span>Stock</span><span>Type</span><span style="text-align:right;">Qty</span><span style="text-align:right;">Price</span><span style="text-align:right;">Total</span><span style="text-align:right;">Status</span></div>
       <div id="ord-body" style="max-height:70vh;overflow-y:auto;"></div>
     </div>
   </div>
 
-  <!-- ===== PROFILE PAGE ===== -->
+  <!-- PROFILE -->
   <div id="pg-profile" class="page">
-    <div class="page-title"><i class="fas fa-user"></i>My Profile</div>
+    <div class="ptitle"><i class="fas fa-user"></i>My Profile</div>
     <div class="profile-grid">
-      <div class="section-card" style="padding:24px;">
-        <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;">
-          <div class="profile-avatar-big" id="pf-av">U</div>
+      <div class="sec" style="padding:22px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;">
+          <div class="pav" id="pf-av">U</div>
           <div>
-            <div style="font-size:1.1rem;font-weight:800;" id="pf-name">Loading...</div>
+            <div style="font-size:1.05rem;font-weight:800;" id="pf-name">Loading...</div>
             <div style="font-size:12px;color:#6b7fa3;margin-top:2px;" id="pf-email"></div>
-            <div id="pf-badge" style="margin-top:6px;"></div>
+            <div id="pf-badge" style="margin-top:5px;"></div>
           </div>
         </div>
         <div>
-          <div class="info-row"><span class="info-label"><i class="fas fa-hashtag" style="width:14px;color:#f0b90b;"></i>Slot ID</span><span style="font-weight:700;color:#f0b90b;" id="pf-slot">-</span></div>
-          <div class="info-row"><span class="info-label"><i class="fas fa-phone" style="width:14px;color:#2894f9;"></i>Phone</span><span id="pf-ph">-</span></div>
-          <div class="info-row"><span class="info-label"><i class="fas fa-id-card" style="width:14px;color:#00d084;"></i>Aadhaar</span><span id="pf-aad">-</span></div>
-          <div class="info-row"><span class="info-label"><i class="fas fa-address-card" style="width:14px;color:#a855f7;"></i>PAN</span><span id="pf-pan">-</span></div>
-          <div class="info-row"><span class="info-label"><i class="fas fa-star" style="width:14px;color:#f0b90b;"></i>Credit Score</span><span style="color:#a855f7;font-weight:800;" id="pf-crd">750</span></div>
-          <div class="info-row"><span class="info-label"><i class="fas fa-calendar" style="width:14px;color:#6b7fa3;"></i>Joined</span><span id="pf-join">-</span></div>
+          <div class="info-row"><span class="info-lbl"><i class="fas fa-hashtag" style="width:13px;color:#f0b90b;"></i>Slot ID</span><span style="font-weight:700;color:#f0b90b;" id="pf-slot">-</span></div>
+          <div class="info-row"><span class="info-lbl"><i class="fas fa-phone" style="width:13px;color:#2894f9;"></i>Phone</span><span id="pf-ph">-</span></div>
+          <div class="info-row"><span class="info-lbl"><i class="fas fa-id-card" style="width:13px;color:#00d084;"></i>Aadhaar</span><span id="pf-aad">-</span></div>
+          <div class="info-row"><span class="info-lbl"><i class="fas fa-address-card" style="width:13px;color:#a855f7;"></i>PAN</span><span id="pf-pan">-</span></div>
+          <div class="info-row"><span class="info-lbl"><i class="fas fa-star" style="width:13px;color:#f0b90b;"></i>Credit</span><span style="color:#a855f7;font-weight:800;" id="pf-crd">750</span></div>
+          <div class="info-row"><span class="info-lbl"><i class="fas fa-calendar" style="width:13px;color:#6b7fa3;"></i>Joined</span><span id="pf-join">-</span></div>
         </div>
       </div>
-      <div style="display:flex;flex-direction:column;gap:14px;">
-        <div class="section-card" style="padding:18px;">
-          <div style="font-weight:700;margin-bottom:12px;"><i class="fas fa-shield-alt" style="color:#f0b90b;margin-right:8px;"></i>KYC Status</div>
-          <div id="kyc-st" style="margin-bottom:12px;font-size:13px;"></div>
-          <button class="btn-yellow btn-full" onclick="opnMod('m-kyc')" style="font-size:13px;padding:10px;">Submit / Update KYC</button>
+      <div style="display:flex;flex-direction:column;gap:13px;">
+        <div class="sec" style="padding:17px;">
+          <div style="font-weight:700;margin-bottom:11px;"><i class="fas fa-shield-alt" style="color:#f0b90b;margin-right:7px;"></i>KYC Status</div>
+          <div id="kyc-st" style="margin-bottom:11px;font-size:13px;"></div>
+          <button class="btn-y" onclick="opnMod('m-kyc')" style="font-size:13px;padding:9px;">Submit / Update KYC</button>
         </div>
-        <div class="section-card" style="padding:18px;">
-          <div style="font-weight:700;margin-bottom:14px;"><i class="fas fa-university" style="color:#f0b90b;margin-right:8px;"></i>Bank Details</div>
-          <div class="m-field"><label>Bank Name</label><input type="text" id="bk-bn" placeholder="State Bank of India"></div>
-          <div class="m-field"><label>Account Holder Name</label><input type="text" id="bk-ah" placeholder="Your full name"></div>
-          <div class="m-field"><label>Account Number</label><input type="text" id="bk-an" placeholder="Account number"></div>
-          <div class="m-field"><label>IFSC Code</label><input type="text" id="bk-if" placeholder="SBIN0001234"></div>
-          <div class="m-field" style="margin-bottom:14px;"><label>UPI / PhonePe Number</label><input type="text" id="bk-up" placeholder="name@upi or 9876543210"></div>
-          <button class="btn-yellow btn-full" onclick="saveBankDetails()" style="font-size:13px;padding:10px;">
-            <i class="fas fa-save" style="margin-right:6px;"></i>Save Bank Details
-          </button>
+        <div class="sec" style="padding:17px;">
+          <div style="font-weight:700;margin-bottom:13px;"><i class="fas fa-university" style="color:#f0b90b;margin-right:7px;"></i>Bank Details</div>
+          <div class="mfld"><label>Bank Name</label><input type="text" id="bk-bn" placeholder="State Bank of India"></div>
+          <div class="mfld"><label>Account Holder</label><input type="text" id="bk-ah" placeholder="Your full name"></div>
+          <div class="mfld"><label>Account Number</label><input type="text" id="bk-an" placeholder="Account number"></div>
+          <div class="mfld"><label>IFSC Code</label><input type="text" id="bk-if" placeholder="SBIN0001234"></div>
+          <div class="mfld" style="margin-bottom:13px;"><label>UPI / PhonePe</label><input type="text" id="bk-up" placeholder="name@upi or 9876543210"></div>
+          <button class="btn-y" onclick="saveBankDetails()" style="font-size:13px;padding:9px;"><i class="fas fa-save" style="margin-right:5px;"></i>Save Bank Details</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ===== NOTIFICATIONS ===== -->
+  <!-- NOTIFICATIONS -->
   <div id="pg-notif" class="page">
-    <div class="page-title"><i class="fas fa-bell"></i>Notifications</div>
-    <div class="section-card" id="notif-body"></div>
+    <div class="ptitle"><i class="fas fa-bell"></i>Notifications</div>
+    <div class="sec" id="notif-body"></div>
   </div>
 
 </div>
 
-<!-- ==================== MODALS ==================== -->
+<!-- ===== MODALS ===== -->
 
 <!-- DEPOSIT -->
 <div id="m-dep" class="modal">
-  <div class="modal-box">
-    <div class="modal-head">
-      <div class="modal-title green"><i class="fas fa-plus-circle" style="margin-right:8px;"></i>Deposit Money</div>
-      <button class="modal-close" onclick="clsMod('m-dep')"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="info-green">
-      <div style="color:#00d084;font-weight:800;font-size:12px;margin-bottom:12px;">📤 TRANSFER TO ADMIN ACCOUNT:</div>
-      <div style="font-size:13px;display:flex;flex-direction:column;gap:8px;">
+  <div class="mbox">
+    <div class="mhead"><div class="mtitle green"><i class="fas fa-plus-circle" style="margin-right:8px;"></i>Deposit Money</div><button class="mclose" onclick="clsMod('m-dep')"><i class="fas fa-times"></i></button></div>
+    <div class="igreen">
+      <div style="color:#00d084;font-weight:800;font-size:12px;margin-bottom:11px;">📤 TRANSFER TO ADMIN ACCOUNT:</div>
+      <div style="font-size:13px;display:flex;flex-direction:column;gap:7px;">
         <div style="display:flex;justify-content:space-between;"><span style="color:#6b7fa3;">UPI ID</span><span style="font-weight:800;color:#f0b90b;" id="d-upi">-</span></div>
         <div style="display:flex;justify-content:space-between;"><span style="color:#6b7fa3;">PhonePe/Paytm</span><span style="font-weight:800;" id="d-ph">-</span></div>
         <div style="display:flex;justify-content:space-between;"><span style="color:#6b7fa3;">Bank Name</span><span style="font-weight:800;" id="d-bk">-</span></div>
         <div style="display:flex;justify-content:space-between;"><span style="color:#6b7fa3;">Account No</span><span style="font-weight:800;" id="d-ac">-</span></div>
-        <div style="display:flex;justify-content:space-between;"><span style="color:#6b7fa3;">IFSC Code</span><span style="font-weight:800;" id="d-if">-</span></div>
-        <div style="display:flex;justify-content:space-between;"><span style="color:#6b7fa3;">Account Holder</span><span style="font-weight:800;" id="d-hn">-</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#6b7fa3;">IFSC</span><span style="font-weight:800;" id="d-if">-</span></div>
+        <div style="display:flex;justify-content:space-between;"><span style="color:#6b7fa3;">Holder</span><span style="font-weight:800;" id="d-hn">-</span></div>
       </div>
     </div>
-    <div class="m-field"><label>Amount (₹)</label><input type="number" id="d-amt" placeholder="Minimum ₹100"></div>
-    <div class="m-field" style="margin-bottom:12px;"><label>UTR / Transaction Reference</label><input type="text" id="d-ref" placeholder="12-digit UTR number"></div>
-    <div class="info-yellow">⚠️ Transfer money first, then submit this form. Admin will verify & credit within 30 minutes.</div>
-    <button class="btn-green btn-full" onclick="doDeposit()"><i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Deposit Request</button>
+    <div class="mfld"><label>Amount (₹)</label><input type="number" id="d-amt" placeholder="Minimum ₹100"></div>
+    <div class="mfld" style="margin-bottom:11px;"><label>UTR / Transaction Reference</label><input type="text" id="d-ref" placeholder="12-digit UTR number"></div>
+    <div class="iyellow">⚠️ Transfer money first, then submit. Admin will verify & credit within 30 minutes.</div>
+    <button class="btn-g" onclick="doDeposit()"><i class="fas fa-paper-plane" style="margin-right:7px;"></i>Submit Deposit Request</button>
   </div>
 </div>
 
 <!-- WITHDRAWAL -->
 <div id="m-wd" class="modal">
-  <div class="modal-box">
-    <div class="modal-head">
-      <div class="modal-title red"><i class="fas fa-minus-circle" style="margin-right:8px;"></i>Withdraw Money</div>
-      <button class="modal-close" onclick="clsMod('m-wd')"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="info-blue" id="wd-bk-info"><span style="color:#f0b90b;">⚠️ No bank details. Add in Profile first.</span></div>
-    <div class="m-field"><label>Amount (₹)</label><input type="number" id="wd-amt" placeholder="Minimum ₹500"></div>
-    <div class="m-field" style="margin-bottom:14px;">
-      <label>Withdraw Method</label>
-      <select id="wd-mth">
-        <option value="bank">Bank Transfer (NEFT/IMPS)</option>
-        <option value="upi">UPI Transfer</option>
-        <option value="phonepay">PhonePe</option>
-        <option value="paytm">Paytm</option>
-      </select>
-    </div>
-    <div style="background:rgba(255,255,255,.04);border-radius:6px;padding:10px;font-size:11px;color:#6b7fa3;margin-bottom:14px;">💡 Processed to your saved bank/UPI within 24 hours.</div>
-    <button class="btn-red btn-full" onclick="doWithdraw()"><i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Withdrawal Request</button>
+  <div class="mbox">
+    <div class="mhead"><div class="mtitle red"><i class="fas fa-minus-circle" style="margin-right:8px;"></i>Withdraw Money</div><button class="mclose" onclick="clsMod('m-wd')"><i class="fas fa-times"></i></button></div>
+    <div class="iblue" id="wd-bk-info"><span style="color:#f0b90b;">⚠️ No bank details saved. Go to Profile first.</span></div>
+    <div class="mfld"><label>Amount (₹)</label><input type="number" id="wd-amt" placeholder="Minimum ₹500"></div>
+    <div class="mfld" style="margin-bottom:13px;"><label>Withdraw Method</label><select id="wd-mth"><option value="bank">Bank Transfer (NEFT/IMPS)</option><option value="upi">UPI Transfer</option><option value="phonepay">PhonePe</option><option value="paytm">Paytm</option></select></div>
+    <div style="background:rgba(255,255,255,.04);border-radius:6px;padding:9px;font-size:11px;color:#6b7fa3;margin-bottom:12px;">💡 Processed to your saved bank/UPI within 24 hours.</div>
+    <button class="btn-r" onclick="doWithdraw()"><i class="fas fa-paper-plane" style="margin-right:7px;"></i>Submit Withdrawal Request</button>
   </div>
 </div>
 
 <!-- KYC -->
 <div id="m-kyc" class="modal">
-  <div class="modal-box">
-    <div class="modal-head">
-      <div class="modal-title yellow"><i class="fas fa-id-card" style="margin-right:8px;"></i>KYC Verification</div>
-      <button class="modal-close" onclick="clsMod('m-kyc')"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="m-field"><label>Aadhaar Number (12 Digits)</label><input type="text" id="kyc-a" maxlength="12" placeholder="XXXXXXXXXXXX"></div>
-    <div class="m-field" style="margin-bottom:18px;"><label>PAN Number</label><input type="text" id="kyc-p" maxlength="10" placeholder="ABCDE1234F"></div>
-    <button class="btn-yellow btn-full"><i class="fas fa-check-circle" style="margin-right:8px;"></i>Submit KYC Documents</button>
+  <div class="mbox">
+    <div class="mhead"><div class="mtitle yellow"><i class="fas fa-id-card" style="margin-right:8px;"></i>KYC Verification</div><button class="mclose" onclick="clsMod('m-kyc')"><i class="fas fa-times"></i></button></div>
+    <div class="mfld"><label>Aadhaar Number (12 Digits)</label><input type="text" id="kyc-a" maxlength="12" placeholder="XXXXXXXXXXXX"></div>
+    <div class="mfld" style="margin-bottom:17px;"><label>PAN Number</label><input type="text" id="kyc-p" maxlength="10" placeholder="ABCDE1234F"></div>
+    <button class="btn-y" onclick="doKYC()"><i class="fas fa-check-circle" style="margin-right:7px;"></i>Submit KYC Documents</button>
   </div>
 </div>
 
 <!-- QUICK ORDER -->
 <div id="m-qo" class="modal">
-  <div class="modal-box">
-    <div class="modal-head">
-      <div class="modal-title" id="qo-ttl">Place Order</div>
-      <button class="modal-close" onclick="clsMod('m-qo')"><i class="fas fa-times"></i></button>
+  <div class="mbox">
+    <div class="mhead"><div class="mtitle" id="qo-ttl">Place Order</div><button class="mclose" onclick="clsMod('m-qo')"><i class="fas fa-times"></i></button></div>
+    <div style="background:#080e1a;border:1px solid #1e2d47;border-radius:10px;padding:11px;margin-bottom:13px;font-size:13px;">
+      <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #1e2d47;"><span style="color:#6b7fa3;">Stock</span><span style="font-weight:800;" id="qo-sym">-</span></div>
+      <div style="display:flex;justify-content:space-between;padding:5px 0;"><span style="color:#6b7fa3;">Price</span><span style="font-weight:800;color:#f0b90b;" id="qo-pr">-</span></div>
     </div>
-    <div style="background:#0b0f1a;border:1px solid #1e2d47;border-radius:10px;padding:12px;margin-bottom:14px;font-size:13px;">
-      <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #1e2d47;">
-        <span style="color:#6b7fa3;">Stock</span><span style="font-weight:800;" id="qo-sym">-</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;padding:5px 0;">
-        <span style="color:#6b7fa3;">Current Price</span><span style="font-weight:800;color:#f0b90b;" id="qo-pr">-</span>
-      </div>
-    </div>
-    <div class="m-field"><label>Quantity (Number of Shares)</label><input type="number" id="qo-q" placeholder="Enter quantity" oninput="calcQO()"></div>
-    <div style="background:#0b0f1a;border:1px solid #1e2d47;border-radius:8px;padding:10px;margin-bottom:14px;font-size:11px;">
-      <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="color:#6b7fa3;">Total Amount</span><span id="qo-tot">₹0</span></div>
+    <div class="mfld"><label>Quantity (Shares)</label><input type="number" id="qo-q" placeholder="Enter quantity" oninput="calcQO()"></div>
+    <div style="background:#080e1a;border:1px solid #1e2d47;border-radius:8px;padding:10px;margin-bottom:13px;font-size:11px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="color:#6b7fa3;">Total</span><span id="qo-tot">₹0</span></div>
       <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="color:#6b7fa3;">Fee (0.1%)</span><span id="qo-fee">₹0</span></div>
-      <div style="display:flex;justify-content:space-between;"><span style="color:#6b7fa3;">Your Balance</span><span class="green" id="qo-bal">₹0</span></div>
+      <div style="display:flex;justify-content:space-between;"><span style="color:#6b7fa3;">Balance</span><span class="green" id="qo-bal">₹0</span></div>
     </div>
-    <button id="qo-btn" class="btn-green btn-full" onclick="subQO()">CONFIRM BUY</button>
+    <button id="qo-btn" class="btn-g" onclick="subQO()">CONFIRM BUY</button>
   </div>
 </div>
 
 <script>
 // ============================================================
-// SUPABASE
+// SUPABASE - Using direct REST API to avoid auth issues
 // ============================================================
 const SB_URL = 'https://qajdgueavfofwtavmkxi.supabase.co';
 const SB_KEY = 'sb_publishable_NqFN_vK1dp64ZrI94MZsEA_DcTFMRof';
 const sb = supabase.createClient(SB_URL, SB_KEY);
 
 // ============================================================
-// STOCKS DATA (Indian + Crypto)
+// STOCKS
 // ============================================================
-const STOCKS = [
+const STOCKS=[
   {sym:'NSE:RELIANCE',name:'Reliance Industries',p:2456,cat:'nifty50'},
   {sym:'NSE:TCS',name:'Tata Consultancy',p:3890,cat:'nifty50'},
   {sym:'NSE:HDFCBANK',name:'HDFC Bank',p:1645,cat:'nifty50'},
@@ -948,7 +758,7 @@ const STOCKS = [
   {sym:'NSE:ITC',name:'ITC Limited',p:428,cat:'nifty50'},
   {sym:'NSE:SBIN',name:'State Bank India',p:789,cat:'nifty50'},
   {sym:'NSE:BHARTIARTL',name:'Bharti Airtel',p:1267,cat:'nifty50'},
-  {sym:'NSE:KOTAKBANK',name:'Kotak Mahindra',p:1756,cat:'nifty50'},
+  {sym:'NSE:KOTAKBANK',name:'Kotak Bank',p:1756,cat:'nifty50'},
   {sym:'NSE:LT',name:'Larsen & Toubro',p:3456,cat:'nifty50'},
   {sym:'NSE:AXISBANK',name:'Axis Bank',p:1089,cat:'nifty50'},
   {sym:'NSE:ASIANPAINT',name:'Asian Paints',p:3234,cat:'nifty50'},
@@ -959,13 +769,13 @@ const STOCKS = [
   {sym:'NSE:TITAN',name:'Titan Company',p:3678,cat:'nifty50'},
   {sym:'NSE:ONGC',name:'ONGC',p:267,cat:'nifty50'},
   {sym:'NSE:NTPC',name:'NTPC Limited',p:356,cat:'nifty50'},
-  {sym:'NSE:POWERGRID',name:'Power Grid Corp',p:298,cat:'nifty50'},
+  {sym:'NSE:POWERGRID',name:'Power Grid',p:298,cat:'nifty50'},
   {sym:'NSE:COALINDIA',name:'Coal India',p:445,cat:'nifty50'},
   {sym:'NSE:ADANIENT',name:'Adani Enterprises',p:2567,cat:'nifty50'},
   {sym:'NSE:TATAMOTORS',name:'Tata Motors',p:956,cat:'nifty50'},
   {sym:'NSE:TATASTEEL',name:'Tata Steel',p:167,cat:'nifty50'},
   {sym:'NSE:SUNPHARMA',name:'Sun Pharma',p:1678,cat:'nifty50'},
-  {sym:'NSE:DRREDDY',name:'Dr Reddys Labs',p:6234,cat:'nifty50'},
+  {sym:'NSE:DRREDDY',name:'Dr Reddys',p:6234,cat:'nifty50'},
   {sym:'NSE:TECHM',name:'Tech Mahindra',p:1234,cat:'nifty50'},
   {sym:'NSE:ULTRACEMCO',name:'UltraTech Cement',p:9876,cat:'nifty50'},
   {sym:'NSE:JSWSTEEL',name:'JSW Steel',p:889,cat:'nifty50'},
@@ -982,41 +792,33 @@ const STOCKS = [
 // STATE
 // ============================================================
 let gU=null,gS=STOCKS[0],gSide='buy',gQSide='buy',gPx={},gAdm={},gCat='all';
-
-STOCKS.forEach(s=>{
-  gPx[s.sym]={price:s.p,change:+(Math.random()*4-2).toFixed(2),high:s.p*1.02,low:s.p*0.98};
-});
+STOCKS.forEach(s=>{gPx[s.sym]={price:s.p,change:+(Math.random()*4-2).toFixed(2),high:s.p*1.02,low:s.p*0.98};});
 
 // ============================================================
 // HELPERS
 // ============================================================
-function fmtINR(n){
-  return '₹'+parseFloat(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
-}
+function fi(n){return '₹'+parseFloat(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
-function showMsg(id,msg,color){
+function setMsg(id,msg,c){
   const el=document.getElementById(id);if(!el)return;
-  const c={green:'#00d084',red:'#ff3b5c',blue:'#2894f9',yellow:'#f0b90b'};
-  el.style.color=c[color]||'#6b7fa3';
+  const cs={green:'rgba(0,208,132,.12)',red:'rgba(255,59,92,.12)',blue:'rgba(40,148,249,.12)',yellow:'rgba(240,185,11,.12)'};
+  const cc={green:'#00d084',red:'#ff3b5c',blue:'#2894f9',yellow:'#f0b90b'};
+  el.style.color=cc[c]||'#6b7fa3';el.style.background=msg?(cs[c]||'none'):'none';
   el.textContent=msg;
-  if(msg&&color==='green'){el.style.background='rgba(0,208,132,.1)';}
-  else if(msg&&color==='red'){el.style.background='rgba(255,59,92,.1)';}
-  else{el.style.background='none';}
 }
 
-function toast(msg,color='green'){
-  const c={green:'#00d084',red:'#ff3b5c',yellow:'#f0b90b',blue:'#2894f9'};
+function toast(msg,c='green'){
+  const cs={green:'#00d084',red:'#ff3b5c',yellow:'#f0b90b',blue:'#2894f9'};
   const ic={green:'check-circle',red:'times-circle',yellow:'exclamation-triangle',blue:'info-circle'};
-  const el=document.createElement('div');
-  el.className='toast';
-  el.style.cssText=`background:${c[color]}18;border:1px solid ${c[color]};color:${c[color]};`;
-  el.innerHTML=`<i class="fas fa-${ic[color]||'info-circle'}"></i>${msg}`;
+  const el=document.createElement('div');el.className='toast';
+  el.style.cssText=`background:${cs[c]}18;border:1px solid ${cs[c]};color:${cs[c]};`;
+  el.innerHTML=`<i class="fas fa-${ic[c]||'info-circle'}"></i>${msg}`;
   document.body.appendChild(el);
-  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .5s';setTimeout(()=>el.remove(),600);},3500);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .5s';setTimeout(()=>el.remove(),500);},3500);
 }
 
 // ============================================================
-// AUTH
+// AUTH SWITCH
 // ============================================================
 function swAuth(tab){
   const isL=tab==='login';
@@ -1024,23 +826,72 @@ function swAuth(tab){
   document.getElementById('f-reg').style.display=isL?'none':'block';
   document.getElementById('tl').classList.toggle('on',isL);
   document.getElementById('tr').classList.toggle('on',!isL);
-  showMsg('l-msg','','');showMsg('r-msg','','');
+  setMsg('l-msg','','');setMsg('r-msg','','');
 }
 
+// ============================================================
+// LOGIN - Fixed with proper query
+// ============================================================
 async function doLogin(){
   const email=document.getElementById('le').value.trim().toLowerCase();
   const pass=document.getElementById('lp').value;
-  if(!email||!pass)return showMsg('l-msg','Please fill all fields','red');
-  showMsg('l-msg','Logging in...','blue');
-  const {data,error}=await sb.from('users').select('*').eq('email',email).eq('password',pass).single();
-  if(error||!data)return showMsg('l-msg','Invalid email or password','red');
-  if(data.is_frozen)return showMsg('l-msg','Account frozen. Contact support.','red');
-  gU=data;
-  sessionStorage.setItem('sx_uid',data.id);
-  showMsg('l-msg','','');
-  launchApp();
+  const btn=document.getElementById('lbtn');
+
+  if(!email)return setMsg('l-msg','Please enter your email address','red');
+  if(!pass)return setMsg('l-msg','Please enter your password','red');
+
+  btn.disabled=true;
+  btn.innerHTML='<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i>Logging in...';
+  setMsg('l-msg','Verifying credentials...','blue');
+
+  try{
+    // Query users table directly
+    const {data,error}=await sb
+      .from('users')
+      .select('*')
+      .eq('email',email)
+      .eq('password',pass)
+      .limit(1);
+
+    if(error){
+      console.error('Login error:',error);
+      setMsg('l-msg','Database error: '+error.message,'red');
+      btn.disabled=false;
+      btn.innerHTML='<i class="fas fa-sign-in-alt" style="margin-right:8px;"></i>Login to SmartEX';
+      return;
+    }
+
+    if(!data||data.length===0){
+      setMsg('l-msg','❌ Invalid email or password','red');
+      btn.disabled=false;
+      btn.innerHTML='<i class="fas fa-sign-in-alt" style="margin-right:8px;"></i>Login to SmartEX';
+      return;
+    }
+
+    const user=data[0];
+    if(user.is_frozen){
+      setMsg('l-msg','⛔ Account frozen. Contact support.','red');
+      btn.disabled=false;
+      btn.innerHTML='<i class="fas fa-sign-in-alt" style="margin-right:8px;"></i>Login to SmartEX';
+      return;
+    }
+
+    gU=user;
+    sessionStorage.setItem('sx_uid',String(user.id));
+    setMsg('l-msg','✅ Login successful!','green');
+    setTimeout(()=>launchApp(),500);
+
+  }catch(err){
+    console.error('Unexpected error:',err);
+    setMsg('l-msg','Error: '+err.message,'red');
+    btn.disabled=false;
+    btn.innerHTML='<i class="fas fa-sign-in-alt" style="margin-right:8px;"></i>Login to SmartEX';
+  }
 }
 
+// ============================================================
+// REGISTER - Fixed
+// ============================================================
 async function doReg(){
   const name=document.getElementById('rn').value.trim();
   const email=document.getElementById('re').value.trim().toLowerCase();
@@ -1050,45 +901,63 @@ async function doReg(){
   const pass=document.getElementById('rps').value;
   const conf=document.getElementById('rpc').value;
   const btn=document.getElementById('rbtn');
-  if(!name||!email||!phone||!aadhaar||!pan||!pass||!conf)return showMsg('r-msg','Please fill all fields','red');
-  if(pass!==conf)return showMsg('r-msg','Passwords do not match','red');
-  if(pass.length<6)return showMsg('r-msg','Password minimum 6 characters','red');
-  if(aadhaar.length!==12||!/^\d+$/.test(aadhaar))return showMsg('r-msg','Aadhaar must be 12 digits','red');
-  if(pan.length!==10)return showMsg('r-msg','Invalid PAN number','red');
+
+  if(!name||!email||!phone||!aadhaar||!pan||!pass||!conf)return setMsg('r-msg','Please fill all fields','red');
+  if(pass!==conf)return setMsg('r-msg','Passwords do not match','red');
+  if(pass.length<6)return setMsg('r-msg','Password minimum 6 characters','red');
+  if(!/^\d{12}$/.test(aadhaar))return setMsg('r-msg','Aadhaar must be exactly 12 digits','red');
+  if(pan.length!==10)return setMsg('r-msg','PAN must be exactly 10 characters','red');
+
   btn.disabled=true;
-  btn.innerHTML='<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i>Creating...';
-  showMsg('r-msg','Please wait...','blue');
+  btn.innerHTML='<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i>Creating Account...';
+  setMsg('r-msg','Please wait...','blue');
+
   try{
-    const {data:ec}=await sb.from('users').select('id').eq('email',email);
-    if(ec&&ec.length>0)throw new Error('Email already registered');
-    const {data:pc}=await sb.from('users').select('id').eq('phone_number',phone);
-    if(pc&&pc.length>0)throw new Error('Phone number already registered');
-    const {data:ac}=await sb.from('users').select('id').eq('aadhaar_number',aadhaar);
-    if(ac&&ac.length>0)throw new Error('Aadhaar already registered');
-    const {error:ie}=await sb.from('users').insert({
+    // Check duplicates
+    const {data:ec}=await sb.from('users').select('id').eq('email',email).limit(1);
+    if(ec&&ec.length>0)throw new Error('Email already registered. Please login.');
+    const {data:pc}=await sb.from('users').select('id').eq('phone_number',phone).limit(1);
+    if(pc&&pc.length>0)throw new Error('Phone number already registered.');
+    const {data:ac}=await sb.from('users').select('id').eq('aadhaar_number',aadhaar).limit(1);
+    if(ac&&ac.length>0)throw new Error('Aadhaar number already registered.');
+
+    // Insert user
+    const {data:ins,error:ie}=await sb.from('users').insert({
       email,password:pass,full_name:name,phone_number:phone,
       aadhaar_number:aadhaar,pan_number:pan,
       balance:0,portfolio_value:0,credit_score:750,
       verified:false,is_frozen:false,is_admin:false,
       kyc_status:'pending',loan_status:'none',loan_amount:0
-    });
+    }).select();
+
     if(ie)throw new Error(ie.message);
-    showMsg('r-msg','✅ Account created! Please login.','green');
+
+    setMsg('r-msg','✅ Account created! Please login now.','green');
     toast('Account created successfully!','green');
     btn.innerHTML='<i class="fas fa-user-plus" style="margin-right:8px;"></i>Create Account';
     btn.disabled=false;
     setTimeout(()=>swAuth('login'),2000);
+
   }catch(e){
-    showMsg('r-msg','❌ '+e.message,'red');
+    setMsg('r-msg','❌ '+e.message,'red');
     btn.innerHTML='<i class="fas fa-user-plus" style="margin-right:8px;"></i>Create Account';
     btn.disabled=false;
   }
 }
 
+// ============================================================
+// LOGOUT
+// ============================================================
 function doLogout(){
   gU=null;sessionStorage.removeItem('sx_uid');
-  document.getElementById('auth-wrap').style.display='flex';
+  document.getElementById('auth-page').style.display='flex';
   document.getElementById('main-app').style.display='none';
+  document.getElementById('le').value='';
+  document.getElementById('lp').value='';
+  const lbtn=document.getElementById('lbtn');
+  lbtn.disabled=false;
+  lbtn.innerHTML='<i class="fas fa-sign-in-alt" style="margin-right:8px;"></i>Login to SmartEX';
+  setMsg('l-msg','','');
   toast('Logged out successfully','green');
 }
 
@@ -1096,8 +965,9 @@ function doLogout(){
 // LAUNCH APP
 // ============================================================
 function launchApp(){
-  document.getElementById('auth-wrap').style.display='none';
+  document.getElementById('auth-page').style.display='none';
   document.getElementById('main-app').style.display='flex';
+  document.getElementById('main-app').style.flexDirection='column';
   initTV();renderSide();renderMkt();
   loadAdm();loadHoldings();loadTx();loadOrders('all');loadNotifs();
   updBals();fillProfile();updTicker();
@@ -1105,24 +975,31 @@ function launchApp(){
   setInterval(updOB,1500);
   setInterval(updRT,3500);
   setInterval(async()=>{
-    const {data}=await sb.from('users').select('*').eq('id',gU.id).single();
-    if(data){if(data.is_frozen){doLogout();return;}gU=data;updBals();}
+    if(!gU)return;
+    const {data}=await sb.from('users').select('*').eq('id',gU.id).limit(1);
+    if(data&&data.length>0){
+      if(data[0].is_frozen){doLogout();toast('Account frozen','red');return;}
+      gU=data[0];updBals();
+    }
   },30000);
   goPage('trade');
 }
 
 // ============================================================
-// BALANCES & PROFILE
+// BALANCE UPDATE
 // ============================================================
 function updBals(){
   if(!gU)return;
-  const f=fmtINR(gU.balance||0);
+  const f=fi(gU.balance||0);
   ['nav-bal','wlt-bal','pf-bal'].forEach(id=>{const e=document.getElementById(id);if(e)e.textContent=f;});
   const pb=document.getElementById('po-bal');if(pb)pb.textContent=f;
   const qb=document.getElementById('qo-bal');if(qb)qb.textContent=f;
   const cs=document.getElementById('pf-cs');if(cs)cs.textContent=gU.credit_score||750;
 }
 
+// ============================================================
+// FILL PROFILE
+// ============================================================
 function fillProfile(){
   if(!gU)return;
   const init=(gU.full_name||'U')[0].toUpperCase();
@@ -1137,14 +1014,13 @@ function fillProfile(){
   document.getElementById('pf-join').textContent=new Date(gU.created_at).toLocaleDateString('en-IN');
   const a=gU.aadhaar_number||'';
   document.getElementById('pf-aad').textContent=a?a.slice(0,4)+'XXXX'+a.slice(8):'-';
-  const vb=document.getElementById('pf-badge');
-  const ks=document.getElementById('kyc-st');
+  const vb=document.getElementById('pf-badge'),ks=document.getElementById('kyc-st');
   if(gU.verified){
-    vb.innerHTML='<span style="background:rgba(0,208,132,.15);color:#00d084;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;"><i class="fas fa-check-circle" style="margin-right:4px;"></i>KYC Verified</span>';
-    ks.innerHTML='<div style="color:#00d084;font-weight:700;"><i class="fas fa-check-circle" style="margin-right:6px;"></i>Account Verified & Active</div>';
+    vb.innerHTML='<span style="background:rgba(0,208,132,.12);color:#00d084;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;"><i class="fas fa-check-circle" style="margin-right:4px;"></i>KYC Verified</span>';
+    ks.innerHTML='<div style="color:#00d084;font-weight:700;"><i class="fas fa-check-circle" style="margin-right:5px;"></i>Account Verified & Active</div>';
   }else{
-    vb.innerHTML='<span style="background:rgba(240,185,11,.15);color:#f0b90b;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700;"><i class="fas fa-clock" style="margin-right:4px;"></i>KYC Pending</span>';
-    ks.innerHTML='<div style="color:#f0b90b;font-weight:700;"><i class="fas fa-clock" style="margin-right:6px;"></i>Pending Verification</div>';
+    vb.innerHTML='<span style="background:rgba(240,185,11,.12);color:#f0b90b;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;"><i class="fas fa-clock" style="margin-right:4px;"></i>KYC Pending</span>';
+    ks.innerHTML='<div style="color:#f0b90b;font-weight:700;"><i class="fas fa-clock" style="margin-right:5px;"></i>Pending Verification</div>';
   }
   if(gU.bank_name)document.getElementById('bk-bn').value=gU.bank_name;
   if(gU.account_holder_name)document.getElementById('bk-ah').value=gU.account_holder_name;
@@ -1152,9 +1028,9 @@ function fillProfile(){
   if(gU.ifsc_code)document.getElementById('bk-if').value=gU.ifsc_code;
   if(gU.upi_id)document.getElementById('bk-up').value=gU.upi_id;
   const wb=document.getElementById('wd-bk-info');
-  if(wb){wb.innerHTML=gU.bank_name
-    ?`<div style="color:#2894f9;font-weight:800;margin-bottom:6px;"><i class="fas fa-university" style="margin-right:6px;"></i>Saved Bank</div><div style="font-size:12px;line-height:2;"><b>${gU.bank_name}</b> · A/c: <b>${gU.account_number||'-'}</b> · UPI: <b>${gU.upi_id||'-'}</b></div>`
-    :'<span style="color:#f0b90b;">⚠️ No bank details saved. Go to Profile to add.</span>';}
+  if(wb)wb.innerHTML=gU.bank_name
+    ?`<div style="color:#2894f9;font-weight:800;margin-bottom:6px;"><i class="fas fa-university" style="margin-right:5px;"></i>Saved Bank</div><div style="font-size:12px;line-height:2;"><b>${gU.bank_name}</b> · A/c: <b>${gU.account_number||'-'}</b> · UPI: <b>${gU.upi_id||'-'}</b></div>`
+    :'<span style="color:#f0b90b;">⚠️ No bank details. Go to Profile to add.</span>';
 }
 
 // ============================================================
@@ -1165,33 +1041,29 @@ function initTV(){
   new TradingView.widget({
     container_id:'tv-chart',symbol:gS.sym,interval:'D',
     timezone:'Asia/Kolkata',theme:'dark',style:'1',locale:'en',
-    toolbar_bg:'#080e1c',enable_publishing:false,
+    toolbar_bg:'#070c18',enable_publishing:false,
     allow_symbol_change:true,save_image:false,autosize:true,
     studies:['RSI@tv-basicstudies','MACD@tv-basicstudies'],
-    withdateranges:true,hide_side_toolbar:false,
+    withdateranges:true,
   });
 }
 
 function pickStock(s){
-  gS=s;
-  const pd=gPx[s.sym],sym=s.sym.split(':')[1];
+  gS=s;const pd=gPx[s.sym],sym=s.sym.split(':')[1];
   document.getElementById('h-sym').textContent=sym;
-  document.getElementById('h-price').textContent=fmtINR(pd.price);
+  document.getElementById('h-price').textContent=fi(pd.price);
   const chg=parseFloat(pd.change);
-  document.getElementById('h-chg').innerHTML=chg>=0
-    ?`<span class="green">+${chg}% ▲</span>`
-    :`<span class="red">${chg}% ▼</span>`;
-  document.getElementById('h-hi').textContent=fmtINR(pd.high);
-  document.getElementById('h-lo').textContent=fmtINR(pd.low);
+  document.getElementById('h-chg').innerHTML=chg>=0?`<span class="green">+${chg}% ▲</span>`:`<span class="red">${chg}% ▼</span>`;
+  document.getElementById('h-hi').textContent=fi(pd.high);
+  document.getElementById('h-lo').textContent=fi(pd.low);
   document.getElementById('h-vol').textContent=(Math.random()*100+5).toFixed(1)+'M';
-  document.getElementById('ob-p').textContent=fmtINR(pd.price);
+  document.getElementById('ob-p').textContent=fi(pd.price);
   document.getElementById('po-pr').value=pd.price.toFixed(2);
   document.getElementById('po-btn').textContent=`${gSide.toUpperCase()} ${sym}`;
   document.getElementById('qo-sym').textContent=sym;
-  document.getElementById('qo-pr').textContent=fmtINR(pd.price);
+  document.getElementById('qo-pr').textContent=fi(pd.price);
   updOB();goPage('trade');
-  // highlight active stock
-  document.querySelectorAll('.sstock').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('.sstock').forEach(e=>e.classList.remove('active-s'));
 }
 
 // ============================================================
@@ -1203,11 +1075,8 @@ function renderSide(){
   document.getElementById('side-list').innerHTML=list.map(s=>{
     const pd=gPx[s.sym],chg=parseFloat(pd?.change||0);
     return `<div class="sstock" onclick='pickStock(${JSON.stringify(s)})'>
-      <div><div class="sstock-sym">${s.sym.split(':')[1]}</div><div class="sstock-name">${s.name.slice(0,14)}</div></div>
-      <div>
-        <div class="sstock-price">₹${(pd?.price||s.p).toLocaleString('en-IN',{maximumFractionDigits:0})}</div>
-        <div class="sstock-chg" style="color:${chg>=0?'#00d084':'#ff3b5c'}">${chg>=0?'+':''}${chg}%</div>
-      </div>
+      <div><div style="font-size:11px;font-weight:700;">${s.sym.split(':')[1]}</div><div style="font-size:9px;color:#6b7fa3;margin-top:1px;">${s.name.slice(0,14)}</div></div>
+      <div style="text-align:right;"><div style="font-size:11px;font-weight:700;">₹${(pd?.price||s.p).toLocaleString('en-IN',{maximumFractionDigits:0})}</div><div style="font-size:9px;color:${chg>=0?'#00d084':'#ff3b5c'}">${chg>=0?'+':''}${chg}%</div></div>
     </div>`;
   }).join('');
 }
@@ -1225,11 +1094,11 @@ function renderMkt(q=''){
   const list=q?STOCKS.filter(s=>s.name.toLowerCase().includes(q.toLowerCase())||s.sym.toLowerCase().includes(q.toLowerCase())):STOCKS;
   document.getElementById('mkt-body').innerHTML=list.map(s=>{
     const pd=gPx[s.sym],chg=parseFloat(pd?.change||0);
-    return `<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:11px 16px;border-bottom:1px solid rgba(30,45,71,.5);cursor:pointer;transition:.15s;" onmouseover="this.style.background='#1a2236'" onmouseout="this.style.background=''" onclick='pickStock(${JSON.stringify(s)})'>
-      <div><div style="font-weight:700;font-size:13px;">${s.sym.split(':')[1]}</div><div style="font-size:11px;color:#6b7fa3;">${s.name}</div></div>
-      <div style="text-align:right;font-weight:700;font-size:13px;">${fmtINR(pd?.price||s.p)}</div>
-      <div style="text-align:right;font-weight:700;font-size:13px;color:${chg>=0?'#00d084':'#ff3b5c'}">${chg>=0?'+':''}${chg}%</div>
-      <div style="text-align:right;color:#6b7fa3;font-size:12px;">${(Math.random()*100+5).toFixed(1)}M</div>
+    return `<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:11px 16px;border-bottom:1px solid rgba(30,45,71,.4);cursor:pointer;font-size:13px;transition:.15s;" onmouseover="this.style.background='#1a2236'" onmouseout="this.style.background=''" onclick='pickStock(${JSON.stringify(s)})'>
+      <div><div style="font-weight:700;">${s.sym.split(':')[1]}</div><div style="font-size:11px;color:#6b7fa3;">${s.name}</div></div>
+      <div style="text-align:right;font-weight:700;">${fi(pd?.price||s.p)}</div>
+      <div style="text-align:right;font-weight:700;color:${chg>=0?'#00d084':'#ff3b5c'}">${chg>=0?'+':''}${chg}%</div>
+      <div style="text-align:right;color:#6b7fa3;">${(Math.random()*100+5).toFixed(1)}M</div>
     </div>`;
   }).join('');
 }
@@ -1243,21 +1112,15 @@ function updOB(){
   let sh='',bh='';
   for(let i=10;i>0;i--){
     const p=(bp+i*bp*.0003).toFixed(2),q=Math.floor(Math.random()*500+50),t=(p*q/1000).toFixed(1),pct=Math.random()*70+10;
-    sh+=`<div class="ob-row" style="color:#ff3b5c;">
-      <div class="ob-bar" style="right:0;width:${pct}%;background:#ff3b5c;"></div>
-      <span style="position:relative;z-index:1;">${p}</span><span style="text-align:center;position:relative;z-index:1;">${q}</span><span style="text-align:right;position:relative;z-index:1;">${t}K</span>
-    </div>`;
+    sh+=`<div class="ob-row" style="color:#ff3b5c;"><div class="ob-bar" style="right:0;width:${pct}%;background:#ff3b5c;"></div><span style="position:relative;z-index:1;">${p}</span><span style="text-align:center;position:relative;z-index:1;">${q}</span><span style="text-align:right;position:relative;z-index:1;">${t}K</span></div>`;
   }
   for(let i=1;i<=10;i++){
     const p=(bp-i*bp*.0003).toFixed(2),q=Math.floor(Math.random()*500+50),t=(p*q/1000).toFixed(1),pct=Math.random()*70+10;
-    bh+=`<div class="ob-row" style="color:#00d084;">
-      <div class="ob-bar" style="left:0;width:${pct}%;background:#00d084;"></div>
-      <span style="position:relative;z-index:1;">${p}</span><span style="text-align:center;position:relative;z-index:1;">${q}</span><span style="text-align:right;position:relative;z-index:1;">${t}K</span>
-    </div>`;
+    bh+=`<div class="ob-row" style="color:#00d084;"><div class="ob-bar" style="left:0;width:${pct}%;background:#00d084;"></div><span style="position:relative;z-index:1;">${p}</span><span style="text-align:center;position:relative;z-index:1;">${q}</span><span style="text-align:right;position:relative;z-index:1;">${t}K</span></div>`;
   }
   document.getElementById('ob-s').innerHTML=sh;
   document.getElementById('ob-b').innerHTML=bh;
-  document.getElementById('ob-p').textContent=fmtINR(gPx[gS.sym]?.price||gS.p);
+  document.getElementById('ob-p').textContent=fi(gPx[gS.sym]?.price||gS.p);
 }
 
 function updRT(){
@@ -1265,19 +1128,20 @@ function updRT(){
   let h='';
   for(let i=0;i<20;i++){
     const ib=Math.random()>.5,p=(bp*(1+(Math.random()*.002-.001))).toFixed(2),sz=Math.floor(Math.random()*200+1),sec=String(Math.floor(Math.random()*60)).padStart(2,'0');
-    h+=`<div class="rt-row" style="color:${ib?'#00d084':'#ff3b5c'}"><span>${p}</span><span style="text-align:center;">${sz}</span><span style="text-align:right;">${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}:${sec}</span></div>`;
+    h+=`<div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:3px 8px;font-size:11px;color:${ib?'#00d084':'#ff3b5c'}"><span>${p}</span><span style="text-align:center;">${sz}</span><span style="text-align:right;">${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}:${sec}</span></div>`;
   }
   document.getElementById('rt-list').innerHTML=h;
 }
 
 function rTab(tab){
+  document.getElementById('r-ob').style.display=tab==='ob'?'flex':'none';
+  document.getElementById('r-po').style.display=tab==='po'?'flex':'none';
+  document.getElementById('r-rt').style.display=tab==='rt'?'block':'none';
   ['ob','po','rt'].forEach(t=>{
-    const el=document.getElementById('r-'+t);
-    if(el)el.style.display=t===tab?'flex':'none';
-    if(t==='rt'&&t===tab&&el)el.style.display='block';
     const btn=document.getElementById('rt-'+t);
     if(btn)btn.classList.toggle('on',t===tab);
   });
+  if(tab==='po'){document.getElementById('r-po').style.flexDirection='column';}
 }
 
 // ============================================================
@@ -1291,8 +1155,8 @@ function simPx(){
   });
   renderSide();
   const pd=gPx[gS.sym];
-  document.getElementById('h-price').textContent=fmtINR(pd.price);
-  document.getElementById('ob-p').textContent=fmtINR(pd.price);
+  document.getElementById('h-price').textContent=fi(pd.price);
+  document.getElementById('ob-p').textContent=fi(pd.price);
   document.getElementById('po-pr').value=pd.price.toFixed(2);
   updTicker();
 }
@@ -1300,12 +1164,12 @@ function simPx(){
 function updTicker(){
   document.getElementById('ticker').innerHTML=STOCKS.slice(0,20).map(s=>{
     const pd=gPx[s.sym],chg=parseFloat(pd.change);
-    return `<span style="margin:0 20px;"><b style="color:${chg>=0?'#00d084':'#ff3b5c'}">${s.sym.split(':')[1]}</b> ${fmtINR(pd.price)} <span style="color:${chg>=0?'#00d084':'#ff3b5c'}">${chg>=0?'+':''}${chg}%</span></span>`;
+    return `<span style="margin:0 20px;"><b style="color:${chg>=0?'#00d084':'#ff3b5c'}">${s.sym.split(':')[1]}</b> ${fi(pd.price)} <span style="color:${chg>=0?'#00d084':'#ff3b5c'}">${chg>=0?'+':''}${chg}%</span></span>`;
   }).join('');
 }
 
 // ============================================================
-// ORDER PLACEMENT
+// ORDER FUNCTIONS
 // ============================================================
 function poSide(s){
   gSide=s;
@@ -1319,8 +1183,8 @@ function poSide(s){
 
 function calcPO(){
   const q=parseFloat(document.getElementById('po-q').value)||0,p=parseFloat(document.getElementById('po-pr').value)||gPx[gS.sym]?.price||0,t=q*p,f=t*.001;
-  document.getElementById('po-tot').textContent=fmtINR(t);
-  document.getElementById('po-fee').textContent=fmtINR(f);
+  document.getElementById('po-tot').textContent=fi(t);
+  document.getElementById('po-fee').textContent=fi(f);
 }
 
 function poPct(pct){
@@ -1343,57 +1207,55 @@ async function doPlaceOrder(){
 
 async function execOrder(side,qty,price,total,fee,ptype){
   toast('Processing order...','blue');
-  const {error:oErr}=await sb.from('orders').insert({
+  const {error:oE}=await sb.from('orders').insert({
     user_id:gU.id,stock_symbol:gS.sym,stock_name:gS.name,
-    order_type:side,price_type:ptype||'market',quantity:qty,price:price,
-    total_amount:+(total+(side==='buy'?fee:-fee)).toFixed(2),status:'completed'
+    order_type:side,price_type:ptype||'market',quantity:qty,
+    price:price,total_amount:+(total+(side==='buy'?fee:-fee)).toFixed(2),status:'completed'
   });
-  if(oErr)return toast('Order failed: '+oErr.message,'red');
+  if(oE)return toast('Order failed: '+oE.message,'red');
   const newBal=side==='buy'?parseFloat(gU.balance)-(total+fee):parseFloat(gU.balance)+total-fee;
   await sb.from('users').update({balance:+newBal.toFixed(2)}).eq('id',gU.id);
   if(side==='buy'){
-    const {data:ex}=await sb.from('holdings').select('*').eq('user_id',gU.id).eq('stock_symbol',gS.sym).single();
-    if(ex){
-      const nq=parseFloat(ex.quantity)+qty,na=((parseFloat(ex.avg_price)*parseFloat(ex.quantity))+(price*qty))/nq;
-      await sb.from('holdings').update({quantity:+nq.toFixed(4),avg_price:+na.toFixed(2),total_invested:+(nq*na).toFixed(2)}).eq('id',ex.id);
+    const {data:ex}=await sb.from('holdings').select('*').eq('user_id',gU.id).eq('stock_symbol',gS.sym).limit(1);
+    if(ex&&ex.length>0){
+      const e=ex[0],nq=parseFloat(e.quantity)+qty,na=((parseFloat(e.avg_price)*parseFloat(e.quantity))+(price*qty))/nq;
+      await sb.from('holdings').update({quantity:+nq.toFixed(4),avg_price:+na.toFixed(2),total_invested:+(nq*na).toFixed(2)}).eq('id',e.id);
     }else{
       await sb.from('holdings').insert({user_id:gU.id,stock_symbol:gS.sym,stock_name:gS.name,quantity:qty,avg_price:+price.toFixed(2),total_invested:+total.toFixed(2)});
     }
   }else{
-    const {data:h}=await sb.from('holdings').select('*').eq('user_id',gU.id).eq('stock_symbol',gS.sym).single();
-    if(!h||parseFloat(h.quantity)<qty)return toast('Insufficient shares','red');
-    const nq=parseFloat(h.quantity)-qty;
+    const {data:hs}=await sb.from('holdings').select('*').eq('user_id',gU.id).eq('stock_symbol',gS.sym).limit(1);
+    if(!hs||hs.length===0||parseFloat(hs[0].quantity)<qty)return toast('Insufficient shares','red');
+    const h=hs[0],nq=parseFloat(h.quantity)-qty;
     if(nq<=.0001)await sb.from('holdings').delete().eq('id',h.id);
     else await sb.from('holdings').update({quantity:+nq.toFixed(4)}).eq('id',h.id);
   }
   gU.balance=+newBal.toFixed(2);updBals();
-  toast(`${side.toUpperCase()} ${qty} shares of ${gS.sym.split(':')[1]} executed!`,'green');
+  toast(`${side.toUpperCase()} ${qty} shares of ${gS.sym.split(':')[1]} done!`,'green');
   loadHoldings();loadOrders('all');
 }
 
-// ============================================================
-// QUICK ORDER
-// ============================================================
+// Quick order
 function opnQO(side){
   gQSide=side;const sym=gS.sym.split(':')[1];
   document.getElementById('qo-ttl').textContent=`${side.toUpperCase()} ${sym}`;
   document.getElementById('qo-sym').textContent=sym;
-  document.getElementById('qo-pr').textContent=fmtINR(gPx[gS.sym]?.price||gS.p);
-  document.getElementById('qo-bal').textContent=fmtINR(gU?.balance||0);
+  document.getElementById('qo-pr').textContent=fi(gPx[gS.sym]?.price||gS.p);
+  document.getElementById('qo-bal').textContent=fi(gU?.balance||0);
   const btn=document.getElementById('qo-btn');
   btn.style.background=side==='buy'?'linear-gradient(135deg,#00d084,#00b371)':'linear-gradient(135deg,#ff3b5c,#d42e4e)';
   btn.style.color=side==='buy'?'#000':'#fff';
   btn.textContent=`CONFIRM ${side.toUpperCase()}`;
   document.getElementById('qo-q').value='';
-  document.getElementById('qo-tot').textContent=fmtINR(0);
-  document.getElementById('qo-fee').textContent=fmtINR(0);
+  document.getElementById('qo-tot').textContent=fi(0);
+  document.getElementById('qo-fee').textContent=fi(0);
   opnMod('m-qo');
 }
 
 function calcQO(){
   const q=parseFloat(document.getElementById('qo-q').value)||0,p=gPx[gS.sym]?.price||gS.p,t=q*p,f=t*.001;
-  document.getElementById('qo-tot').textContent=fmtINR(t);
-  document.getElementById('qo-fee').textContent=fmtINR(f);
+  document.getElementById('qo-tot').textContent=fi(t);
+  document.getElementById('qo-fee').textContent=fi(f);
 }
 
 async function subQO(){
@@ -1408,39 +1270,36 @@ async function subQO(){
 }
 
 // ============================================================
-// HOLDINGS
+// DATA LOADERS
 // ============================================================
 async function loadHoldings(){
   if(!gU)return;
   const {data}=await sb.from('holdings').select('*').eq('user_id',gU.id);
   const body=document.getElementById('hold-body'),asEl=document.getElementById('asset-sum');
   if(!data||!data.length){
-    body.innerHTML='<div style="padding:40px;text-align:center;color:#6b7fa3;"><i class="fas fa-chart-pie" style="font-size:2rem;display:block;margin-bottom:10px;color:#1e2d47;"></i>No holdings yet. Start trading!</div>';
+    body.innerHTML='<div style="padding:40px;text-align:center;color:#6b7fa3;"><i class="fas fa-chart-pie" style="font-size:2rem;display:block;margin-bottom:10px;"></i>No holdings yet. Start trading!</div>';
     asEl.innerHTML='<div style="color:#6b7fa3;font-size:13px;">No stock holdings yet</div>';
-    document.getElementById('pf-pv').textContent=fmtINR(0);
-    document.getElementById('pf-pnl').innerHTML=fmtINR(0);
+    document.getElementById('pf-pv').textContent=fi(0);
+    document.getElementById('pf-pnl').innerHTML=fi(0);
     return;
   }
   let tPnL=0,tVal=0;
   body.innerHTML=data.map(h=>{
-    const cur=gPx[h.stock_symbol]?.price||parseFloat(h.avg_price),pnl=(cur-parseFloat(h.avg_price))*parseFloat(h.quantity),pnlP=((cur-parseFloat(h.avg_price))/parseFloat(h.avg_price)*100).toFixed(2);
+    const cur=gPx[h.stock_symbol]?.price||parseFloat(h.avg_price),pnl=(cur-parseFloat(h.avg_price))*parseFloat(h.quantity),pp=((cur-parseFloat(h.avg_price))/parseFloat(h.avg_price)*100).toFixed(2);
     tPnL+=pnl;tVal+=cur*parseFloat(h.quantity);
-    return `<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;padding:11px 16px;border-bottom:1px solid rgba(30,45,71,.5);font-size:13px;cursor:pointer;transition:.15s;" onmouseover="this.style.background='#1a2236'" onmouseout="this.style.background=''">
+    return `<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;padding:11px 16px;border-bottom:1px solid rgba(30,45,71,.4);font-size:13px;cursor:pointer;transition:.15s;" onmouseover="this.style.background='#1a2236'" onmouseout="this.style.background=''">
       <div><div style="font-weight:700;">${h.stock_symbol.split(':')[1]}</div><div style="font-size:11px;color:#6b7fa3;">${h.stock_name||''}</div></div>
       <div style="text-align:right;">${parseFloat(h.quantity).toFixed(2)}</div>
-      <div style="text-align:right;">${fmtINR(h.avg_price)}</div>
-      <div style="text-align:right;">${fmtINR(cur)}</div>
-      <div style="text-align:right;font-weight:700;color:${pnl>=0?'#00d084':'#ff3b5c'}">${pnl>=0?'+':''}${fmtINR(Math.abs(pnl))}<br><span style="font-size:10px;">${pnlP}%</span></div>
+      <div style="text-align:right;">${fi(h.avg_price)}</div>
+      <div style="text-align:right;">${fi(cur)}</div>
+      <div style="text-align:right;font-weight:700;color:${pnl>=0?'#00d084':'#ff3b5c'}">${pnl>=0?'+':''}${fi(Math.abs(pnl))}<br><span style="font-size:10px;">${pp}%</span></div>
     </div>`;
   }).join('');
-  document.getElementById('pf-pv').textContent=fmtINR(tVal);
-  document.getElementById('pf-pnl').innerHTML=`<span style="color:${tPnL>=0?'#00d084':'#ff3b5c'}">${tPnL>=0?'+':''}${fmtINR(Math.abs(tPnL))}</span>`;
-  asEl.innerHTML=`<div style="margin-bottom:12px;"><div style="font-size:11px;color:#6b7fa3;margin-bottom:3px;">Cash Balance</div><div style="font-size:1.4rem;font-weight:900;color:#f0b90b;">${fmtINR(gU?.balance||0)}</div></div><div>${data.slice(0,5).map(h=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(30,45,71,.5);font-size:13px;"><span>${h.stock_symbol.split(':')[1]}</span><span style="font-weight:700;">${parseFloat(h.quantity).toFixed(2)} shares</span></div>`).join('')}</div>`;
+  document.getElementById('pf-pv').textContent=fi(tVal);
+  document.getElementById('pf-pnl').innerHTML=`<span style="color:${tPnL>=0?'#00d084':'#ff3b5c'}">${tPnL>=0?'+':''}${fi(Math.abs(tPnL))}</span>`;
+  asEl.innerHTML=`<div style="margin-bottom:12px;"><div style="font-size:11px;color:#6b7fa3;margin-bottom:3px;">Cash Balance</div><div style="font-size:1.4rem;font-weight:900;color:#f0b90b;">${fi(gU?.balance||0)}</div></div><div>${data.slice(0,5).map(h=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid rgba(30,45,71,.4);font-size:13px;"><span>${h.stock_symbol.split(':')[1]}</span><span style="font-weight:700;">${parseFloat(h.quantity).toFixed(2)} shares</span></div>`).join('')}</div>`;
 }
 
-// ============================================================
-// TRANSACTIONS
-// ============================================================
 async function loadTx(){
   if(!gU)return;
   const {data}=await sb.from('transactions').select('*').eq('user_id',gU.id).order('created_at',{ascending:false}).limit(30);
@@ -1449,22 +1308,12 @@ async function loadTx(){
   const sc={completed:'#00d084',rejected:'#ff3b5c',pending:'#f0b90b',processing:'#2894f9'};
   const tc={deposit:'#00d084',withdrawal:'#ff3b5c',buy:'#2894f9',sell:'#a855f7'};
   body.innerHTML=data.map(t=>`
-    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid rgba(30,45,71,.5);">
-      <div>
-        <div style="font-weight:700;color:${tc[t.type]||'#e8edf5'};font-size:13px;">${(t.type||'').toUpperCase()}</div>
-        <div style="font-size:11px;color:#6b7fa3;">${new Date(t.created_at).toLocaleString('en-IN')}</div>
-        ${t.reference_id?`<div style="font-size:10px;color:#374151;">Ref: ${t.reference_id}</div>`:''}
-      </div>
-      <div style="text-align:right;">
-        <div style="font-weight:700;font-size:14px;">${fmtINR(t.amount)}</div>
-        <span style="font-size:10px;padding:2px 8px;border-radius:100px;background:${(sc[t.status]||'#6b7fa3')}20;color:${sc[t.status]||'#6b7fa3'};font-weight:700;">${t.status}</span>
-      </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid rgba(30,45,71,.4);">
+      <div><div style="font-weight:700;color:${tc[t.type]||'#e8edf5'};font-size:13px;">${(t.type||'').toUpperCase()}</div><div style="font-size:11px;color:#6b7fa3;">${new Date(t.created_at).toLocaleString('en-IN')}</div>${t.reference_id?`<div style="font-size:10px;color:#374151;">Ref: ${t.reference_id}</div>`:''}</div>
+      <div style="text-align:right;"><div style="font-weight:700;font-size:13px;">${fi(t.amount)}</div><span style="font-size:10px;padding:2px 8px;border-radius:100px;background:${(sc[t.status]||'#6b7fa3')}20;color:${sc[t.status]||'#6b7fa3'};font-weight:700;">${t.status}</span></div>
     </div>`).join('');
 }
 
-// ============================================================
-// ORDERS
-// ============================================================
 async function loadOrders(filter='all'){
   if(!gU)return;
   let q=sb.from('orders').select('*').eq('user_id',gU.id).order('created_at',{ascending:false}).limit(50);
@@ -1473,40 +1322,31 @@ async function loadOrders(filter='all'){
   const body=document.getElementById('ord-body');
   if(!data||!data.length){body.innerHTML='<div style="padding:40px;text-align:center;color:#6b7fa3;">No orders found</div>';return;}
   body.innerHTML=data.map(o=>`
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;padding:10px 16px;border-bottom:1px solid rgba(30,45,71,.5);font-size:12px;transition:.15s;" onmouseover="this.style.background='#1a2236'" onmouseout="this.style.background=''">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;padding:10px 16px;border-bottom:1px solid rgba(30,45,71,.4);font-size:12px;transition:.15s;" onmouseover="this.style.background='#1a2236'" onmouseout="this.style.background=''">
       <span style="font-weight:700;">${(o.stock_symbol||'').split(':')[1]}</span>
       <span style="color:${o.order_type==='buy'?'#00d084':'#ff3b5c'};font-weight:700;">${(o.order_type||'').toUpperCase()}</span>
       <span style="text-align:right;">${parseFloat(o.quantity||0).toFixed(2)}</span>
-      <span style="text-align:right;">${fmtINR(o.price)}</span>
-      <span style="text-align:right;">${fmtINR(o.total_amount)}</span>
+      <span style="text-align:right;">${fi(o.price)}</span>
+      <span style="text-align:right;">${fi(o.total_amount)}</span>
       <span style="text-align:right;font-weight:700;color:${o.status==='completed'?'#00d084':o.status==='pending'?'#f0b90b':'#ff3b5c'}">${o.status}</span>
     </div>`).join('');
 }
 
-function setOrdTab(btn){
-  document.querySelectorAll('#pg-orders .rp-tab').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-}
+function setOT(btn){document.querySelectorAll('#pg-orders .rp-tab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
 
-// ============================================================
-// ADMIN SETTINGS
-// ============================================================
 async function loadAdm(){
-  const {data}=await sb.from('admin_settings').select('*').eq('id',1).single();
-  if(data){
-    gAdm=data;
-    document.getElementById('d-upi').textContent=data.upi_id||'-';
-    document.getElementById('d-ph').textContent=data.phonepay_number||'-';
-    document.getElementById('d-bk').textContent=data.bank_name||'-';
-    document.getElementById('d-ac').textContent=data.account_number||'-';
-    document.getElementById('d-if').textContent=data.ifsc_code||'-';
-    document.getElementById('d-hn').textContent=data.account_holder||'-';
+  const {data}=await sb.from('admin_settings').select('*').eq('id',1).limit(1);
+  if(data&&data.length>0){
+    gAdm=data[0];
+    document.getElementById('d-upi').textContent=data[0].upi_id||'-';
+    document.getElementById('d-ph').textContent=data[0].phonepay_number||'-';
+    document.getElementById('d-bk').textContent=data[0].bank_name||'-';
+    document.getElementById('d-ac').textContent=data[0].account_number||'-';
+    document.getElementById('d-if').textContent=data[0].ifsc_code||'-';
+    document.getElementById('d-hn').textContent=data[0].account_holder||'-';
   }
 }
 
-// ============================================================
-// DEPOSIT / WITHDRAWAL
-// ============================================================
 async function doDeposit(){
   const amt=parseFloat(document.getElementById('d-amt').value),ref=document.getElementById('d-ref').value.trim();
   if(!amt||amt<100)return toast('Minimum deposit ₹100','red');
@@ -1554,9 +1394,6 @@ async function doKYC(){
   clsMod('m-kyc');toast('KYC submitted! Verified within 24 hours.','green');fillProfile();
 }
 
-// ============================================================
-// NOTIFICATIONS
-// ============================================================
 async function loadNotifs(){
   if(!gU)return;
   const {data}=await sb.from('notifications').select('*').eq('user_id',gU.id).order('created_at',{ascending:false});
@@ -1565,13 +1402,9 @@ async function loadNotifs(){
   const body=document.getElementById('notif-body');
   if(!data||!data.length){body.innerHTML='<div style="padding:40px;text-align:center;color:#6b7fa3;"><i class="fas fa-bell-slash" style="font-size:2rem;display:block;margin-bottom:10px;"></i>No notifications</div>';return;}
   body.innerHTML=data.map(n=>`
-    <div style="display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid rgba(30,45,71,.5);opacity:${n.is_read?.6:1};">
-      <div style="width:8px;height:8px;border-radius:50%;background:${n.is_read?'#1e2d47':'#f0b90b'};margin-top:5px;flex-shrink:0;"></div>
-      <div>
-        <div style="font-weight:700;font-size:13px;">${n.title}</div>
-        <div style="color:#6b7fa3;font-size:12px;margin-top:2px;">${n.message}</div>
-        <div style="color:#374151;font-size:11px;margin-top:4px;">${new Date(n.created_at).toLocaleString('en-IN')}</div>
-      </div>
+    <div style="display:flex;gap:11px;padding:13px 16px;border-bottom:1px solid rgba(30,45,71,.4);opacity:${n.is_read?.55:1};">
+      <div style="width:7px;height:7px;border-radius:50%;background:${n.is_read?'#1e2d47':'#f0b90b'};margin-top:5px;flex-shrink:0;"></div>
+      <div><div style="font-weight:700;font-size:13px;">${n.title}</div><div style="color:#6b7fa3;font-size:12px;margin-top:2px;">${n.message}</div><div style="color:#374151;font-size:11px;margin-top:3px;">${new Date(n.created_at).toLocaleString('en-IN')}</div></div>
     </div>`).join('');
   if(unread>0)await sb.from('notifications').update({is_read:true}).eq('user_id',gU.id).eq('is_read',false);
 }
@@ -1581,48 +1414,38 @@ async function loadNotifs(){
 // ============================================================
 function goPage(pg){
   const pages=['markets','portfolio','wallet','orders','profile','notif'];
-  // Hide trade
   const trade=document.getElementById('pg-trade');
   if(trade)trade.style.display=pg==='trade'?'flex':'none';
-  // Hide/show other pages
-  pages.forEach(p=>{
-    const el=document.getElementById('pg-'+p);
-    if(el){el.classList.remove('on');el.style.display='none';}
-  });
-  if(pg!=='trade'){
-    const target=document.getElementById('pg-'+pg);
-    if(target){target.classList.add('on');target.style.display='flex';}
-  }
+  pages.forEach(p=>{const el=document.getElementById('pg-'+p);if(el){el.classList.remove('on');el.style.display='none';}});
+  if(pg!=='trade'){const t=document.getElementById('pg-'+pg);if(t){t.classList.add('on');t.style.display='flex';}}
   if(pg==='portfolio')loadHoldings();
   if(pg==='wallet'){loadTx();loadAdm();}
   if(pg==='orders')loadOrders('all');
   if(pg==='notif')loadNotifs();
   if(pg==='profile')fillProfile();
   if(pg==='markets')renderMkt();
-  // Nav highlight
-  document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('on'));
 }
 
 // ============================================================
 // MODALS
 // ============================================================
-function opnMod(id){
-  document.getElementById(id).classList.add('on');
-  if(id==='m-dep')loadAdm();
-  if(id==='m-wd')fillProfile();
-}
+function opnMod(id){document.getElementById(id).classList.add('on');if(id==='m-dep')loadAdm();if(id==='m-wd')fillProfile();}
 function clsMod(id){document.getElementById(id).classList.remove('on');}
 document.addEventListener('click',e=>{if(e.target.classList.contains('modal'))e.target.classList.remove('on');});
 
 // ============================================================
-// AUTO SESSION
+// AUTO SESSION RESTORE
 // ============================================================
 window.addEventListener('load',async()=>{
   const sid=sessionStorage.getItem('sx_uid');
   if(sid){
-    const {data}=await sb.from('users').select('*').eq('id',parseInt(sid)).single();
-    if(data&&!data.is_frozen){gU=data;launchApp();}
-    else sessionStorage.removeItem('sx_uid');
+    try{
+      const {data}=await sb.from('users').select('*').eq('id',parseInt(sid)).limit(1);
+      if(data&&data.length>0&&!data[0].is_frozen){
+        gU=data[0];launchApp();return;
+      }
+    }catch(e){console.log('Session restore failed:',e);}
+    sessionStorage.removeItem('sx_uid');
   }
 });
 </script>
