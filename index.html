@@ -9,477 +9,410 @@
 <script src="https://s3.tradingview.com/tv.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-  :root {
-    --bg-primary: #0b0e11;
-    --bg-secondary: #1e2329;
-    --bg-card: #161a1e;
-    --border: #2b3139;
-    --text-primary: #eaecef;
-    --text-secondary: #848e9c;
-    --green: #0ecb81;
-    --red: #f6465d;
-    --yellow: #f0b90b;
-    --blue: #1890ff;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: var(--bg-primary); color: var(--text-primary); font-family: 'Inter', sans-serif; overflow-x: hidden; }
-  ::-webkit-scrollbar { width: 4px; } 
-  ::-webkit-scrollbar-track { background: var(--bg-primary); }
-  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-  .card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; }
-  .btn-green { background: var(--green); color: #000; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s; }
-  .btn-green:hover { background: #0ab56e; }
-  .btn-red { background: var(--red); color: #fff; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s; }
-  .btn-red:hover { background: #d93a50; }
-  .btn-yellow { background: var(--yellow); color: #000; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s; }
-  input, select { background: #2b3139; border: 1px solid #363c45; color: #eaecef; border-radius: 4px; padding: 8px 12px; outline: none; width: 100%; }
-  input:focus, select:focus { border-color: var(--yellow); }
-  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; }
-  .modal.active { display: flex; }
-  .tab-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 8px 16px; border-bottom: 2px solid transparent; font-weight: 600; }
-  .tab-btn.active { color: var(--yellow); border-bottom-color: var(--yellow); }
-  .green { color: var(--green); }
-  .red { color: var(--red); }
-  .yellow { color: var(--yellow); }
-  .blink { animation: blink 1s infinite; }
-  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
-  .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s; color: var(--text-secondary); }
-  .sidebar-item:hover, .sidebar-item.active { background: rgba(240,185,11,0.1); color: var(--yellow); }
-  .price-up { animation: priceUp 0.5s; }
-  .price-down { animation: priceDown 0.5s; }
-  @keyframes priceUp { from { background: rgba(14,203,129,0.3); } to { background: transparent; } }
-  @keyframes priceDown { from { background: rgba(246,70,93,0.3); } to { background: transparent; } }
-  .ticker-wrapper { overflow: hidden; white-space: nowrap; background: #161a1e; border-bottom: 1px solid var(--border); }
-  .ticker-content { display: inline-block; animation: ticker 30s linear infinite; }
-  @keyframes ticker { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
-  .glass { background: rgba(30,35,41,0.95); backdrop-filter: blur(10px); }
-  .nav-link { color: var(--text-secondary); cursor: pointer; padding: 4px 8px; border-radius: 4px; transition: all 0.2s; font-size: 14px; }
-  .nav-link:hover { color: var(--text-primary); }
-  .badge { background: var(--red); color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; position: absolute; top: -4px; right: -4px; }
-  .order-book-row { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 2px 8px; font-size: 12px; cursor: pointer; }
-  .order-book-row:hover { background: rgba(255,255,255,0.05); }
-  .depth-bar { position: absolute; top: 0; bottom: 0; opacity: 0.15; }
-  .chart-tab { padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
-  .chart-tab.active { background: var(--yellow); color: #000; }
-  .stock-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 10px 16px; border-bottom: 1px solid var(--border); cursor: pointer; font-size: 13px; transition: all 0.2s; }
-  .stock-row:hover { background: rgba(255,255,255,0.03); }
-  .toast { position: fixed; top: 80px; right: 20px; z-index: 99999; padding: 12px 20px; border-radius: 8px; font-weight: 600; animation: slideIn 0.3s ease; }
-  @keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-  #auth-page { background: linear-gradient(135deg, #0b0e11 0%, #1a1f2e 50%, #0b0e11 100%); }
+:root {
+  --bg-primary:#0b0e11;--bg-secondary:#1e2329;
+  --border:#2b3139;--green:#0ecb81;--red:#f6465d;--yellow:#f0b90b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg-primary);color:#eaecef;font-family:'Segoe UI',sans-serif;}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:#0b0e11;}
+::-webkit-scrollbar-thumb{background:#2b3139;border-radius:2px;}
+.card{background:#1e2329;border:1px solid #2b3139;border-radius:8px;}
+.btn-green{background:#0ecb81;color:#000;font-weight:700;border:none;cursor:pointer;border-radius:6px;transition:all 0.2s;}
+.btn-green:hover{background:#0ab56e;}
+.btn-red{background:#f6465d;color:#fff;font-weight:700;border:none;cursor:pointer;border-radius:6px;transition:all 0.2s;}
+.btn-red:hover{background:#d93a50;}
+.btn-yellow{background:#f0b90b;color:#000;font-weight:700;border:none;cursor:pointer;border-radius:6px;transition:all 0.2s;}
+.btn-yellow:hover{background:#d4a109;}
+input,select{background:#2b3139;border:1px solid #363c45;color:#eaecef;border-radius:6px;padding:10px 14px;outline:none;width:100%;font-size:14px;}
+input:focus,select:focus{border-color:#f0b90b;box-shadow:0 0 0 2px rgba(240,185,11,0.15);}
+input::placeholder{color:#5e6673;}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9999;align-items:center;justify-content:center;}
+.modal.active{display:flex;}
+.tab-btn{background:none;border:none;color:#848e9c;cursor:pointer;padding:10px 16px;border-bottom:2px solid transparent;font-weight:600;font-size:13px;transition:all 0.2s;}
+.tab-btn.active{color:#f0b90b;border-bottom-color:#f0b90b;}
+.green{color:#0ecb81;}.red{color:#f6465d;}.yellow{color:#f0b90b;}
+.ticker-wrap{overflow:hidden;white-space:nowrap;background:#161a1e;border-bottom:1px solid #2b3139;padding:6px 0;}
+.ticker-inner{display:inline-block;animation:ticker 35s linear infinite;}
+@keyframes ticker{0%{transform:translateX(100vw);}100%{transform:translateX(-100%);}}
+.glass{background:rgba(30,35,41,0.97);backdrop-filter:blur(10px);}
+.nav-link{color:#848e9c;cursor:pointer;padding:5px 10px;border-radius:4px;transition:all 0.2s;font-size:14px;}
+.nav-link:hover{color:#eaecef;background:#2b3139;}
+.badge{background:#f6465d;color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;display:flex;align-items:center;justify-content:center;position:absolute;top:-4px;right:-6px;}
+.stock-item{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;cursor:pointer;transition:all 0.15s;border-bottom:1px solid #1a1d22;}
+.stock-item:hover{background:#2b3139;}
+.order-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:3px 8px;font-size:11px;cursor:pointer;position:relative;}
+.order-row:hover{background:rgba(255,255,255,0.04);}
+.depth-fill{position:absolute;top:0;bottom:0;opacity:0.12;}
+.toast{position:fixed;top:80px;right:20px;z-index:99999;padding:12px 20px;border-radius:8px;font-weight:600;font-size:13px;animation:slideIn 0.3s ease;max-width:320px;}
+@keyframes slideIn{from{transform:translateX(120px);opacity:0;}to{transform:translateX(0);opacity:1;}}
+.page{display:none;}.page.active{display:flex;flex-direction:column;}
+.auth-bg{background:linear-gradient(135deg,#0b0e11 0%,#131720 50%,#0b0e11 100%);}
+.input-group{margin-bottom:14px;}
+.input-group label{display:block;font-size:12px;color:#848e9c;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+.section-card{background:#1e2329;border:1px solid #2b3139;border-radius:10px;padding:20px;margin-bottom:16px;}
+.stat-card{background:#1e2329;border:1px solid #2b3139;border-radius:10px;padding:16px;}
 </style>
 </head>
 <body>
 
-<!-- ==================== AUTH PAGE ==================== -->
-<div id="auth-page" class="min-h-screen flex items-center justify-center p-4">
+<!-- ======== AUTH PAGE ======== -->
+<div id="auth-page" class="auth-bg min-h-screen flex items-center justify-center p-4">
   <div class="w-full max-w-md">
     <div class="text-center mb-8">
-      <div class="text-4xl font-black text-yellow-400 mb-2">⚡ SmartEX</div>
-      <div class="text-gray-400">India's Advanced Stock Exchange</div>
+      <div class="text-5xl font-black text-yellow-400 mb-2">⚡ SmartEX</div>
+      <div class="text-gray-400 text-sm">India's Advanced Stock Exchange Platform</div>
     </div>
     <div class="card p-8">
-      <!-- Auth Tabs -->
       <div class="flex mb-6 border-b border-gray-700">
-        <button class="tab-btn active flex-1" onclick="switchAuthTab('login')">Login</button>
-        <button class="tab-btn flex-1" onclick="switchAuthTab('register')">Register</button>
+        <button class="tab-btn active flex-1" id="tab-login" onclick="switchAuth('login')">Login</button>
+        <button class="tab-btn flex-1" id="tab-register" onclick="switchAuth('register')">Register</button>
       </div>
-      <!-- Login Form -->
-      <div id="login-form">
-        <div class="space-y-4">
-          <div>
-            <label class="text-sm text-gray-400 mb-1 block">Email Address</label>
-            <input type="email" id="login-email" placeholder="Enter your email">
-          </div>
-          <div>
-            <label class="text-sm text-gray-400 mb-1 block">Password</label>
-            <input type="password" id="login-password" placeholder="Enter your password">
-          </div>
-          <button onclick="loginUser()" class="btn-yellow w-full py-3 rounded-lg text-lg mt-2">
-            <i class="fas fa-sign-in-alt mr-2"></i>Login
-          </button>
+
+      <!-- LOGIN -->
+      <div id="form-login">
+        <div class="input-group">
+          <label>Email Address</label>
+          <input type="email" id="l-email" placeholder="yourname@email.com">
         </div>
+        <div class="input-group">
+          <label>Password</label>
+          <input type="password" id="l-pass" placeholder="Enter password">
+        </div>
+        <button onclick="doLogin()" class="btn-yellow w-full py-3 text-base mt-2" style="border-radius:8px;">
+          <i class="fas fa-sign-in-alt mr-2"></i>Login to SmartEX
+        </button>
       </div>
-      <!-- Register Form -->
-      <div id="register-form" class="hidden">
-        <div class="space-y-3">
-          <div>
-            <label class="text-sm text-gray-400 mb-1 block">Full Name</label>
-            <input type="text" id="reg-name" placeholder="Your full name as per Aadhaar">
-          </div>
-          <div>
-            <label class="text-sm text-gray-400 mb-1 block">Email Address</label>
-            <input type="email" id="reg-email" placeholder="yourname@email.com">
-          </div>
-          <div>
-            <label class="text-sm text-gray-400 mb-1 block">Phone Number</label>
-            <input type="tel" id="reg-phone" placeholder="+91 9876543210">
-          </div>
-          <div>
-            <label class="text-sm text-gray-400 mb-1 block">Aadhaar Number</label>
-            <input type="text" id="reg-aadhaar" placeholder="XXXX XXXX XXXX" maxlength="12">
-          </div>
-          <div>
-            <label class="text-sm text-gray-400 mb-1 block">PAN Number</label>
-            <input type="text" id="reg-pan" placeholder="ABCDE1234F" maxlength="10">
-          </div>
-          <div>
-            <label class="text-sm text-gray-400 mb-1 block">Password</label>
-            <input type="password" id="reg-password" placeholder="Min 8 characters">
-          </div>
-          <div>
-            <label class="text-sm text-gray-400 mb-1 block">Confirm Password</label>
-            <input type="password" id="reg-confirm" placeholder="Repeat password">
-          </div>
-          <button onclick="registerUser()" class="btn-yellow w-full py-3 rounded-lg text-lg mt-2">
-            <i class="fas fa-user-plus mr-2"></i>Create Account
-          </button>
+
+      <!-- REGISTER -->
+      <div id="form-register" class="hidden">
+        <div class="input-group">
+          <label>Full Name</label>
+          <input type="text" id="r-name" placeholder="Full name as per Aadhaar">
         </div>
+        <div class="input-group">
+          <label>Email Address</label>
+          <input type="email" id="r-email" placeholder="yourname@email.com">
+        </div>
+        <div class="input-group">
+          <label>Phone Number</label>
+          <input type="tel" id="r-phone" placeholder="+91 9876543210">
+        </div>
+        <div class="input-group">
+          <label>Aadhaar Number (12 digits)</label>
+          <input type="text" id="r-aadhaar" placeholder="XXXXXXXXXXXX" maxlength="12">
+        </div>
+        <div class="input-group">
+          <label>PAN Number</label>
+          <input type="text" id="r-pan" placeholder="ABCDE1234F" maxlength="10">
+        </div>
+        <div class="input-group">
+          <label>Password (min 6 chars)</label>
+          <input type="password" id="r-pass" placeholder="Create strong password">
+        </div>
+        <div class="input-group">
+          <label>Confirm Password</label>
+          <input type="password" id="r-confirm" placeholder="Repeat password">
+        </div>
+        <button onclick="doRegister()" class="btn-yellow w-full py-3 text-base mt-2" style="border-radius:8px;" id="reg-btn">
+          <i class="fas fa-user-plus mr-2"></i>Create Account
+        </button>
+        <div id="reg-status" class="mt-3 text-center text-sm"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ==================== MAIN EXCHANGE ==================== -->
+<!-- ======== MAIN APP ======== -->
 <div id="main-app" class="hidden min-h-screen flex flex-col">
 
-  <!-- TOP NAVBAR -->
+  <!-- NAVBAR -->
   <nav class="glass border-b border-gray-800 px-4 py-2 flex items-center justify-between sticky top-0 z-50">
-    <div class="flex items-center gap-6">
+    <div class="flex items-center gap-5">
       <div class="text-yellow-400 font-black text-xl cursor-pointer" onclick="showPage('trade')">⚡ SmartEX</div>
-      <div class="hidden md:flex gap-4">
-        <span class="nav-link" onclick="showPage('markets')">Markets</span>
-        <span class="nav-link" onclick="showPage('trade')">Trade</span>
-        <span class="nav-link" onclick="showPage('portfolio')">Portfolio</span>
-        <span class="nav-link" onclick="showPage('wallet')">Wallet</span>
-        <span class="nav-link" onclick="showPage('orders')">Orders</span>
+      <div class="hidden md:flex gap-1">
+        <span class="nav-link" onclick="showPage('markets')"><i class="fas fa-chart-bar mr-1"></i>Markets</span>
+        <span class="nav-link" onclick="showPage('trade')"><i class="fas fa-exchange-alt mr-1"></i>Trade</span>
+        <span class="nav-link" onclick="showPage('portfolio')"><i class="fas fa-briefcase mr-1"></i>Portfolio</span>
+        <span class="nav-link" onclick="showPage('wallet')"><i class="fas fa-wallet mr-1"></i>Wallet</span>
+        <span class="nav-link" onclick="showPage('orders')"><i class="fas fa-list mr-1"></i>Orders</span>
       </div>
     </div>
-    <div class="flex items-center gap-3">
-      <div class="text-xs">
-        <div class="text-gray-400">Balance</div>
-        <div class="text-green-400 font-bold" id="nav-balance">₹0.00</div>
+    <div class="flex items-center gap-4">
+      <div class="text-right hidden sm:block">
+        <div class="text-xs text-gray-400">Available Balance</div>
+        <div class="text-green-400 font-bold text-sm" id="nav-bal">₹0.00</div>
       </div>
       <div class="relative cursor-pointer" onclick="showPage('notifications')">
-        <i class="fas fa-bell text-gray-400"></i>
-        <span class="badge" id="notif-badge">0</span>
+        <i class="fas fa-bell text-gray-400 text-lg"></i>
+        <span class="badge" id="notif-count">0</span>
       </div>
-      <div class="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center font-bold text-black cursor-pointer" id="nav-avatar" onclick="showPage('profile')">U</div>
-      <button onclick="logoutUser()" class="text-xs text-gray-500 hover:text-red-400 ml-2">
+      <div class="w-9 h-9 rounded-full bg-yellow-500 flex items-center justify-center font-black text-black cursor-pointer text-lg" id="nav-avatar" onclick="showPage('profile')">U</div>
+      <button onclick="doLogout()" class="text-gray-500 hover:text-red-400 transition-colors">
         <i class="fas fa-sign-out-alt"></i>
       </button>
     </div>
   </nav>
 
-  <!-- TICKER BAR -->
-  <div class="ticker-wrapper py-1">
-    <div class="ticker-content text-xs" id="ticker-bar">
-      <span class="mx-4 text-gray-400">Loading market data...</span>
-    </div>
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker-inner text-xs" id="ticker"></div>
   </div>
 
-  <!-- ========== TRADE PAGE ========== -->
-  <div id="page-trade" class="flex-1 flex overflow-hidden" style="height: calc(100vh - 72px)">
-    
-    <!-- Left Sidebar - Stocks List -->
-    <div class="w-56 border-r border-gray-800 flex flex-col overflow-hidden hidden md:flex">
+  <!-- TRADE PAGE -->
+  <div id="pg-trade" class="page active flex-row overflow-hidden" style="height:calc(100vh - 70px)">
+    <!-- Sidebar -->
+    <div class="w-52 border-r border-gray-800 flex flex-col hidden md:flex overflow-hidden">
       <div class="p-2">
-        <input type="text" placeholder="🔍 Search stocks..." id="stock-search" style="font-size:12px;" onkeyup="filterStocks()">
+        <input type="text" placeholder="🔍 Search..." id="s-search" style="font-size:12px;" onkeyup="filterSidebar()">
       </div>
-      <div class="flex px-2 gap-1 mb-1">
-        <button class="tab-btn active text-xs flex-1" onclick="filterCategory('all')">All</button>
-        <button class="tab-btn text-xs flex-1" onclick="filterCategory('nifty50')">Nifty50</button>
-        <button class="tab-btn text-xs flex-1" onclick="filterCategory('crypto')">Crypto</button>
+      <div class="flex px-2 gap-1 pb-1">
+        <button class="tab-btn active text-xs flex-1 px-1" onclick="setCat('all',this)">All</button>
+        <button class="tab-btn text-xs flex-1 px-1" onclick="setCat('nifty50',this)">N50</button>
+        <button class="tab-btn text-xs flex-1 px-1" onclick="setCat('crypto',this)">Crypto</button>
       </div>
-      <div id="stocks-list" class="overflow-y-auto flex-1" style="font-size:12px;"></div>
+      <div id="sidebar-list" class="overflow-y-auto flex-1"></div>
     </div>
 
-    <!-- Center - Chart -->
+    <!-- Chart Area -->
     <div class="flex-1 flex flex-col overflow-hidden">
-      <!-- Stock Header -->
-      <div class="border-b border-gray-800 p-2 flex items-center gap-4 flex-wrap">
+      <div class="border-b border-gray-800 px-3 py-2 flex items-center gap-3 flex-wrap bg-gray-900">
         <div>
-          <span class="font-bold text-lg" id="selected-symbol">RELIANCE</span>
+          <span class="font-black text-lg" id="hdr-sym">RELIANCE</span>
           <span class="text-xs text-gray-400 ml-1">NSE</span>
         </div>
         <div>
-          <div class="text-xl font-bold text-green-400" id="selected-price">₹2,456.75</div>
-          <div class="text-xs" id="selected-change"><span class="green">+1.24% ▲</span></div>
+          <div class="text-xl font-bold text-green-400" id="hdr-price">₹2,456.75</div>
+          <div class="text-xs" id="hdr-chg"><span class="green">+1.24% ▲</span></div>
         </div>
-        <div class="hidden md:flex gap-4 text-xs text-gray-400">
-          <div>24H High: <span class="text-white" id="h24-high">₹2,480</span></div>
-          <div>24H Low: <span class="text-white" id="h24-low">₹2,430</span></div>
-          <div>Volume: <span class="text-white" id="h24-vol">12.4M</span></div>
-          <div>Market Cap: <span class="text-white">₹15.8L Cr</span></div>
+        <div class="hidden lg:flex gap-5 text-xs text-gray-400">
+          <div>High: <span class="text-white" id="hdr-high">-</span></div>
+          <div>Low: <span class="text-white" id="hdr-low">-</span></div>
+          <div>Vol: <span class="text-white" id="hdr-vol">-</span></div>
         </div>
-        <div class="flex gap-1 ml-auto">
-          <button class="btn-green px-3 py-1 rounded text-xs" onclick="quickBuy()">BUY</button>
-          <button class="btn-red px-3 py-1 rounded text-xs" onclick="quickSell()">SELL</button>
+        <div class="flex gap-2 ml-auto">
+          <button class="btn-green px-4 py-1 text-sm" onclick="openQuick('buy')">▲ BUY</button>
+          <button class="btn-red px-4 py-1 text-sm" onclick="openQuick('sell')">▼ SELL</button>
         </div>
       </div>
-      <!-- Chart Container -->
       <div id="tv-chart" class="flex-1"></div>
     </div>
 
     <!-- Right Panel -->
-    <div class="w-72 border-l border-gray-800 flex flex-col overflow-hidden hidden lg:flex">
-      <!-- Tabs -->
+    <div class="w-68 border-l border-gray-800 flex flex-col hidden lg:flex overflow-hidden" style="width:270px;">
       <div class="flex border-b border-gray-800">
-        <button class="tab-btn active text-xs flex-1" onclick="switchRightTab('orderbook')">Order Book</button>
-        <button class="tab-btn text-xs flex-1" onclick="switchRightTab('placeorder')">Place Order</button>
-        <button class="tab-btn text-xs flex-1" onclick="switchRightTab('trades')">Trades</button>
+        <button class="tab-btn active text-xs flex-1" onclick="rightTab('ob')">Order Book</button>
+        <button class="tab-btn text-xs flex-1" onclick="rightTab('po')">Place Order</button>
+        <button class="tab-btn text-xs flex-1" onclick="rightTab('rt')">Trades</button>
       </div>
 
       <!-- Order Book -->
-      <div id="right-orderbook" class="flex flex-col overflow-hidden flex-1">
+      <div id="r-ob" class="flex-1 flex flex-col overflow-hidden">
         <div class="grid grid-cols-3 px-2 py-1 text-xs text-gray-500 border-b border-gray-800">
           <span>Price</span><span class="text-center">Qty</span><span class="text-right">Total</span>
         </div>
-        <!-- Sell orders (red) -->
         <div id="ob-sells" class="flex-1 overflow-y-auto"></div>
-        <!-- Current Price -->
-        <div class="py-2 px-4 border-y border-gray-800 text-center">
-          <span class="text-lg font-bold text-green-400" id="ob-price">₹2,456.75</span>
-          <span class="text-xs text-gray-400 ml-2">Mark Price</span>
+        <div class="py-2 px-3 border-y border-gray-800 flex items-center justify-between">
+          <span class="text-base font-black text-green-400" id="ob-cur">₹2,456</span>
+          <span class="text-xs text-gray-400">Mark Price</span>
         </div>
-        <!-- Buy orders (green) -->
         <div id="ob-buys" class="flex-1 overflow-y-auto"></div>
       </div>
 
-      <!-- Place Order Panel -->
-      <div id="right-placeorder" class="hidden flex-col p-3 flex-1 overflow-y-auto">
+      <!-- Place Order -->
+      <div id="r-po" class="hidden flex-1 flex-col p-3 overflow-y-auto">
         <div class="flex gap-2 mb-3">
-          <button id="order-buy-btn" class="btn-green flex-1 py-2 rounded text-sm" onclick="setOrderSide('buy')">BUY</button>
-          <button id="order-sell-btn" class="btn-red flex-1 py-2 rounded text-sm opacity-50" onclick="setOrderSide('sell')">SELL</button>
+          <button id="po-buy" class="btn-green flex-1 py-2 text-sm" onclick="setPoSide('buy')">BUY</button>
+          <button id="po-sell" class="btn-red flex-1 py-2 text-sm opacity-40" onclick="setPoSide('sell')">SELL</button>
         </div>
-        <div class="mb-2">
-          <label class="text-xs text-gray-400">Order Type</label>
-          <select id="order-type" class="mt-1">
-            <option value="market">Market</option>
-            <option value="limit">Limit</option>
-            <option value="stop">Stop Loss</option>
-          </select>
+        <div class="input-group">
+          <label>Order Type</label>
+          <select id="po-type"><option value="market">Market</option><option value="limit">Limit</option><option value="stop">Stop Loss</option></select>
         </div>
-        <div class="mb-2">
-          <label class="text-xs text-gray-400">Price (₹)</label>
-          <input type="number" id="order-price" placeholder="Market Price" class="mt-1">
+        <div class="input-group">
+          <label>Price (₹)</label>
+          <input type="number" id="po-price" placeholder="Market Price">
         </div>
-        <div class="mb-2">
-          <label class="text-xs text-gray-400">Quantity (Shares)</label>
-          <input type="number" id="order-qty" placeholder="0" class="mt-1" oninput="calcOrderTotal()">
+        <div class="input-group">
+          <label>Quantity (Shares)</label>
+          <input type="number" id="po-qty" placeholder="0" oninput="calcPO()">
         </div>
-        <div class="flex gap-2 my-2">
-          <button class="flex-1 py-1 rounded text-xs bg-gray-700" onclick="setQtyPct(25)">25%</button>
-          <button class="flex-1 py-1 rounded text-xs bg-gray-700" onclick="setQtyPct(50)">50%</button>
-          <button class="flex-1 py-1 rounded text-xs bg-gray-700" onclick="setQtyPct(75)">75%</button>
-          <button class="flex-1 py-1 rounded text-xs bg-gray-700" onclick="setQtyPct(100)">100%</button>
+        <div class="flex gap-1 mb-3">
+          <button class="flex-1 py-1 text-xs bg-gray-700 rounded hover:bg-gray-600" onclick="poPct(25)">25%</button>
+          <button class="flex-1 py-1 text-xs bg-gray-700 rounded hover:bg-gray-600" onclick="poPct(50)">50%</button>
+          <button class="flex-1 py-1 text-xs bg-gray-700 rounded hover:bg-gray-600" onclick="poPct(75)">75%</button>
+          <button class="flex-1 py-1 text-xs bg-gray-700 rounded hover:bg-gray-600" onclick="poPct(100)">100%</button>
         </div>
-        <div class="card p-3 mb-3 text-xs">
-          <div class="flex justify-between mb-1"><span class="text-gray-400">Available</span><span class="text-green-400 font-bold" id="avail-balance">₹0</span></div>
-          <div class="flex justify-between mb-1"><span class="text-gray-400">Total Cost</span><span id="order-total">₹0</span></div>
-          <div class="flex justify-between"><span class="text-gray-400">Fee (0.1%)</span><span id="order-fee">₹0</span></div>
+        <div class="card p-3 mb-3 text-xs space-y-1">
+          <div class="flex justify-between"><span class="text-gray-400">Balance</span><span class="text-green-400 font-bold" id="po-bal">₹0</span></div>
+          <div class="flex justify-between"><span class="text-gray-400">Total</span><span id="po-total">₹0</span></div>
+          <div class="flex justify-between"><span class="text-gray-400">Fee (0.1%)</span><span id="po-fee">₹0</span></div>
         </div>
-        <button id="place-order-btn" class="btn-green w-full py-3 rounded-lg font-bold" onclick="placeOrder()">
-          BUY RELIANCE
-        </button>
-        <div class="mt-2 text-center text-xs text-gray-500">
-          <i class="fas fa-shield-alt mr-1"></i>Secured & Protected
-        </div>
+        <button id="po-btn" class="btn-green w-full py-3 font-bold text-sm" onclick="doPlaceOrder()">BUY RELIANCE</button>
       </div>
 
       <!-- Recent Trades -->
-      <div id="right-trades" class="hidden flex-1 overflow-y-auto">
+      <div id="r-rt" class="hidden flex-1 overflow-y-auto">
         <div class="grid grid-cols-3 px-2 py-1 text-xs text-gray-500 border-b border-gray-800">
           <span>Price</span><span class="text-center">Size</span><span class="text-right">Time</span>
         </div>
-        <div id="trades-list"></div>
+        <div id="rt-list"></div>
       </div>
     </div>
   </div>
 
-  <!-- ========== MARKETS PAGE ========== -->
-  <div id="page-markets" class="hidden flex-1 p-4">
-    <h2 class="text-xl font-bold mb-4">📊 Market Overview</h2>
-    <!-- Market Stats -->
+  <!-- MARKETS PAGE -->
+  <div id="pg-markets" class="page flex-1 p-4 overflow-y-auto">
+    <h2 class="text-xl font-bold mb-4"><i class="fas fa-chart-bar mr-2 text-yellow-400"></i>Market Overview</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-      <div class="card p-4">
-        <div class="text-gray-400 text-sm">SENSEX</div>
-        <div class="text-xl font-bold text-green-400">72,456.80</div>
-        <div class="text-xs text-green-400">+0.45% ▲</div>
-      </div>
-      <div class="card p-4">
-        <div class="text-gray-400 text-sm">NIFTY 50</div>
-        <div class="text-xl font-bold text-green-400">21,853.80</div>
-        <div class="text-xs text-green-400">+0.38% ▲</div>
-      </div>
-      <div class="card p-4">
-        <div class="text-gray-400 text-sm">BANK NIFTY</div>
-        <div class="text-xl font-bold text-red-400">46,234.55</div>
-        <div class="text-xs text-red-400">-0.21% ▼</div>
-      </div>
-      <div class="card p-4">
-        <div class="text-gray-400 text-sm">India VIX</div>
-        <div class="text-xl font-bold text-yellow-400">13.45</div>
-        <div class="text-xs text-yellow-400">+2.1%</div>
-      </div>
+      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">SENSEX</div><div class="text-xl font-black text-green-400">72,456</div><div class="text-xs green">+0.45% ▲</div></div>
+      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">NIFTY 50</div><div class="text-xl font-black text-green-400">21,853</div><div class="text-xs green">+0.38% ▲</div></div>
+      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">BANK NIFTY</div><div class="text-xl font-black text-red-400">46,234</div><div class="text-xs red">-0.21% ▼</div></div>
+      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">INDIA VIX</div><div class="text-xl font-black text-yellow-400">13.45</div><div class="text-xs yellow">+2.1%</div></div>
     </div>
-    <!-- Stocks Table -->
-    <div class="card">
-      <div class="p-4 border-b border-gray-800 flex justify-between items-center">
-        <h3 class="font-bold">All Stocks</h3>
-        <input type="text" placeholder="Search..." style="width:200px;font-size:12px;" id="market-search" onkeyup="filterMarketStocks()">
+    <div class="section-card p-0">
+      <div class="p-4 flex justify-between items-center border-b border-gray-700">
+        <h3 class="font-bold">All Stocks & Crypto</h3>
+        <input type="text" placeholder="Search..." style="width:180px;font-size:12px;" onkeyup="filterMkt(this.value)">
       </div>
       <div class="grid grid-cols-4 px-4 py-2 text-xs text-gray-400 border-b border-gray-700">
         <span>Symbol / Name</span><span class="text-right">Price</span><span class="text-right">24H Change</span><span class="text-right">Volume</span>
       </div>
-      <div id="market-table" class="max-h-96 overflow-y-auto"></div>
+      <div id="mkt-table" class="max-h-screen overflow-y-auto"></div>
     </div>
   </div>
 
-  <!-- ========== PORTFOLIO PAGE ========== -->
-  <div id="page-portfolio" class="hidden flex-1 p-4">
-    <h2 class="text-xl font-bold mb-4">💼 My Portfolio</h2>
-    <!-- Summary Cards -->
+  <!-- PORTFOLIO PAGE -->
+  <div id="pg-portfolio" class="page flex-1 p-4 overflow-y-auto">
+    <h2 class="text-xl font-bold mb-4"><i class="fas fa-briefcase mr-2 text-yellow-400"></i>My Portfolio</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-      <div class="card p-4">
-        <div class="text-gray-400 text-sm">Total Balance</div>
-        <div class="text-xl font-bold text-yellow-400" id="pf-balance">₹0</div>
-      </div>
-      <div class="card p-4">
-        <div class="text-gray-400 text-sm">Portfolio Value</div>
-        <div class="text-xl font-bold text-blue-400" id="pf-portfolio">₹0</div>
-      </div>
-      <div class="card p-4">
-        <div class="text-gray-400 text-sm">Total P&L</div>
-        <div class="text-xl font-bold" id="pf-pnl">₹0</div>
-      </div>
-      <div class="card p-4">
-        <div class="text-gray-400 text-sm">Credit Score</div>
-        <div class="text-xl font-bold text-purple-400" id="pf-credit">750</div>
-      </div>
+      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">Cash Balance</div><div class="text-xl font-black text-yellow-400" id="pf-bal">₹0</div></div>
+      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">Portfolio Value</div><div class="text-xl font-black text-blue-400" id="pf-pv">₹0</div></div>
+      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">Total P&L</div><div class="text-xl font-black" id="pf-pnl">₹0</div></div>
+      <div class="stat-card"><div class="text-gray-400 text-xs mb-1">Credit Score</div><div class="text-xl font-black text-purple-400" id="pf-cs">750</div></div>
     </div>
-    <!-- Holdings Table -->
-    <div class="card">
-      <div class="p-4 border-b border-gray-800">
-        <h3 class="font-bold">My Holdings</h3>
-      </div>
+    <div class="section-card p-0">
+      <div class="p-4 border-b border-gray-700"><h3 class="font-bold">My Holdings</h3></div>
       <div class="grid grid-cols-5 px-4 py-2 text-xs text-gray-400 border-b border-gray-700">
-        <span>Stock</span><span class="text-right">Qty</span><span class="text-right">Avg Price</span><span class="text-right">Current</span><span class="text-right">P&L</span>
+        <span>Stock</span><span class="text-right">Qty</span><span class="text-right">Avg Price</span><span class="text-right">Cur. Price</span><span class="text-right">P&L</span>
       </div>
-      <div id="holdings-table"></div>
+      <div id="holdings-body" class="max-h-96 overflow-y-auto"></div>
     </div>
   </div>
 
-  <!-- ========== WALLET PAGE ========== -->
-  <div id="page-wallet" class="hidden flex-1 p-4">
-    <h2 class="text-xl font-bold mb-4">💰 Wallet</h2>
+  <!-- WALLET PAGE -->
+  <div id="pg-wallet" class="page flex-1 p-4 overflow-y-auto">
+    <h2 class="text-xl font-bold mb-4"><i class="fas fa-wallet mr-2 text-yellow-400"></i>Wallet</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <div class="card p-6 col-span-1">
-        <div class="text-gray-400 mb-1">Available Balance</div>
-        <div class="text-3xl font-black text-yellow-400 mb-1" id="wallet-balance">₹0.00</div>
-        <div class="text-xs text-gray-500">Withdrawable balance</div>
-        <div class="flex gap-2 mt-4">
-          <button class="btn-green flex-1 py-2 rounded" onclick="openModal('deposit-modal')">
-            <i class="fas fa-plus mr-1"></i>Deposit
-          </button>
-          <button class="btn-red flex-1 py-2 rounded" onclick="openModal('withdraw-modal')">
-            <i class="fas fa-minus mr-1"></i>Withdraw
-          </button>
+      <div class="section-card flex flex-col items-center text-center">
+        <div class="text-gray-400 text-sm mb-1">Available Balance</div>
+        <div class="text-4xl font-black text-yellow-400 mb-1" id="wlt-bal">₹0.00</div>
+        <div class="text-xs text-gray-500 mb-4">Withdrawable Amount</div>
+        <div class="flex gap-3 w-full">
+          <button class="btn-green flex-1 py-2" onclick="openMod('mod-dep')"><i class="fas fa-plus mr-1"></i>Deposit</button>
+          <button class="btn-red flex-1 py-2" onclick="openMod('mod-wd')"><i class="fas fa-minus mr-1"></i>Withdraw</button>
         </div>
       </div>
-      <div class="card p-6 col-span-2">
-        <h3 class="font-bold mb-4">Asset Overview</h3>
-        <div id="asset-overview" class="space-y-2"></div>
+      <div class="section-card col-span-2">
+        <h3 class="font-bold mb-3">Asset Summary</h3>
+        <div id="asset-sum"></div>
       </div>
     </div>
-    <!-- Transaction History -->
-    <div class="card">
-      <div class="p-4 border-b border-gray-800">
-        <h3 class="font-bold">Transaction History</h3>
-      </div>
-      <div id="tx-history" class="max-h-80 overflow-y-auto"></div>
+    <div class="section-card p-0">
+      <div class="p-4 border-b border-gray-700"><h3 class="font-bold">Transaction History</h3></div>
+      <div id="tx-list" class="max-h-96 overflow-y-auto"></div>
     </div>
   </div>
 
-  <!-- ========== ORDERS PAGE ========== -->
-  <div id="page-orders" class="hidden flex-1 p-4">
-    <h2 class="text-xl font-bold mb-4">📋 My Orders</h2>
-    <div class="card">
-      <div class="flex border-b border-gray-800 px-4">
-        <button class="tab-btn active" onclick="loadOrders('all')">All Orders</button>
+  <!-- ORDERS PAGE -->
+  <div id="pg-orders" class="page flex-1 p-4 overflow-y-auto">
+    <h2 class="text-xl font-bold mb-4"><i class="fas fa-list mr-2 text-yellow-400"></i>My Orders</h2>
+    <div class="section-card p-0">
+      <div class="flex border-b border-gray-700 px-2">
+        <button class="tab-btn active" onclick="loadOrders('all')">All</button>
         <button class="tab-btn" onclick="loadOrders('pending')">Pending</button>
         <button class="tab-btn" onclick="loadOrders('completed')">Completed</button>
       </div>
-      <div id="orders-table" class="max-h-96 overflow-y-auto"></div>
+      <div class="grid grid-cols-6 px-4 py-2 text-xs text-gray-400 border-b border-gray-700">
+        <span>Stock</span><span>Type</span><span class="text-right">Qty</span><span class="text-right">Price</span><span class="text-right">Total</span><span class="text-right">Status</span>
+      </div>
+      <div id="orders-body" class="max-h-screen overflow-y-auto"></div>
     </div>
   </div>
 
-  <!-- ========== PROFILE PAGE ========== -->
-  <div id="page-profile" class="hidden flex-1 p-4">
-    <h2 class="text-xl font-bold mb-4">👤 My Profile</h2>
+  <!-- PROFILE PAGE -->
+  <div id="pg-profile" class="page flex-1 p-4 overflow-y-auto">
+    <h2 class="text-xl font-bold mb-4"><i class="fas fa-user mr-2 text-yellow-400"></i>My Profile</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="card p-6">
-        <div class="flex items-center gap-4 mb-6">
-          <div class="w-16 h-16 rounded-full bg-yellow-500 flex items-center justify-content-center text-2xl font-black text-black flex items-center justify-center" id="profile-avatar">U</div>
+      <!-- Personal Info Card -->
+      <div class="section-card">
+        <div class="flex items-center gap-4 mb-5">
+          <div class="w-16 h-16 rounded-full bg-yellow-500 flex items-center justify-center text-2xl font-black text-black" id="pf-avatar">U</div>
           <div>
-            <div class="text-xl font-bold" id="profile-name">Loading...</div>
-            <div class="text-gray-400 text-sm" id="profile-email">...</div>
-            <div id="profile-status" class="text-xs mt-1"></div>
+            <div class="text-xl font-bold" id="pf-name">Loading...</div>
+            <div class="text-gray-400 text-sm" id="pf-email"></div>
+            <div id="pf-ver-badge" class="mt-1"></div>
           </div>
         </div>
         <div class="space-y-3 text-sm">
-          <div class="flex justify-between border-b border-gray-800 pb-2">
-            <span class="text-gray-400">Phone</span>
-            <span id="profile-phone">-</span>
+          <div class="flex justify-between py-2 border-b border-gray-700">
+            <span class="text-gray-400"><i class="fas fa-phone mr-2"></i>Phone</span>
+            <span id="pf-phone">-</span>
           </div>
-          <div class="flex justify-between border-b border-gray-800 pb-2">
-            <span class="text-gray-400">Aadhaar</span>
-            <span id="profile-aadhaar">XXXX-XXXX-XXXX</span>
+          <div class="flex justify-between py-2 border-b border-gray-700">
+            <span class="text-gray-400"><i class="fas fa-id-card mr-2"></i>Aadhaar</span>
+            <span id="pf-aadhaar">-</span>
           </div>
-          <div class="flex justify-between border-b border-gray-800 pb-2">
-            <span class="text-gray-400">PAN</span>
-            <span id="profile-pan">XXXXX1234X</span>
+          <div class="flex justify-between py-2 border-b border-gray-700">
+            <span class="text-gray-400"><i class="fas fa-address-card mr-2"></i>PAN</span>
+            <span id="pf-pan">-</span>
           </div>
-          <div class="flex justify-between border-b border-gray-800 pb-2">
-            <span class="text-gray-400">Credit Score</span>
-            <span class="text-purple-400 font-bold" id="profile-credit">750</span>
+          <div class="flex justify-between py-2 border-b border-gray-700">
+            <span class="text-gray-400"><i class="fas fa-star mr-2"></i>Credit Score</span>
+            <span class="text-purple-400 font-bold" id="pf-credit">750</span>
           </div>
-          <div class="flex justify-between">
-            <span class="text-gray-400">Member Since</span>
-            <span id="profile-joined">-</span>
+          <div class="flex justify-between py-2">
+            <span class="text-gray-400"><i class="fas fa-calendar mr-2"></i>Member Since</span>
+            <span id="pf-joined">-</span>
           </div>
         </div>
       </div>
+
       <div class="space-y-4">
-        <!-- KYC Card -->
-        <div class="card p-6">
-          <h3 class="font-bold mb-4">KYC Verification</h3>
-          <div id="kyc-status-display" class="mb-4"></div>
-          <button class="btn-yellow w-full py-2 rounded" onclick="openModal('kyc-modal')">
-            <i class="fas fa-id-card mr-2"></i>Submit KYC
-          </button>
+        <!-- KYC -->
+        <div class="section-card">
+          <h3 class="font-bold mb-3"><i class="fas fa-shield-alt mr-2 text-yellow-400"></i>KYC Status</h3>
+          <div id="kyc-status" class="mb-3"></div>
+          <button class="btn-yellow w-full py-2" onclick="openMod('mod-kyc')">Submit / Update KYC</button>
         </div>
+
         <!-- Bank Details -->
-        <div class="card p-6">
-          <h3 class="font-bold mb-4">Bank Details (For Withdrawal)</h3>
+        <div class="section-card">
+          <h3 class="font-bold mb-3"><i class="fas fa-university mr-2 text-yellow-400"></i>Bank Details</h3>
           <div class="space-y-3">
-            <div>
-              <label class="text-xs text-gray-400">Bank Name</label>
-              <input type="text" id="bank-name" placeholder="State Bank of India" class="mt-1">
+            <div class="input-group mb-2">
+              <label>Bank Name</label>
+              <input type="text" id="bk-bank" placeholder="State Bank of India">
             </div>
-            <div>
-              <label class="text-xs text-gray-400">Account Number</label>
-              <input type="text" id="bank-acc" placeholder="Your account number" class="mt-1">
+            <div class="input-group mb-2">
+              <label>Account Holder Name</label>
+              <input type="text" id="bk-holder" placeholder="Your full name">
             </div>
-            <div>
-              <label class="text-xs text-gray-400">IFSC Code</label>
-              <input type="text" id="bank-ifsc" placeholder="SBIN0001234" class="mt-1">
+            <div class="input-group mb-2">
+              <label>Account Number</label>
+              <input type="text" id="bk-acc" placeholder="Account number">
             </div>
-            <div>
-              <label class="text-xs text-gray-400">UPI ID / PhonePe Number</label>
-              <input type="text" id="bank-upi" placeholder="yourname@upi or 9876543210" class="mt-1">
+            <div class="input-group mb-2">
+              <label>IFSC Code</label>
+              <input type="text" id="bk-ifsc" placeholder="SBIN0001234">
             </div>
-            <button class="btn-yellow w-full py-2 rounded" onclick="saveBankDetails()">
-              <i class="fas fa-save mr-2"></i>Save Details
+            <div class="input-group mb-3">
+              <label>UPI ID / PhonePe Number</label>
+              <input type="text" id="bk-upi" placeholder="name@upi or 9876543210">
+            </div>
+            <button class="btn-yellow w-full py-2" onclick="saveBankDetails()">
+              <i class="fas fa-save mr-2"></i>Save Bank Details
             </button>
           </div>
         </div>
@@ -487,957 +420,1024 @@
     </div>
   </div>
 
-  <!-- ========== NOTIFICATIONS PAGE ========== -->
-  <div id="page-notifications" class="hidden flex-1 p-4">
-    <h2 class="text-xl font-bold mb-4">🔔 Notifications</h2>
-    <div class="card" id="notifications-list"></div>
+  <!-- NOTIFICATIONS PAGE -->
+  <div id="pg-notifications" class="page flex-1 p-4 overflow-y-auto">
+    <h2 class="text-xl font-bold mb-4"><i class="fas fa-bell mr-2 text-yellow-400"></i>Notifications</h2>
+    <div class="section-card p-0" id="notif-body"></div>
   </div>
 
 </div>
 
-<!-- ==================== MODALS ==================== -->
+<!-- ======== MODALS ======== -->
 
-<!-- Deposit Modal -->
-<div id="deposit-modal" class="modal">
+<!-- DEPOSIT -->
+<div id="mod-dep" class="modal">
   <div class="card w-full max-w-md p-6 mx-4" style="max-height:90vh;overflow-y:auto;">
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-center mb-5">
       <h3 class="text-xl font-bold text-green-400"><i class="fas fa-plus-circle mr-2"></i>Deposit Money</h3>
-      <button onclick="closeModal('deposit-modal')" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+      <button onclick="closeMod('mod-dep')" class="text-gray-400 hover:text-white text-xl"><i class="fas fa-times"></i></button>
     </div>
-    <div class="bg-green-900 bg-opacity-30 border border-green-700 rounded-lg p-4 mb-4">
-      <div class="text-sm font-bold text-green-400 mb-3">Transfer to Admin Account:</div>
+    <div style="background:rgba(14,203,129,0.08);border:1px solid #0ecb81;border-radius:8px;padding:16px;margin-bottom:16px;">
+      <div class="text-green-400 font-bold text-sm mb-3">📤 Send Money To:</div>
       <div class="space-y-2 text-sm">
-        <div class="flex justify-between"><span class="text-gray-400">UPI ID:</span><span class="font-bold text-yellow-400" id="dep-upi-show">Loading...</span></div>
-        <div class="flex justify-between"><span class="text-gray-400">PhonePe/Paytm:</span><span class="font-bold" id="dep-phone-show">Loading...</span></div>
-        <div class="flex justify-between"><span class="text-gray-400">Bank:</span><span class="font-bold" id="dep-bank-show">Loading...</span></div>
-        <div class="flex justify-between"><span class="text-gray-400">Acc No:</span><span class="font-bold" id="dep-acc-show">Loading...</span></div>
-        <div class="flex justify-between"><span class="text-gray-400">IFSC:</span><span class="font-bold" id="dep-ifsc-show">Loading...</span></div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-400">UPI ID</span>
+          <span class="font-bold text-yellow-400" id="d-upi">-</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-400">PhonePe/Paytm</span>
+          <span class="font-bold" id="d-phone">-</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-400">Bank Name</span>
+          <span class="font-bold" id="d-bank">-</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-400">Account No</span>
+          <span class="font-bold" id="d-acc">-</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-400">IFSC</span>
+          <span class="font-bold" id="d-ifsc">-</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span class="text-gray-400">Account Holder</span>
+          <span class="font-bold" id="d-holder">-</span>
+        </div>
       </div>
     </div>
     <div class="space-y-3">
-      <div>
-        <label class="text-sm text-gray-400">Amount (₹)</label>
-        <input type="number" id="dep-amount" placeholder="Min ₹100" class="mt-1">
+      <div class="input-group mb-2">
+        <label>Amount (₹)</label>
+        <input type="number" id="dep-amt" placeholder="Minimum ₹100">
       </div>
-      <div>
-        <label class="text-sm text-gray-400">Transaction/UTR Reference Number</label>
-        <input type="text" id="dep-ref" placeholder="12-digit UTR number" class="mt-1">
+      <div class="input-group mb-3">
+        <label>UTR / Transaction Reference Number</label>
+        <input type="text" id="dep-ref" placeholder="12-digit transaction ID">
       </div>
-      <div class="text-xs text-yellow-400 bg-yellow-900 bg-opacity-30 p-3 rounded">
-        ⚠️ After transfer, submit this form. Admin will verify and credit your account within 30 minutes.
+      <div style="background:rgba(240,185,11,0.1);border:1px solid #f0b90b;border-radius:6px;padding:10px;font-size:12px;color:#f0b90b;">
+        ⚠️ Send money first, then submit this form. Admin will verify & credit within 30 minutes.
       </div>
-      <button onclick="submitDeposit()" class="btn-green w-full py-3 rounded-lg font-bold">
+      <button onclick="doDeposit()" class="btn-green w-full py-3 font-bold">
         <i class="fas fa-paper-plane mr-2"></i>Submit Deposit Request
       </button>
     </div>
   </div>
 </div>
 
-<!-- Withdrawal Modal -->
-<div id="withdraw-modal" class="modal">
+<!-- WITHDRAWAL -->
+<div id="mod-wd" class="modal">
   <div class="card w-full max-w-md p-6 mx-4">
-    <div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-center mb-5">
       <h3 class="text-xl font-bold text-red-400"><i class="fas fa-minus-circle mr-2"></i>Withdraw Money</h3>
-      <button onclick="closeModal('withdraw-modal')" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+      <button onclick="closeMod('mod-wd')" class="text-gray-400 hover:text-white text-xl"><i class="fas fa-times"></i></button>
     </div>
-    <div id="saved-bank-info" class="bg-blue-900 bg-opacity-30 border border-blue-700 rounded p-3 mb-4 text-sm"></div>
+    <div id="wd-bank-info" style="background:rgba(24,144,255,0.1);border:1px solid #1890ff;border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px;"></div>
     <div class="space-y-3">
-      <div>
-        <label class="text-sm text-gray-400">Amount (₹)</label>
-        <input type="number" id="wd-amount" placeholder="Min ₹500" class="mt-1">
+      <div class="input-group mb-2">
+        <label>Amount (₹)</label>
+        <input type="number" id="wd-amt" placeholder="Minimum ₹500">
       </div>
-      <div>
-        <label class="text-sm text-gray-400">Withdraw To</label>
-        <select id="wd-method" class="mt-1">
+      <div class="input-group mb-3">
+        <label>Withdraw Method</label>
+        <select id="wd-method">
           <option value="bank">Bank Transfer</option>
-          <option value="upi">UPI</option>
+          <option value="upi">UPI Transfer</option>
           <option value="phonepay">PhonePe</option>
+          <option value="paytm">Paytm</option>
         </select>
       </div>
-      <div class="text-xs text-gray-400 bg-gray-800 p-3 rounded">
-        Withdrawal processed within 24 hours. Your saved bank/UPI will be used.
+      <div style="background:rgba(255,255,255,0.05);border-radius:6px;padding:10px;font-size:12px;color:#848e9c;">
+        💡 Withdrawal will be sent to your saved bank/UPI details. Processed within 24 hours.
       </div>
-      <button onclick="submitWithdrawal()" class="btn-red w-full py-3 rounded-lg font-bold">
-        <i class="fas fa-paper-plane mr-2"></i>Submit Withdrawal
+      <button onclick="doWithdraw()" class="btn-red w-full py-3 font-bold">
+        <i class="fas fa-paper-plane mr-2"></i>Submit Withdrawal Request
       </button>
     </div>
   </div>
 </div>
 
-<!-- KYC Modal -->
-<div id="kyc-modal" class="modal">
+<!-- KYC -->
+<div id="mod-kyc" class="modal">
   <div class="card w-full max-w-md p-6 mx-4">
-    <div class="flex justify-between items-center mb-6">
-      <h3 class="text-xl font-bold text-yellow-400">KYC Verification</h3>
-      <button onclick="closeModal('kyc-modal')" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+    <div class="flex justify-between items-center mb-5">
+      <h3 class="text-xl font-bold text-yellow-400"><i class="fas fa-id-card mr-2"></i>KYC Verification</h3>
+      <button onclick="closeMod('mod-kyc')" class="text-gray-400 hover:text-white text-xl"><i class="fas fa-times"></i></button>
     </div>
     <div class="space-y-3">
-      <div>
-        <label class="text-sm text-gray-400">Aadhaar Number</label>
-        <input type="text" id="kyc-aadhaar" maxlength="12" placeholder="12-digit Aadhaar" class="mt-1">
+      <div class="input-group mb-2">
+        <label>Aadhaar Number (12 digits)</label>
+        <input type="text" id="kyc-aad" maxlength="12" placeholder="XXXXXXXXXXXX">
       </div>
-      <div>
-        <label class="text-sm text-gray-400">PAN Number</label>
-        <input type="text" id="kyc-pan" maxlength="10" placeholder="ABCDE1234F" class="mt-1">
+      <div class="input-group mb-3">
+        <label>PAN Number</label>
+        <input type="text" id="kyc-pan" maxlength="10" placeholder="ABCDE1234F">
       </div>
-      <button onclick="submitKYC()" class="btn-yellow w-full py-3 rounded-lg font-bold">Submit KYC</button>
+      <button onclick="doKYC()" class="btn-yellow w-full py-3 font-bold">Submit KYC Documents</button>
     </div>
   </div>
 </div>
 
-<!-- Buy/Sell Quick Modal -->
-<div id="quick-order-modal" class="modal">
+<!-- QUICK ORDER -->
+<div id="mod-qo" class="modal">
   <div class="card w-full max-w-sm p-6 mx-4">
     <div class="flex justify-between items-center mb-4">
       <h3 class="text-lg font-bold" id="qo-title">Place Order</h3>
-      <button onclick="closeModal('quick-order-modal')" class="text-gray-400"><i class="fas fa-times"></i></button>
+      <button onclick="closeMod('mod-qo')" class="text-gray-400"><i class="fas fa-times"></i></button>
     </div>
     <div class="space-y-3">
-      <div class="flex justify-between text-sm">
-        <span class="text-gray-400">Stock:</span><span class="font-bold" id="qo-stock"></span>
+      <div class="flex justify-between text-sm py-2 border-b border-gray-700">
+        <span class="text-gray-400">Stock</span><span class="font-bold" id="qo-sym"></span>
       </div>
-      <div class="flex justify-between text-sm">
-        <span class="text-gray-400">Current Price:</span><span class="font-bold text-yellow-400" id="qo-price"></span>
+      <div class="flex justify-between text-sm py-2 border-b border-gray-700">
+        <span class="text-gray-400">Price</span><span class="font-bold text-yellow-400" id="qo-price"></span>
       </div>
-      <div>
-        <label class="text-sm text-gray-400">Quantity</label>
-        <input type="number" id="qo-qty" placeholder="Number of shares" class="mt-1" oninput="calcQOTotal()">
+      <div class="input-group mb-2">
+        <label>Quantity (Shares)</label>
+        <input type="number" id="qo-qty" placeholder="Number of shares" oninput="calcQO()">
       </div>
-      <div class="card p-3 text-xs">
-        <div class="flex justify-between"><span class="text-gray-400">Total</span><span id="qo-total">₹0</span></div>
-        <div class="flex justify-between"><span class="text-gray-400">Fee</span><span id="qo-fee">₹0</span></div>
-        <div class="flex justify-between"><span class="text-gray-400">Balance</span><span class="text-green-400" id="qo-bal">₹0</span></div>
+      <div class="card p-3 text-xs space-y-1">
+        <div class="flex justify-between"><span class="text-gray-400">Total Amount</span><span id="qo-tot">₹0</span></div>
+        <div class="flex justify-between"><span class="text-gray-400">Trading Fee (0.1%)</span><span id="qo-fee">₹0</span></div>
+        <div class="flex justify-between"><span class="text-gray-400">Your Balance</span><span class="text-green-400 font-bold" id="qo-bal">₹0</span></div>
       </div>
-      <button id="qo-submit-btn" class="btn-green w-full py-3 rounded-lg font-bold" onclick="submitQuickOrder()">
-        CONFIRM BUY
-      </button>
+      <button id="qo-btn" class="btn-green w-full py-3 font-bold" onclick="submitQO()">CONFIRM</button>
     </div>
   </div>
 </div>
 
 <script>
-// ============================================================
-// SUPABASE INIT
-// ============================================================
-const SUPABASE_URL = 'https://qajdgueavfofwtavmkxi.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_NqFN_vK1dp64ZrI94MZsEA_DcTFMRof';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// =============================================
+// SUPABASE CONFIG
+// =============================================
+const SURL = 'https://qajdgueavfofwtavmkxi.supabase.co';
+const SKEY = 'sb_publishable_NqFN_vK1dp64ZrI94MZsEA_DcTFMRof';
+const sb = supabase.createClient(SURL, SKEY);
 
-// ============================================================
-// INDIAN STOCKS DATA
-// ============================================================
+// =============================================
+// STOCKS DATA
+// =============================================
 const STOCKS = [
-  // NIFTY 50
-  {sym:'NSE:RELIANCE',name:'Reliance',price:2456,cat:'nifty50'},
-  {sym:'NSE:TCS',name:'TCS',price:3890,cat:'nifty50'},
-  {sym:'NSE:HDFCBANK',name:'HDFC Bank',price:1645,cat:'nifty50'},
-  {sym:'NSE:INFY',name:'Infosys',price:1789,cat:'nifty50'},
-  {sym:'NSE:ICICIBANK',name:'ICICI Bank',price:1045,cat:'nifty50'},
-  {sym:'NSE:HINDUNILVR',name:'HUL',price:2456,cat:'nifty50'},
-  {sym:'NSE:ITC',name:'ITC',price:428,cat:'nifty50'},
-  {sym:'NSE:SBIN',name:'SBI',price:789,cat:'nifty50'},
-  {sym:'NSE:BHARTIARTL',name:'Airtel',price:1267,cat:'nifty50'},
-  {sym:'NSE:KOTAKBANK',name:'Kotak Bank',price:1756,cat:'nifty50'},
-  {sym:'NSE:LT',name:'L&T',price:3456,cat:'nifty50'},
-  {sym:'NSE:AXISBANK',name:'Axis Bank',price:1089,cat:'nifty50'},
-  {sym:'NSE:ASIANPAINT',name:'Asian Paint',price:3234,cat:'nifty50'},
-  {sym:'NSE:MARUTI',name:'Maruti Suzuki',price:12456,cat:'nifty50'},
-  {sym:'NSE:WIPRO',name:'Wipro',price:478,cat:'nifty50'},
-  {sym:'NSE:HCLTECH',name:'HCL Tech',price:1567,cat:'nifty50'},
-  {sym:'NSE:BAJFINANCE',name:'Bajaj Finance',price:7234,cat:'nifty50'},
-  {sym:'NSE:TITAN',name:'Titan',price:3678,cat:'nifty50'},
-  {sym:'NSE:NESTLEIND',name:'Nestle India',price:23456,cat:'nifty50'},
-  {sym:'NSE:ONGC',name:'ONGC',price:267,cat:'nifty50'},
-  {sym:'NSE:NTPC',name:'NTPC',price:356,cat:'nifty50'},
-  {sym:'NSE:POWERGRID',name:'PowerGrid',price:298,cat:'nifty50'},
-  {sym:'NSE:COALINDIA',name:'Coal India',price:445,cat:'nifty50'},
-  {sym:'NSE:ADANIENT',name:'Adani Ent',price:2567,cat:'nifty50'},
-  {sym:'NSE:ADANIPORTS',name:'Adani Ports',price:1345,cat:'nifty50'},
-  {sym:'NSE:TATAMOTORS',name:'Tata Motors',price:956,cat:'nifty50'},
-  {sym:'NSE:TATASTEEL',name:'Tata Steel',price:167,cat:'nifty50'},
-  {sym:'NSE:JSWSTEEL',name:'JSW Steel',price:889,cat:'nifty50'},
-  {sym:'NSE:SUNPHARMA',name:'Sun Pharma',price:1678,cat:'nifty50'},
-  {sym:'NSE:DRREDDY',name:'Dr Reddy',price:6234,cat:'nifty50'},
-  // Crypto
-  {sym:'BINANCE:BTCUSDT',name:'Bitcoin',price:8500000,cat:'crypto'},
-  {sym:'BINANCE:ETHUSDT',name:'Ethereum',price:245000,cat:'crypto'},
-  {sym:'BINANCE:BNBUSDT',name:'BNB',price:45000,cat:'crypto'},
-  {sym:'BINANCE:SOLUSDT',name:'Solana',price:15000,cat:'crypto'},
-  {sym:'BINANCE:ADAUSDT',name:'Cardano',price:45,cat:'crypto'},
+  {sym:'NSE:RELIANCE',name:'Reliance Industries',p:2456,cat:'nifty50'},
+  {sym:'NSE:TCS',name:'Tata Consultancy',p:3890,cat:'nifty50'},
+  {sym:'NSE:HDFCBANK',name:'HDFC Bank',p:1645,cat:'nifty50'},
+  {sym:'NSE:INFY',name:'Infosys',p:1789,cat:'nifty50'},
+  {sym:'NSE:ICICIBANK',name:'ICICI Bank',p:1045,cat:'nifty50'},
+  {sym:'NSE:HINDUNILVR',name:'HUL',p:2456,cat:'nifty50'},
+  {sym:'NSE:ITC',name:'ITC Limited',p:428,cat:'nifty50'},
+  {sym:'NSE:SBIN',name:'State Bank India',p:789,cat:'nifty50'},
+  {sym:'NSE:BHARTIARTL',name:'Bharti Airtel',p:1267,cat:'nifty50'},
+  {sym:'NSE:KOTAKBANK',name:'Kotak Bank',p:1756,cat:'nifty50'},
+  {sym:'NSE:LT',name:'Larsen & Toubro',p:3456,cat:'nifty50'},
+  {sym:'NSE:AXISBANK',name:'Axis Bank',p:1089,cat:'nifty50'},
+  {sym:'NSE:ASIANPAINT',name:'Asian Paints',p:3234,cat:'nifty50'},
+  {sym:'NSE:MARUTI',name:'Maruti Suzuki',p:12456,cat:'nifty50'},
+  {sym:'NSE:WIPRO',name:'Wipro',p:478,cat:'nifty50'},
+  {sym:'NSE:HCLTECH',name:'HCL Technologies',p:1567,cat:'nifty50'},
+  {sym:'NSE:BAJFINANCE',name:'Bajaj Finance',p:7234,cat:'nifty50'},
+  {sym:'NSE:TITAN',name:'Titan Company',p:3678,cat:'nifty50'},
+  {sym:'NSE:ONGC',name:'ONGC',p:267,cat:'nifty50'},
+  {sym:'NSE:NTPC',name:'NTPC Limited',p:356,cat:'nifty50'},
+  {sym:'NSE:POWERGRID',name:'Power Grid',p:298,cat:'nifty50'},
+  {sym:'NSE:COALINDIA',name:'Coal India',p:445,cat:'nifty50'},
+  {sym:'NSE:ADANIENT',name:'Adani Enterprises',p:2567,cat:'nifty50'},
+  {sym:'NSE:TATAMOTORS',name:'Tata Motors',p:956,cat:'nifty50'},
+  {sym:'NSE:TATASTEEL',name:'Tata Steel',p:167,cat:'nifty50'},
+  {sym:'NSE:SUNPHARMA',name:'Sun Pharma',p:1678,cat:'nifty50'},
+  {sym:'NSE:DRREDDY',name:'Dr Reddy Labs',p:6234,cat:'nifty50'},
+  {sym:'NSE:TECHM',name:'Tech Mahindra',p:1234,cat:'nifty50'},
+  {sym:'NSE:ULTRACEMCO',name:'UltraTech Cement',p:9876,cat:'nifty50'},
+  {sym:'NSE:JSWSTEEL',name:'JSW Steel',p:889,cat:'nifty50'},
+  {sym:'BINANCE:BTCUSDT',name:'Bitcoin',p:8500000,cat:'crypto'},
+  {sym:'BINANCE:ETHUSDT',name:'Ethereum',p:245000,cat:'crypto'},
+  {sym:'BINANCE:BNBUSDT',name:'BNB',p:45000,cat:'crypto'},
+  {sym:'BINANCE:SOLUSDT',name:'Solana',p:15000,cat:'crypto'},
+  {sym:'BINANCE:ADAUSDT',name:'Cardano',p:45,cat:'crypto'},
+  {sym:'BINANCE:XRPUSDT',name:'Ripple XRP',p:52,cat:'crypto'},
+  {sym:'BINANCE:DOGEUSDT',name:'Dogecoin',p:8,cat:'crypto'},
 ];
 
-// ============================================================
+// =============================================
 // GLOBAL STATE
-// ============================================================
-let currentUser = null;
-let currentProfile = null;
-let selectedStock = STOCKS[0];
-let orderSide = 'buy';
-let quickOrderSide = 'buy';
-let tvWidget = null;
-let stockPrices = {};
-let adminSettings = {};
-let currentCategory = 'all';
+// =============================================
+let gUser = null, gClient = null;
+let gStock = STOCKS[0];
+let gSide = 'buy', gQOSide = 'buy';
+let gPrices = {};
+let gAdmin = {};
+let gCat = 'all';
 
-// Init prices
 STOCKS.forEach(s => {
-  stockPrices[s.sym] = {
-    price: s.price,
-    change: (Math.random() * 4 - 2).toFixed(2),
-    high: s.price * 1.02,
-    low: s.price * 0.98
+  gPrices[s.sym] = {
+    price: s.p,
+    change: +(Math.random()*4-2).toFixed(2),
+    high: s.p*1.02, low: s.p*0.98
   };
 });
 
-// ============================================================
+// =============================================
 // AUTH FUNCTIONS
-// ============================================================
-function switchAuthTab(tab) {
-  document.getElementById('login-form').classList.toggle('hidden', tab !== 'login');
-  document.getElementById('register-form').classList.toggle('hidden', tab !== 'register');
-  document.querySelectorAll('#auth-page .tab-btn').forEach((b,i) => {
-    b.classList.toggle('active', (i===0 && tab==='login') || (i===1 && tab==='register'));
-  });
+// =============================================
+function switchAuth(tab) {
+  const isLogin = tab==='login';
+  document.getElementById('form-login').classList.toggle('hidden', !isLogin);
+  document.getElementById('form-register').classList.toggle('hidden', isLogin);
+  document.getElementById('tab-login').classList.toggle('active', isLogin);
+  document.getElementById('tab-register').classList.toggle('active', !isLogin);
 }
 
-async function loginUser() {
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  if (!email || !password) return showToast('Please fill all fields', 'red');
-  showToast('Logging in...', 'blue');
-  const { data, error } = await sb.auth.signInWithPassword({ email, password });
-  if (error) return showToast(error.message, 'red');
-  currentUser = data.user;
-  await loadProfile();
-  showMainApp();
+async function doLogin() {
+  const email = document.getElementById('l-email').value.trim();
+  const pass = document.getElementById('l-pass').value;
+  if(!email||!pass) return toast('Fill all fields','red');
+  toast('Logging in...','blue');
+  const {data,error} = await sb.auth.signInWithPassword({email,password:pass});
+  if(error) return toast(error.message,'red');
+  gUser = data.user;
+  const ok = await loadClient();
+  if(ok) launchApp();
 }
 
-async function registerUser() {
-  const name = document.getElementById('reg-name').value.trim();
-  const email = document.getElementById('reg-email').value.trim();
-  const phone = document.getElementById('reg-phone').value.trim();
-  const aadhaar = document.getElementById('reg-aadhaar').value.trim();
-  const pan = document.getElementById('reg-pan').value.trim().toUpperCase();
-  const password = document.getElementById('reg-password').value;
-  const confirm = document.getElementById('reg-confirm').value;
-  if (!name||!email||!phone||!aadhaar||!password) return showToast('Fill all fields', 'red');
-  if (password !== confirm) return showToast('Passwords do not match', 'red');
-  if (aadhaar.length !== 12) return showToast('Invalid Aadhaar number', 'red');
-  showToast('Creating account...', 'blue');
-  const { data, error } = await sb.auth.signUp({ email, password });
-  if (error) return showToast(error.message, 'red');
-  const { error: profileError } = await sb.from('profiles').insert({
-    id: data.user.id, full_name: name, email, phone_number: phone,
-    aadhaar_number: aadhaar, pan_number: pan, balance: 0
-  });
-  if (profileError) return showToast(profileError.message, 'red');
-  showToast('Account created! Please login.', 'green');
-  switchAuthTab('login');
+async function doRegister() {
+  const name    = document.getElementById('r-name').value.trim();
+  const email   = document.getElementById('r-email').value.trim();
+  const phone   = document.getElementById('r-phone').value.trim();
+  const aadhaar = document.getElementById('r-aadhaar').value.trim();
+  const pan     = document.getElementById('r-pan').value.trim().toUpperCase();
+  const pass    = document.getElementById('r-pass').value;
+  const confirm = document.getElementById('r-confirm').value;
+
+  if(!name||!email||!phone||!aadhaar||!pan||!pass) return toast('Please fill all fields','red');
+  if(pass !== confirm) return toast('Passwords do not match','red');
+  if(pass.length < 6) return toast('Password minimum 6 characters','red');
+  if(aadhaar.length !== 12) return toast('Aadhaar must be 12 digits','red');
+  if(pan.length !== 10) return toast('Invalid PAN number','red');
+
+  const btn = document.getElementById('reg-btn');
+  const status = document.getElementById('reg-status');
+  btn.disabled = true;
+  btn.textContent = 'Creating Account...';
+  status.innerHTML = '<span style="color:#f0b90b;">⏳ Please wait...</span>';
+
+  try {
+    // Step 1: Create auth user
+    const {data:authData, error:authErr} = await sb.auth.signUp({email, password:pass});
+    if(authErr) throw new Error(authErr.message);
+    if(!authData?.user) throw new Error('Account creation failed');
+
+    const uid = authData.user.id;
+
+    // Step 2: Insert into client_details
+    const {error:insertErr} = await sb.from('client_details').insert({
+      auth_user_id: uid,
+      full_name: name,
+      email: email,
+      phone_number: phone,
+      aadhaar_number: aadhaar,
+      pan_number: pan,
+      balance: 0,
+      credit_score: 750,
+      is_verified: false,
+      is_frozen: false,
+      kyc_status: 'pending'
+    });
+
+    if(insertErr) throw new Error('Profile save failed: ' + insertErr.message);
+
+    status.innerHTML = '<span style="color:#0ecb81;">✅ Account created! Please login now.</span>';
+    btn.textContent = 'Create Account';
+    btn.disabled = false;
+    toast('Account created successfully!','green');
+    setTimeout(()=>switchAuth('login'), 2000);
+
+  } catch(e) {
+    status.innerHTML = `<span style="color:#f6465d;">❌ ${e.message}</span>`;
+    btn.textContent = 'Create Account';
+    btn.disabled = false;
+    toast(e.message,'red');
+  }
 }
 
-async function logoutUser() {
+async function doLogout() {
   await sb.auth.signOut();
-  currentUser = null; currentProfile = null;
+  gUser=null; gClient=null;
   document.getElementById('auth-page').classList.remove('hidden');
   document.getElementById('main-app').classList.add('hidden');
-  showToast('Logged out successfully', 'green');
+  toast('Logged out','green');
 }
 
-// ============================================================
-// PROFILE & APP LOAD
-// ============================================================
-async function loadProfile() {
-  if (!currentUser) return;
-  const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
-  currentProfile = data;
-  if (data) {
-    if (data.is_frozen) {
-      await sb.auth.signOut();
-      showToast('Your account has been frozen. Contact support.', 'red');
-      return;
-    }
-    updateNavBalance();
-    updateProfilePage();
+// =============================================
+// CLIENT DATA FUNCTIONS
+// =============================================
+async function loadClient() {
+  if(!gUser) return false;
+  const {data, error} = await sb.from('client_details')
+    .select('*')
+    .eq('auth_user_id', gUser.id)
+    .single();
+
+  if(error || !data) {
+    toast('Profile not found: '+( error?.message||'unknown'),'red');
+    return false;
   }
+
+  if(data.is_frozen) {
+    await sb.auth.signOut();
+    toast('Account is frozen. Contact support.','red');
+    return false;
+  }
+
+  gClient = data;
+  updateAllBalances();
+  fillProfilePage();
+  return true;
 }
 
-function updateNavBalance() {
-  if (!currentProfile) return;
-  const bal = parseFloat(currentProfile.balance || 0);
-  document.getElementById('nav-balance').textContent = '₹' + bal.toLocaleString('en-IN', {minimumFractionDigits:2});
-  document.getElementById('wallet-balance').textContent = '₹' + bal.toLocaleString('en-IN', {minimumFractionDigits:2});
-  document.getElementById('pf-balance').textContent = '₹' + bal.toLocaleString('en-IN', {minimumFractionDigits:2});
-  document.getElementById('avail-balance').textContent = '₹' + bal.toLocaleString('en-IN', {minimumFractionDigits:2});
-  document.getElementById('qo-bal').textContent = '₹' + bal.toLocaleString('en-IN', {minimumFractionDigits:2});
+function updateAllBalances() {
+  if(!gClient) return;
+  const bal = parseFloat(gClient.balance||0);
+  const fmt = (n) => '₹'+n.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('nav-bal').textContent = fmt(bal);
+  document.getElementById('wlt-bal').textContent = fmt(bal);
+  document.getElementById('pf-bal').textContent = fmt(bal);
+  document.getElementById('po-bal').textContent = fmt(bal);
+  document.getElementById('qo-bal').textContent = fmt(bal);
+  document.getElementById('pf-cs').textContent = gClient.credit_score||750;
 }
 
-function updateProfilePage() {
-  if (!currentProfile) return;
-  document.getElementById('profile-name').textContent = currentProfile.full_name || 'User';
-  document.getElementById('profile-email').textContent = currentProfile.email || '';
-  document.getElementById('profile-phone').textContent = currentProfile.phone_number || '-';
-  document.getElementById('profile-aadhaar').textContent = currentProfile.aadhaar_number ? 
-    currentProfile.aadhaar_number.replace(/(.{4})/g,'$1-').slice(0,-1) : '-';
-  document.getElementById('profile-pan').textContent = currentProfile.pan_number || '-';
-  document.getElementById('profile-credit').textContent = currentProfile.credit_score || 750;
-  document.getElementById('pf-credit').textContent = currentProfile.credit_score || 750;
-  document.getElementById('profile-joined').textContent = new Date(currentProfile.created_at).toLocaleDateString('en-IN');
-  const initial = (currentProfile.full_name || 'U')[0].toUpperCase();
-  document.getElementById('nav-avatar').textContent = initial;
-  document.getElementById('profile-avatar').textContent = initial;
-  const statusEl = document.getElementById('profile-status');
-  if (currentProfile.is_verified) {
-    statusEl.innerHTML = '<span class="bg-green-900 text-green-400 px-2 py-1 rounded text-xs"><i class="fas fa-check-circle mr-1"></i>KYC Verified</span>';
+function fillProfilePage() {
+  if(!gClient) return;
+  const init = (gClient.full_name||'U')[0].toUpperCase();
+  document.getElementById('nav-avatar').textContent = init;
+  document.getElementById('pf-avatar').textContent = init;
+  document.getElementById('pf-name').textContent = gClient.full_name||'User';
+  document.getElementById('pf-email').textContent = gClient.email||'';
+  document.getElementById('pf-phone').textContent = gClient.phone_number||'-';
+  document.getElementById('pf-pan').textContent = gClient.pan_number||'-';
+  document.getElementById('pf-credit').textContent = gClient.credit_score||750;
+  document.getElementById('pf-joined').textContent = new Date(gClient.created_at).toLocaleDateString('en-IN');
+
+  // Aadhaar masked
+  const aad = gClient.aadhaar_number||'';
+  document.getElementById('pf-aadhaar').textContent = aad ? aad.slice(0,4)+'XXXX'+aad.slice(8) : '-';
+
+  // Verified badge
+  const vBadge = document.getElementById('pf-ver-badge');
+  const kycEl  = document.getElementById('kyc-status');
+  if(gClient.is_verified) {
+    vBadge.innerHTML = '<span style="background:#0ecb8130;color:#0ecb81;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;"><i class="fas fa-check-circle mr-1"></i>KYC Verified</span>';
+    kycEl.innerHTML  = '<div style="color:#0ecb81;font-weight:700;"><i class="fas fa-check-circle mr-2"></i>Account Verified</div>';
   } else {
-    statusEl.innerHTML = '<span class="bg-yellow-900 text-yellow-400 px-2 py-1 rounded text-xs"><i class="fas fa-clock mr-1"></i>KYC Pending</span>';
+    vBadge.innerHTML = '<span style="background:#f0b90b30;color:#f0b90b;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;"><i class="fas fa-clock mr-1"></i>KYC Pending</span>';
+    kycEl.innerHTML  = '<div style="color:#f0b90b;font-weight:700;"><i class="fas fa-clock mr-2"></i>KYC Pending Verification</div>';
   }
-  // Load saved bank details
-  if (currentProfile.bank_details) {
-    try {
-      const bd = typeof currentProfile.bank_details === 'string' ? 
-        JSON.parse(currentProfile.bank_details) : currentProfile.bank_details;
-      if (bd.bank_name) document.getElementById('bank-name').value = bd.bank_name;
-      if (bd.account_number) document.getElementById('bank-acc').value = bd.account_number;
-      if (bd.ifsc) document.getElementById('bank-ifsc').value = bd.ifsc;
-      if (bd.upi) document.getElementById('bank-upi').value = bd.upi;
-      document.getElementById('saved-bank-info').innerHTML = `
-        <div class="text-blue-400 font-bold mb-2"><i class="fas fa-university mr-2"></i>Saved Bank Details</div>
-        <div class="text-xs space-y-1">
-          <div>Bank: <b>${bd.bank_name||'-'}</b></div>
-          <div>Acc: <b>${bd.account_number||'-'}</b></div>
-          <div>UPI: <b>${bd.upi||'-'}</b></div>
-        </div>`;
-    } catch(e) {}
-  }
+
+  // Bank details
+  if(gClient.bank_name) document.getElementById('bk-bank').value   = gClient.bank_name;
+  if(gClient.account_holder_name) document.getElementById('bk-holder').value = gClient.account_holder_name;
+  if(gClient.account_number) document.getElementById('bk-acc').value   = gClient.account_number;
+  if(gClient.ifsc_code)      document.getElementById('bk-ifsc').value  = gClient.ifsc_code;
+  if(gClient.upi_id)         document.getElementById('bk-upi').value   = gClient.upi_id;
+
+  // Withdrawal bank info display
+  document.getElementById('wd-bank-info').innerHTML = gClient.bank_name
+    ? `<div style="color:#1890ff;font-weight:700;margin-bottom:6px;"><i class="fas fa-university mr-2"></i>Saved Bank Details</div>
+       <div style="font-size:12px;line-height:1.8;">
+         Bank: <b>${gClient.bank_name}</b><br>
+         A/c: <b>${gClient.account_number||'-'}</b><br>
+         UPI: <b>${gClient.upi_id||'-'}</b>
+       </div>`
+    : '<div style="color:#f0b90b;">⚠️ No bank details saved. Go to Profile to add.</div>';
 }
 
-function showMainApp() {
+// =============================================
+// LAUNCH APP
+// =============================================
+function launchApp() {
   document.getElementById('auth-page').classList.add('hidden');
   document.getElementById('main-app').classList.remove('hidden');
-  initTradingView();
-  renderStocksList();
-  renderMarketTable();
+  initTV();
+  renderSidebar();
+  renderMktTable();
   loadAdminSettings();
   loadHoldings();
-  loadTransactions();
+  loadTx();
   loadOrders('all');
-  loadNotifications();
+  loadNotifs();
   updateTicker();
-  setInterval(simulatePriceUpdates, 2000);
-  setInterval(updateOrderBook, 1500);
-  setInterval(updateRecentTrades, 3000);
-  setInterval(() => loadProfile(), 30000);
+  setInterval(simPrices, 2000);
+  setInterval(updateOB, 1500);
+  setInterval(updateRT, 3500);
+  setInterval(()=>loadClient(), 30000);
   showPage('trade');
 }
 
-// ============================================================
-// TRADINGVIEW CHART
-// ============================================================
-function initTradingView() {
-  if (tvWidget) { tvWidget.remove(); }
-  tvWidget = new TradingView.widget({
-    container_id: 'tv-chart',
-    symbol: selectedStock.sym,
-    interval: 'D',
-    timezone: 'Asia/Kolkata',
-    theme: 'dark',
-    style: '1',
-    locale: 'en',
-    toolbar_bg: '#1e2329',
-    enable_publishing: false,
-    allow_symbol_change: true,
-    save_image: false,
-    autosize: true,
-    studies: ['RSI@tv-basicstudies','MACD@tv-basicstudies','BB@tv-basicstudies'],
-    withdateranges: true,
-    hide_side_toolbar: false,
-    details: true,
-    hotlist: true,
-    calendar: false,
+// =============================================
+// TRADINGVIEW
+// =============================================
+function initTV() {
+  new TradingView.widget({
+    container_id:'tv-chart',
+    symbol: gStock.sym,
+    interval:'D', timezone:'Asia/Kolkata',
+    theme:'dark', style:'1', locale:'en',
+    toolbar_bg:'#1e2329',
+    enable_publishing:false,
+    allow_symbol_change:true,
+    save_image:false, autosize:true,
+    studies:['RSI@tv-basicstudies','MACD@tv-basicstudies'],
+    withdateranges:true,
   });
 }
 
-function changeSymbol(stock) {
-  selectedStock = stock;
-  document.getElementById('selected-symbol').textContent = stock.sym.split(':')[1];
-  const pd = stockPrices[stock.sym];
-  document.getElementById('selected-price').textContent = '₹' + pd.price.toLocaleString('en-IN');
+function pickStock(stock) {
+  gStock = stock;
+  const pd = gPrices[stock.sym];
+  const sym = stock.sym.split(':')[1];
+  document.getElementById('hdr-sym').textContent = sym;
+  document.getElementById('hdr-price').textContent = '₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
   const chg = parseFloat(pd.change);
-  document.getElementById('selected-change').innerHTML = chg >= 0 ? 
-    `<span class="green">+${chg}% ▲</span>` : `<span class="red">${chg}% ▼</span>`;
-  document.getElementById('ob-price').textContent = '₹' + pd.price.toLocaleString('en-IN');
-  document.getElementById('order-price').value = pd.price;
-  document.getElementById('place-order-btn').textContent = `${orderSide.toUpperCase()} ${stock.sym.split(':')[1]}`;
-  document.getElementById('qo-stock').textContent = stock.sym.split(':')[1];
-  document.getElementById('qo-price').textContent = '₹' + pd.price.toLocaleString('en-IN');
-  if (tvWidget) {
-    try { tvWidget.setSymbol(stock.sym, 'D'); } catch(e) { initTradingView(); }
-  }
-  updateOrderBook();
+  document.getElementById('hdr-chg').innerHTML = chg>=0
+    ? `<span class="green">+${chg}% ▲</span>`
+    : `<span class="red">${chg}% ▼</span>`;
+  document.getElementById('hdr-high').textContent = '₹'+pd.high.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('hdr-low').textContent  = '₹'+pd.low.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('hdr-vol').textContent  = (Math.random()*100+10).toFixed(1)+'M';
+  document.getElementById('ob-cur').textContent   = '₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('po-price').value = pd.price.toFixed(2);
+  document.getElementById('po-btn').textContent = `${gSide.toUpperCase()} ${sym}`;
+  document.getElementById('qo-sym').textContent = sym;
+  document.getElementById('qo-price').textContent = '₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
+  updateOB();
+  // Change TV symbol
+  try {
+    const iframe = document.querySelector('#tv-chart iframe');
+    if(iframe) {
+      const w = iframe.contentWindow;
+      if(w && w.tvWidget) w.tvWidget.setSymbol(stock.sym,'D');
+    }
+  } catch(e){}
 }
 
-// ============================================================
-// STOCKS LIST (SIDEBAR)
-// ============================================================
-function renderStocksList() {
-  const container = document.getElementById('stocks-list');
-  const filtered = STOCKS.filter(s => {
-    const search = (document.getElementById('stock-search')?.value || '').toLowerCase();
-    const catMatch = currentCategory === 'all' || s.cat === currentCategory;
-    const searchMatch = !search || s.name.toLowerCase().includes(search) || s.sym.toLowerCase().includes(search);
-    return catMatch && searchMatch;
+// =============================================
+// SIDEBAR
+// =============================================
+function renderSidebar() {
+  const q = (document.getElementById('s-search')?.value||'').toLowerCase();
+  const list = STOCKS.filter(s=>{
+    const cm = gCat==='all'||s.cat===gCat;
+    const sm = !q||s.name.toLowerCase().includes(q)||s.sym.toLowerCase().includes(q);
+    return cm&&sm;
   });
-  container.innerHTML = filtered.map(s => {
-    const pd = stockPrices[s.sym];
-    const chg = parseFloat(pd?.change || 0);
-    return `<div class="stock-row items-center cursor-pointer hover:bg-gray-800 px-3 py-2 flex justify-between" onclick='changeSymbol(${JSON.stringify(s)})'>
+  document.getElementById('sidebar-list').innerHTML = list.map(s=>{
+    const pd = gPrices[s.sym];
+    const chg = parseFloat(pd?.change||0);
+    return `<div class="stock-item" onclick='pickStock(${JSON.stringify(s)})'>
       <div>
-        <div class="font-bold text-xs">${s.sym.split(':')[1]}</div>
-        <div class="text-gray-500" style="font-size:10px;">${s.name}</div>
+        <div style="font-size:12px;font-weight:700;">${s.sym.split(':')[1]}</div>
+        <div style="font-size:10px;color:#5e6673;">${s.name}</div>
       </div>
-      <div class="text-right">
-        <div class="text-xs font-bold">₹${(pd?.price||s.price).toLocaleString('en-IN')}</div>
-        <div class="text-xs ${chg>=0?'green':'red'}">${chg>=0?'+':''}${chg}%</div>
+      <div style="text-align:right;">
+        <div style="font-size:11px;font-weight:700;">₹${(pd?.price||s.p).toLocaleString('en-IN',{maximumFractionDigits:0})}</div>
+        <div style="font-size:10px;color:${chg>=0?'#0ecb81':'#f6465d'}">${chg>=0?'+':''}${chg}%</div>
       </div>
     </div>`;
   }).join('');
 }
 
-function filterStocks() { renderStocksList(); }
-function filterCategory(cat) {
-  currentCategory = cat;
-  document.querySelectorAll('#page-trade .tab-btn').forEach((b,i) => {
-    b.classList.toggle('active', (cat==='all'&&i===0)||(cat==='nifty50'&&i===1)||(cat==='crypto'&&i===2));
-  });
-  renderStocksList();
+function filterSidebar(){renderSidebar();}
+function setCat(cat,btn){
+  gCat=cat;
+  document.querySelectorAll('#pg-trade .tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderSidebar();
 }
 
-// ============================================================
-// MARKET TABLE
-// ============================================================
-function renderMarketTable() {
-  const container = document.getElementById('market-table');
-  container.innerHTML = STOCKS.map(s => {
-    const pd = stockPrices[s.sym];
-    const chg = parseFloat(pd?.change || 0);
-    const vol = (Math.random() * 50 + 5).toFixed(1) + 'M';
-    return `<div class="stock-row items-center cursor-pointer" onclick='changeSymbol(${JSON.stringify(s)});showPage("trade")'>
+// =============================================
+// MARKETS TABLE
+// =============================================
+function renderMktTable(q='') {
+  const list = q ? STOCKS.filter(s=>s.name.toLowerCase().includes(q.toLowerCase())||s.sym.toLowerCase().includes(q.toLowerCase())) : STOCKS;
+  document.getElementById('mkt-table').innerHTML = list.map(s=>{
+    const pd = gPrices[s.sym];
+    const chg = parseFloat(pd?.change||0);
+    const vol = (Math.random()*100+5).toFixed(1)+'M';
+    return `<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:12px 16px;border-bottom:1px solid #2b3139;cursor:pointer;transition:all 0.15s;" 
+         onmouseover="this.style.background='#2b3139'" onmouseout="this.style.background=''"
+         onclick='pickStock(${JSON.stringify(s)});showPage("trade")'>
       <div>
-        <div class="font-bold">${s.sym.split(':')[1]}</div>
-        <div class="text-gray-500 text-xs">${s.name}</div>
+        <div style="font-weight:700;">${s.sym.split(':')[1]}</div>
+        <div style="font-size:11px;color:#848e9c;">${s.name}</div>
       </div>
-      <div class="text-right font-bold">₹${(pd?.price||s.price).toLocaleString('en-IN')}</div>
-      <div class="text-right ${chg>=0?'text-green-400':'text-red-400'} font-bold">${chg>=0?'+':''}${chg}%</div>
-      <div class="text-right text-gray-400">${vol}</div>
+      <div style="text-align:right;font-weight:700;">₹${(pd?.price||s.p).toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
+      <div style="text-align:right;font-weight:700;color:${chg>=0?'#0ecb81':'#f6465d'}">${chg>=0?'+':''}${chg}%</div>
+      <div style="text-align:right;color:#848e9c;">${vol}</div>
     </div>`;
   }).join('');
 }
+function filterMkt(v){renderMktTable(v);}
 
-function filterMarketStocks() {
-  const q = document.getElementById('market-search').value.toLowerCase();
-  const container = document.getElementById('market-table');
-  const filtered = STOCKS.filter(s => s.name.toLowerCase().includes(q) || s.sym.toLowerCase().includes(q));
-  container.innerHTML = filtered.map(s => {
-    const pd = stockPrices[s.sym];
-    const chg = parseFloat(pd?.change || 0);
-    return `<div class="stock-row items-center cursor-pointer" onclick='changeSymbol(${JSON.stringify(s)});showPage("trade")'>
-      <div><div class="font-bold">${s.sym.split(':')[1]}</div><div class="text-gray-500 text-xs">${s.name}</div></div>
-      <div class="text-right font-bold">₹${(pd?.price||s.price).toLocaleString('en-IN')}</div>
-      <div class="text-right ${chg>=0?'text-green-400':'text-red-400'} font-bold">${chg>=0?'+':''}${chg}%</div>
-      <div class="text-right text-gray-400">${(Math.random()*50+5).toFixed(1)}M</div>
-    </div>`;
-  }).join('');
-}
-
-// ============================================================
-// ORDER BOOK SIMULATION
-// ============================================================
-function updateOrderBook() {
-  const basePrice = stockPrices[selectedStock.sym]?.price || selectedStock.price;
-  let sellHTML = '', buyHTML = '';
-  for (let i = 10; i > 0; i--) {
-    const price = basePrice + (i * basePrice * 0.0003);
-    const qty = (Math.random() * 500 + 50).toFixed(0);
-    const total = (price * qty / 1000).toFixed(1);
-    const pct = Math.random() * 80 + 10;
-    sellHTML += `<div class="order-book-row relative" style="color:#f6465d;">
-      <div class="depth-bar" style="right:0;width:${pct}%;background:#f6465d;"></div>
-      <span style="position:relative;">${price.toFixed(2)}</span>
-      <span class="text-center" style="position:relative;">${qty}</span>
-      <span class="text-right" style="position:relative;">${total}K</span>
+// =============================================
+// ORDER BOOK
+// =============================================
+function updateOB() {
+  const bp = gPrices[gStock.sym]?.price||gStock.p;
+  let sh='', bh='';
+  for(let i=10;i>0;i--) {
+    const p=(bp+(i*bp*0.0003)).toFixed(2);
+    const q=Math.floor(Math.random()*500+50);
+    const t=(p*q/1000).toFixed(1);
+    const pct=Math.random()*70+10;
+    sh+=`<div class="order-row" style="color:#f6465d;">
+      <div class="depth-fill" style="right:0;width:${pct}%;background:#f6465d;"></div>
+      <span style="position:relative;z-index:1;">${p}</span>
+      <span style="text-align:center;position:relative;z-index:1;">${q}</span>
+      <span style="text-align:right;position:relative;z-index:1;">${t}K</span>
     </div>`;
   }
-  for (let i = 1; i <= 10; i++) {
-    const price = basePrice - (i * basePrice * 0.0003);
-    const qty = (Math.random() * 500 + 50).toFixed(0);
-    const total = (price * qty / 1000).toFixed(1);
-    const pct = Math.random() * 80 + 10;
-    buyHTML += `<div class="order-book-row relative" style="color:#0ecb81;">
-      <div class="depth-bar" style="left:0;width:${pct}%;background:#0ecb81;"></div>
-      <span style="position:relative;">${price.toFixed(2)}</span>
-      <span class="text-center" style="position:relative;">${qty}</span>
-      <span class="text-right" style="position:relative;">${total}K</span>
+  for(let i=1;i<=10;i++) {
+    const p=(bp-(i*bp*0.0003)).toFixed(2);
+    const q=Math.floor(Math.random()*500+50);
+    const t=(p*q/1000).toFixed(1);
+    const pct=Math.random()*70+10;
+    bh+=`<div class="order-row" style="color:#0ecb81;">
+      <div class="depth-fill" style="left:0;width:${pct}%;background:#0ecb81;"></div>
+      <span style="position:relative;z-index:1;">${p}</span>
+      <span style="text-align:center;position:relative;z-index:1;">${q}</span>
+      <span style="text-align:right;position:relative;z-index:1;">${t}K</span>
     </div>`;
   }
-  document.getElementById('ob-sells').innerHTML = sellHTML;
-  document.getElementById('ob-buys').innerHTML = buyHTML;
+  document.getElementById('ob-sells').innerHTML=sh;
+  document.getElementById('ob-buys').innerHTML=bh;
+  document.getElementById('ob-cur').textContent='₹'+(gPrices[gStock.sym]?.price||gStock.p).toLocaleString('en-IN',{maximumFractionDigits:2});
 }
 
-function updateRecentTrades() {
-  const basePrice = stockPrices[selectedStock.sym]?.price || selectedStock.price;
-  let html = '';
-  for (let i = 0; i < 20; i++) {
-    const isBuy = Math.random() > 0.5;
-    const price = basePrice * (1 + (Math.random() * 0.002 - 0.001));
-    const size = (Math.random() * 100 + 1).toFixed(2);
-    const now = new Date();
-    const time = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
-    html += `<div class="order-book-row" style="color:${isBuy?'#0ecb81':'#f6465d'}">
-      <span>${price.toFixed(2)}</span>
-      <span class="text-center">${size}</span>
-      <span class="text-right">${time}</span>
+function updateRT() {
+  const bp=gPrices[gStock.sym]?.price||gStock.p;
+  let h='';
+  const now=new Date();
+  for(let i=0;i<20;i++){
+    const ib=Math.random()>0.5;
+    const p=(bp*(1+(Math.random()*0.002-0.001))).toFixed(2);
+    const sz=(Math.random()*200+1).toFixed(0);
+    const sec=String(Math.floor(Math.random()*60)).padStart(2,'0');
+    h+=`<div class="order-row" style="color:${ib?'#0ecb81':'#f6465d'}">
+      <span>${p}</span><span style="text-align:center;">${sz}</span>
+      <span style="text-align:right;">${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}:${sec}</span>
     </div>`;
   }
-  document.getElementById('trades-list').innerHTML = html;
+  document.getElementById('rt-list').innerHTML=h;
 }
 
-// ============================================================
+// =============================================
 // PRICE SIMULATION
-// ============================================================
-function simulatePriceUpdates() {
-  STOCKS.forEach(s => {
-    const old = stockPrices[s.sym].price;
-    const change = old * (Math.random() * 0.003 - 0.0015);
-    stockPrices[s.sym].price = Math.max(1, old + change);
-    stockPrices[s.sym].change = (parseFloat(stockPrices[s.sym].change) + (Math.random()*0.1-0.05)).toFixed(2);
+// =============================================
+function simPrices(){
+  STOCKS.forEach(s=>{
+    const old=gPrices[s.sym].price;
+    const d=old*(Math.random()*0.004-0.002);
+    gPrices[s.sym].price=Math.max(0.1,old+d);
+    gPrices[s.sym].change=+(parseFloat(gPrices[s.sym].change)+(Math.random()*0.1-0.05)).toFixed(2);
   });
-  renderStocksList();
-  const pd = stockPrices[selectedStock.sym];
-  document.getElementById('selected-price').textContent = '₹' + pd.price.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
-  document.getElementById('ob-price').textContent = '₹' + pd.price.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
-  document.getElementById('order-price').value = pd.price.toFixed(2);
+  renderSidebar();
+  const pd=gPrices[gStock.sym];
+  document.getElementById('hdr-price').textContent='₹'+pd.price.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+  document.getElementById('ob-cur').textContent='₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('po-price').value=pd.price.toFixed(2);
   updateTicker();
 }
 
-function updateTicker() {
-  const tickerContent = STOCKS.slice(0,15).map(s => {
-    const pd = stockPrices[s.sym];
-    const chg = parseFloat(pd.change);
-    return `<span class="mx-4"><b class="${chg>=0?'text-green-400':'text-red-400'}">${s.sym.split(':')[1]}</b> ₹${pd.price.toFixed(2)} <span class="${chg>=0?'text-green-400':'text-red-400'}">${chg>=0?'+':''}${chg}%</span></span>`;
+function updateTicker(){
+  const html=STOCKS.slice(0,18).map(s=>{
+    const pd=gPrices[s.sym];
+    const chg=parseFloat(pd.change);
+    return `<span style="margin:0 16px;">
+      <b style="color:${chg>=0?'#0ecb81':'#f6465d'}">${s.sym.split(':')[1]}</b>
+      ₹${pd.price.toFixed(2)}
+      <span style="color:${chg>=0?'#0ecb81':'#f6465d'}">${chg>=0?'+':''}${chg}%</span>
+    </span>`;
   }).join('');
-  document.getElementById('ticker-bar').innerHTML = tickerContent;
+  document.getElementById('ticker').innerHTML=html;
 }
 
-// ============================================================
-// PLACE ORDER
-// ============================================================
-function setOrderSide(side) {
-  orderSide = side;
-  document.getElementById('order-buy-btn').classList.toggle('opacity-50', side !== 'buy');
-  document.getElementById('order-sell-btn').classList.toggle('opacity-50', side !== 'sell');
-  document.getElementById('place-order-btn').className = side === 'buy' ? 'btn-green w-full py-3 rounded-lg font-bold' : 'btn-red w-full py-3 rounded-lg font-bold';
-  document.getElementById('place-order-btn').textContent = `${side.toUpperCase()} ${selectedStock.sym.split(':')[1]}`;
-}
-
-function calcOrderTotal() {
-  const qty = parseFloat(document.getElementById('order-qty').value) || 0;
-  const price = parseFloat(document.getElementById('order-price').value) || stockPrices[selectedStock.sym]?.price || 0;
-  const total = qty * price;
-  const fee = total * 0.001;
-  document.getElementById('order-total').textContent = '₹' + total.toLocaleString('en-IN', {maximumFractionDigits:2});
-  document.getElementById('order-fee').textContent = '₹' + fee.toFixed(2);
-}
-
-function setQtyPct(pct) {
-  if (!currentProfile) return;
-  const balance = parseFloat(currentProfile.balance || 0);
-  const price = parseFloat(stockPrices[selectedStock.sym]?.price || selectedStock.price);
-  const qty = Math.floor((balance * pct / 100) / price);
-  document.getElementById('order-qty').value = qty;
-  calcOrderTotal();
-}
-
-async function placeOrder() {
-  if (!currentProfile) return showToast('Please login first', 'red');
-  if (!currentProfile.is_verified) return showToast('Complete KYC to trade', 'yellow');
-  const qty = parseFloat(document.getElementById('order-qty').value);
-  const price = parseFloat(document.getElementById('order-price').value) || stockPrices[selectedStock.sym]?.price;
-  if (!qty || qty <= 0) return showToast('Enter valid quantity', 'red');
-  const total = qty * price;
-  const fee = total * 0.001;
-  const totalWithFee = total + fee;
-  if (orderSide === 'buy' && totalWithFee > parseFloat(currentProfile.balance)) {
-    return showToast('Insufficient balance', 'red');
-  }
-  showToast('Placing order...', 'blue');
-  const { error } = await sb.from('orders').insert({
-    user_id: currentUser.id,
-    stock_symbol: selectedStock.sym,
-    stock_name: selectedStock.name,
-    order_type: orderSide,
-    price_type: document.getElementById('order-type').value,
-    quantity: qty, price: price,
-    total_amount: totalWithFee,
-    status: 'completed'
+// =============================================
+// ORDER PLACEMENT
+// =============================================
+function rightTab(tab){
+  ['ob','po','rt'].forEach(t=>{
+    const el=document.getElementById('r-'+t);
+    el.classList.toggle('hidden',t!==tab);
+    el.classList.toggle('flex',t===tab&&t!=='rt');
   });
-  if (error) return showToast(error.message, 'red');
-  if (orderSide === 'buy') {
-    await sb.from('profiles').update({ balance: currentProfile.balance - totalWithFee }).eq('id', currentUser.id);
-    const { data: existing } = await sb.from('holdings').select('*').eq('user_id', currentUser.id).eq('stock_symbol', selectedStock.sym).single();
-    if (existing) {
-      const newQty = existing.quantity + qty;
-      const newAvg = ((existing.avg_price * existing.quantity) + (price * qty)) / newQty;
-      await sb.from('holdings').update({ quantity: newQty, avg_price: newAvg, total_invested: newQty * newAvg }).eq('id', existing.id);
-    } else {
-      await sb.from('holdings').insert({ user_id: currentUser.id, stock_symbol: selectedStock.sym, stock_name: selectedStock.name, quantity: qty, avg_price: price, total_invested: total });
-    }
-  } else {
-    const { data: holding } = await sb.from('holdings').select('*').eq('user_id', currentUser.id).eq('stock_symbol', selectedStock.sym).single();
-    if (!holding || holding.quantity < qty) return showToast('Insufficient shares', 'red');
-    const newQty = holding.quantity - qty;
-    if (newQty <= 0) await sb.from('holdings').delete().eq('id', holding.id);
-    else await sb.from('holdings').update({ quantity: newQty }).eq('id', holding.id);
-    await sb.from('profiles').update({ balance: parseFloat(currentProfile.balance) + total - fee }).eq('id', currentUser.id);
-  }
-  await loadProfile();
-  showToast(`${orderSide.toUpperCase()} order placed for ${qty} shares!`, 'green');
-  loadHoldings();
-  loadOrders('all');
-  document.getElementById('order-qty').value = '';
 }
 
-// ============================================================
-// QUICK ORDER (from header BUY/SELL buttons)
-// ============================================================
-function quickBuy() {
-  quickOrderSide = 'buy';
-  document.getElementById('qo-title').textContent = 'BUY ' + selectedStock.sym.split(':')[1];
-  document.getElementById('qo-stock').textContent = selectedStock.sym.split(':')[1];
-  document.getElementById('qo-price').textContent = '₹' + (stockPrices[selectedStock.sym]?.price||selectedStock.price).toLocaleString('en-IN');
-  document.getElementById('qo-submit-btn').className = 'btn-green w-full py-3 rounded-lg font-bold';
-  document.getElementById('qo-submit-btn').textContent = 'CONFIRM BUY';
-  openModal('quick-order-modal');
+function setPoSide(side){
+  gSide=side;
+  document.getElementById('po-buy').classList.toggle('opacity-40',side!=='buy');
+  document.getElementById('po-sell').classList.toggle('opacity-40',side!=='sell');
+  document.getElementById('po-btn').className=side==='buy'?'btn-green w-full py-3 font-bold text-sm':'btn-red w-full py-3 font-bold text-sm';
+  document.getElementById('po-btn').textContent=`${side.toUpperCase()} ${gStock.sym.split(':')[1]}`;
 }
 
-function quickSell() {
-  quickOrderSide = 'sell';
-  document.getElementById('qo-title').textContent = 'SELL ' + selectedStock.sym.split(':')[1];
-  document.getElementById('qo-stock').textContent = selectedStock.sym.split(':')[1];
-  document.getElementById('qo-price').textContent = '₹' + (stockPrices[selectedStock.sym]?.price||selectedStock.price).toLocaleString('en-IN');
-  document.getElementById('qo-submit-btn').className = 'btn-red w-full py-3 rounded-lg font-bold';
-  document.getElementById('qo-submit-btn').textContent = 'CONFIRM SELL';
-  openModal('quick-order-modal');
+function calcPO(){
+  const q=parseFloat(document.getElementById('po-qty').value)||0;
+  const p=parseFloat(document.getElementById('po-price').value)||gPrices[gStock.sym]?.price||0;
+  const t=q*p; const f=t*0.001;
+  document.getElementById('po-total').textContent='₹'+t.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('po-fee').textContent='₹'+f.toFixed(2);
 }
 
-function calcQOTotal() {
-  const qty = parseFloat(document.getElementById('qo-qty').value) || 0;
-  const price = stockPrices[selectedStock.sym]?.price || selectedStock.price;
-  const total = qty * price;
-  const fee = total * 0.001;
-  document.getElementById('qo-total').textContent = '₹' + total.toLocaleString('en-IN', {maximumFractionDigits:2});
-  document.getElementById('qo-fee').textContent = '₹' + fee.toFixed(2);
+function poPct(pct){
+  if(!gClient)return;
+  const bal=parseFloat(gClient.balance||0);
+  const p=gPrices[gStock.sym]?.price||gStock.p;
+  const q=Math.floor((bal*pct/100)/p);
+  document.getElementById('po-qty').value=q;
+  calcPO();
 }
 
-async function submitQuickOrder() {
-  const qty = parseFloat(document.getElementById('qo-qty').value);
-  if (!qty || qty <= 0) return showToast('Enter quantity', 'red');
-  const price = stockPrices[selectedStock.sym]?.price || selectedStock.price;
-  const total = qty * price;
-  if (quickOrderSide === 'buy' && total > parseFloat(currentProfile?.balance||0)) return showToast('Insufficient balance','red');
-  showToast('Processing...', 'blue');
-  const { error } = await sb.from('orders').insert({
-    user_id: currentUser.id, stock_symbol: selectedStock.sym, stock_name: selectedStock.name,
-    order_type: quickOrderSide, price_type: 'market', quantity: qty, price, total_amount: total, status: 'completed'
+async function doPlaceOrder(){
+  if(!gClient) return toast('Login required','red');
+  if(!gClient.is_verified) return toast('Complete KYC to trade','yellow');
+  const qty=parseFloat(document.getElementById('po-qty').value);
+  const price=parseFloat(document.getElementById('po-price').value)||gPrices[gStock.sym]?.price;
+  if(!qty||qty<=0) return toast('Enter quantity','red');
+  const total=qty*price;
+  const fee=total*0.001;
+  const totalFee=total+fee;
+  if(gSide==='buy'&&totalFee>parseFloat(gClient.balance))return toast('Insufficient balance','red');
+  await executeOrder(gSide,qty,price,total,fee);
+}
+
+async function executeOrder(side,qty,price,total,fee){
+  toast('Processing order...','blue');
+  const {error:oErr}=await sb.from('orders').insert({
+    client_id: gClient.id,
+    stock_symbol: gStock.sym,
+    stock_name: gStock.name,
+    order_type: side,
+    price_type: document.getElementById('po-type')?.value||'market',
+    quantity: qty, price, total_amount: total+(side==='buy'?fee:-fee),
+    status:'completed'
   });
-  if (error) return showToast(error.message, 'red');
-  if (quickOrderSide === 'buy') {
-    await sb.from('profiles').update({ balance: parseFloat(currentProfile.balance) - total }).eq('id', currentUser.id);
-    const { data: ex } = await sb.from('holdings').select('*').eq('user_id', currentUser.id).eq('stock_symbol', selectedStock.sym).single();
-    if (ex) {
-      const nq = ex.quantity + qty; const na = ((ex.avg_price*ex.quantity)+(price*qty))/nq;
+  if(oErr) return toast('Order failed: '+oErr.message,'red');
+
+  const newBal = side==='buy'
+    ? parseFloat(gClient.balance)-(total+fee)
+    : parseFloat(gClient.balance)+total-fee;
+
+  await sb.from('client_details').update({balance:newBal}).eq('id',gClient.id);
+
+  if(side==='buy'){
+    const {data:ex}=await sb.from('holdings').select('*').eq('client_id',gClient.id).eq('stock_symbol',gStock.sym).single();
+    if(ex){
+      const nq=parseFloat(ex.quantity)+qty;
+      const na=((parseFloat(ex.avg_price)*parseFloat(ex.quantity))+(price*qty))/nq;
       await sb.from('holdings').update({quantity:nq,avg_price:na,total_invested:nq*na}).eq('id',ex.id);
     } else {
-      await sb.from('holdings').insert({user_id:currentUser.id,stock_symbol:selectedStock.sym,stock_name:selectedStock.name,quantity:qty,avg_price:price,total_invested:total});
+      await sb.from('holdings').insert({client_id:gClient.id,stock_symbol:gStock.sym,stock_name:gStock.name,quantity:qty,avg_price:price,total_invested:total});
     }
   } else {
-    const { data: h } = await sb.from('holdings').select('*').eq('user_id',currentUser.id).eq('stock_symbol',selectedStock.sym).single();
-    if (!h||h.quantity<qty) return showToast('Not enough shares','red');
-    const nq = h.quantity - qty;
-    if (nq<=0) await sb.from('holdings').delete().eq('id',h.id);
+    const {data:h}=await sb.from('holdings').select('*').eq('client_id',gClient.id).eq('stock_symbol',gStock.sym).single();
+    if(!h||parseFloat(h.quantity)<qty) return toast('Insufficient shares','red');
+    const nq=parseFloat(h.quantity)-qty;
+    if(nq<=0) await sb.from('holdings').delete().eq('id',h.id);
     else await sb.from('holdings').update({quantity:nq}).eq('id',h.id);
-    await sb.from('profiles').update({balance:parseFloat(currentProfile.balance)+total}).eq('id',currentUser.id);
   }
-  await loadProfile(); updateNavBalance();
-  closeModal('quick-order-modal');
-  showToast(`Order executed! ${qty} shares ${quickOrderSide === 'buy' ? 'bought' : 'sold'}`, 'green');
-  loadHoldings(); loadOrders('all');
-  document.getElementById('qo-qty').value = '';
+
+  gClient.balance=newBal;
+  updateAllBalances();
+  toast(`${side.toUpperCase()} order: ${qty} shares of ${gStock.sym.split(':')[1]} executed!`,'green');
+  loadHoldings();loadOrders('all');
+  document.getElementById('po-qty').value='';
 }
 
-// ============================================================
+// =============================================
+// QUICK ORDER
+// =============================================
+function openQuick(side){
+  gQOSide=side;
+  document.getElementById('qo-title').textContent=`${side.toUpperCase()} ${gStock.sym.split(':')[1]}`;
+  document.getElementById('qo-sym').textContent=gStock.sym.split(':')[1];
+  document.getElementById('qo-price').textContent='₹'+(gPrices[gStock.sym]?.price||gStock.p).toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('qo-btn').className=side==='buy'?'btn-green w-full py-3 font-bold':'btn-red w-full py-3 font-bold';
+  document.getElementById('qo-btn').textContent=`CONFIRM ${side.toUpperCase()}`;
+  document.getElementById('qo-qty').value='';
+  document.getElementById('qo-tot').textContent='₹0';
+  document.getElementById('qo-fee').textContent='₹0';
+  openMod('mod-qo');
+}
+
+function calcQO(){
+  const q=parseFloat(document.getElementById('qo-qty').value)||0;
+  const p=gPrices[gStock.sym]?.price||gStock.p;
+  const t=q*p; const f=t*0.001;
+  document.getElementById('qo-tot').textContent='₹'+t.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('qo-fee').textContent='₹'+f.toFixed(2);
+}
+
+async function submitQO(){
+  if(!gClient) return toast('Login required','red');
+  if(!gClient.is_verified) return toast('Complete KYC to trade','yellow');
+  const qty=parseFloat(document.getElementById('qo-qty').value);
+  if(!qty||qty<=0) return toast('Enter quantity','red');
+  const price=gPrices[gStock.sym]?.price||gStock.p;
+  const total=qty*price; const fee=total*0.001;
+  if(gQOSide==='buy'&&(total+fee)>parseFloat(gClient.balance))return toast('Insufficient balance','red');
+  closeMod('mod-qo');
+  gSide=gQOSide;
+  await executeOrder(gQOSide,qty,price,total,fee);
+}
+
+// =============================================
 // HOLDINGS
-// ============================================================
-async function loadHoldings() {
-  if (!currentUser) return;
-  const { data } = await sb.from('holdings').select('*').eq('user_id', currentUser.id);
-  const container = document.getElementById('holdings-table');
-  const assetContainer = document.getElementById('asset-overview');
-  if (!data || data.length === 0) {
-    container.innerHTML = '<div class="p-8 text-center text-gray-500"><i class="fas fa-chart-pie text-4xl mb-3"></i><br>No holdings yet. Start trading!</div>';
-    assetContainer.innerHTML = '<div class="text-gray-500 text-sm">No assets yet</div>';
+// =============================================
+async function loadHoldings(){
+  if(!gClient) return;
+  const {data}=await sb.from('holdings').select('*').eq('client_id',gClient.id);
+  const body=document.getElementById('holdings-body');
+  const assetEl=document.getElementById('asset-sum');
+
+  if(!data||data.length===0){
+    body.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;"><i class="fas fa-chart-pie" style="font-size:2rem;margin-bottom:10px;display:block;"></i>No holdings yet. Start trading!</div>';
+    assetEl.innerHTML='<div style="color:#848e9c;font-size:13px;">No stock holdings</div>';
+    document.getElementById('pf-pv').textContent='₹0';
+    document.getElementById('pf-pnl').innerHTML='₹0';
     return;
   }
-  let totalPnL = 0;
-  container.innerHTML = data.map(h => {
-    const curPrice = stockPrices[h.stock_symbol]?.price || h.avg_price;
-    const pnl = (curPrice - h.avg_price) * h.quantity;
-    const pnlPct = ((curPrice - h.avg_price) / h.avg_price * 100).toFixed(2);
-    totalPnL += pnl;
-    return `<div class="grid grid-cols-5 px-4 py-3 border-b border-gray-800 text-sm hover:bg-gray-900 cursor-pointer" onclick='changeSymbol(STOCKS.find(s=>s.sym=="${h.stock_symbol}")||STOCKS[0]);showPage("trade")'>
-      <div><div class="font-bold">${h.stock_symbol.split(':')[1]}</div><div class="text-gray-500 text-xs">${h.stock_name||''}</div></div>
-      <div class="text-right">${parseFloat(h.quantity).toFixed(2)}</div>
-      <div class="text-right">₹${parseFloat(h.avg_price).toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
-      <div class="text-right">₹${curPrice.toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
-      <div class="text-right ${pnl>=0?'text-green-400':'text-red-400'}">
-        ${pnl>=0?'+':''}₹${Math.abs(pnl).toFixed(2)}<br><span class="text-xs">${pnlPct}%</span>
+
+  let totalPnL=0, totalVal=0;
+  body.innerHTML=data.map(h=>{
+    const cur=gPrices[h.stock_symbol]?.price||parseFloat(h.avg_price);
+    const pnl=(cur-parseFloat(h.avg_price))*parseFloat(h.quantity);
+    const pnlP=((cur-parseFloat(h.avg_price))/parseFloat(h.avg_price)*100).toFixed(2);
+    totalPnL+=pnl; totalVal+=cur*parseFloat(h.quantity);
+    return `<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;padding:12px 16px;border-bottom:1px solid #2b3139;font-size:13px;cursor:pointer;"
+        onmouseover="this.style.background='#2b3139'" onmouseout="this.style.background=''"
+        onclick='pickStock(STOCKS.find(s=>s.sym=="${h.stock_symbol}")||STOCKS[0]);showPage("trade")'>
+      <div><div style="font-weight:700;">${h.stock_symbol.split(':')[1]}</div><div style="font-size:11px;color:#848e9c;">${h.stock_name||''}</div></div>
+      <div style="text-align:right;">${parseFloat(h.quantity).toFixed(2)}</div>
+      <div style="text-align:right;">₹${parseFloat(h.avg_price).toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
+      <div style="text-align:right;">₹${cur.toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
+      <div style="text-align:right;color:${pnl>=0?'#0ecb81':'#f6465d'};font-weight:700;">
+        ${pnl>=0?'+':''}₹${Math.abs(pnl).toFixed(2)}<br>
+        <span style="font-size:10px;">${pnlP}%</span>
       </div>
     </div>`;
   }).join('');
-  document.getElementById('pf-pnl').innerHTML = `<span class="${totalPnL>=0?'text-green-400':'text-red-400'}">${totalPnL>=0?'+':''}₹${totalPnL.toFixed(2)}</span>`;
-  assetContainer.innerHTML = '<div class="text-gray-400 text-xs mb-2">Cash Balance</div>' +
-    `<div class="text-xl font-bold text-yellow-400 mb-4">₹${parseFloat(currentProfile?.balance||0).toLocaleString('en-IN')}</div>` +
-    '<div class="text-gray-400 text-xs mb-2">Stock Holdings</div>' +
-    data.slice(0,5).map(h => `
-      <div class="flex justify-between items-center py-1">
-        <span class="text-sm">${h.stock_symbol.split(':')[1]}</span>
-        <span class="text-sm font-bold">${parseFloat(h.quantity).toFixed(2)} shares</span>
-      </div>`).join('');
+
+  document.getElementById('pf-pv').textContent='₹'+totalVal.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('pf-pnl').innerHTML=`<span style="color:${totalPnL>=0?'#0ecb81':'#f6465d'}">${totalPnL>=0?'+':''}₹${totalPnL.toFixed(2)}</span>`;
+
+  assetEl.innerHTML=`
+    <div style="margin-bottom:10px;">
+      <div style="color:#848e9c;font-size:12px;margin-bottom:4px;">Cash Balance</div>
+      <div style="font-size:1.3rem;font-weight:900;color:#f0b90b;">₹${parseFloat(gClient?.balance||0).toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
+    </div>
+    <div><div style="color:#848e9c;font-size:12px;margin-bottom:6px;">Stock Holdings</div>
+    ${data.slice(0,6).map(h=>`
+      <div style="display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid #2b3139;">
+        <span>${h.stock_symbol.split(':')[1]}</span>
+        <span style="font-weight:700;">${parseFloat(h.quantity).toFixed(2)} shares</span>
+      </div>`).join('')}
+    </div>`;
 }
 
-// ============================================================
+// =============================================
 // TRANSACTIONS
-// ============================================================
-async function loadTransactions() {
-  if (!currentUser) return;
-  const { data } = await sb.from('transactions').select('*').eq('user_id', currentUser.id).order('created_at', {ascending:false}).limit(20);
-  const container = document.getElementById('tx-history');
-  if (!data || data.length === 0) {
-    container.innerHTML = '<div class="p-8 text-center text-gray-500">No transactions yet</div>';
+// =============================================
+async function loadTx(){
+  if(!gClient) return;
+  const {data}=await sb.from('transactions').select('*').eq('client_id',gClient.id).order('created_at',{ascending:false}).limit(30);
+  const el=document.getElementById('tx-list');
+  if(!data||data.length===0){
+    el.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;">No transactions yet</div>';
     return;
   }
-  container.innerHTML = data.map(t => {
-    const statusColor = t.status==='completed'?'green':t.status==='rejected'?'red':'yellow';
-    const typeColor = t.type==='deposit'?'text-green-400':t.type==='withdrawal'?'text-red-400':'text-blue-400';
-    return `<div class="flex justify-between items-center px-4 py-3 border-b border-gray-800">
+  const colors={completed:'#0ecb81',rejected:'#f6465d',pending:'#f0b90b',processing:'#1890ff'};
+  const tcolors={deposit:'#0ecb81',withdrawal:'#f6465d',buy:'#1890ff',sell:'#a855f7'};
+  el.innerHTML=data.map(t=>`
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #2b3139;">
       <div>
-        <div class="font-bold ${typeColor}">${t.type?.toUpperCase()}</div>
-        <div class="text-xs text-gray-400">${new Date(t.created_at).toLocaleString('en-IN')}</div>
-        ${t.reference_id?`<div class="text-xs text-gray-500">Ref: ${t.reference_id}</div>`:''}
+        <div style="font-weight:700;color:${tcolors[t.type]||'#eaecef'};font-size:13px;">${(t.type||'').toUpperCase()}</div>
+        <div style="font-size:11px;color:#848e9c;">${new Date(t.created_at).toLocaleString('en-IN')}</div>
+        ${t.reference_id?`<div style="font-size:10px;color:#5e6673;">Ref: ${t.reference_id}</div>`:''}
       </div>
-      <div class="text-right">
-        <div class="font-bold">₹${parseFloat(t.amount).toLocaleString('en-IN')}</div>
-        <span class="text-xs px-2 py-1 rounded bg-${statusColor}-900 text-${statusColor}-400">${t.status}</span>
+      <div style="text-align:right;">
+        <div style="font-weight:700;font-size:14px;">₹${parseFloat(t.amount).toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
+        <span style="font-size:10px;padding:2px 8px;border-radius:4px;background:${colors[t.status]||'#848e9c'}25;color:${colors[t.status]||'#848e9c'};font-weight:700;">${t.status}</span>
       </div>
-    </div>`;
-  }).join('');
+    </div>`).join('');
 }
 
-// ============================================================
+// =============================================
 // ORDERS
-// ============================================================
-async function loadOrders(filter='all') {
-  if (!currentUser) return;
-  let query = sb.from('orders').select('*').eq('user_id', currentUser.id).order('created_at', {ascending:false}).limit(50);
-  if (filter !== 'all') query = query.eq('status', filter);
-  const { data } = await query;
-  const container = document.getElementById('orders-table');
-  if (!data || data.length === 0) {
-    container.innerHTML = '<div class="p-8 text-center text-gray-500">No orders found</div>';
+// =============================================
+async function loadOrders(filter='all'){
+  if(!gClient) return;
+  let q=sb.from('orders').select('*').eq('client_id',gClient.id).order('created_at',{ascending:false}).limit(50);
+  if(filter!=='all') q=q.eq('status',filter);
+  const {data}=await q;
+  const el=document.getElementById('orders-body');
+  if(!data||data.length===0){
+    el.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;">No orders found</div>';
     return;
   }
-  container.innerHTML = `<div class="grid grid-cols-6 px-4 py-2 text-xs text-gray-400 border-b border-gray-700">
-    <span>Stock</span><span>Type</span><span>Qty</span><span>Price</span><span>Total</span><span>Status</span>
-  </div>` + data.map(o => `
-    <div class="grid grid-cols-6 px-4 py-3 border-b border-gray-800 text-sm hover:bg-gray-900">
-      <span class="font-bold">${o.stock_symbol?.split(':')[1]}</span>
-      <span class="${o.order_type==='buy'?'text-green-400':'text-red-400'} font-bold">${o.order_type?.toUpperCase()}</span>
-      <span>${parseFloat(o.quantity).toFixed(2)}</span>
-      <span>₹${parseFloat(o.price).toLocaleString('en-IN',{maximumFractionDigits:2})}</span>
-      <span>₹${parseFloat(o.total_amount).toLocaleString('en-IN',{maximumFractionDigits:2})}</span>
-      <span class="text-${o.status==='completed'?'green':o.status==='pending'?'yellow':'red'}-400">${o.status}</span>
+  el.innerHTML=data.map(o=>`
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;padding:10px 16px;border-bottom:1px solid #2b3139;font-size:12px;cursor:pointer;"
+      onmouseover="this.style.background='#2b3139'" onmouseout="this.style.background=''">
+      <span style="font-weight:700;">${(o.stock_symbol||'').split(':')[1]}</span>
+      <span style="color:${o.order_type==='buy'?'#0ecb81':'#f6465d'};font-weight:700;">${(o.order_type||'').toUpperCase()}</span>
+      <span style="text-align:right;">${parseFloat(o.quantity||0).toFixed(2)}</span>
+      <span style="text-align:right;">₹${parseFloat(o.price||0).toLocaleString('en-IN',{maximumFractionDigits:2})}</span>
+      <span style="text-align:right;">₹${parseFloat(o.total_amount||0).toLocaleString('en-IN',{maximumFractionDigits:2})}</span>
+      <span style="text-align:right;color:${o.status==='completed'?'#0ecb81':o.status==='pending'?'#f0b90b':'#f6465d'};font-weight:700;">${o.status}</span>
     </div>`).join('');
 }
 
-// ============================================================
-// DEPOSIT & WITHDRAWAL
-// ============================================================
-async function loadAdminSettings() {
-  const { data } = await sb.from('admin_settings').select('*').eq('id', 1).single();
-  if (data) {
-    adminSettings = data;
-    document.getElementById('dep-upi-show').textContent = data.upi_id || '-';
-    document.getElementById('dep-phone-show').textContent = data.phonepay_number || '-';
-    document.getElementById('dep-bank-show').textContent = data.bank_name || '-';
-    document.getElementById('dep-acc-show').textContent = data.account_number || '-';
-    document.getElementById('dep-ifsc-show').textContent = data.ifsc_code || '-';
+// =============================================
+// ADMIN SETTINGS
+// =============================================
+async function loadAdminSettings(){
+  const {data}=await sb.from('admin_settings').select('*').eq('id',1).single();
+  if(data){
+    gAdmin=data;
+    document.getElementById('d-upi').textContent    = data.upi_id||'-';
+    document.getElementById('d-phone').textContent  = data.phonepay_number||'-';
+    document.getElementById('d-bank').textContent   = data.bank_name||'-';
+    document.getElementById('d-acc').textContent    = data.account_number||'-';
+    document.getElementById('d-ifsc').textContent   = data.ifsc_code||'-';
+    document.getElementById('d-holder').textContent = data.account_holder||'-';
   }
 }
 
-async function submitDeposit() {
-  const amount = parseFloat(document.getElementById('dep-amount').value);
-  const ref = document.getElementById('dep-ref').value.trim();
-  if (!amount || amount < 100) return showToast('Minimum deposit ₹100', 'red');
-  if (!ref) return showToast('Enter transaction reference number', 'red');
-  const { error } = await sb.from('transactions').insert({
-    user_id: currentUser.id, type: 'deposit', amount, status: 'pending',
-    reference_id: ref, method: 'UPI/Bank Transfer'
+// =============================================
+// DEPOSIT
+// =============================================
+async function doDeposit(){
+  const amt=parseFloat(document.getElementById('dep-amt').value);
+  const ref=document.getElementById('dep-ref').value.trim();
+  if(!amt||amt<100) return toast('Minimum deposit ₹100','red');
+  if(!ref) return toast('Enter UTR/Transaction reference','red');
+  if(!gClient) return toast('Login required','red');
+  const {error}=await sb.from('transactions').insert({
+    client_id: gClient.id, type:'deposit', amount:amt,
+    status:'pending', reference_id:ref, method:'UPI/Bank Transfer'
   });
-  if (error) return showToast(error.message, 'red');
-  closeModal('deposit-modal');
-  showToast('Deposit request submitted! Admin will verify within 30 mins.', 'green');
-  document.getElementById('dep-amount').value = '';
-  document.getElementById('dep-ref').value = '';
-  loadTransactions();
+  if(error) return toast('Error: '+error.message,'red');
+  closeMod('mod-dep');
+  toast('Deposit request submitted! Verified within 30 minutes.','green');
+  document.getElementById('dep-amt').value='';
+  document.getElementById('dep-ref').value='';
+  loadTx();
 }
 
-async function submitWithdrawal() {
-  const amount = parseFloat(document.getElementById('wd-amount').value);
-  const method = document.getElementById('wd-method').value;
-  if (!amount || amount < 500) return showToast('Minimum withdrawal ₹500', 'red');
-  if (!currentProfile?.bank_details || Object.keys(currentProfile.bank_details).length === 0) {
-    return showToast('Please save your bank details in Profile first', 'yellow');
-  }
-  if (amount > parseFloat(currentProfile?.balance || 0)) return showToast('Insufficient balance', 'red');
-  const { error } = await sb.from('transactions').insert({
-    user_id: currentUser.id, type: 'withdrawal', amount, status: 'pending', method
+// =============================================
+// WITHDRAWAL
+// =============================================
+async function doWithdraw(){
+  const amt=parseFloat(document.getElementById('wd-amt').value);
+  const method=document.getElementById('wd-method').value;
+  if(!amt||amt<500) return toast('Minimum withdrawal ₹500','red');
+  if(!gClient) return toast('Login required','red');
+  if(!gClient.bank_name&&!gClient.upi_id) return toast('Save bank details in Profile first','yellow');
+  if(amt>parseFloat(gClient.balance||0)) return toast('Insufficient balance','red');
+  const newBal=parseFloat(gClient.balance)-amt;
+  await sb.from('client_details').update({balance:newBal}).eq('id',gClient.id);
+  await sb.from('transactions').insert({
+    client_id:gClient.id, type:'withdrawal', amount:amt, status:'pending', method
   });
-  if (error) return showToast(error.message, 'red');
-  await sb.from('profiles').update({ balance: parseFloat(currentProfile.balance) - amount }).eq('id', currentUser.id);
-  await loadProfile(); updateNavBalance();
-  closeModal('withdraw-modal');
-  showToast('Withdrawal request submitted! Processed within 24 hours.', 'green');
-  loadTransactions();
+  gClient.balance=newBal;
+  updateAllBalances();
+  closeMod('mod-wd');
+  toast('Withdrawal request submitted! Processed within 24 hours.','green');
+  document.getElementById('wd-amt').value='';
+  loadTx();
 }
 
-// ============================================================
+// =============================================
 // BANK DETAILS SAVE
-// ============================================================
-async function saveBankDetails() {
-  const bank_details = {
-    bank_name: document.getElementById('bank-name').value,
-    account_number: document.getElementById('bank-acc').value,
-    ifsc: document.getElementById('bank-ifsc').value,
-    upi: document.getElementById('bank-upi').value
-  };
-  const { error } = await sb.from('profiles').update({ bank_details }).eq('id', currentUser.id);
-  if (error) return showToast(error.message, 'red');
-  showToast('Bank details saved!', 'green');
-  await loadProfile();
+// =============================================
+async function saveBankDetails(){
+  if(!gClient) return toast('Login required','red');
+  const bank_name           = document.getElementById('bk-bank').value.trim();
+  const account_holder_name = document.getElementById('bk-holder').value.trim();
+  const account_number      = document.getElementById('bk-acc').value.trim();
+  const ifsc_code           = document.getElementById('bk-ifsc').value.trim();
+  const upi_id              = document.getElementById('bk-upi').value.trim();
+  if(!bank_name||!account_number||!ifsc_code) return toast('Fill Bank Name, Account & IFSC','red');
+  const {error}=await sb.from('client_details').update({bank_name,account_holder_name,account_number,ifsc_code,upi_id}).eq('id',gClient.id);
+  if(error) return toast('Error: '+error.message,'red');
+  gClient={...gClient,bank_name,account_holder_name,account_number,ifsc_code,upi_id};
+  toast('Bank details saved successfully!','green');
+  fillProfilePage();
 }
 
-// ============================================================
+// =============================================
 // KYC
-// ============================================================
-async function submitKYC() {
-  const aadhaar = document.getElementById('kyc-aadhaar').value.trim();
-  const pan = document.getElementById('kyc-pan').value.trim().toUpperCase();
-  if (!aadhaar || aadhaar.length !== 12) return showToast('Enter valid 12-digit Aadhaar', 'red');
-  if (!pan || pan.length !== 10) return showToast('Enter valid PAN number', 'red');
-  const { error } = await sb.from('kyc_documents').insert({ user_id: currentUser.id, aadhaar_number: aadhaar, pan_number: pan, status: 'pending' });
-  await sb.from('profiles').update({ aadhaar_number: aadhaar, pan_number: pan }).eq('id', currentUser.id);
-  if (error) return showToast('KYC already submitted', 'yellow');
-  closeModal('kyc-modal');
-  showToast('KYC submitted! Will be verified within 24 hours.', 'green');
-  await loadProfile();
+// =============================================
+async function doKYC(){
+  if(!gClient) return toast('Login required','red');
+  const aad=document.getElementById('kyc-aad').value.trim();
+  const pan=document.getElementById('kyc-pan').value.trim().toUpperCase();
+  if(!aad||aad.length!==12) return toast('Enter valid 12-digit Aadhaar','red');
+  if(!pan||pan.length!==10) return toast('Enter valid PAN (10 chars)','red');
+  const {error}=await sb.from('client_details').update({aadhaar_number:aad,pan_number:pan,kyc_status:'pending'}).eq('id',gClient.id);
+  if(error) return toast('Error: '+error.message,'red');
+  gClient={...gClient,aadhaar_number:aad,pan_number:pan,kyc_status:'pending'};
+  closeMod('mod-kyc');
+  toast('KYC submitted! Verified within 24 hours.','green');
+  fillProfilePage();
 }
 
-// ============================================================
+// =============================================
 // NOTIFICATIONS
-// ============================================================
-async function loadNotifications() {
-  if (!currentUser) return;
-  const { data } = await sb.from('notifications').select('*').eq('user_id', currentUser.id).order('created_at', {ascending:false});
-  const unread = data ? data.filter(n => !n.is_read).length : 0;
-  document.getElementById('notif-badge').textContent = unread;
-  const container = document.getElementById('notifications-list');
-  if (!data || data.length === 0) {
-    container.innerHTML = '<div class="p-8 text-center text-gray-500"><i class="fas fa-bell-slash text-3xl mb-3"></i><br>No notifications</div>';
+// =============================================
+async function loadNotifs(){
+  if(!gClient) return;
+  const {data}=await sb.from('notifications').select('*').eq('client_id',gClient.id).order('created_at',{ascending:false});
+  const unread=data?data.filter(n=>!n.is_read).length:0;
+  document.getElementById('notif-count').textContent=unread;
+  const el=document.getElementById('notif-body');
+  if(!data||data.length===0){
+    el.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;"><i class="fas fa-bell-slash" style="font-size:2rem;margin-bottom:10px;display:block;"></i>No notifications</div>';
     return;
   }
-  container.innerHTML = data.map(n => `
-    <div class="flex items-start gap-3 px-4 py-3 border-b border-gray-800 ${n.is_read?'opacity-60':''}">
-      <div class="w-2 h-2 rounded-full mt-2 ${n.is_read?'bg-gray-600':'bg-yellow-400'} flex-shrink-0"></div>
-      <div class="flex-1">
-        <div class="font-bold text-sm">${n.title}</div>
-        <div class="text-gray-400 text-xs">${n.message}</div>
-        <div class="text-gray-600 text-xs mt-1">${new Date(n.created_at).toLocaleString('en-IN')}</div>
+  el.innerHTML=data.map(n=>`
+    <div style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-bottom:1px solid #2b3139;opacity:${n.is_read?0.6:1};">
+      <div style="width:8px;height:8px;border-radius:50%;background:${n.is_read?'#2b3139':'#f0b90b'};margin-top:5px;flex-shrink:0;"></div>
+      <div>
+        <div style="font-weight:700;font-size:13px;">${n.title}</div>
+        <div style="color:#848e9c;font-size:12px;margin-top:2px;">${n.message}</div>
+        <div style="color:#5e6673;font-size:11px;margin-top:4px;">${new Date(n.created_at).toLocaleString('en-IN')}</div>
       </div>
     </div>`).join('');
-  if (unread > 0) {
-    await sb.from('notifications').update({is_read:true}).eq('user_id', currentUser.id).eq('is_read', false);
-  }
+  if(unread>0) await sb.from('notifications').update({is_read:true}).eq('client_id',gClient.id).eq('is_read',false);
 }
 
-// ============================================================
+// =============================================
 // PAGE NAVIGATION
-// ============================================================
-function showPage(page) {
-  const pages = ['trade','markets','portfolio','wallet','orders','profile','notifications'];
-  pages.forEach(p => {
-    const el = document.getElementById(`page-${p}`);
-    if (el) el.classList.toggle('hidden', p !== page);
+// =============================================
+function showPage(pg){
+  const pages=['trade','markets','portfolio','wallet','orders','profile','notifications'];
+  pages.forEach(p=>{
+    const el=document.getElementById('pg-'+p);
+    if(el){el.classList.remove('active');el.style.display='none';}
   });
-  if (page === 'portfolio') { loadHoldings(); }
-  if (page === 'wallet') { loadTransactions(); loadAdminSettings(); }
-  if (page === 'orders') { loadOrders('all'); }
-  if (page === 'notifications') { loadNotifications(); }
-  if (page === 'profile') { updateProfilePage(); }
-}
-
-// ============================================================
-// RIGHT PANEL TABS
-// ============================================================
-function switchRightTab(tab) {
-  ['orderbook','placeorder','trades'].forEach(t => {
-    document.getElementById(`right-${t}`).classList.toggle('hidden', t !== tab);
-  });
-  document.querySelectorAll('.tab-btn').forEach((b,i,arr) => {
-    if (b.closest('.border-b') && b.closest('.w-72')) b.classList.toggle('active', false);
-  });
-}
-
-// ============================================================
-// MODAL HELPERS
-// ============================================================
-function openModal(id) {
-  document.getElementById(id).classList.add('active');
-  if (id === 'deposit-modal') loadAdminSettings();
-  if (id === 'withdraw-modal') updateProfilePage();
-}
-function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
-// ============================================================
-// TOAST NOTIFICATION
-// ============================================================
-function showToast(msg, color='green') {
-  const colors = { green:'bg-green-700', red:'bg-red-700', yellow:'bg-yellow-700', blue:'bg-blue-700' };
-  const toast = document.createElement('div');
-  toast.className = `toast ${colors[color]} text-white`;
-  toast.textContent = msg;
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 3500);
-}
-
-// ============================================================
-// AUTO LOGIN CHECK
-// ============================================================
-window.addEventListener('load', async () => {
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) {
-    currentUser = session.user;
-    await loadProfile();
-    if (currentProfile) showMainApp();
+  const target=document.getElementById('pg-'+pg);
+  if(target){
+    target.classList.add('active');
+    target.style.display=pg==='trade'?'flex':'flex';
+    target.style.flexDirection='column';
   }
+  if(pg==='portfolio'){loadHoldings();}
+  if(pg==='wallet'){loadTx();loadAdminSettings();}
+  if(pg==='orders'){loadOrders('all');}
+  if(pg==='notifications'){loadNotifs();}
+  if(pg==='profile'){fillProfilePage();}
+}
+
+// =============================================
+// MODAL HELPERS
+// =============================================
+function openMod(id){
+  document.getElementById(id).classList.add('active');
+  if(id==='mod-dep') loadAdminSettings();
+  if(id==='mod-wd') fillProfilePage();
+}
+function closeMod(id){document.getElementById(id).classList.remove('active');}
+document.querySelectorAll('.modal').forEach(m=>{
+  m.addEventListener('click',e=>{ if(e.target===m) m.classList.remove('active'); });
+});
+
+// =============================================
+// TOAST
+// =============================================
+function toast(msg,color='green'){
+  const c={green:'#0ecb81',red:'#f6465d',yellow:'#f0b90b',blue:'#1890ff'};
+  const el=document.createElement('div');
+  el.className='toast';
+  el.style.cssText=`background:${c[color]}22;border:1px solid ${c[color]};color:${c[color]};`;
+  el.innerHTML=`<i class="fas fa-${color==='green'?'check-circle':color==='red'?'times-circle':color==='blue'?'info-circle':'exclamation-triangle'} mr-2"></i>${msg}`;
+  document.body.appendChild(el);
+  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity 0.5s';setTimeout(()=>el.remove(),500);},3500);
+}
+
+// =============================================
+// AUTO LOGIN
+// =============================================
+window.addEventListener('load',async()=>{
+  const {data:{session}}=await sb.auth.getSession();
+  if(session){
+    gUser=session.user;
+    const ok=await loadClient();
+    if(ok) launchApp();
+  }
+  // Init pages hidden
+  document.querySelectorAll('.page').forEach(p=>{
+    p.style.display='none';
+    p.classList.remove('active');
+  });
 });
 </script>
 </body>
