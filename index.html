@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SmartEX - India's Advanced Exchange</title>
-<script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://s3.tradingview.com/tv.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -19,104 +18,160 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI',sans-serif;ov
 ::-webkit-scrollbar{width:4px;height:4px;}
 ::-webkit-scrollbar-thumb{background:#2b3139;border-radius:2px;}
 .card{background:var(--card);border:1px solid var(--border);border-radius:10px;}
-.btn-y{background:var(--yellow);color:#000;font-weight:800;border:none;cursor:pointer;border-radius:8px;transition:.2s;}
+.btn-y{background:var(--yellow);color:#000;font-weight:800;border:none;cursor:pointer;border-radius:8px;transition:.2s;width:100%;padding:14px;font-size:15px;}
 .btn-y:hover{background:#d4a109;}
+.btn-y:disabled{opacity:.6;cursor:not-allowed;}
 .btn-g{background:var(--green);color:#000;font-weight:800;border:none;cursor:pointer;border-radius:8px;transition:.2s;}
 .btn-g:hover{background:#0ab56e;}
 .btn-r{background:var(--red);color:#fff;font-weight:800;border:none;cursor:pointer;border-radius:8px;transition:.2s;}
 .btn-r:hover{background:#d93a50;}
-inp,select{background:#2b3139;border:1px solid #363c45;color:var(--text);border-radius:6px;padding:10px 14px;width:100%;font-size:14px;outline:none;transition:.2s;}
-inp:focus,select:focus{border-color:var(--yellow);box-shadow:0 0 0 2px #f0b90b22;}
-inp::placeholder{color:#5e6673;}
-.modal{display:none;position:fixed;inset:0;background:#000000dd;z-index:9999;align-items:center;justify-content:center;padding:16px;}
+input[type="text"],input[type="email"],input[type="password"],input[type="number"],input[type="tel"],select{
+  background:#2b3139;
+  border:1px solid #363c45;
+  color:var(--text);
+  border-radius:6px;
+  padding:11px 14px;
+  width:100%;
+  font-size:14px;
+  outline:none;
+  transition:.2s;
+  display:block;
+}
+input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus,
+input[type="number"]:focus,input[type="tel"]:focus,select:focus{
+  border-color:var(--yellow);
+  box-shadow:0 0 0 2px #f0b90b22;
+}
+input::placeholder{color:#5e6673;}
+.modal{display:none;position:fixed;inset:0;background:#000000dd;z-index:9999;
+  align-items:center;justify-content:center;padding:16px;}
 .modal.on{display:flex;}
-.tab{background:none;border:none;color:var(--muted);cursor:pointer;padding:10px 20px;border-bottom:2px solid transparent;font-weight:700;font-size:13px;transition:.2s;}
-.tab.on{color:var(--yellow);border-bottom-color:var(--yellow);}
-.pg{display:none;}.pg.on{display:flex;flex-direction:column;}
-.ticker-wrap{overflow:hidden;white-space:nowrap;background:#111418;border-bottom:1px solid var(--border);padding:5px 0;}
+.tab-btn{background:none;border:none;color:var(--muted);cursor:pointer;
+  padding:10px 20px;border-bottom:2px solid transparent;
+  font-weight:700;font-size:13px;transition:.2s;}
+.tab-btn.on{color:var(--yellow);border-bottom-color:var(--yellow);}
+.pg{display:none;flex-direction:column;}
+.pg.on{display:flex;}
+.ticker-wrap{overflow:hidden;white-space:nowrap;background:#111418;
+  border-bottom:1px solid var(--border);padding:5px 0;}
 .ticker-in{display:inline-block;animation:tick 40s linear infinite;}
 @keyframes tick{0%{transform:translateX(100vw);}100%{transform:translateX(-100%);}}
-.nav-link{color:var(--muted);cursor:pointer;padding:6px 10px;border-radius:6px;font-size:13px;font-weight:600;transition:.2s;}
-.nav-link:hover,.nav-link.on{color:var(--text);background:#2b3139;}
-.stock-row{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;cursor:pointer;border-bottom:1px solid #1a1d22;transition:.15s;}
+.nav-link{color:var(--muted);cursor:pointer;padding:6px 10px;border-radius:6px;
+  font-size:13px;font-weight:600;transition:.2s;background:none;border:none;}
+.nav-link:hover{color:var(--text);background:#2b3139;}
+.stock-row{display:flex;justify-content:space-between;align-items:center;
+  padding:8px 12px;cursor:pointer;border-bottom:1px solid #1a1d22;transition:.15s;}
 .stock-row:hover{background:#2b3139;}
-.ob-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:2px 8px;font-size:11px;position:relative;cursor:pointer;}
+.ob-row{display:grid;grid-template-columns:1fr 1fr 1fr;padding:3px 8px;
+  font-size:11px;position:relative;cursor:pointer;}
 .ob-row:hover{background:#ffffff08;}
 .ob-bar{position:absolute;top:0;bottom:0;opacity:.12;}
-.badge{background:var(--red);color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;display:flex;align-items:center;justify-content:center;position:absolute;top:-4px;right:-6px;}
-.toast{position:fixed;top:75px;right:16px;z-index:99999;padding:12px 18px;border-radius:8px;font-weight:700;font-size:13px;animation:tin .3s ease;max-width:300px;}
+.badge{background:var(--red);color:#fff;border-radius:50%;width:16px;height:16px;
+  font-size:9px;display:flex;align-items:center;justify-content:center;
+  position:absolute;top:-4px;right:-6px;}
+.toast{position:fixed;top:75px;right:16px;z-index:99999;padding:12px 18px;
+  border-radius:8px;font-weight:700;font-size:13px;animation:tin .3s ease;max-width:300px;}
 @keyframes tin{from{transform:translateX(100px);opacity:0;}to{transform:translateX(0);opacity:1;}}
-.stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;}
-.lbl{display:block;font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
-.grp{margin-bottom:14px;}
-.g{color:var(--green);}.r{color:var(--red);}.y{color:var(--yellow);}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.field-group{margin-bottom:14px;}
+.field-label{display:block;font-size:11px;color:var(--muted);font-weight:700;
+  text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
 .glass{background:rgba(30,35,41,.97);backdrop-filter:blur(12px);}
-@media(max-width:768px){
-  #sidebar{display:none!important;}
-  #right-panel{display:none!important;}
-}
+.info-box-green{background:#0ecb8110;border:1px solid #0ecb81;border-radius:8px;padding:16px;margin-bottom:16px;}
+.info-box-yellow{background:#f0b90b11;border:1px solid #f0b90b;border-radius:6px;padding:10px;font-size:11px;color:#f0b90b;margin-bottom:12px;}
+.info-box-blue{background:#1890ff11;border:1px solid #1890ff;border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px;}
+.tbl-header{display:grid;padding:8px 16px;font-size:11px;color:#848e9c;border-bottom:1px solid #2b3139;}
+.tbl-row{border-bottom:1px solid #2b3139;cursor:pointer;transition:.15s;}
+.tbl-row:hover{background:#2b3139;}
 </style>
 </head>
 <body>
 
 <!-- ========== AUTH PAGE ========== -->
 <div id="auth-page" style="min-height:100vh;background:linear-gradient(135deg,#0b0e11,#131a2e,#0b0e11);display:flex;align-items:center;justify-content:center;padding:16px;">
-  <div style="width:100%;max-width:440px;">
+  <div style="width:100%;max-width:460px;">
     <div style="text-align:center;margin-bottom:28px;">
       <div style="font-size:2.5rem;font-weight:900;color:#f0b90b;">⚡ SmartEX</div>
-      <div style="color:#848e9c;font-size:13px;margin-top:4px;">India's Most Advanced Stock Exchange</div>
+      <div style="color:#848e9c;font-size:13px;margin-top:6px;">India's Most Advanced Stock Exchange Platform</div>
     </div>
     <div class="card" style="padding:32px;">
       <div style="display:flex;border-bottom:1px solid #2b3139;margin-bottom:24px;">
-        <button class="tab on" id="tl" onclick="swAuth('login')" style="flex:1;">Login</button>
-        <button class="tab" id="tr" onclick="swAuth('reg')" style="flex:1;">Register</button>
+        <button class="tab-btn on" id="tl" onclick="swAuth('login')" style="flex:1;">Login</button>
+        <button class="tab-btn" id="tr" onclick="swAuth('reg')" style="flex:1;">Register</button>
       </div>
 
-      <!-- LOGIN FORM -->
+      <!-- LOGIN -->
       <div id="f-login">
-        <div class="grp"><label class="lbl">Email Address</label><inp type="email" id="le" placeholder="yourname@email.com"></div>
-        <div class="grp"><label class="lbl">Password</label><inp type="password" id="lp" placeholder="Your password"></div>
-        <button class="btn-y" style="width:100%;padding:14px;font-size:15px;margin-top:8px;" onclick="doLogin()">
+        <div class="field-group">
+          <label class="field-label">Email Address</label>
+          <input type="email" id="le" placeholder="yourname@email.com">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Password</label>
+          <input type="password" id="lp" placeholder="Your password">
+        </div>
+        <button class="btn-y" onclick="doLogin()" style="margin-top:8px;">
           <i class="fas fa-sign-in-alt" style="margin-right:8px;"></i>Login to SmartEX
         </button>
-        <div id="l-err" style="margin-top:10px;text-align:center;font-size:13px;"></div>
+        <div id="l-msg" style="margin-top:10px;text-align:center;font-size:13px;"></div>
       </div>
 
-      <!-- REGISTER FORM -->
+      <!-- REGISTER -->
       <div id="f-reg" style="display:none;">
-        <div class="grp"><label class="lbl">Full Name</label><inp type="text" id="rn" placeholder="Full name as per Aadhaar"></div>
-        <div class="grp"><label class="lbl">Email Address</label><inp type="email" id="re" placeholder="yourname@email.com"></div>
-        <div class="grp"><label class="lbl">Phone Number</label><inp type="tel" id="rph" placeholder="+91 9876543210"></div>
-        <div class="grp"><label class="lbl">Aadhaar Number (12 Digits)</label><inp type="text" id="rad" placeholder="XXXXXXXXXXXX" maxlength="12"></div>
-        <div class="grp"><label class="lbl">PAN Number</label><inp type="text" id="rpn" placeholder="ABCDE1234F" maxlength="10"></div>
-        <div class="grp"><label class="lbl">Password (Min 6 Chars)</label><inp type="password" id="rps" placeholder="Create strong password"></div>
-        <div class="grp"><label class="lbl">Confirm Password</label><inp type="password" id="rpc" placeholder="Repeat password"></div>
-        <button class="btn-y" style="width:100%;padding:14px;font-size:15px;margin-top:4px;" onclick="doReg()" id="rbtn">
+        <div class="field-group">
+          <label class="field-label">Full Name</label>
+          <input type="text" id="rn" placeholder="Full name as per Aadhaar">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Email Address</label>
+          <input type="email" id="re" placeholder="yourname@email.com">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Phone Number</label>
+          <input type="tel" id="rph" placeholder="+91 9876543210">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Aadhaar Number (12 Digits)</label>
+          <input type="text" id="rad" placeholder="XXXXXXXXXXXX" maxlength="12">
+        </div>
+        <div class="field-group">
+          <label class="field-label">PAN Number</label>
+          <input type="text" id="rpn" placeholder="ABCDE1234F" maxlength="10">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Password (Min 6 Chars)</label>
+          <input type="password" id="rps" placeholder="Create strong password">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Confirm Password</label>
+          <input type="password" id="rpc" placeholder="Repeat password">
+        </div>
+        <button class="btn-y" onclick="doReg()" id="rbtn">
           <i class="fas fa-user-plus" style="margin-right:8px;"></i>Create Account
         </button>
-        <div id="r-st" style="margin-top:10px;text-align:center;font-size:13px;"></div>
+        <div id="r-msg" style="margin-top:10px;text-align:center;font-size:13px;min-height:20px;"></div>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ========== MAIN APP ========== -->
-<div id="main-app" style="display:none;min-height:100vh;flex-direction:column;" class="flex">
+<div id="main-app" style="display:none;min-height:100vh;flex-direction:column;" class="pg">
 
   <!-- NAVBAR -->
   <nav class="glass" style="border-bottom:1px solid #2b3139;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;">
-    <div style="display:flex;align-items:center;gap:16px;">
+    <div style="display:flex;align-items:center;gap:12px;">
       <div style="color:#f0b90b;font-weight:900;font-size:1.3rem;cursor:pointer;" onclick="goPage('trade')">⚡ SmartEX</div>
-      <div style="display:flex;gap:4px;" class="hidden md:flex">
-        <span class="nav-link" onclick="goPage('markets')"><i class="fas fa-chart-bar" style="margin-right:4px;"></i>Markets</span>
-        <span class="nav-link on" onclick="goPage('trade')"><i class="fas fa-exchange-alt" style="margin-right:4px;"></i>Trade</span>
-        <span class="nav-link" onclick="goPage('portfolio')"><i class="fas fa-briefcase" style="margin-right:4px;"></i>Portfolio</span>
-        <span class="nav-link" onclick="goPage('wallet')"><i class="fas fa-wallet" style="margin-right:4px;"></i>Wallet</span>
-        <span class="nav-link" onclick="goPage('orders')"><i class="fas fa-list" style="margin-right:4px;"></i>Orders</span>
+      <div style="display:flex;gap:2px;">
+        <button class="nav-link" onclick="goPage('markets')"><i class="fas fa-chart-bar" style="margin-right:4px;"></i>Markets</button>
+        <button class="nav-link" onclick="goPage('trade')"><i class="fas fa-exchange-alt" style="margin-right:4px;"></i>Trade</button>
+        <button class="nav-link" onclick="goPage('portfolio')"><i class="fas fa-briefcase" style="margin-right:4px;"></i>Portfolio</button>
+        <button class="nav-link" onclick="goPage('wallet')"><i class="fas fa-wallet" style="margin-right:4px;"></i>Wallet</button>
+        <button class="nav-link" onclick="goPage('orders')"><i class="fas fa-list" style="margin-right:4px;"></i>Orders</button>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:16px;">
-      <div style="text-align:right;display:none;" class="sm:block" id="nav-bal-wrap">
+    <div style="display:flex;align-items:center;gap:14px;">
+      <div style="text-align:right;">
         <div style="font-size:11px;color:#848e9c;">Balance</div>
         <div style="color:#0ecb81;font-weight:800;font-size:14px;" id="nav-bal">₹0.00</div>
       </div>
@@ -125,40 +180,44 @@ inp::placeholder{color:#5e6673;}
         <span class="badge" id="n-badge">0</span>
       </div>
       <div id="nav-av" onclick="goPage('profile')" style="width:36px;height:36px;border-radius:50%;background:#f0b90b;display:flex;align-items:center;justify-content:center;font-weight:900;color:#000;font-size:16px;cursor:pointer;">U</div>
-      <button onclick="doLogout()" style="background:none;border:none;color:#848e9c;cursor:pointer;font-size:15px;" title="Logout"><i class="fas fa-sign-out-alt"></i></button>
+      <button onclick="doLogout()" style="background:none;border:none;color:#848e9c;cursor:pointer;font-size:15px;padding:4px;" title="Logout">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
     </div>
   </nav>
 
   <!-- TICKER -->
   <div class="ticker-wrap">
-    <div class="ticker-in text-xs" id="ticker" style="font-size:12px;"></div>
+    <div class="ticker-in" id="ticker" style="font-size:12px;padding:0 10px;"></div>
   </div>
 
   <!-- TRADE PAGE -->
-  <div id="pg-trade" class="pg on flex-row overflow-hidden" style="height:calc(100vh - 68px);">
-    <!-- Sidebar -->
-    <div id="sidebar" style="width:200px;border-right:1px solid #2b3139;display:flex;flex-direction:column;overflow:hidden;">
+  <div id="pg-trade" class="pg on" style="flex-direction:row;height:calc(100vh - 68px);overflow:hidden;">
+    
+    <!-- LEFT SIDEBAR -->
+    <div style="width:200px;border-right:1px solid #2b3139;display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;">
       <div style="padding:8px;">
-        <inp placeholder="🔍 Search..." id="ss" onkeyup="filSide()" style="font-size:12px;padding:7px 10px;">
+        <input type="text" placeholder="🔍 Search stocks..." id="ss" onkeyup="filSide()" style="font-size:12px;padding:7px 10px;">
       </div>
-      <div style="display:flex;gap:2px;padding:0 8px 6px;">
-        <button class="tab on" style="flex:1;padding:4px;font-size:10px;" onclick="setCat('all',this)">All</button>
-        <button class="tab" style="flex:1;padding:4px;font-size:10px;" onclick="setCat('nifty50',this)">N50</button>
-        <button class="tab" style="flex:1;padding:4px;font-size:10px;" onclick="setCat('crypto',this)">Crypto</button>
+      <div style="display:flex;gap:2px;padding:0 6px 6px;">
+        <button class="tab-btn on" style="flex:1;padding:4px 2px;font-size:10px;" onclick="setCat('all',this)">All</button>
+        <button class="tab-btn" style="flex:1;padding:4px 2px;font-size:10px;" onclick="setCat('nifty50',this)">N50</button>
+        <button class="tab-btn" style="flex:1;padding:4px 2px;font-size:10px;" onclick="setCat('crypto',this)">Crypto</button>
       </div>
       <div id="side-list" style="overflow-y:auto;flex:1;"></div>
     </div>
 
-    <!-- Chart -->
+    <!-- CENTER CHART -->
     <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
-      <div style="background:#111418;border-bottom:1px solid #2b3139;padding:8px 12px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <!-- Stock Header -->
+      <div style="background:#111418;border-bottom:1px solid #2b3139;padding:8px 14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;flex-shrink:0;">
         <div>
           <span style="font-weight:900;font-size:1.1rem;" id="h-sym">RELIANCE</span>
           <span style="font-size:11px;color:#848e9c;margin-left:4px;">NSE</span>
         </div>
         <div>
-          <div style="font-size:1.3rem;font-weight:900;color:#0ecb81;" id="h-price">₹2,456</div>
-          <div style="font-size:11px;" id="h-chg"><span class="g">+1.24% ▲</span></div>
+          <div style="font-size:1.3rem;font-weight:900;color:#0ecb81;" id="h-price">₹2,456.00</div>
+          <div id="h-chg" style="font-size:11px;"><span style="color:#0ecb81;">+1.24% ▲</span></div>
         </div>
         <div style="display:flex;gap:16px;font-size:11px;color:#848e9c;">
           <span>H: <span style="color:#eaecef;" id="h-hi">-</span></span>
@@ -166,28 +225,29 @@ inp::placeholder{color:#5e6673;}
           <span>Vol: <span style="color:#eaecef;" id="h-vol">-</span></span>
         </div>
         <div style="margin-left:auto;display:flex;gap:8px;">
-          <button class="btn-g" style="padding:6px 16px;font-size:13px;" onclick="opnQO('buy')">▲ BUY</button>
-          <button class="btn-r" style="padding:6px 16px;font-size:13px;" onclick="opnQO('sell')">▼ SELL</button>
+          <button class="btn-g" style="padding:7px 18px;font-size:13px;" onclick="opnQO('buy')">▲ BUY</button>
+          <button class="btn-r" style="padding:7px 18px;font-size:13px;" onclick="opnQO('sell')">▼ SELL</button>
         </div>
       </div>
+      <!-- TradingView Chart -->
       <div id="tv-chart" style="flex:1;"></div>
     </div>
 
-    <!-- Right Panel -->
-    <div id="right-panel" style="width:265px;border-left:1px solid #2b3139;display:flex;flex-direction:column;overflow:hidden;">
-      <div style="display:flex;border-bottom:1px solid #2b3139;">
-        <button class="tab on" style="flex:1;font-size:11px;padding:8px 4px;" onclick="rTab('ob')">Order Book</button>
-        <button class="tab" style="flex:1;font-size:11px;padding:8px 4px;" onclick="rTab('po')">Place Order</button>
-        <button class="tab" style="flex:1;font-size:11px;padding:8px 4px;" onclick="rTab('rt')">Trades</button>
+    <!-- RIGHT PANEL -->
+    <div style="width:268px;border-left:1px solid #2b3139;display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;">
+      <div style="display:flex;border-bottom:1px solid #2b3139;flex-shrink:0;">
+        <button class="tab-btn on" id="rt-ob-btn" style="flex:1;font-size:11px;padding:8px 2px;" onclick="rTab('ob')">Order Book</button>
+        <button class="tab-btn" id="rt-po-btn" style="flex:1;font-size:11px;padding:8px 2px;" onclick="rTab('po')">Place Order</button>
+        <button class="tab-btn" id="rt-rt-btn" style="flex:1;font-size:11px;padding:8px 2px;" onclick="rTab('rt')">Trades</button>
       </div>
 
       <!-- Order Book -->
       <div id="r-ob" style="flex:1;display:flex;flex-direction:column;overflow:hidden;">
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:4px 8px;font-size:10px;color:#848e9c;border-bottom:1px solid #2b3139;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;padding:4px 8px;font-size:10px;color:#848e9c;border-bottom:1px solid #2b3139;flex-shrink:0;">
           <span>Price</span><span style="text-align:center;">Qty</span><span style="text-align:right;">Total</span>
         </div>
         <div id="ob-s" style="flex:1;overflow-y:auto;"></div>
-        <div style="padding:6px 12px;border-top:1px solid #2b3139;border-bottom:1px solid #2b3139;display:flex;justify-content:space-between;align-items:center;">
+        <div style="padding:7px 12px;border-top:1px solid #2b3139;border-bottom:1px solid #2b3139;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;">
           <span style="font-size:1rem;font-weight:900;color:#0ecb81;" id="ob-p">₹2,456</span>
           <span style="font-size:10px;color:#848e9c;">Mark Price</span>
         </div>
@@ -197,37 +257,49 @@ inp::placeholder{color:#5e6673;}
       <!-- Place Order -->
       <div id="r-po" style="display:none;flex:1;flex-direction:column;padding:12px;overflow-y:auto;gap:10px;">
         <div style="display:flex;gap:8px;">
-          <button id="po-b" class="btn-g" style="flex:1;padding:8px;font-size:13px;" onclick="poSide('buy')">BUY</button>
-          <button id="po-s" class="btn-r" style="flex:1;padding:8px;font-size:13px;opacity:.4;" onclick="poSide('sell')">SELL</button>
+          <button id="po-b-btn" class="btn-g" style="flex:1;padding:9px;font-size:13px;" onclick="poSide('buy')">BUY</button>
+          <button id="po-s-btn" class="btn-r" style="flex:1;padding:9px;font-size:13px;opacity:.4;" onclick="poSide('sell')">SELL</button>
         </div>
-        <div class="grp" style="margin-bottom:0;">
-          <label class="lbl">Order Type</label>
-          <select id="po-t" style="background:#2b3139;border:1px solid #363c45;color:#eaecef;border-radius:6px;padding:8px;width:100%;margin-top:4px;outline:none;">
-            <option value="market">Market</option>
-            <option value="limit">Limit</option>
+        <div class="field-group" style="margin-bottom:0;">
+          <label class="field-label">Order Type</label>
+          <select id="po-t" style="margin-top:4px;">
+            <option value="market">Market Order</option>
+            <option value="limit">Limit Order</option>
             <option value="stop">Stop Loss</option>
           </select>
         </div>
-        <div class="grp" style="margin-bottom:0;">
-          <label class="lbl">Price (₹)</label>
-          <inp type="number" id="po-pr" placeholder="Market Price" style="margin-top:4px;">
+        <div class="field-group" style="margin-bottom:0;">
+          <label class="field-label">Price (₹)</label>
+          <input type="number" id="po-pr" placeholder="Market Price" style="margin-top:4px;">
         </div>
-        <div class="grp" style="margin-bottom:0;">
-          <label class="lbl">Quantity</label>
-          <inp type="number" id="po-q" placeholder="0" oninput="calcPO()" style="margin-top:4px;">
+        <div class="field-group" style="margin-bottom:0;">
+          <label class="field-label">Quantity (Shares)</label>
+          <input type="number" id="po-q" placeholder="0" oninput="calcPO()" style="margin-top:4px;">
         </div>
         <div style="display:flex;gap:4px;">
-          <button style="flex:1;padding:4px;font-size:10px;background:#2b3139;border:none;color:#eaecef;border-radius:4px;cursor:pointer;" onclick="poPct(25)">25%</button>
-          <button style="flex:1;padding:4px;font-size:10px;background:#2b3139;border:none;color:#eaecef;border-radius:4px;cursor:pointer;" onclick="poPct(50)">50%</button>
-          <button style="flex:1;padding:4px;font-size:10px;background:#2b3139;border:none;color:#eaecef;border-radius:4px;cursor:pointer;" onclick="poPct(75)">75%</button>
-          <button style="flex:1;padding:4px;font-size:10px;background:#2b3139;border:none;color:#eaecef;border-radius:4px;cursor:pointer;" onclick="poPct(100)">100%</button>
+          <button onclick="poPct(25)" style="flex:1;padding:4px;font-size:10px;background:#2b3139;border:none;color:#eaecef;border-radius:4px;cursor:pointer;">25%</button>
+          <button onclick="poPct(50)" style="flex:1;padding:4px;font-size:10px;background:#2b3139;border:none;color:#eaecef;border-radius:4px;cursor:pointer;">50%</button>
+          <button onclick="poPct(75)" style="flex:1;padding:4px;font-size:10px;background:#2b3139;border:none;color:#eaecef;border-radius:4px;cursor:pointer;">75%</button>
+          <button onclick="poPct(100)" style="flex:1;padding:4px;font-size:10px;background:#2b3139;border:none;color:#eaecef;border-radius:4px;cursor:pointer;">100%</button>
         </div>
         <div style="background:#161a1e;border:1px solid #2b3139;border-radius:6px;padding:10px;font-size:11px;">
-          <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#848e9c;">Balance</span><span style="color:#0ecb81;font-weight:800;" id="po-bal">₹0</span></div>
-          <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#848e9c;">Total</span><span id="po-tot">₹0</span></div>
-          <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">Fee (0.1%)</span><span id="po-fee">₹0</span></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+            <span style="color:#848e9c;">Balance</span>
+            <span style="color:#0ecb81;font-weight:800;" id="po-bal">₹0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+            <span style="color:#848e9c;">Total Cost</span>
+            <span id="po-tot">₹0</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span style="color:#848e9c;">Fee (0.1%)</span>
+            <span id="po-fee">₹0</span>
+          </div>
         </div>
-        <button id="po-btn" class="btn-g" style="padding:12px;font-weight:800;font-size:13px;" onclick="doPlaceOrder()">BUY RELIANCE</button>
+        <button id="po-btn" class="btn-g" style="padding:12px;font-weight:800;font-size:13px;border-radius:8px;" onclick="doPlaceOrder()">BUY RELIANCE</button>
+        <div style="text-align:center;font-size:10px;color:#5e6673;">
+          <i class="fas fa-shield-alt" style="margin-right:4px;"></i>Secured & Protected Trading
+        </div>
       </div>
 
       <!-- Recent Trades -->
@@ -242,19 +314,21 @@ inp::placeholder{color:#5e6673;}
 
   <!-- MARKETS PAGE -->
   <div id="pg-markets" class="pg" style="flex:1;padding:20px;overflow-y:auto;">
-    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;"><i class="fas fa-chart-bar" style="color:#f0b90b;margin-right:8px;"></i>Market Overview</h2>
+    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;">
+      <i class="fas fa-chart-bar" style="color:#f0b90b;margin-right:8px;"></i>Market Overview
+    </h2>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
-      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">SENSEX</div><div style="font-size:1.3rem;font-weight:900;color:#0ecb81;">72,456</div><div style="font-size:11px;color:#0ecb81;">+0.45% ▲</div></div>
-      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">NIFTY 50</div><div style="font-size:1.3rem;font-weight:900;color:#0ecb81;">21,853</div><div style="font-size:11px;color:#0ecb81;">+0.38% ▲</div></div>
-      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">BANK NIFTY</div><div style="font-size:1.3rem;font-weight:900;color:#f6465d;">46,234</div><div style="font-size:11px;color:#f6465d;">-0.21% ▼</div></div>
-      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">INDIA VIX</div><div style="font-size:1.3rem;font-weight:900;color:#f0b90b;">13.45</div><div style="font-size:11px;color:#f0b90b;">+2.1%</div></div>
+      <div class="stat-card"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">SENSEX</div><div style="font-size:1.3rem;font-weight:900;color:#0ecb81;">72,456</div><div style="font-size:11px;color:#0ecb81;">+0.45% ▲</div></div>
+      <div class="stat-card"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">NIFTY 50</div><div style="font-size:1.3rem;font-weight:900;color:#0ecb81;">21,853</div><div style="font-size:11px;color:#0ecb81;">+0.38% ▲</div></div>
+      <div class="stat-card"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">BANK NIFTY</div><div style="font-size:1.3rem;font-weight:900;color:#f6465d;">46,234</div><div style="font-size:11px;color:#f6465d;">-0.21% ▼</div></div>
+      <div class="stat-card"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">INDIA VIX</div><div style="font-size:1.3rem;font-weight:900;color:#f0b90b;">13.45</div><div style="font-size:11px;color:#f0b90b;">+2.1%</div></div>
     </div>
     <div class="card" style="overflow:hidden;">
-      <div style="padding:16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #2b3139;">
+      <div style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #2b3139;">
         <h3 style="font-weight:800;">All Stocks & Crypto</h3>
-        <inp placeholder="Search..." style="width:180px;font-size:12px;padding:7px 10px;" onkeyup="filMkt(this.value)">
+        <input type="text" placeholder="Search symbol or name..." style="width:200px;font-size:12px;padding:7px 10px;" onkeyup="filMkt(this.value)">
       </div>
-      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:8px 16px;font-size:11px;color:#848e9c;border-bottom:1px solid #2b3139;">
+      <div class="tbl-header" style="grid-template-columns:2fr 1fr 1fr 1fr;">
         <span>Symbol / Name</span><span style="text-align:right;">Price</span><span style="text-align:right;">24H Change</span><span style="text-align:right;">Volume</span>
       </div>
       <div id="mkt-body" style="max-height:70vh;overflow-y:auto;"></div>
@@ -263,16 +337,18 @@ inp::placeholder{color:#5e6673;}
 
   <!-- PORTFOLIO PAGE -->
   <div id="pg-portfolio" class="pg" style="flex:1;padding:20px;overflow-y:auto;">
-    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;"><i class="fas fa-briefcase" style="color:#f0b90b;margin-right:8px;"></i>My Portfolio</h2>
+    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;">
+      <i class="fas fa-briefcase" style="color:#f0b90b;margin-right:8px;"></i>My Portfolio
+    </h2>
     <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;">
-      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">Cash Balance</div><div style="font-size:1.2rem;font-weight:900;color:#f0b90b;" id="pf-bal">₹0</div></div>
-      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">Portfolio Value</div><div style="font-size:1.2rem;font-weight:900;color:#1890ff;" id="pf-pv">₹0</div></div>
-      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">Total P&L</div><div style="font-size:1.2rem;font-weight:900;" id="pf-pnl">₹0</div></div>
-      <div class="stat"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">Credit Score</div><div style="font-size:1.2rem;font-weight:900;color:#a855f7;" id="pf-cs">750</div></div>
+      <div class="stat-card"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">Cash Balance</div><div style="font-size:1.2rem;font-weight:900;color:#f0b90b;" id="pf-bal">₹0</div></div>
+      <div class="stat-card"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">Portfolio Value</div><div style="font-size:1.2rem;font-weight:900;color:#1890ff;" id="pf-pv">₹0</div></div>
+      <div class="stat-card"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">Total P&L</div><div style="font-size:1.2rem;font-weight:900;" id="pf-pnl">₹0</div></div>
+      <div class="stat-card"><div style="font-size:11px;color:#848e9c;margin-bottom:4px;">Credit Score</div><div style="font-size:1.2rem;font-weight:900;color:#a855f7;" id="pf-cs">750</div></div>
     </div>
     <div class="card" style="overflow:hidden;">
-      <div style="padding:16px;border-bottom:1px solid #2b3139;font-weight:800;">My Holdings</div>
-      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;padding:8px 16px;font-size:11px;color:#848e9c;border-bottom:1px solid #2b3139;">
+      <div style="padding:14px 16px;border-bottom:1px solid #2b3139;font-weight:800;">My Holdings</div>
+      <div class="tbl-header" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr;">
         <span>Stock</span><span style="text-align:right;">Qty</span><span style="text-align:right;">Avg Price</span><span style="text-align:right;">Cur. Price</span><span style="text-align:right;">P&L</span>
       </div>
       <div id="hold-body" style="max-height:60vh;overflow-y:auto;"></div>
@@ -281,38 +357,46 @@ inp::placeholder{color:#5e6673;}
 
   <!-- WALLET PAGE -->
   <div id="pg-wallet" class="pg" style="flex:1;padding:20px;overflow-y:auto;">
-    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;"><i class="fas fa-wallet" style="color:#f0b90b;margin-right:8px;"></i>Wallet</h2>
+    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;">
+      <i class="fas fa-wallet" style="color:#f0b90b;margin-right:8px;"></i>Wallet
+    </h2>
     <div style="display:grid;grid-template-columns:1fr 2fr;gap:16px;margin-bottom:20px;">
       <div class="card" style="padding:24px;text-align:center;">
         <div style="font-size:12px;color:#848e9c;margin-bottom:4px;">Available Balance</div>
         <div style="font-size:2rem;font-weight:900;color:#f0b90b;margin-bottom:4px;" id="wlt-bal">₹0.00</div>
-        <div style="font-size:11px;color:#848e9c;margin-bottom:16px;">Withdrawable Amount</div>
+        <div style="font-size:11px;color:#848e9c;margin-bottom:18px;">Withdrawable Amount</div>
         <div style="display:flex;gap:10px;">
-          <button class="btn-g" style="flex:1;padding:10px;" onclick="opnMod('m-dep')"><i class="fas fa-plus" style="margin-right:4px;"></i>Deposit</button>
-          <button class="btn-r" style="flex:1;padding:10px;" onclick="opnMod('m-wd')"><i class="fas fa-minus" style="margin-right:4px;"></i>Withdraw</button>
+          <button class="btn-g" style="flex:1;padding:10px;border-radius:8px;" onclick="opnMod('m-dep')">
+            <i class="fas fa-plus" style="margin-right:4px;"></i>Deposit
+          </button>
+          <button class="btn-r" style="flex:1;padding:10px;border-radius:8px;" onclick="opnMod('m-wd')">
+            <i class="fas fa-minus" style="margin-right:4px;"></i>Withdraw
+          </button>
         </div>
       </div>
       <div class="card" style="padding:20px;">
-        <div style="font-weight:800;margin-bottom:12px;">Asset Overview</div>
-        <div id="asset-sum"></div>
+        <div style="font-weight:800;margin-bottom:14px;">Asset Overview</div>
+        <div id="asset-sum"><div style="color:#848e9c;font-size:13px;">Loading...</div></div>
       </div>
     </div>
     <div class="card" style="overflow:hidden;">
-      <div style="padding:16px;border-bottom:1px solid #2b3139;font-weight:800;">Transaction History</div>
+      <div style="padding:14px 16px;border-bottom:1px solid #2b3139;font-weight:800;">Transaction History</div>
       <div id="tx-body" style="max-height:50vh;overflow-y:auto;"></div>
     </div>
   </div>
 
   <!-- ORDERS PAGE -->
   <div id="pg-orders" class="pg" style="flex:1;padding:20px;overflow-y:auto;">
-    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;"><i class="fas fa-list" style="color:#f0b90b;margin-right:8px;"></i>My Orders</h2>
+    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;">
+      <i class="fas fa-list" style="color:#f0b90b;margin-right:8px;"></i>My Orders
+    </h2>
     <div class="card" style="overflow:hidden;">
       <div style="display:flex;border-bottom:1px solid #2b3139;padding:0 8px;">
-        <button class="tab on" onclick="loadOrders('all')">All Orders</button>
-        <button class="tab" onclick="loadOrders('completed')">Completed</button>
-        <button class="tab" onclick="loadOrders('pending')">Pending</button>
+        <button class="tab-btn on" onclick="loadOrders('all');setOrdTab(this)">All Orders</button>
+        <button class="tab-btn" onclick="loadOrders('completed');setOrdTab(this)">Completed</button>
+        <button class="tab-btn" onclick="loadOrders('pending');setOrdTab(this)">Pending</button>
       </div>
-      <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;padding:8px 16px;font-size:11px;color:#848e9c;border-bottom:1px solid #2b3139;">
+      <div class="tbl-header" style="grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;">
         <span>Stock</span><span>Type</span><span style="text-align:right;">Qty</span><span style="text-align:right;">Price</span><span style="text-align:right;">Total</span><span style="text-align:right;">Status</span>
       </div>
       <div id="ord-body" style="max-height:70vh;overflow-y:auto;"></div>
@@ -321,42 +405,43 @@ inp::placeholder{color:#5e6673;}
 
   <!-- PROFILE PAGE -->
   <div id="pg-profile" class="pg" style="flex:1;padding:20px;overflow-y:auto;">
-    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;"><i class="fas fa-user" style="color:#f0b90b;margin-right:8px;"></i>My Profile</h2>
+    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;">
+      <i class="fas fa-user" style="color:#f0b90b;margin-right:8px;"></i>My Profile
+    </h2>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-      
       <!-- Personal Info -->
       <div class="card" style="padding:24px;">
-        <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
-          <div id="pf-av" style="width:60px;height:60px;border-radius:50%;background:#f0b90b;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:#000;">U</div>
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+          <div id="pf-av" style="width:60px;height:60px;border-radius:50%;background:#f0b90b;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:900;color:#000;flex-shrink:0;">U</div>
           <div>
             <div style="font-size:1.1rem;font-weight:800;" id="pf-name">Loading...</div>
-            <div style="font-size:12px;color:#848e9c;" id="pf-email"></div>
-            <div id="pf-badge" style="margin-top:4px;"></div>
+            <div style="font-size:12px;color:#848e9c;margin-top:2px;" id="pf-email"></div>
+            <div id="pf-badge" style="margin-top:6px;"></div>
           </div>
         </div>
         <div style="font-size:13px;">
-          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2b3139;">
-            <span style="color:#848e9c;"><i class="fas fa-hashtag" style="margin-right:6px;"></i>Slot ID</span>
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #2b3139;">
+            <span style="color:#848e9c;"><i class="fas fa-hashtag" style="margin-right:6px;width:14px;"></i>Slot ID</span>
             <span style="font-weight:700;color:#f0b90b;" id="pf-slot">-</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2b3139;">
-            <span style="color:#848e9c;"><i class="fas fa-phone" style="margin-right:6px;"></i>Phone</span>
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #2b3139;">
+            <span style="color:#848e9c;"><i class="fas fa-phone" style="margin-right:6px;width:14px;"></i>Phone</span>
             <span id="pf-ph">-</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2b3139;">
-            <span style="color:#848e9c;"><i class="fas fa-id-card" style="margin-right:6px;"></i>Aadhaar</span>
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #2b3139;">
+            <span style="color:#848e9c;"><i class="fas fa-id-card" style="margin-right:6px;width:14px;"></i>Aadhaar</span>
             <span id="pf-aad">-</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2b3139;">
-            <span style="color:#848e9c;"><i class="fas fa-address-card" style="margin-right:6px;"></i>PAN</span>
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #2b3139;">
+            <span style="color:#848e9c;"><i class="fas fa-address-card" style="margin-right:6px;width:14px;"></i>PAN</span>
             <span id="pf-pan">-</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #2b3139;">
-            <span style="color:#848e9c;"><i class="fas fa-star" style="margin-right:6px;"></i>Credit Score</span>
+          <div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #2b3139;">
+            <span style="color:#848e9c;"><i class="fas fa-star" style="margin-right:6px;width:14px;"></i>Credit Score</span>
             <span style="color:#a855f7;font-weight:800;" id="pf-crd">750</span>
           </div>
-          <div style="display:flex;justify-content:space-between;padding:8px 0;">
-            <span style="color:#848e9c;"><i class="fas fa-calendar" style="margin-right:6px;"></i>Joined</span>
+          <div style="display:flex;justify-content:space-between;padding:9px 0;">
+            <span style="color:#848e9c;"><i class="fas fa-calendar" style="margin-right:6px;width:14px;"></i>Joined</span>
             <span id="pf-join">-</span>
           </div>
         </div>
@@ -365,20 +450,41 @@ inp::placeholder{color:#5e6673;}
       <div style="display:flex;flex-direction:column;gap:16px;">
         <!-- KYC -->
         <div class="card" style="padding:20px;">
-          <div style="font-weight:800;margin-bottom:12px;"><i class="fas fa-shield-alt" style="color:#f0b90b;margin-right:8px;"></i>KYC Status</div>
-          <div id="kyc-st" style="margin-bottom:12px;"></div>
-          <button class="btn-y" style="width:100%;padding:10px;" onclick="opnMod('m-kyc')">Submit / Update KYC</button>
+          <div style="font-weight:800;margin-bottom:12px;">
+            <i class="fas fa-shield-alt" style="color:#f0b90b;margin-right:8px;"></i>KYC Status
+          </div>
+          <div id="kyc-st" style="margin-bottom:14px;font-size:13px;"></div>
+          <button class="btn-y" onclick="opnMod('m-kyc')" style="font-size:13px;padding:10px;">
+            Submit / Update KYC
+          </button>
         </div>
 
         <!-- Bank Details -->
         <div class="card" style="padding:20px;">
-          <div style="font-weight:800;margin-bottom:12px;"><i class="fas fa-university" style="color:#f0b90b;margin-right:8px;"></i>Bank Details</div>
-          <div class="grp"><label class="lbl">Bank Name</label><inp type="text" id="bk-bn" placeholder="State Bank of India" style="margin-top:4px;"></div>
-          <div class="grp"><label class="lbl">Account Holder</label><inp type="text" id="bk-ah" placeholder="Full name" style="margin-top:4px;"></div>
-          <div class="grp"><label class="lbl">Account Number</label><inp type="text" id="bk-an" placeholder="Account number" style="margin-top:4px;"></div>
-          <div class="grp"><label class="lbl">IFSC Code</label><inp type="text" id="bk-if" placeholder="SBIN0001234" style="margin-top:4px;"></div>
-          <div class="grp" style="margin-bottom:12px;"><label class="lbl">UPI / PhonePe Number</label><inp type="text" id="bk-up" placeholder="name@upi or 9876543210" style="margin-top:4px;"></div>
-          <button class="btn-y" style="width:100%;padding:10px;" onclick="saveBankDetails()">
+          <div style="font-weight:800;margin-bottom:14px;">
+            <i class="fas fa-university" style="color:#f0b90b;margin-right:8px;"></i>Bank Details (For Withdrawal)
+          </div>
+          <div class="field-group">
+            <label class="field-label">Bank Name</label>
+            <input type="text" id="bk-bn" placeholder="State Bank of India">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Account Holder Name</label>
+            <input type="text" id="bk-ah" placeholder="Your full name">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Account Number</label>
+            <input type="text" id="bk-an" placeholder="Your account number">
+          </div>
+          <div class="field-group">
+            <label class="field-label">IFSC Code</label>
+            <input type="text" id="bk-if" placeholder="SBIN0001234">
+          </div>
+          <div class="field-group" style="margin-bottom:14px;">
+            <label class="field-label">UPI ID / PhonePe Number</label>
+            <input type="text" id="bk-up" placeholder="name@upi or 9876543210">
+          </div>
+          <button class="btn-y" onclick="saveBankDetails()" style="font-size:13px;padding:10px;">
             <i class="fas fa-save" style="margin-right:6px;"></i>Save Bank Details
           </button>
         </div>
@@ -388,7 +494,9 @@ inp::placeholder{color:#5e6673;}
 
   <!-- NOTIFICATIONS PAGE -->
   <div id="pg-notif" class="pg" style="flex:1;padding:20px;overflow-y:auto;">
-    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;"><i class="fas fa-bell" style="color:#f0b90b;margin-right:8px;"></i>Notifications</h2>
+    <h2 style="font-size:1.2rem;font-weight:800;margin-bottom:16px;">
+      <i class="fas fa-bell" style="color:#f0b90b;margin-right:8px;"></i>Notifications
+    </h2>
     <div class="card" id="notif-body"></div>
   </div>
 
@@ -396,111 +504,180 @@ inp::placeholder{color:#5e6673;}
 
 <!-- ======== MODALS ======== -->
 
-<!-- DEPOSIT -->
+<!-- DEPOSIT MODAL -->
 <div id="m-dep" class="modal">
-  <div class="card" style="width:100%;max-width:420px;padding:24px;max-height:90vh;overflow-y:auto;">
+  <div class="card" style="width:100%;max-width:430px;padding:24px;max-height:90vh;overflow-y:auto;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <h3 style="font-size:1.1rem;font-weight:800;color:#0ecb81;"><i class="fas fa-plus-circle" style="margin-right:8px;"></i>Deposit Money</h3>
-      <button onclick="clsMod('m-dep')" style="background:none;border:none;color:#848e9c;font-size:1.2rem;cursor:pointer;"><i class="fas fa-times"></i></button>
+      <h3 style="font-size:1.1rem;font-weight:800;color:#0ecb81;">
+        <i class="fas fa-plus-circle" style="margin-right:8px;"></i>Deposit Money
+      </h3>
+      <button onclick="clsMod('m-dep')" style="background:none;border:none;color:#848e9c;font-size:1.3rem;cursor:pointer;padding:4px;">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
-    <div style="background:#0ecb8110;border:1px solid #0ecb81;border-radius:8px;padding:16px;margin-bottom:16px;">
-      <div style="color:#0ecb81;font-weight:800;font-size:12px;margin-bottom:10px;">📤 TRANSFER TO ADMIN ACCOUNT:</div>
-      <div style="font-size:13px;display:flex;flex-direction:column;gap:6px;">
-        <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">UPI ID</span><span style="font-weight:800;color:#f0b90b;" id="d-upi">-</span></div>
-        <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">PhonePe/Paytm</span><span style="font-weight:800;" id="d-ph">-</span></div>
-        <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">Bank Name</span><span style="font-weight:800;" id="d-bk">-</span></div>
-        <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">Account No</span><span style="font-weight:800;" id="d-ac">-</span></div>
-        <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">IFSC</span><span style="font-weight:800;" id="d-if">-</span></div>
-        <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">Account Holder</span><span style="font-weight:800;" id="d-hn">-</span></div>
+    <div class="info-box-green">
+      <div style="color:#0ecb81;font-weight:800;font-size:12px;margin-bottom:12px;">
+        📤 TRANSFER MONEY TO THIS ACCOUNT:
+      </div>
+      <div style="font-size:13px;display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:#848e9c;">UPI ID</span>
+          <span style="font-weight:800;color:#f0b90b;" id="d-upi">-</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:#848e9c;">PhonePe/Paytm</span>
+          <span style="font-weight:800;" id="d-ph">-</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:#848e9c;">Bank Name</span>
+          <span style="font-weight:800;" id="d-bk">-</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:#848e9c;">Account No</span>
+          <span style="font-weight:800;" id="d-ac">-</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:#848e9c;">IFSC Code</span>
+          <span style="font-weight:800;" id="d-if">-</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:#848e9c;">Account Holder</span>
+          <span style="font-weight:800;" id="d-hn">-</span>
+        </div>
       </div>
     </div>
-    <div class="grp"><label class="lbl">Amount (₹)</label><inp type="number" id="d-amt" placeholder="Minimum ₹100" style="margin-top:4px;"></div>
-    <div class="grp" style="margin-bottom:12px;"><label class="lbl">UTR / Transaction Reference No.</label><inp type="text" id="d-ref" placeholder="12-digit UTR number" style="margin-top:4px;"></div>
-    <div style="background:#f0b90b11;border:1px solid #f0b90b;border-radius:6px;padding:10px;font-size:11px;color:#f0b90b;margin-bottom:12px;">
-      ⚠️ Transfer money first, then submit. Admin will verify & credit within 30 minutes.
+    <div class="field-group">
+      <label class="field-label">Amount (₹)</label>
+      <input type="number" id="d-amt" placeholder="Minimum ₹100">
     </div>
-    <button class="btn-g" style="width:100%;padding:14px;font-size:14px;" onclick="doDeposit()">
+    <div class="field-group" style="margin-bottom:12px;">
+      <label class="field-label">UTR / Transaction Reference Number</label>
+      <input type="text" id="d-ref" placeholder="12-digit UTR/transaction ID">
+    </div>
+    <div class="info-box-yellow">
+      ⚠️ Transfer money first, then submit this form. Admin will verify and credit your account within 30 minutes.
+    </div>
+    <button class="btn-g" style="width:100%;padding:14px;font-size:14px;border-radius:8px;" onclick="doDeposit()">
       <i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Deposit Request
     </button>
   </div>
 </div>
 
-<!-- WITHDRAWAL -->
+<!-- WITHDRAWAL MODAL -->
 <div id="m-wd" class="modal">
   <div class="card" style="width:100%;max-width:420px;padding:24px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <h3 style="font-size:1.1rem;font-weight:800;color:#f6465d;"><i class="fas fa-minus-circle" style="margin-right:8px;"></i>Withdraw Money</h3>
-      <button onclick="clsMod('m-wd')" style="background:none;border:none;color:#848e9c;font-size:1.2rem;cursor:pointer;"><i class="fas fa-times"></i></button>
+      <h3 style="font-size:1.1rem;font-weight:800;color:#f6465d;">
+        <i class="fas fa-minus-circle" style="margin-right:8px;"></i>Withdraw Money
+      </h3>
+      <button onclick="clsMod('m-wd')" style="background:none;border:none;color:#848e9c;font-size:1.3rem;cursor:pointer;padding:4px;">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
-    <div id="wd-bk-info" style="background:#1890ff11;border:1px solid #1890ff;border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px;"></div>
-    <div class="grp"><label class="lbl">Amount (₹)</label><inp type="number" id="wd-amt" placeholder="Minimum ₹500" style="margin-top:4px;"></div>
-    <div class="grp" style="margin-bottom:12px;">
-      <label class="lbl">Withdraw Method</label>
-      <select id="wd-mth" style="background:#2b3139;border:1px solid #363c45;color:#eaecef;border-radius:6px;padding:8px;width:100%;margin-top:4px;outline:none;">
-        <option value="bank">Bank Transfer</option>
-        <option value="upi">UPI</option>
+    <div class="info-box-blue" id="wd-bk-info">
+      <span style="color:#f0b90b;">⚠️ No bank details saved. Go to Profile to add bank details first.</span>
+    </div>
+    <div class="field-group">
+      <label class="field-label">Amount (₹)</label>
+      <input type="number" id="wd-amt" placeholder="Minimum ₹500">
+    </div>
+    <div class="field-group" style="margin-bottom:14px;">
+      <label class="field-label">Withdraw Method</label>
+      <select id="wd-mth">
+        <option value="bank">Bank Transfer (NEFT/IMPS)</option>
+        <option value="upi">UPI Transfer</option>
         <option value="phonepay">PhonePe</option>
         <option value="paytm">Paytm</option>
       </select>
     </div>
-    <div style="background:#ffffff08;border-radius:6px;padding:10px;font-size:11px;color:#848e9c;margin-bottom:12px;">
-      💡 Sent to your saved bank/UPI. Processed within 24 hours.
+    <div style="background:#ffffff08;border-radius:6px;padding:10px;font-size:11px;color:#848e9c;margin-bottom:14px;">
+      💡 Withdrawal processed to your saved bank/UPI details within 24 hours.
     </div>
-    <button class="btn-r" style="width:100%;padding:14px;font-size:14px;" onclick="doWithdraw()">
-      <i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Withdrawal
+    <button class="btn-r" style="width:100%;padding:14px;font-size:14px;border-radius:8px;" onclick="doWithdraw()">
+      <i class="fas fa-paper-plane" style="margin-right:8px;"></i>Submit Withdrawal Request
     </button>
   </div>
 </div>
 
-<!-- KYC -->
+<!-- KYC MODAL -->
 <div id="m-kyc" class="modal">
   <div class="card" style="width:100%;max-width:400px;padding:24px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
-      <h3 style="font-size:1.1rem;font-weight:800;color:#f0b90b;"><i class="fas fa-id-card" style="margin-right:8px;"></i>KYC Verification</h3>
-      <button onclick="clsMod('m-kyc')" style="background:none;border:none;color:#848e9c;font-size:1.2rem;cursor:pointer;"><i class="fas fa-times"></i></button>
+      <h3 style="font-size:1.1rem;font-weight:800;color:#f0b90b;">
+        <i class="fas fa-id-card" style="margin-right:8px;"></i>KYC Verification
+      </h3>
+      <button onclick="clsMod('m-kyc')" style="background:none;border:none;color:#848e9c;font-size:1.3rem;cursor:pointer;padding:4px;">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
-    <div class="grp"><label class="lbl">Aadhaar Number (12 digits)</label><inp type="text" id="kyc-a" maxlength="12" placeholder="XXXXXXXXXXXX" style="margin-top:4px;"></div>
-    <div class="grp" style="margin-bottom:16px;"><label class="lbl">PAN Number</label><inp type="text" id="kyc-p" maxlength="10" placeholder="ABCDE1234F" style="margin-top:4px;"></div>
-    <button class="btn-y" style="width:100%;padding:14px;" onclick="doKYC()">Submit KYC</button>
+    <div class="field-group">
+      <label class="field-label">Aadhaar Number (12 Digits)</label>
+      <input type="text" id="kyc-a" maxlength="12" placeholder="XXXXXXXXXXXX">
+    </div>
+    <div class="field-group" style="margin-bottom:18px;">
+      <label class="field-label">PAN Number</label>
+      <input type="text" id="kyc-p" maxlength="10" placeholder="ABCDE1234F">
+    </div>
+    <button class="btn-y" onclick="doKYC()">
+      <i class="fas fa-check-circle" style="margin-right:8px;"></i>Submit KYC Documents
+    </button>
   </div>
 </div>
 
-<!-- QUICK ORDER -->
+<!-- QUICK ORDER MODAL -->
 <div id="m-qo" class="modal">
   <div class="card" style="width:100%;max-width:360px;padding:24px;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
       <h3 style="font-size:1.1rem;font-weight:800;" id="qo-ttl">Place Order</h3>
-      <button onclick="clsMod('m-qo')" style="background:none;border:none;color:#848e9c;font-size:1.2rem;cursor:pointer;"><i class="fas fa-times"></i></button>
+      <button onclick="clsMod('m-qo')" style="background:none;border:none;color:#848e9c;font-size:1.3rem;cursor:pointer;padding:4px;">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
-    <div style="font-size:13px;margin-bottom:12px;">
-      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #2b3139;">
-        <span style="color:#848e9c;">Stock</span><span style="font-weight:800;" id="qo-sym">-</span>
+    <div style="background:#161a1e;border:1px solid #2b3139;border-radius:8px;padding:12px;margin-bottom:14px;font-size:13px;">
+      <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #2b3139;">
+        <span style="color:#848e9c;">Stock</span>
+        <span style="font-weight:800;" id="qo-sym">-</span>
       </div>
-      <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #2b3139;">
-        <span style="color:#848e9c;">Price</span><span style="font-weight:800;color:#f0b90b;" id="qo-pr">-</span>
+      <div style="display:flex;justify-content:space-between;padding:5px 0;">
+        <span style="color:#848e9c;">Current Price</span>
+        <span style="font-weight:800;color:#f0b90b;" id="qo-pr">-</span>
       </div>
     </div>
-    <div class="grp"><label class="lbl">Quantity (Shares)</label><inp type="number" id="qo-q" placeholder="Number of shares" oninput="calcQO()" style="margin-top:4px;"></div>
-    <div style="background:#161a1e;border:1px solid #2b3139;border-radius:6px;padding:10px;font-size:11px;margin-bottom:12px;">
-      <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#848e9c;">Total</span><span id="qo-tot">₹0</span></div>
-      <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="color:#848e9c;">Fee (0.1%)</span><span id="qo-fee">₹0</span></div>
-      <div style="display:flex;justify-content:space-between;"><span style="color:#848e9c;">Balance</span><span style="color:#0ecb81;font-weight:800;" id="qo-bal">₹0</span></div>
+    <div class="field-group">
+      <label class="field-label">Quantity (Number of Shares)</label>
+      <input type="number" id="qo-q" placeholder="Enter quantity" oninput="calcQO()">
     </div>
-    <button id="qo-btn" class="btn-g" style="width:100%;padding:14px;font-size:14px;" onclick="subQO()">CONFIRM</button>
+    <div style="background:#161a1e;border:1px solid #2b3139;border-radius:6px;padding:10px;margin-bottom:14px;font-size:11px;">
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+        <span style="color:#848e9c;">Total Amount</span>
+        <span id="qo-tot">₹0</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px;">
+        <span style="color:#848e9c;">Trading Fee (0.1%)</span>
+        <span id="qo-fee">₹0</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;">
+        <span style="color:#848e9c;">Your Balance</span>
+        <span style="color:#0ecb81;font-weight:800;" id="qo-bal">₹0</span>
+      </div>
+    </div>
+    <button id="qo-btn" class="btn-g" style="width:100%;padding:14px;font-size:14px;border-radius:8px;" onclick="subQO()">
+      CONFIRM BUY
+    </button>
   </div>
 </div>
 
 <script>
-// ====================================================
-// SUPABASE CONFIG
-// ====================================================
+// ============================================================
+// SUPABASE SETUP
+// ============================================================
 const SB_URL = 'https://qajdgueavfofwtavmkxi.supabase.co';
 const SB_KEY = 'sb_publishable_NqFN_vK1dp64ZrI94MZsEA_DcTFMRof';
 const sb = supabase.createClient(SB_URL, SB_KEY);
 
-// ====================================================
+// ============================================================
 // STOCKS DATA
-// ====================================================
+// ============================================================
 const STOCKS = [
   {sym:'NSE:RELIANCE',name:'Reliance Industries',p:2456,cat:'nifty50'},
   {sym:'NSE:TCS',name:'Tata Consultancy Services',p:3890,cat:'nifty50'},
@@ -515,12 +692,12 @@ const STOCKS = [
   {sym:'NSE:LT',name:'Larsen & Toubro',p:3456,cat:'nifty50'},
   {sym:'NSE:AXISBANK',name:'Axis Bank',p:1089,cat:'nifty50'},
   {sym:'NSE:ASIANPAINT',name:'Asian Paints',p:3234,cat:'nifty50'},
-  {sym:'NSE:MARUTI',name:'Maruti Suzuki India',p:12456,cat:'nifty50'},
+  {sym:'NSE:MARUTI',name:'Maruti Suzuki',p:12456,cat:'nifty50'},
   {sym:'NSE:WIPRO',name:'Wipro Limited',p:478,cat:'nifty50'},
   {sym:'NSE:HCLTECH',name:'HCL Technologies',p:1567,cat:'nifty50'},
   {sym:'NSE:BAJFINANCE',name:'Bajaj Finance',p:7234,cat:'nifty50'},
   {sym:'NSE:TITAN',name:'Titan Company',p:3678,cat:'nifty50'},
-  {sym:'NSE:ONGC',name:'Oil & Natural Gas Corp',p:267,cat:'nifty50'},
+  {sym:'NSE:ONGC',name:'ONGC',p:267,cat:'nifty50'},
   {sym:'NSE:NTPC',name:'NTPC Limited',p:356,cat:'nifty50'},
   {sym:'NSE:POWERGRID',name:'Power Grid Corp',p:298,cat:'nifty50'},
   {sym:'NSE:COALINDIA',name:'Coal India',p:445,cat:'nifty50'},
@@ -528,7 +705,7 @@ const STOCKS = [
   {sym:'NSE:TATAMOTORS',name:'Tata Motors',p:956,cat:'nifty50'},
   {sym:'NSE:TATASTEEL',name:'Tata Steel',p:167,cat:'nifty50'},
   {sym:'NSE:SUNPHARMA',name:'Sun Pharmaceutical',p:1678,cat:'nifty50'},
-  {sym:'NSE:DRREDDY',name:'Dr. Reddy\'s Labs',p:6234,cat:'nifty50'},
+  {sym:'NSE:DRREDDY',name:'Dr Reddys Labs',p:6234,cat:'nifty50'},
   {sym:'NSE:TECHM',name:'Tech Mahindra',p:1234,cat:'nifty50'},
   {sym:'NSE:ULTRACEMCO',name:'UltraTech Cement',p:9876,cat:'nifty50'},
   {sym:'NSE:JSWSTEEL',name:'JSW Steel',p:889,cat:'nifty50'},
@@ -541,66 +718,98 @@ const STOCKS = [
   {sym:'BINANCE:DOGEUSDT',name:'Dogecoin',p:8,cat:'crypto'},
 ];
 
-// ====================================================
+// ============================================================
 // GLOBAL STATE
-// ====================================================
-let gU = null; // logged in user from users table
-let gS = STOCKS[0]; // selected stock
+// ============================================================
+let gU = null;
+let gS = STOCKS[0];
 let gSide = 'buy';
 let gQSide = 'buy';
 let gPx = {};
 let gAdm = {};
 let gCat = 'all';
+let tvW = null;
 
-// Init prices
 STOCKS.forEach(s => {
   gPx[s.sym] = {
     price: s.p,
     change: +(Math.random()*4-2).toFixed(2),
-    high: s.p*1.02,
-    low: s.p*0.98
+    high: +(s.p*1.02).toFixed(2),
+    low: +(s.p*0.98).toFixed(2)
   };
 });
 
-// ====================================================
+// ============================================================
+// HELPERS
+// ============================================================
+function fmtINR(n) {
+  return '₹' + parseFloat(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
+}
+
+function showMsg(elId, msg, color) {
+  const el = document.getElementById(elId);
+  if(!el) return;
+  const colors = {green:'#0ecb81',red:'#f6465d',blue:'#1890ff',yellow:'#f0b90b'};
+  el.style.color = colors[color] || '#848e9c';
+  el.textContent = msg;
+}
+
+function toast(msg, color='green') {
+  const colors = {green:'#0ecb81',red:'#f6465d',yellow:'#f0b90b',blue:'#1890ff'};
+  const icons = {green:'check-circle',red:'times-circle',yellow:'exclamation-triangle',blue:'info-circle'};
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.style.cssText = `background:${colors[color]}18;border:1px solid ${colors[color]};color:${colors[color]};`;
+  el.innerHTML = `<i class="fas fa-${icons[color]||'info-circle'}" style="margin-right:8px;"></i>${msg}`;
+  document.body.appendChild(el);
+  setTimeout(() => {
+    el.style.opacity = '0';
+    el.style.transition = 'opacity .5s';
+    setTimeout(() => el.remove(), 600);
+  }, 3500);
+}
+
+// ============================================================
 // AUTH SWITCH
-// ====================================================
+// ============================================================
 function swAuth(tab) {
-  const isL = tab==='login';
+  const isL = tab === 'login';
   document.getElementById('f-login').style.display = isL ? 'block' : 'none';
   document.getElementById('f-reg').style.display   = isL ? 'none'  : 'block';
   document.getElementById('tl').classList.toggle('on', isL);
   document.getElementById('tr').classList.toggle('on', !isL);
+  document.getElementById('l-msg').textContent = '';
+  document.getElementById('r-msg').textContent = '';
 }
 
-// ====================================================
+// ============================================================
 // LOGIN
-// ====================================================
+// ============================================================
 async function doLogin() {
   const email = document.getElementById('le').value.trim().toLowerCase();
   const pass  = document.getElementById('lp').value;
-  const err   = document.getElementById('l-err');
-  if(!email||!pass) return showErr(err,'Fill all fields','red');
-  showErr(err,'Logging in...','blue');
+  if(!email || !pass) return showMsg('l-msg','Please fill all fields','red');
+  showMsg('l-msg','Logging in...','blue');
 
-  const {data,error} = await sb
+  const {data, error} = await sb
     .from('users')
     .select('*')
     .eq('email', email)
     .eq('password', pass)
     .single();
 
-  if(error||!data) return showErr(err,'Invalid email or password','red');
-  if(data.is_frozen) return showErr(err,'Account frozen. Contact support.','red');
+  if(error || !data) return showMsg('l-msg','Invalid email or password','red');
+  if(data.is_frozen) return showMsg('l-msg','Account frozen. Contact support.','red');
 
   gU = data;
-  showErr(err,'','');
+  showMsg('l-msg','','');
+  sessionStorage.setItem('sx_uid', data.id);
   launchApp();
 }
 
-// ====================================================
-// REGISTER - Saves to users table directly
-// ====================================================
+// ============================================================
+// REGISTER
+// ============================================================
 async function doReg() {
   const name    = document.getElementById('rn').value.trim();
   const email   = document.getElementById('re').value.trim().toLowerCase();
@@ -609,39 +818,39 @@ async function doReg() {
   const pan     = document.getElementById('rpn').value.trim().toUpperCase();
   const pass    = document.getElementById('rps').value;
   const conf    = document.getElementById('rpc').value;
-  const st      = document.getElementById('r-st');
   const btn     = document.getElementById('rbtn');
 
-  if(!name||!email||!phone||!aadhaar||!pan||!pass)
-    return showErr(st,'Please fill all fields','red');
-  if(pass!==conf)
-    return showErr(st,'Passwords do not match','red');
-  if(pass.length<6)
-    return showErr(st,'Password minimum 6 characters','red');
-  if(aadhaar.length!==12)
-    return showErr(st,'Aadhaar must be exactly 12 digits','red');
-  if(pan.length!==10)
-    return showErr(st,'PAN must be exactly 10 characters','red');
+  // Validations
+  if(!name||!email||!phone||!aadhaar||!pan||!pass||!conf)
+    return showMsg('r-msg','Please fill all fields','red');
+  if(pass !== conf)
+    return showMsg('r-msg','Passwords do not match','red');
+  if(pass.length < 6)
+    return showMsg('r-msg','Password must be at least 6 characters','red');
+  if(aadhaar.length !== 12 || !/^\d+$/.test(aadhaar))
+    return showMsg('r-msg','Aadhaar must be exactly 12 digits','red');
+  if(pan.length !== 10)
+    return showMsg('r-msg','PAN must be exactly 10 characters','red');
 
   btn.disabled = true;
   btn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right:8px;"></i>Creating Account...';
-  showErr(st,'Please wait...','blue');
+  showMsg('r-msg','Please wait...','blue');
 
   try {
     // Check duplicate email
-    const {data:eChk} = await sb.from('users').select('id').eq('email',email).single();
-    if(eChk) throw new Error('Email already registered');
+    const {data:ec} = await sb.from('users').select('id').eq('email',email);
+    if(ec && ec.length > 0) throw new Error('Email already registered. Please login.');
 
     // Check duplicate phone
-    const {data:pChk} = await sb.from('users').select('id').eq('phone_number',phone).single();
-    if(pChk) throw new Error('Phone number already registered');
+    const {data:pc} = await sb.from('users').select('id').eq('phone_number',phone);
+    if(pc && pc.length > 0) throw new Error('Phone number already registered.');
 
     // Check duplicate aadhaar
-    const {data:aChk} = await sb.from('users').select('id').eq('aadhaar_number',aadhaar).single();
-    if(aChk) throw new Error('Aadhaar already registered');
+    const {data:ac} = await sb.from('users').select('id').eq('aadhaar_number',aadhaar);
+    if(ac && ac.length > 0) throw new Error('Aadhaar already registered.');
 
-    // INSERT USER
-    const {data:inserted, error:insErr} = await sb.from('users').insert({
+    // INSERT
+    const {data:ins, error:insErr} = await sb.from('users').insert({
       email,
       password: pass,
       full_name: name,
@@ -649,9 +858,11 @@ async function doReg() {
       aadhaar_number: aadhaar,
       pan_number: pan,
       balance: 0,
+      portfolio_value: 0,
       credit_score: 750,
       verified: false,
       is_frozen: false,
+      is_admin: false,
       kyc_status: 'pending',
       loan_status: 'none',
       loan_amount: 0
@@ -659,55 +870,51 @@ async function doReg() {
 
     if(insErr) throw new Error(insErr.message);
 
-    showErr(st,'✅ Account created! You can login now.','green');
+    showMsg('r-msg','✅ Account created! You can now login.','green');
+    toast('Account created successfully!','green');
     btn.innerHTML = '<i class="fas fa-user-plus" style="margin-right:8px;"></i>Create Account';
     btn.disabled = false;
-    toast('Account created successfully!','green');
-    setTimeout(()=>swAuth('login'),2000);
+    setTimeout(() => swAuth('login'), 2000);
 
   } catch(e) {
-    showErr(st,'❌ '+e.message,'red');
+    showMsg('r-msg','❌ ' + e.message,'red');
     btn.innerHTML = '<i class="fas fa-user-plus" style="margin-right:8px;"></i>Create Account';
     btn.disabled = false;
   }
 }
 
-function showErr(el,msg,color){
-  const c={green:'#0ecb81',red:'#f6465d',blue:'#1890ff','':`''`};
-  el.style.color = c[color]||'#848e9c';
-  el.textContent = msg;
-}
-
-// ====================================================
+// ============================================================
 // LOGOUT
-// ====================================================
-function doLogout(){
-  gU=null;
-  document.getElementById('auth-page').style.display='flex';
-  document.getElementById('main-app').style.display='none';
+// ============================================================
+function doLogout() {
+  gU = null;
+  sessionStorage.removeItem('sx_uid');
+  document.getElementById('auth-page').style.display = 'flex';
+  document.getElementById('main-app').style.display = 'none';
+  document.getElementById('main-app').classList.remove('on');
   toast('Logged out successfully','green');
 }
 
-// ====================================================
-// REFRESH USER FROM DB
-// ====================================================
-async function refreshUser(){
+// ============================================================
+// REFRESH USER
+// ============================================================
+async function refreshUser() {
   if(!gU) return;
-  const {data}=await sb.from('users').select('*').eq('id',gU.id).single();
-  if(data){
-    if(data.is_frozen){doLogout();toast('Account frozen','red');return;}
-    gU=data;
+  const {data} = await sb.from('users').select('*').eq('id', gU.id).single();
+  if(data) {
+    if(data.is_frozen) { doLogout(); toast('Account frozen','red'); return; }
+    gU = data;
     updBals();
-    fillProfile();
   }
 }
 
-// ====================================================
+// ============================================================
 // LAUNCH APP
-// ====================================================
-function launchApp(){
-  document.getElementById('auth-page').style.display='none';
-  document.getElementById('main-app').style.display='flex';
+// ============================================================
+function launchApp() {
+  document.getElementById('auth-page').style.display = 'none';
+  document.getElementById('main-app').style.display = 'flex';
+  document.getElementById('main-app').classList.add('on');
   initTV();
   renderSide();
   renderMkt();
@@ -719,133 +926,145 @@ function launchApp(){
   updBals();
   fillProfile();
   updTicker();
-  setInterval(simPx,2000);
-  setInterval(updOB,1500);
-  setInterval(updRT,3500);
-  setInterval(refreshUser,30000);
+  setInterval(simPx, 2000);
+  setInterval(updOB, 1500);
+  setInterval(updRT, 3500);
+  setInterval(refreshUser, 30000);
   goPage('trade');
 }
 
-// ====================================================
-// UPDATE ALL BALANCES
-// ====================================================
-function updBals(){
+// ============================================================
+// UPDATE BALANCES
+// ============================================================
+function updBals() {
   if(!gU) return;
-  const b = parseFloat(gU.balance||0);
-  const fmt = n=>'₹'+n.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('nav-bal').textContent  = fmt(b);
-  document.getElementById('wlt-bal').textContent  = fmt(b);
-  document.getElementById('pf-bal').textContent   = fmt(b);
-  document.getElementById('po-bal').textContent   = fmt(b);
-  document.getElementById('qo-bal').textContent   = fmt(b);
-  document.getElementById('pf-cs').textContent    = gU.credit_score||750;
-  document.getElementById('pf-crd').textContent   = gU.credit_score||750;
+  const b = parseFloat(gU.balance || 0);
+  const f = fmtINR(b);
+  document.getElementById('nav-bal').textContent  = f;
+  document.getElementById('wlt-bal').textContent  = f;
+  document.getElementById('pf-bal').textContent   = f;
+  document.getElementById('po-bal').textContent   = f;
+  document.getElementById('qo-bal').textContent   = f;
+  document.getElementById('pf-cs').textContent    = gU.credit_score || 750;
 }
 
-// ====================================================
-// FILL PROFILE
-// ====================================================
-function fillProfile(){
+// ============================================================
+// FILL PROFILE PAGE
+// ============================================================
+function fillProfile() {
   if(!gU) return;
-  const init=(gU.full_name||'U')[0].toUpperCase();
-  document.getElementById('nav-av').textContent  = init;
-  document.getElementById('pf-av').textContent   = init;
-  document.getElementById('pf-name').textContent = gU.full_name||'User';
-  document.getElementById('pf-email').textContent= gU.email||'';
-  document.getElementById('pf-slot').textContent = 'ID-'+( gU.slot||gU.id);
-  document.getElementById('pf-ph').textContent   = gU.phone_number||'-';
-  document.getElementById('pf-pan').textContent  = gU.pan_number||'-';
-  document.getElementById('pf-crd').textContent  = gU.credit_score||750;
-  document.getElementById('pf-join').textContent = new Date(gU.created_at).toLocaleDateString('en-IN');
+  const init = (gU.full_name || 'U')[0].toUpperCase();
+  document.getElementById('nav-av').textContent   = init;
+  document.getElementById('pf-av').textContent    = init;
+  document.getElementById('pf-name').textContent  = gU.full_name || 'User';
+  document.getElementById('pf-email').textContent = gU.email || '';
+  document.getElementById('pf-slot').textContent  = 'ID-' + (gU.slot || gU.id);
+  document.getElementById('pf-ph').textContent    = gU.phone_number || '-';
+  document.getElementById('pf-pan').textContent   = gU.pan_number || '-';
+  document.getElementById('pf-crd').textContent   = gU.credit_score || 750;
+  document.getElementById('pf-join').textContent  = new Date(gU.created_at).toLocaleDateString('en-IN');
 
-  // Masked Aadhaar
-  const a=gU.aadhaar_number||'';
-  document.getElementById('pf-aad').textContent = a?a.slice(0,4)+'XXXX'+a.slice(8):'-';
+  const a = gU.aadhaar_number || '';
+  document.getElementById('pf-aad').textContent = a ? a.slice(0,4)+'XXXX'+a.slice(8) : '-';
 
   // Verified badge
-  const vb=document.getElementById('pf-badge');
-  const ks=document.getElementById('kyc-st');
-  if(gU.verified){
-    vb.innerHTML='<span style="background:#0ecb8120;color:#0ecb81;padding:2px 10px;border-radius:4px;font-size:11px;font-weight:700;"><i class="fas fa-check-circle" style="margin-right:4px;"></i>KYC Verified</span>';
-    ks.innerHTML='<span style="color:#0ecb81;font-weight:700;"><i class="fas fa-check-circle" style="margin-right:6px;"></i>Account Verified & Active</span>';
-  }else{
-    vb.innerHTML='<span style="background:#f0b90b20;color:#f0b90b;padding:2px 10px;border-radius:4px;font-size:11px;font-weight:700;"><i class="fas fa-clock" style="margin-right:4px;"></i>KYC Pending</span>';
-    ks.innerHTML='<span style="color:#f0b90b;font-weight:700;"><i class="fas fa-clock" style="margin-right:6px;"></i>Pending Verification</span>';
+  const vb = document.getElementById('pf-badge');
+  const ks = document.getElementById('kyc-st');
+  if(gU.verified) {
+    vb.innerHTML = '<span style="background:#0ecb8120;color:#0ecb81;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;"><i class="fas fa-check-circle" style="margin-right:4px;"></i>KYC Verified</span>';
+    ks.innerHTML = '<div style="color:#0ecb81;font-weight:700;"><i class="fas fa-check-circle" style="margin-right:6px;"></i>Account Verified & Active</div>';
+  } else {
+    vb.innerHTML = '<span style="background:#f0b90b20;color:#f0b90b;padding:3px 10px;border-radius:4px;font-size:11px;font-weight:700;"><i class="fas fa-clock" style="margin-right:4px;"></i>KYC Pending</span>';
+    ks.innerHTML = '<div style="color:#f0b90b;font-weight:700;"><i class="fas fa-clock" style="margin-right:6px;"></i>Pending Verification</div>';
   }
 
   // Fill bank fields
-  if(gU.bank_name)           document.getElementById('bk-bn').value=gU.bank_name;
-  if(gU.account_holder_name) document.getElementById('bk-ah').value=gU.account_holder_name;
-  if(gU.account_number)      document.getElementById('bk-an').value=gU.account_number;
-  if(gU.ifsc_code)           document.getElementById('bk-if').value=gU.ifsc_code;
-  if(gU.upi_id)              document.getElementById('bk-up').value=gU.upi_id;
+  if(gU.bank_name)            document.getElementById('bk-bn').value = gU.bank_name;
+  if(gU.account_holder_name)  document.getElementById('bk-ah').value = gU.account_holder_name;
+  if(gU.account_number)       document.getElementById('bk-an').value = gU.account_number;
+  if(gU.ifsc_code)            document.getElementById('bk-if').value = gU.ifsc_code;
+  if(gU.upi_id)               document.getElementById('bk-up').value = gU.upi_id;
 
   // Withdrawal bank info
-  document.getElementById('wd-bk-info').innerHTML = gU.bank_name
-    ?`<div style="color:#1890ff;font-weight:800;margin-bottom:6px;"><i class="fas fa-university" style="margin-right:6px;"></i>Saved Bank Details</div>
+  const wdBk = document.getElementById('wd-bk-info');
+  if(gU.bank_name) {
+    wdBk.innerHTML = `<div style="color:#1890ff;font-weight:800;margin-bottom:8px;"><i class="fas fa-university" style="margin-right:6px;"></i>Saved Bank Details</div>
       <div style="font-size:12px;line-height:2;">
         Bank: <b>${gU.bank_name}</b><br>
-        Account: <b>${gU.account_number||'-'}</b><br>
-        UPI: <b>${gU.upi_id||'-'}</b>
-      </div>`
-    :'<span style="color:#f0b90b;">⚠️ No bank details saved. Go to Profile to add.</span>';
+        Account: <b>${gU.account_number || '-'}</b><br>
+        IFSC: <b>${gU.ifsc_code || '-'}</b><br>
+        UPI: <b>${gU.upi_id || '-'}</b>
+      </div>`;
+  } else {
+    wdBk.innerHTML = '<span style="color:#f0b90b;">⚠️ No bank details saved. Go to Profile to add bank details first.</span>';
+  }
 }
 
-// ====================================================
+// ============================================================
 // TRADINGVIEW CHART
-// ====================================================
-function initTV(){
-  new TradingView.widget({
-    container_id:'tv-chart',
-    symbol:gS.sym, interval:'D',
-    timezone:'Asia/Kolkata', theme:'dark',
-    style:'1', locale:'en',
-    toolbar_bg:'#1e2329',
-    enable_publishing:false,
-    allow_symbol_change:true,
-    save_image:false, autosize:true,
-    studies:['RSI@tv-basicstudies','MACD@tv-basicstudies','BB@tv-basicstudies'],
-    withdateranges:true, hide_side_toolbar:false
+// ============================================================
+function initTV() {
+  document.getElementById('tv-chart').innerHTML = '';
+  tvW = new TradingView.widget({
+    container_id: 'tv-chart',
+    symbol: gS.sym,
+    interval: 'D',
+    timezone: 'Asia/Kolkata',
+    theme: 'dark',
+    style: '1',
+    locale: 'en',
+    toolbar_bg: '#1e2329',
+    enable_publishing: false,
+    allow_symbol_change: true,
+    save_image: false,
+    autosize: true,
+    studies: ['RSI@tv-basicstudies','MACD@tv-basicstudies'],
+    withdateranges: true,
+    hide_side_toolbar: false,
   });
 }
 
-function pickStock(s){
-  gS=s;
-  const pd=gPx[s.sym];
-  const sym=s.sym.split(':')[1];
+// ============================================================
+// PICK STOCK
+// ============================================================
+function pickStock(s) {
+  gS = s;
+  const pd  = gPx[s.sym];
+  const sym = s.sym.split(':')[1];
   document.getElementById('h-sym').textContent   = sym;
-  document.getElementById('h-price').textContent = '₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
-  const chg=parseFloat(pd.change);
-  document.getElementById('h-chg').innerHTML=chg>=0
-    ?`<span class="g">+${chg}% ▲</span>`
-    :`<span class="r">${chg}% ▼</span>`;
-  document.getElementById('h-hi').textContent  = '₹'+pd.high.toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('h-lo').textContent  = '₹'+pd.low.toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('h-vol').textContent = (Math.random()*100+5).toFixed(1)+'M';
-  document.getElementById('ob-p').textContent  = '₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('h-price').textContent = fmtINR(pd.price);
+  const chg = parseFloat(pd.change);
+  document.getElementById('h-chg').innerHTML = chg >= 0
+    ? `<span style="color:#0ecb81;">+${chg}% ▲</span>`
+    : `<span style="color:#f6465d;">${chg}% ▼</span>`;
+  document.getElementById('h-hi').textContent  = fmtINR(pd.high);
+  document.getElementById('h-lo').textContent  = fmtINR(pd.low);
+  document.getElementById('h-vol').textContent = (Math.random()*100+5).toFixed(1) + 'M';
+  document.getElementById('ob-p').textContent  = fmtINR(pd.price);
   document.getElementById('po-pr').value = pd.price.toFixed(2);
-  document.getElementById('po-btn').textContent=`${gSide.toUpperCase()} ${sym}`;
-  document.getElementById('qo-sym').textContent=sym;
-  document.getElementById('qo-pr').textContent='₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('po-btn').textContent = `${gSide.toUpperCase()} ${sym}`;
+  document.getElementById('qo-sym').textContent = sym;
+  document.getElementById('qo-pr').textContent  = fmtINR(pd.price);
   updOB();
+  goPage('trade');
 }
 
-// ====================================================
-// SIDEBAR
-// ====================================================
-function renderSide(){
-  const q=(document.getElementById('ss')?.value||'').toLowerCase();
-  const list=STOCKS.filter(s=>{
-    return (gCat==='all'||s.cat===gCat)&&
-           (!q||s.name.toLowerCase().includes(q)||s.sym.toLowerCase().includes(q));
-  });
-  document.getElementById('side-list').innerHTML=list.map(s=>{
-    const pd=gPx[s.sym];
-    const chg=parseFloat(pd?.change||0);
+// ============================================================
+// SIDEBAR STOCKS LIST
+// ============================================================
+function renderSide() {
+  const q = (document.getElementById('ss')?.value || '').toLowerCase();
+  const list = STOCKS.filter(s =>
+    (gCat === 'all' || s.cat === gCat) &&
+    (!q || s.name.toLowerCase().includes(q) || s.sym.toLowerCase().includes(q))
+  );
+  document.getElementById('side-list').innerHTML = list.map(s => {
+    const pd  = gPx[s.sym];
+    const chg = parseFloat(pd?.change || 0);
     return `<div class="stock-row" onclick='pickStock(${JSON.stringify(s)})'>
       <div>
         <div style="font-size:12px;font-weight:700;">${s.sym.split(':')[1]}</div>
-        <div style="font-size:10px;color:#5e6673;">${s.name.slice(0,18)}</div>
+        <div style="font-size:10px;color:#5e6673;">${s.name.slice(0,16)}</div>
       </div>
       <div style="text-align:right;">
         <div style="font-size:11px;font-weight:700;">₹${(pd?.price||s.p).toLocaleString('en-IN',{maximumFractionDigits:0})}</div>
@@ -854,440 +1073,526 @@ function renderSide(){
     </div>`;
   }).join('');
 }
-function filSide(){renderSide();}
-function setCat(c,btn){
-  gCat=c;
-  document.querySelectorAll('#sidebar .tab').forEach(b=>b.classList.remove('on'));
+
+function filSide() { renderSide(); }
+
+function setCat(c, btn) {
+  gCat = c;
+  document.querySelectorAll('#side-list').forEach(()=>{});
+  document.querySelectorAll('[onclick*="setCat"]').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   renderSide();
 }
 
-// ====================================================
+// ============================================================
 // MARKET TABLE
-// ====================================================
-function renderMkt(q=''){
-  const list=q?STOCKS.filter(s=>s.name.toLowerCase().includes(q.toLowerCase())||s.sym.toLowerCase().includes(q.toLowerCase())):STOCKS;
-  document.getElementById('mkt-body').innerHTML=list.map(s=>{
-    const pd=gPx[s.sym];
-    const chg=parseFloat(pd?.change||0);
-    return `<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:12px 16px;border-bottom:1px solid #2b3139;cursor:pointer;transition:.15s;"
-      onmouseover="this.style.background='#2b3139'" onmouseout="this.style.background=''"
-      onclick='pickStock(${JSON.stringify(s)});goPage("trade")'>
-      <div><div style="font-weight:700;font-size:13px;">${s.sym.split(':')[1]}</div><div style="font-size:11px;color:#848e9c;">${s.name}</div></div>
-      <div style="text-align:right;font-weight:700;">₹${(pd?.price||s.p).toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
+// ============================================================
+function renderMkt(q = '') {
+  const list = q ? STOCKS.filter(s =>
+    s.name.toLowerCase().includes(q.toLowerCase()) ||
+    s.sym.toLowerCase().includes(q.toLowerCase())
+  ) : STOCKS;
+
+  document.getElementById('mkt-body').innerHTML = list.map(s => {
+    const pd  = gPx[s.sym];
+    const chg = parseFloat(pd?.change || 0);
+    const vol = (Math.random()*100+5).toFixed(1) + 'M';
+    return `<div class="tbl-row" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;padding:12px 16px;font-size:13px;"
+      onclick='pickStock(${JSON.stringify(s)})'>
+      <div>
+        <div style="font-weight:700;">${s.sym.split(':')[1]}</div>
+        <div style="font-size:11px;color:#848e9c;">${s.name}</div>
+      </div>
+      <div style="text-align:right;font-weight:700;">${fmtINR(pd?.price||s.p)}</div>
       <div style="text-align:right;font-weight:700;color:${chg>=0?'#0ecb81':'#f6465d'}">${chg>=0?'+':''}${chg}%</div>
-      <div style="text-align:right;color:#848e9c;">${(Math.random()*100+5).toFixed(1)}M</div>
+      <div style="text-align:right;color:#848e9c;">${vol}</div>
     </div>`;
   }).join('');
 }
-function filMkt(v){renderMkt(v);}
 
-// ====================================================
-// ORDER BOOK & TRADES
-// ====================================================
-function updOB(){
-  const bp=gPx[gS.sym]?.price||gS.p;
-  let sh='',bh='';
-  for(let i=10;i>0;i--){
-    const p=(bp+i*bp*0.0003).toFixed(2);
-    const q=Math.floor(Math.random()*500+50);
-    const t=(p*q/1000).toFixed(1);
-    const pct=Math.random()*70+10;
-    sh+=`<div class="ob-row" style="color:#f6465d;">
+function filMkt(v) { renderMkt(v); }
+
+// ============================================================
+// ORDER BOOK
+// ============================================================
+function updOB() {
+  const bp = gPx[gS.sym]?.price || gS.p;
+  let sh = '', bh = '';
+
+  for(let i = 10; i > 0; i--) {
+    const p   = (bp + i * bp * 0.0003).toFixed(2);
+    const q   = Math.floor(Math.random()*500+50);
+    const t   = (p * q / 1000).toFixed(1);
+    const pct = Math.random()*70+10;
+    sh += `<div class="ob-row" style="color:#f6465d;">
       <div class="ob-bar" style="right:0;width:${pct}%;background:#f6465d;"></div>
       <span style="position:relative;z-index:1;">${p}</span>
       <span style="text-align:center;position:relative;z-index:1;">${q}</span>
       <span style="text-align:right;position:relative;z-index:1;">${t}K</span>
     </div>`;
   }
-  for(let i=1;i<=10;i++){
-    const p=(bp-i*bp*0.0003).toFixed(2);
-    const q=Math.floor(Math.random()*500+50);
-    const t=(p*q/1000).toFixed(1);
-    const pct=Math.random()*70+10;
-    bh+=`<div class="ob-row" style="color:#0ecb81;">
+  for(let i = 1; i <= 10; i++) {
+    const p   = (bp - i * bp * 0.0003).toFixed(2);
+    const q   = Math.floor(Math.random()*500+50);
+    const t   = (p * q / 1000).toFixed(1);
+    const pct = Math.random()*70+10;
+    bh += `<div class="ob-row" style="color:#0ecb81;">
       <div class="ob-bar" style="left:0;width:${pct}%;background:#0ecb81;"></div>
       <span style="position:relative;z-index:1;">${p}</span>
       <span style="text-align:center;position:relative;z-index:1;">${q}</span>
       <span style="text-align:right;position:relative;z-index:1;">${t}K</span>
     </div>`;
   }
-  document.getElementById('ob-s').innerHTML=sh;
-  document.getElementById('ob-b').innerHTML=bh;
-  document.getElementById('ob-p').textContent='₹'+(gPx[gS.sym]?.price||gS.p).toLocaleString('en-IN',{maximumFractionDigits:2});
+  document.getElementById('ob-s').innerHTML = sh;
+  document.getElementById('ob-b').innerHTML = bh;
+  document.getElementById('ob-p').textContent = fmtINR(gPx[gS.sym]?.price || gS.p);
 }
 
-function updRT(){
-  const bp=gPx[gS.sym]?.price||gS.p;
-  const now=new Date();
-  let h='';
-  for(let i=0;i<20;i++){
-    const ib=Math.random()>0.5;
-    const p=(bp*(1+(Math.random()*.002-.001))).toFixed(2);
-    const sz=Math.floor(Math.random()*200+1);
-    const sec=String(Math.floor(Math.random()*60)).padStart(2,'0');
-    h+=`<div class="ob-row" style="color:${ib?'#0ecb81':'#f6465d'}">
-      <span>${p}</span><span style="text-align:center;">${sz}</span>
+function updRT() {
+  const bp  = gPx[gS.sym]?.price || gS.p;
+  const now = new Date();
+  let h = '';
+  for(let i = 0; i < 20; i++) {
+    const ib  = Math.random() > 0.5;
+    const p   = (bp * (1 + (Math.random()*.002-.001))).toFixed(2);
+    const sz  = Math.floor(Math.random()*200+1);
+    const sec = String(Math.floor(Math.random()*60)).padStart(2,'0');
+    h += `<div class="ob-row" style="color:${ib?'#0ecb81':'#f6465d'}">
+      <span>${p}</span>
+      <span style="text-align:center;">${sz}</span>
       <span style="text-align:right;">${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}:${sec}</span>
     </div>`;
   }
-  document.getElementById('rt-list').innerHTML=h;
+  document.getElementById('rt-list').innerHTML = h;
 }
 
-function rTab(tab){
-  ['ob','po','rt'].forEach(t=>{
-    const el=document.getElementById('r-'+t);
-    el.style.display=t===tab?(t==='rt'?'block':'flex'):'none';
+function rTab(tab) {
+  ['ob','po','rt'].forEach(t => {
+    const el = document.getElementById('r-'+t);
+    if(el) el.style.display = t === tab ? 'flex' : 'none';
+    if(t === 'rt' && t === tab) el.style.display = 'block';
+  });
+  ['ob','po','rt'].forEach(t => {
+    const btn = document.getElementById('rt-'+t+'-btn');
+    if(btn) btn.classList.toggle('on', t === tab);
   });
 }
 
-// ====================================================
-// PRICE SIMULATION & TICKER
-// ====================================================
-function simPx(){
-  STOCKS.forEach(s=>{
-    const o=gPx[s.sym].price;
-    gPx[s.sym].price=Math.max(.01,o+o*(Math.random()*.004-.002));
-    gPx[s.sym].change=+(parseFloat(gPx[s.sym].change)+(Math.random()*.1-.05)).toFixed(2);
+// ============================================================
+// PRICE SIMULATION
+// ============================================================
+function simPx() {
+  STOCKS.forEach(s => {
+    const o = gPx[s.sym].price;
+    gPx[s.sym].price  = Math.max(0.01, o + o*(Math.random()*.004-.002));
+    gPx[s.sym].change = +(parseFloat(gPx[s.sym].change) + (Math.random()*.1-.05)).toFixed(2);
   });
   renderSide();
-  const pd=gPx[gS.sym];
-  document.getElementById('h-price').textContent='₹'+pd.price.toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2});
-  document.getElementById('ob-p').textContent='₹'+pd.price.toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('po-pr').value=pd.price.toFixed(2);
+  const pd = gPx[gS.sym];
+  document.getElementById('h-price').textContent = fmtINR(pd.price);
+  document.getElementById('ob-p').textContent    = fmtINR(pd.price);
+  document.getElementById('po-pr').value = pd.price.toFixed(2);
   updTicker();
 }
 
-function updTicker(){
-  document.getElementById('ticker').innerHTML=STOCKS.slice(0,20).map(s=>{
-    const pd=gPx[s.sym];
-    const chg=parseFloat(pd.change);
+function updTicker() {
+  document.getElementById('ticker').innerHTML = STOCKS.slice(0,20).map(s => {
+    const pd  = gPx[s.sym];
+    const chg = parseFloat(pd.change);
     return `<span style="margin:0 20px;">
       <b style="color:${chg>=0?'#0ecb81':'#f6465d'}">${s.sym.split(':')[1]}</b>
-      ₹${pd.price.toFixed(2)}
+      ${fmtINR(pd.price)}
       <span style="color:${chg>=0?'#0ecb81':'#f6465d'}">${chg>=0?'+':''}${chg}%</span>
     </span>`;
   }).join('');
 }
 
-// ====================================================
+// ============================================================
 // PLACE ORDER (Right Panel)
-// ====================================================
-function poSide(s){
-  gSide=s;
-  document.getElementById('po-b').classList.toggle('opacity-40',s!=='buy');  // workaround
-  document.getElementById('po-b').style.opacity=s==='buy'?'1':'.4';
-  document.getElementById('po-s').style.opacity=s==='sell'?'1':'.4';
-  document.getElementById('po-btn').className=s==='buy'?'btn-g':'btn-r';
-  document.getElementById('po-btn').style.cssText='padding:12px;font-weight:800;font-size:13px;';
-  document.getElementById('po-btn').textContent=`${s.toUpperCase()} ${gS.sym.split(':')[1]}`;
+// ============================================================
+function poSide(s) {
+  gSide = s;
+  document.getElementById('po-b-btn').style.opacity = s === 'buy'  ? '1' : '.4';
+  document.getElementById('po-s-btn').style.opacity = s === 'sell' ? '1' : '.4';
+  const btn = document.getElementById('po-btn');
+  btn.className = s === 'buy' ? 'btn-g' : 'btn-r';
+  btn.style.cssText = 'padding:12px;font-weight:800;font-size:13px;border-radius:8px;';
+  btn.textContent = `${s.toUpperCase()} ${gS.sym.split(':')[1]}`;
 }
 
-function calcPO(){
-  const q=parseFloat(document.getElementById('po-q').value)||0;
-  const p=parseFloat(document.getElementById('po-pr').value)||gPx[gS.sym]?.price||0;
-  const t=q*p; const f=t*.001;
-  document.getElementById('po-tot').textContent='₹'+t.toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('po-fee').textContent='₹'+f.toFixed(2);
+function calcPO() {
+  const q = parseFloat(document.getElementById('po-q').value) || 0;
+  const p = parseFloat(document.getElementById('po-pr').value) || gPx[gS.sym]?.price || 0;
+  const t = q * p;
+  const f = t * 0.001;
+  document.getElementById('po-tot').textContent = fmtINR(t);
+  document.getElementById('po-fee').textContent = fmtINR(f);
 }
 
-function poPct(pct){
+function poPct(pct) {
   if(!gU) return;
-  const b=parseFloat(gU.balance||0);
-  const p=gPx[gS.sym]?.price||gS.p;
-  document.getElementById('po-q').value=Math.floor(b*pct/100/p);
+  const b = parseFloat(gU.balance || 0);
+  const p = gPx[gS.sym]?.price || gS.p;
+  document.getElementById('po-q').value = Math.floor(b * pct / 100 / p);
   calcPO();
 }
 
-async function doPlaceOrder(){
-  if(!gU) return toast('Login required','red');
-  if(!gU.verified) return toast('Complete KYC to trade','yellow');
-  const qty=parseFloat(document.getElementById('po-q').value);
-  const price=parseFloat(document.getElementById('po-pr').value)||gPx[gS.sym]?.price;
-  if(!qty||qty<=0) return toast('Enter quantity','red');
-  const total=qty*price; const fee=total*.001;
-  if(gSide==='buy'&&(total+fee)>parseFloat(gU.balance)) return toast('Insufficient balance','red');
-  await execOrder(gSide,qty,price,total,fee);
-  document.getElementById('po-q').value='';
+async function doPlaceOrder() {
+  if(!gU) return toast('Please login first','red');
+  if(!gU.verified) return toast('Complete KYC verification to trade','yellow');
+  const qty   = parseFloat(document.getElementById('po-q').value);
+  const price = parseFloat(document.getElementById('po-pr').value) || gPx[gS.sym]?.price;
+  if(!qty || qty <= 0) return toast('Please enter a valid quantity','red');
+  const total = qty * price;
+  const fee   = total * 0.001;
+  if(gSide === 'buy' && (total + fee) > parseFloat(gU.balance))
+    return toast('Insufficient balance','red');
+  await execOrder(gSide, qty, price, total, fee, document.getElementById('po-t')?.value || 'market');
+  document.getElementById('po-q').value = '';
 }
 
-// ====================================================
-// EXECUTE ORDER (shared)
-// ====================================================
-async function execOrder(side,qty,price,total,fee){
-  toast('Processing...','blue');
+// ============================================================
+// EXECUTE ORDER (shared logic)
+// ============================================================
+async function execOrder(side, qty, price, total, fee, ptype) {
+  toast('Processing order...','blue');
 
-  const {error:oErr}=await sb.from('orders').insert({
-    user_id:gU.id, stock_symbol:gS.sym, stock_name:gS.name,
-    order_type:side,
-    price_type:document.getElementById('po-t')?.value||'market',
-    quantity:qty, price, total_amount:total+(side==='buy'?fee:-fee),
-    status:'completed'
+  const {error:oErr} = await sb.from('orders').insert({
+    user_id: gU.id,
+    stock_symbol: gS.sym,
+    stock_name: gS.name,
+    order_type: side,
+    price_type: ptype || 'market',
+    quantity: qty,
+    price: price,
+    total_amount: +(total + (side==='buy' ? fee : -fee)).toFixed(2),
+    status: 'completed'
   });
-  if(oErr) return toast('Order failed: '+oErr.message,'red');
+  if(oErr) return toast('Order failed: ' + oErr.message,'red');
 
-  const newBal=side==='buy'
-    ?parseFloat(gU.balance)-(total+fee)
-    :parseFloat(gU.balance)+total-fee;
+  const newBal = side === 'buy'
+    ? parseFloat(gU.balance) - (total + fee)
+    : parseFloat(gU.balance) + total - fee;
 
-  await sb.from('users').update({balance:newBal}).eq('id',gU.id);
+  await sb.from('users').update({balance: +newBal.toFixed(2)}).eq('id', gU.id);
 
-  if(side==='buy'){
-    const {data:ex}=await sb.from('holdings').select('*').eq('user_id',gU.id).eq('stock_symbol',gS.sym).single();
-    if(ex){
-      const nq=parseFloat(ex.quantity)+qty;
-      const na=((parseFloat(ex.avg_price)*parseFloat(ex.quantity))+(price*qty))/nq;
-      await sb.from('holdings').update({quantity:nq,avg_price:na,total_invested:nq*na}).eq('id',ex.id);
-    }else{
-      await sb.from('holdings').insert({user_id:gU.id,stock_symbol:gS.sym,stock_name:gS.name,quantity:qty,avg_price:price,total_invested:total});
+  if(side === 'buy') {
+    const {data:ex} = await sb.from('holdings').select('*')
+      .eq('user_id', gU.id).eq('stock_symbol', gS.sym).single();
+    if(ex) {
+      const nq = parseFloat(ex.quantity) + qty;
+      const na = ((parseFloat(ex.avg_price)*parseFloat(ex.quantity)) + (price*qty)) / nq;
+      await sb.from('holdings').update({
+        quantity: +nq.toFixed(4),
+        avg_price: +na.toFixed(2),
+        total_invested: +(nq*na).toFixed(2)
+      }).eq('id', ex.id);
+    } else {
+      await sb.from('holdings').insert({
+        user_id: gU.id,
+        stock_symbol: gS.sym,
+        stock_name: gS.name,
+        quantity: qty,
+        avg_price: +price.toFixed(2),
+        total_invested: +total.toFixed(2)
+      });
     }
-  }else{
-    const {data:h}=await sb.from('holdings').select('*').eq('user_id',gU.id).eq('stock_symbol',gS.sym).single();
-    if(!h||parseFloat(h.quantity)<qty) return toast('Insufficient shares','red');
-    const nq=parseFloat(h.quantity)-qty;
-    if(nq<=0) await sb.from('holdings').delete().eq('id',h.id);
-    else await sb.from('holdings').update({quantity:nq}).eq('id',h.id);
+  } else {
+    const {data:h} = await sb.from('holdings').select('*')
+      .eq('user_id', gU.id).eq('stock_symbol', gS.sym).single();
+    if(!h || parseFloat(h.quantity) < qty) return toast('Insufficient shares to sell','red');
+    const nq = parseFloat(h.quantity) - qty;
+    if(nq <= 0.0001) {
+      await sb.from('holdings').delete().eq('id', h.id);
+    } else {
+      await sb.from('holdings').update({quantity: +nq.toFixed(4)}).eq('id', h.id);
+    }
   }
 
-  gU.balance=newBal;
+  gU.balance = +newBal.toFixed(2);
   updBals();
-  toast(`${side.toUpperCase()} ${qty} shares of ${gS.sym.split(':')[1]} done!`,'green');
-  loadHoldings(); loadOrders('all');
+  toast(`${side.toUpperCase()} order executed: ${qty} shares of ${gS.sym.split(':')[1]}!`,'green');
+  loadHoldings();
+  loadOrders('all');
 }
 
-// ====================================================
-// QUICK ORDER
-// ====================================================
-function opnQO(side){
-  gQSide=side;
-  document.getElementById('qo-ttl').textContent=`${side.toUpperCase()} ${gS.sym.split(':')[1]}`;
-  document.getElementById('qo-sym').textContent=gS.sym.split(':')[1];
-  document.getElementById('qo-pr').textContent='₹'+(gPx[gS.sym]?.price||gS.p).toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('qo-btn').className=side==='buy'?'btn-g':'btn-r';
-  document.getElementById('qo-btn').style.cssText='width:100%;padding:14px;font-size:14px;';
-  document.getElementById('qo-btn').textContent=`CONFIRM ${side.toUpperCase()}`;
-  document.getElementById('qo-q').value='';
-  document.getElementById('qo-tot').textContent='₹0';
-  document.getElementById('qo-fee').textContent='₹0';
+// ============================================================
+// QUICK ORDER MODAL
+// ============================================================
+function opnQO(side) {
+  gQSide = side;
+  const sym = gS.sym.split(':')[1];
+  document.getElementById('qo-ttl').textContent  = `${side.toUpperCase()} ${sym}`;
+  document.getElementById('qo-sym').textContent  = sym;
+  document.getElementById('qo-pr').textContent   = fmtINR(gPx[gS.sym]?.price || gS.p);
+  document.getElementById('qo-bal').textContent  = fmtINR(gU?.balance || 0);
+  const btn = document.getElementById('qo-btn');
+  btn.className = side === 'buy' ? 'btn-g' : 'btn-r';
+  btn.style.cssText = 'width:100%;padding:14px;font-size:14px;border-radius:8px;';
+  btn.textContent = `CONFIRM ${side.toUpperCase()}`;
+  document.getElementById('qo-q').value   = '';
+  document.getElementById('qo-tot').textContent = fmtINR(0);
+  document.getElementById('qo-fee').textContent = fmtINR(0);
   opnMod('m-qo');
 }
 
-function calcQO(){
-  const q=parseFloat(document.getElementById('qo-q').value)||0;
-  const p=gPx[gS.sym]?.price||gS.p;
-  const t=q*p; const f=t*.001;
-  document.getElementById('qo-tot').textContent='₹'+t.toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('qo-fee').textContent='₹'+f.toFixed(2);
+function calcQO() {
+  const q = parseFloat(document.getElementById('qo-q').value) || 0;
+  const p = gPx[gS.sym]?.price || gS.p;
+  const t = q * p;
+  const f = t * 0.001;
+  document.getElementById('qo-tot').textContent = fmtINR(t);
+  document.getElementById('qo-fee').textContent = fmtINR(f);
 }
 
-async function subQO(){
-  if(!gU) return toast('Login required','red');
-  if(!gU.verified) return toast('Complete KYC to trade','yellow');
-  const qty=parseFloat(document.getElementById('qo-q').value);
-  if(!qty||qty<=0) return toast('Enter quantity','red');
-  const price=gPx[gS.sym]?.price||gS.p;
-  const total=qty*price; const fee=total*.001;
-  if(gQSide==='buy'&&(total+fee)>parseFloat(gU.balance)) return toast('Insufficient balance','red');
+async function subQO() {
+  if(!gU) return toast('Please login first','red');
+  if(!gU.verified) return toast('Complete KYC verification to trade','yellow');
+  const qty = parseFloat(document.getElementById('qo-q').value);
+  if(!qty || qty <= 0) return toast('Please enter quantity','red');
+  const price = gPx[gS.sym]?.price || gS.p;
+  const total = qty * price;
+  const fee   = total * 0.001;
+  if(gQSide === 'buy' && (total + fee) > parseFloat(gU.balance || 0))
+    return toast('Insufficient balance','red');
   clsMod('m-qo');
-  gSide=gQSide;
-  await execOrder(gQSide,qty,price,total,fee);
+  gSide = gQSide;
+  await execOrder(gQSide, qty, price, total, fee, 'market');
 }
 
-// ====================================================
+// ============================================================
 // HOLDINGS
-// ====================================================
-async function loadHoldings(){
+// ============================================================
+async function loadHoldings() {
   if(!gU) return;
-  const {data}=await sb.from('holdings').select('*').eq('user_id',gU.id);
-  const body=document.getElementById('hold-body');
-  const asEl=document.getElementById('asset-sum');
-  if(!data||!data.length){
-    body.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;"><i class="fas fa-chart-pie" style="font-size:2rem;display:block;margin-bottom:10px;"></i>No holdings yet. Start trading!</div>';
-    asEl.innerHTML='<div style="color:#848e9c;font-size:13px;">No stock holdings yet</div>';
-    document.getElementById('pf-pv').textContent='₹0';
-    document.getElementById('pf-pnl').innerHTML='₹0';
+  const {data} = await sb.from('holdings').select('*').eq('user_id', gU.id);
+  const body  = document.getElementById('hold-body');
+  const asEl  = document.getElementById('asset-sum');
+
+  if(!data || !data.length) {
+    body.innerHTML  = '<div style="padding:40px;text-align:center;color:#848e9c;"><i class="fas fa-chart-pie" style="font-size:2rem;display:block;margin-bottom:10px;"></i>No holdings yet. Start trading!</div>';
+    asEl.innerHTML  = '<div style="color:#848e9c;font-size:13px;">No stock holdings yet</div>';
+    document.getElementById('pf-pv').textContent  = fmtINR(0);
+    document.getElementById('pf-pnl').innerHTML   = fmtINR(0);
     return;
   }
-  let tPnL=0,tVal=0;
-  body.innerHTML=data.map(h=>{
-    const cur=gPx[h.stock_symbol]?.price||parseFloat(h.avg_price);
-    const pnl=(cur-parseFloat(h.avg_price))*parseFloat(h.quantity);
-    const pp=((cur-parseFloat(h.avg_price))/parseFloat(h.avg_price)*100).toFixed(2);
-    tPnL+=pnl; tVal+=cur*parseFloat(h.quantity);
-    return `<div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;padding:12px 16px;border-bottom:1px solid #2b3139;font-size:13px;cursor:pointer;"
-      onmouseover="this.style.background='#2b3139'" onmouseout="this.style.background=''">
-      <div><div style="font-weight:700;">${h.stock_symbol.split(':')[1]}</div><div style="font-size:11px;color:#848e9c;">${h.stock_name}</div></div>
+
+  let tPnL = 0, tVal = 0;
+  body.innerHTML = data.map(h => {
+    const cur  = gPx[h.stock_symbol]?.price || parseFloat(h.avg_price);
+    const pnl  = (cur - parseFloat(h.avg_price)) * parseFloat(h.quantity);
+    const pnlP = ((cur - parseFloat(h.avg_price)) / parseFloat(h.avg_price) * 100).toFixed(2);
+    tPnL += pnl;
+    tVal += cur * parseFloat(h.quantity);
+    return `<div class="tbl-row" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr;padding:12px 16px;font-size:13px;"
+      onclick='pickStock(STOCKS.find(s=>s.sym=="${h.stock_symbol}")||STOCKS[0])'>
+      <div>
+        <div style="font-weight:700;">${h.stock_symbol.split(':')[1]}</div>
+        <div style="font-size:11px;color:#848e9c;">${h.stock_name || ''}</div>
+      </div>
       <div style="text-align:right;">${parseFloat(h.quantity).toFixed(2)}</div>
-      <div style="text-align:right;">₹${parseFloat(h.avg_price).toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
-      <div style="text-align:right;">₹${cur.toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
+      <div style="text-align:right;">${fmtINR(h.avg_price)}</div>
+      <div style="text-align:right;">${fmtINR(cur)}</div>
       <div style="text-align:right;font-weight:700;color:${pnl>=0?'#0ecb81':'#f6465d'}">
-        ${pnl>=0?'+':''}₹${Math.abs(pnl).toFixed(2)}<br>
-        <span style="font-size:10px;">${pp}%</span>
+        ${pnl>=0?'+':''}${fmtINR(Math.abs(pnl))}<br>
+        <span style="font-size:10px;">${pnlP}%</span>
       </div>
     </div>`;
   }).join('');
-  document.getElementById('pf-pv').textContent='₹'+tVal.toLocaleString('en-IN',{maximumFractionDigits:2});
-  document.getElementById('pf-pnl').innerHTML=`<span style="color:${tPnL>=0?'#0ecb81':'#f6465d'}">${tPnL>=0?'+':''}₹${tPnL.toFixed(2)}</span>`;
-  asEl.innerHTML=`<div style="margin-bottom:12px;"><div style="font-size:11px;color:#848e9c;margin-bottom:2px;">Cash</div><div style="font-size:1.2rem;font-weight:900;color:#f0b90b;">₹${parseFloat(gU?.balance||0).toLocaleString('en-IN',{maximumFractionDigits:2})}</div></div>`+
-    data.slice(0,5).map(h=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #2b3139;font-size:13px;"><span>${h.stock_symbol.split(':')[1]}</span><span style="font-weight:700;">${parseFloat(h.quantity).toFixed(2)} shares</span></div>`).join('');
+
+  document.getElementById('pf-pv').textContent = fmtINR(tVal);
+  document.getElementById('pf-pnl').innerHTML  = `<span style="color:${tPnL>=0?'#0ecb81':'#f6465d'}">${tPnL>=0?'+':''}${fmtINR(Math.abs(tPnL))}</span>`;
+
+  asEl.innerHTML = `
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;color:#848e9c;margin-bottom:3px;">Cash Balance</div>
+      <div style="font-size:1.4rem;font-weight:900;color:#f0b90b;">${fmtINR(gU?.balance||0)}</div>
+    </div>
+    <div>
+      <div style="font-size:11px;color:#848e9c;margin-bottom:6px;">Stock Holdings</div>
+      ${data.slice(0,6).map(h=>`
+        <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #2b3139;font-size:13px;">
+          <span>${h.stock_symbol.split(':')[1]}</span>
+          <span style="font-weight:700;">${parseFloat(h.quantity).toFixed(2)} shares</span>
+        </div>`).join('')}
+    </div>`;
 }
 
-// ====================================================
+// ============================================================
 // TRANSACTIONS
-// ====================================================
-async function loadTx(){
+// ============================================================
+async function loadTx() {
   if(!gU) return;
-  const {data}=await sb.from('transactions').select('*').eq('user_id',gU.id).order('created_at',{ascending:false}).limit(30);
-  const body=document.getElementById('tx-body');
-  if(!data||!data.length){body.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;">No transactions yet</div>';return;}
-  const sc={completed:'#0ecb81',rejected:'#f6465d',pending:'#f0b90b',processing:'#1890ff'};
-  const tc={deposit:'#0ecb81',withdrawal:'#f6465d',buy:'#1890ff',sell:'#a855f7'};
-  body.innerHTML=data.map(t=>`
+  const {data} = await sb.from('transactions').select('*')
+    .eq('user_id', gU.id).order('created_at',{ascending:false}).limit(30);
+  const body = document.getElementById('tx-body');
+  if(!data || !data.length) {
+    body.innerHTML = '<div style="padding:40px;text-align:center;color:#848e9c;">No transactions yet</div>';
+    return;
+  }
+  const sc = {completed:'#0ecb81',rejected:'#f6465d',pending:'#f0b90b',processing:'#1890ff'};
+  const tc = {deposit:'#0ecb81',withdrawal:'#f6465d',buy:'#1890ff',sell:'#a855f7'};
+  body.innerHTML = data.map(t => `
     <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid #2b3139;">
       <div>
         <div style="font-weight:700;color:${tc[t.type]||'#eaecef'};font-size:13px;">${(t.type||'').toUpperCase()}</div>
         <div style="font-size:11px;color:#848e9c;">${new Date(t.created_at).toLocaleString('en-IN')}</div>
-        ${t.reference_id?`<div style="font-size:10px;color:#5e6673;">Ref: ${t.reference_id}</div>`:''}
+        ${t.reference_id ? `<div style="font-size:10px;color:#5e6673;">Ref: ${t.reference_id}</div>` : ''}
       </div>
       <div style="text-align:right;">
-        <div style="font-weight:700;">₹${parseFloat(t.amount).toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
-        <span style="font-size:10px;padding:2px 8px;border-radius:4px;background:${sc[t.status]||'#848e9c'}20;color:${sc[t.status]||'#848e9c'};font-weight:700;">${t.status}</span>
+        <div style="font-weight:700;font-size:14px;">${fmtINR(t.amount)}</div>
+        <span style="font-size:10px;padding:2px 8px;border-radius:4px;background:${(sc[t.status]||'#848e9c')}20;color:${sc[t.status]||'#848e9c'};font-weight:700;">${t.status}</span>
       </div>
     </div>`).join('');
 }
 
-// ====================================================
+// ============================================================
 // ORDERS
-// ====================================================
-async function loadOrders(filter='all'){
+// ============================================================
+async function loadOrders(filter = 'all') {
   if(!gU) return;
-  let q=sb.from('orders').select('*').eq('user_id',gU.id).order('created_at',{ascending:false}).limit(50);
-  if(filter!=='all') q=q.eq('status',filter);
-  const {data}=await q;
-  const body=document.getElementById('ord-body');
-  if(!data||!data.length){body.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;">No orders found</div>';return;}
-  body.innerHTML=data.map(o=>`
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;padding:10px 16px;border-bottom:1px solid #2b3139;font-size:12px;"
-      onmouseover="this.style.background='#2b3139'" onmouseout="this.style.background=''">
+  let q = sb.from('orders').select('*').eq('user_id', gU.id).order('created_at',{ascending:false}).limit(50);
+  if(filter !== 'all') q = q.eq('status', filter);
+  const {data} = await q;
+  const body = document.getElementById('ord-body');
+  if(!data || !data.length) {
+    body.innerHTML = '<div style="padding:40px;text-align:center;color:#848e9c;">No orders found</div>';
+    return;
+  }
+  body.innerHTML = data.map(o => `
+    <div class="tbl-row" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr;padding:10px 16px;font-size:12px;">
       <span style="font-weight:700;">${(o.stock_symbol||'').split(':')[1]}</span>
       <span style="color:${o.order_type==='buy'?'#0ecb81':'#f6465d'};font-weight:700;">${(o.order_type||'').toUpperCase()}</span>
       <span style="text-align:right;">${parseFloat(o.quantity||0).toFixed(2)}</span>
-      <span style="text-align:right;">₹${parseFloat(o.price||0).toLocaleString('en-IN',{maximumFractionDigits:2})}</span>
-      <span style="text-align:right;">₹${parseFloat(o.total_amount||0).toLocaleString('en-IN',{maximumFractionDigits:2})}</span>
-      <span style="text-align:right;color:${o.status==='completed'?'#0ecb81':o.status==='pending'?'#f0b90b':'#f6465d'};font-weight:700;">${o.status}</span>
+      <span style="text-align:right;">${fmtINR(o.price)}</span>
+      <span style="text-align:right;">${fmtINR(o.total_amount)}</span>
+      <span style="text-align:right;font-weight:700;color:${o.status==='completed'?'#0ecb81':o.status==='pending'?'#f0b90b':'#f6465d'}">${o.status}</span>
     </div>`).join('');
 }
 
-// ====================================================
-// ADMIN SETTINGS
-// ====================================================
-async function loadAdm(){
-  const {data}=await sb.from('admin_settings').select('*').eq('id',1).single();
-  if(data){
-    gAdm=data;
-    document.getElementById('d-upi').textContent = data.upi_id||'-';
-    document.getElementById('d-ph').textContent  = data.phonepay_number||'-';
-    document.getElementById('d-bk').textContent  = data.bank_name||'-';
-    document.getElementById('d-ac').textContent  = data.account_number||'-';
-    document.getElementById('d-if').textContent  = data.ifsc_code||'-';
-    document.getElementById('d-hn').textContent  = data.account_holder||'-';
+function setOrdTab(btn) {
+  document.querySelectorAll('#pg-orders .tab-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+// ============================================================
+// ADMIN SETTINGS (Deposit Info)
+// ============================================================
+async function loadAdm() {
+  const {data} = await sb.from('admin_settings').select('*').eq('id',1).single();
+  if(data) {
+    gAdm = data;
+    document.getElementById('d-upi').textContent = data.upi_id || '-';
+    document.getElementById('d-ph').textContent  = data.phonepay_number || '-';
+    document.getElementById('d-bk').textContent  = data.bank_name || '-';
+    document.getElementById('d-ac').textContent  = data.account_number || '-';
+    document.getElementById('d-if').textContent  = data.ifsc_code || '-';
+    document.getElementById('d-hn').textContent  = data.account_holder || '-';
   }
 }
 
-// ====================================================
+// ============================================================
 // DEPOSIT
-// ====================================================
-async function doDeposit(){
-  const amt=parseFloat(document.getElementById('d-amt').value);
-  const ref=document.getElementById('d-ref').value.trim();
-  if(!amt||amt<100) return toast('Minimum deposit ₹100','red');
-  if(!ref) return toast('Enter UTR reference number','red');
-  if(!gU) return toast('Login required','red');
-  const {error}=await sb.from('transactions').insert({
-    user_id:gU.id, type:'deposit', amount:amt,
-    status:'pending', reference_id:ref, method:'UPI/Bank'
+// ============================================================
+async function doDeposit() {
+  const amt = parseFloat(document.getElementById('d-amt').value);
+  const ref = document.getElementById('d-ref').value.trim();
+  if(!amt || amt < 100) return toast('Minimum deposit amount is ₹100','red');
+  if(!ref) return toast('Please enter UTR/transaction reference number','red');
+  if(!gU) return toast('Please login first','red');
+  const {error} = await sb.from('transactions').insert({
+    user_id: gU.id, type:'deposit', amount:amt,
+    status:'pending', reference_id:ref, method:'UPI/Bank Transfer'
   });
-  if(error) return toast('Error: '+error.message,'red');
+  if(error) return toast('Error: ' + error.message,'red');
   clsMod('m-dep');
-  toast('Deposit request sent! Verified within 30 mins.','green');
-  document.getElementById('d-amt').value='';
-  document.getElementById('d-ref').value='';
+  toast('Deposit request submitted! Admin will verify within 30 minutes.','green');
+  document.getElementById('d-amt').value = '';
+  document.getElementById('d-ref').value = '';
   loadTx();
 }
 
-// ====================================================
+// ============================================================
 // WITHDRAWAL
-// ====================================================
-async function doWithdraw(){
-  const amt=parseFloat(document.getElementById('wd-amt').value);
-  const mth=document.getElementById('wd-mth').value;
-  if(!amt||amt<500) return toast('Minimum withdrawal ₹500','red');
-  if(!gU) return toast('Login required','red');
-  if(!gU.bank_name&&!gU.upi_id) return toast('Save bank details in Profile first','yellow');
-  if(amt>parseFloat(gU.balance||0)) return toast('Insufficient balance','red');
-  const newBal=parseFloat(gU.balance)-amt;
-  await sb.from('users').update({balance:newBal}).eq('id',gU.id);
-  await sb.from('transactions').insert({user_id:gU.id,type:'withdrawal',amount:amt,status:'pending',method:mth});
-  gU.balance=newBal;
+// ============================================================
+async function doWithdraw() {
+  const amt = parseFloat(document.getElementById('wd-amt').value);
+  const mth = document.getElementById('wd-mth').value;
+  if(!amt || amt < 500) return toast('Minimum withdrawal amount is ₹500','red');
+  if(!gU) return toast('Please login first','red');
+  if(!gU.bank_name && !gU.upi_id) return toast('Please save bank details in Profile first','yellow');
+  if(amt > parseFloat(gU.balance || 0)) return toast('Insufficient balance','red');
+  const newBal = +(parseFloat(gU.balance) - amt).toFixed(2);
+  await sb.from('users').update({balance: newBal}).eq('id', gU.id);
+  await sb.from('transactions').insert({
+    user_id: gU.id, type:'withdrawal', amount:amt, status:'pending', method:mth
+  });
+  gU.balance = newBal;
   updBals();
   clsMod('m-wd');
-  toast('Withdrawal submitted! Processed in 24 hours.','green');
-  document.getElementById('wd-amt').value='';
+  toast('Withdrawal request submitted! Processed within 24 hours.','green');
+  document.getElementById('wd-amt').value = '';
   loadTx();
 }
 
-// ====================================================
-// BANK DETAILS SAVE
-// ====================================================
-async function saveBankDetails(){
-  if(!gU) return toast('Login required','red');
-  const bn=document.getElementById('bk-bn').value.trim();
-  const ah=document.getElementById('bk-ah').value.trim();
-  const an=document.getElementById('bk-an').value.trim();
-  const ifs=document.getElementById('bk-if').value.trim();
-  const up=document.getElementById('bk-up').value.trim();
-  if(!bn||!an||!ifs) return toast('Fill Bank Name, Account No & IFSC','red');
-  const {error}=await sb.from('users').update({
-    bank_name:bn, account_holder_name:ah,
-    account_number:an, ifsc_code:ifs, upi_id:up
-  }).eq('id',gU.id);
-  if(error) return toast('Error: '+error.message,'red');
-  gU={...gU,bank_name:bn,account_holder_name:ah,account_number:an,ifsc_code:ifs,upi_id:up};
-  toast('Bank details saved!','green');
+// ============================================================
+// SAVE BANK DETAILS
+// ============================================================
+async function saveBankDetails() {
+  if(!gU) return toast('Please login first','red');
+  const bn  = document.getElementById('bk-bn').value.trim();
+  const ah  = document.getElementById('bk-ah').value.trim();
+  const an  = document.getElementById('bk-an').value.trim();
+  const ifs = document.getElementById('bk-if').value.trim();
+  const up  = document.getElementById('bk-up').value.trim();
+  if(!bn || !an || !ifs) return toast('Please fill Bank Name, Account Number & IFSC Code','red');
+  const {error} = await sb.from('users').update({
+    bank_name: bn,
+    account_holder_name: ah,
+    account_number: an,
+    ifsc_code: ifs,
+    upi_id: up
+  }).eq('id', gU.id);
+  if(error) return toast('Error saving: ' + error.message,'red');
+  gU = {...gU, bank_name:bn, account_holder_name:ah, account_number:an, ifsc_code:ifs, upi_id:up};
+  toast('Bank details saved successfully!','green');
   fillProfile();
 }
 
-// ====================================================
+// ============================================================
 // KYC SUBMIT
-// ====================================================
-async function doKYC(){
-  if(!gU) return toast('Login required','red');
-  const a=document.getElementById('kyc-a').value.trim();
-  const p=document.getElementById('kyc-p').value.trim().toUpperCase();
-  if(!a||a.length!==12) return toast('Enter valid 12-digit Aadhaar','red');
-  if(!p||p.length!==10) return toast('Enter valid PAN number','red');
-  const {error}=await sb.from('users').update({aadhaar_number:a,pan_number:p,kyc_status:'pending'}).eq('id',gU.id);
-  if(error) return toast('Error: '+error.message,'red');
-  gU={...gU,aadhaar_number:a,pan_number:p,kyc_status:'pending'};
+// ============================================================
+async function doKYC() {
+  if(!gU) return toast('Please login first','red');
+  const a = document.getElementById('kyc-a').value.trim();
+  const p = document.getElementById('kyc-p').value.trim().toUpperCase();
+  if(!a || a.length !== 12) return toast('Enter valid 12-digit Aadhaar number','red');
+  if(!p || p.length !== 10) return toast('Enter valid 10-character PAN number','red');
+  const {error} = await sb.from('users').update({
+    aadhaar_number: a, pan_number: p, kyc_status:'pending'
+  }).eq('id', gU.id);
+  if(error) return toast('Error: ' + error.message,'red');
+  gU = {...gU, aadhaar_number:a, pan_number:p, kyc_status:'pending'};
   clsMod('m-kyc');
-  toast('KYC submitted! Verified within 24 hours.','green');
+  toast('KYC submitted! Will be verified within 24 hours.','green');
   fillProfile();
 }
 
-// ====================================================
+// ============================================================
 // NOTIFICATIONS
-// ====================================================
-async function loadNotifs(){
+// ============================================================
+async function loadNotifs() {
   if(!gU) return;
-  const {data}=await sb.from('notifications').select('*').eq('user_id',gU.id).order('created_at',{ascending:false});
-  const unread=data?data.filter(n=>!n.is_read).length:0;
-  document.getElementById('n-badge').textContent=unread;
-  const body=document.getElementById('notif-body');
-  if(!data||!data.length){
-    body.innerHTML='<div style="padding:40px;text-align:center;color:#848e9c;"><i class="fas fa-bell-slash" style="font-size:2rem;display:block;margin-bottom:10px;"></i>No notifications</div>';
+  const {data} = await sb.from('notifications').select('*')
+    .eq('user_id', gU.id).order('created_at',{ascending:false});
+  const unread = data ? data.filter(n => !n.is_read).length : 0;
+  document.getElementById('n-badge').textContent = unread;
+  const body = document.getElementById('notif-body');
+  if(!data || !data.length) {
+    body.innerHTML = '<div style="padding:40px;text-align:center;color:#848e9c;"><i class="fas fa-bell-slash" style="font-size:2rem;display:block;margin-bottom:10px;"></i>No notifications yet</div>';
     return;
   }
-  body.innerHTML=data.map(n=>`
+  body.innerHTML = data.map(n => `
     <div style="display:flex;gap:12px;padding:14px 16px;border-bottom:1px solid #2b3139;opacity:${n.is_read?.6:1};">
       <div style="width:8px;height:8px;border-radius:50%;background:${n.is_read?'#2b3139':'#f0b90b'};margin-top:5px;flex-shrink:0;"></div>
       <div>
@@ -1296,75 +1601,69 @@ async function loadNotifs(){
         <div style="color:#5e6673;font-size:11px;margin-top:4px;">${new Date(n.created_at).toLocaleString('en-IN')}</div>
       </div>
     </div>`).join('');
-  if(unread>0) await sb.from('notifications').update({is_read:true}).eq('user_id',gU.id).eq('is_read',false);
+  if(unread > 0) {
+    await sb.from('notifications').update({is_read:true}).eq('user_id',gU.id).eq('is_read',false);
+  }
 }
 
-// ====================================================
+// ============================================================
 // PAGE NAVIGATION
-// ====================================================
-function goPage(pg){
-  const pages=['trade','markets','portfolio','wallet','orders','profile','notif'];
-  pages.forEach(p=>{
-    const el=document.getElementById('pg-'+p);
-    if(el){el.classList.remove('on');el.style.display='none';}
+// ============================================================
+function goPage(pg) {
+  const pages = ['trade','markets','portfolio','wallet','orders','profile','notif'];
+  pages.forEach(p => {
+    const el = document.getElementById('pg-'+p);
+    if(el) {
+      el.classList.remove('on');
+      el.style.display = 'none';
+    }
   });
-  const target=document.getElementById('pg-'+pg);
-  if(target){
+  const target = document.getElementById('pg-'+pg);
+  if(target) {
     target.classList.add('on');
-    target.style.display='flex';
-    target.style.flexDirection='column';
+    target.style.display = pg === 'trade' ? 'flex' : 'flex';
+    target.style.flexDirection = pg === 'trade' ? 'row' : 'column';
   }
-  if(pg==='portfolio') loadHoldings();
-  if(pg==='wallet'){loadTx();loadAdm();}
-  if(pg==='orders') loadOrders('all');
-  if(pg==='notif') loadNotifs();
-  if(pg==='profile') fillProfile();
+  if(pg === 'portfolio')  loadHoldings();
+  if(pg === 'wallet')     { loadTx(); loadAdm(); }
+  if(pg === 'orders')     loadOrders('all');
+  if(pg === 'notif')      loadNotifs();
+  if(pg === 'profile')    fillProfile();
 }
 
-// ====================================================
+// ============================================================
 // MODAL HELPERS
-// ====================================================
-function opnMod(id){
+// ============================================================
+function opnMod(id) {
   document.getElementById(id).classList.add('on');
-  if(id==='m-dep') loadAdm();
-  if(id==='m-wd') fillProfile();
+  if(id === 'm-dep') loadAdm();
+  if(id === 'm-wd')  fillProfile();
 }
-function clsMod(id){document.getElementById(id).classList.remove('on');}
-document.addEventListener('click',e=>{
-  if(e.target.classList.contains('modal')) e.target.classList.remove('on');
-});
-
-// ====================================================
-// TOAST
-// ====================================================
-function toast(msg,color='green'){
-  const c={green:'#0ecb81',red:'#f6465d',yellow:'#f0b90b',blue:'#1890ff'};
-  const el=document.createElement('div');
-  el.className='toast';
-  el.style.cssText=`background:${c[color]}18;border:1px solid ${c[color]};color:${c[color]};`;
-  const icons={green:'check-circle',red:'times-circle',yellow:'exclamation-triangle',blue:'info-circle'};
-  el.innerHTML=`<i class="fas fa-${icons[color]}" style="margin-right:8px;"></i>${msg}`;
-  document.body.appendChild(el);
-  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .5s';setTimeout(()=>el.remove(),600);},3500);
+function clsMod(id) {
+  document.getElementById(id).classList.remove('on');
 }
-
-// ====================================================
-// AUTO SESSION CHECK ON LOAD
-// ====================================================
-window.addEventListener('load',()=>{
-  const saved=sessionStorage.getItem('smartex_user');
-  if(saved){
-    try{
-      gU=JSON.parse(saved);
-      launchApp();
-    }catch(e){sessionStorage.removeItem('smartex_user');}
+// Close modal on backdrop click
+document.addEventListener('click', e => {
+  if(e.target.classList.contains('modal')) {
+    e.target.classList.remove('on');
   }
-  // Save user on login
-  const origLaunch=launchApp;
 });
 
-// Save session
-const _orig=doLogin;
+// ============================================================
+// AUTO LOGIN FROM SESSION
+// ============================================================
+window.addEventListener('load', async () => {
+  const sid = sessionStorage.getItem('sx_uid');
+  if(sid) {
+    const {data} = await sb.from('users').select('*').eq('id', parseInt(sid)).single();
+    if(data && !data.is_frozen) {
+      gU = data;
+      launchApp();
+    } else {
+      sessionStorage.removeItem('sx_uid');
+    }
+  }
+});
 </script>
 </body>
 </html>
