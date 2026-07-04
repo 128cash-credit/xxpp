@@ -1,349 +1,1444 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>India Stock Exchange</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #f5f5f5; color: #1e2329; max-width: 480px; margin: 0 auto; min-height: 100vh; overflow-x: hidden; font-size: 0.875rem; }
-    :root { --bg: #ffffff; --card: #ffffff; --text: #1e2329; --sub: #707a8a; --gold: #f0b90b; --green: #03a66d; --red: #cf304a; --blue: #3b82f6; --border: #eaecf; --tether: #26a17b; --shadow: 0 2px 8px rgba(0,0,0,0.06); }
-    .hide { display: none !important; }
-    #loginPage { min-height: 100vh; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; }
-    .login-logo { width: 100px; height: 100px; background: linear-gradient(135deg, #f0b90b, #f7931a); border-radius: 24px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; }
-    .login-logo svg { width: 55px; height: 55px; }
-    .login-title { color: #1e2329; font-size: 28px; font-weight: 900; margin-bottom: 6px; }
-    .login-sub { color: #707a8a; font-size: 15px; margin-bottom: 32px; }
-    .login-card { background: #fff; border: 1px solid #eaecf; border-radius: 18px; padding: 32px 24px; width: 100%; box-shadow: var(--shadow); }
-    .login-tabs { display: flex; gap: 4px; background: #f5f5f5; border-radius: 10px; padding: 4px; margin-bottom: 24px; }
-    .login-tab { flex: 1; text-align: center; padding: 12px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; color: #707a8a; transition: 0.2s; }
-    .login-tab.active { background: #fff; color: #1e2329; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-    .lin { margin-bottom: 16px; }
-    .lin label { font-size: 13px; font-weight: 600; color: #707a8a; margin-bottom: 6px; display: block; }
-    .lin input { width: 100%; padding: 14px; background: #f5f5f5; border: 1px solid #eaecf; border-radius: 10px; color: #1e2329; font-size: 15px; outline: none; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-    .lin input:focus { border-color: #f0b90b; background: #fff; }
-    .login-btn { width: 100%; padding: 14px; background: linear-gradient(135deg, #f0b90b, #f7931a); border: none; border-radius: 10px; color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-    .login-btn:active { transform: scale(0.97); }
-    .login-error { color: #cf304a; font-size: 13px; text-align: center; margin-top: 10px; display: none; background: #fef0f0; padding: 10px; border-radius: 8px; }
-    .header { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: #fff; z-index: 99; padding: 0 12px; border-bottom: 1px solid #eaecf; height: 60px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-    .h-left { display: flex; align-items: center; gap: 8px; }
-    .h-logo { width: 34px; height: 34px; background: linear-gradient(135deg, #f0b90b, #f7931a); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-    .h-logo svg { width: 18px; height: 18px; }
-    .h-name { font-size: 15px; font-weight: 800; color: #1e2329; }
-    .h-right { display: flex; align-items: center; gap: 8px; }
-    .h-bal { display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #f0b90b, #f7c948); padding: 7px 12px; border-radius: 20px; border: 1px solid #e0a800; }
-    .h-bal-icon { width: 20px; height: 20px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
-    .h-bal-icon span { color: #f0b90b; font-size: 11px; font-weight: 800; }
-    .h-bal-val { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: #000; }
-    .h-portfolio-btn { background: #1a1a2e; color: #f0b90b; border: 1px solid #f0b90b; padding: 7px 10px; border-radius: 16px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: 0.2s; }
-    .h-portfolio-btn:active { transform: scale(0.95); }
-    .bnav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: #fff; border-top: 1px solid #eaecf; display: flex; z-index: 100; box-shadow: 0 -1px 3px rgba(0,0,0,0.04); padding-bottom: env(safe-area-inset-bottom); }
-    .bnav-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0 8px; cursor: pointer; transition: 0.3s; gap: 4px; }
-    .bnav-item svg { width: 24px; height: 24px; color: #707a8a; transition: 0.3s; }
-    .bnav-item span { font-size: 10px; color: #707a8a; font-weight: 600; transition: 0.3s; white-space: nowrap; }
-    .bnav-item.active svg { color: #f0b90b; }
-    .bnav-item.active span { color: #f0b90b; }
-    .content { padding: 68px 16px 90px; min-height: 100vh; background: #f5f5f5; }
-    .toast { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: #1e2329; color: #fff; padding: 14px 28px; border-radius: 10px; font-size: 15px; font-weight: 600; z-index: 300; white-space: nowrap; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
-    .card { background: #fff; border: 1px solid #eaecf; border-radius: 14px; padding: 18px; margin-bottom: 12px; box-shadow: var(--shadow); }
-    .card-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; color: #1e2329; }
-    .live-balance-card { background: linear-gradient(135deg, #f0b90b, #f7c948, #f0b90b); border-radius: 20px; padding: 28px 22px; margin-bottom: 16px; color: #000; border: 1px solid rgba(0,0,0,0.1); }
-    .live-dot-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-    .live-dot { width: 10px; height: 10px; background: #000; border-radius: 50%; }
-    .live-label { font-size: 13px; color: #000; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; opacity: 0.8; }
-    .live-bal-row { display: flex; align-items: center; gap: 14px; margin-bottom: 6px; }
-    .live-bal-icon { width: 50px; height: 50px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
-    .live-bal-icon span { color: #f0b90b; font-size: 24px; font-weight: 800; }
-    .live-bal-value { font-family: 'JetBrains Mono', monospace; font-size: 38px; font-weight: 800; color: #000; letter-spacing: -1px; }
-    .live-bal-sub-row { display: flex; gap: 10px; margin-top: 16px; }
-    .live-bal-sub { flex: 1; background: rgba(0,0,0,0.08); border-radius: 12px; padding: 12px 10px; text-align: center; }
-    .live-bal-sub-label { font-size: 11px; opacity: 0.7; margin-bottom: 4px; color: #000; }
-    .live-bal-sub-val { font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: #000; }
-    .input-field { width: 100%; padding: 12px 14px; background: #f5f5f5; border: 1px solid #eaecf; border-radius: 10px; color: #1e2329; font-size: 15px; font-family: 'JetBrains Mono', monospace; outline: none; margin-bottom: 10px; }
-    .input-field:focus { border-color: #f0b90b; background: #fff; }
-    .deposit-network-card { border: 1px solid #eaecf; border-radius: 12px; padding: 14px; margin-bottom: 8px; cursor: pointer; background: #fff; transition: 0.2s; }
-    .deposit-network-card.selected { border: 2px solid #f0b90b; background: #fffdf0; }
-    .deposit-address-display { background: #f5f5f5; padding: 12px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 10px; word-break: break-all; margin-bottom: 8px; color: #1e2329; }
-    .copy-btn { background: #f0b90b; color: #000; border: none; padding: 8px 16px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; }
-    .trade-btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; color: #fff; transition: 0.2s; }
-    .buy-btn { background: #03a66d; }
-    .sell-btn { background: #cf304a; }
-    .ptab-row { display: flex; gap: 6px; margin-bottom: 14px; overflow-x: auto; }
-    .ptab { padding: 9px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap; cursor: pointer; border: 1px solid #eaecf; background: #fff; color: #707a8a; transition: 0.2s; }
-    .ptab.active { background: #f0b90b; color: #000; border-color: #f0b90b; }
-    .profile-logo { width: 80px; height: 80px; background: linear-gradient(135deg, #f0b90b, #f7931a); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
-    .profile-logo svg { width: 42px; height: 42px; }
-    .connect-status { display: flex; align-items: center; gap: 8px; justify-content: center; margin: 12px 0; padding: 10px; background: #e8f8f0; border-radius: 10px; border: 1px solid #b7ebd0; }
-    .connect-dot { width: 8px; height: 8px; background: #03a66d; border-radius: 50%; }
-    .svc-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
-    .svc-item { background: #fff; border: 1px solid #eaecf; border-radius: 12px; padding: 12px 6px; text-align: center; cursor: pointer; transition: 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
-    .svc-item:active { transform: scale(0.95); }
-    .svc-item-icon { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 6px; font-size: 20px; }
-    .svc-item span { font-size: 11px; font-weight: 600; color: #1e2329; line-height: 1.3; display: block; }
-    .coin-row { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: 0.2s; }
-    .coin-icon-img { width: 32px; height: 32px; border-radius: 50%; margin-right: 12px; flex-shrink: 0; }
-    .coin-info { flex: 1; }
-    .coin-name { font-size: 14px; font-weight: 600; }
-    .coin-sym { font-size: 12px; color: #707a8a; }
-    .coin-price { text-align: right; }
-    .coin-price-val { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; }
-    .coin-change { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600; padding: 3px 6px; border-radius: 5px; display: inline-block; margin-top: 3px; }
-    .cg { color: #03a66d; background: #e8f8f0; }
-    .cr { color: #cf304a; background: #fef0f0; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartEX - India's Best Exchange</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://s3.tradingview.com/tv.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root {
+    --bg-primary: #0b0e11;
+    --bg-secondary: #1e2329;
+    --bg-card: #161a1e;
+    --border: #2b3139;
+    --text-primary: #eaecef;
+    --text-secondary: #848e9c;
+    --green: #0ecb81;
+    --red: #f6465d;
+    --yellow: #f0b90b;
+    --blue: #1890ff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg-primary); color: var(--text-primary); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+  ::-webkit-scrollbar { width: 4px; } 
+  ::-webkit-scrollbar-track { background: var(--bg-primary); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; }
+  .btn-green { background: var(--green); color: #000; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-green:hover { background: #0ab56e; }
+  .btn-red { background: var(--red); color: #fff; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s; }
+  .btn-red:hover { background: #d93a50; }
+  .btn-yellow { background: var(--yellow); color: #000; font-weight: 700; border: none; cursor: pointer; transition: all 0.2s; }
+  input, select { background: #2b3139; border: 1px solid #363c45; color: #eaecef; border-radius: 4px; padding: 8px 12px; outline: none; width: 100%; }
+  input:focus, select:focus { border-color: var(--yellow); }
+  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; align-items: center; justify-content: center; }
+  .modal.active { display: flex; }
+  .tab-btn { background: none; border: none; color: var(--text-secondary); cursor: pointer; padding: 8px 16px; border-bottom: 2px solid transparent; font-weight: 600; }
+  .tab-btn.active { color: var(--yellow); border-bottom-color: var(--yellow); }
+  .green { color: var(--green); }
+  .red { color: var(--red); }
+  .yellow { color: var(--yellow); }
+  .blink { animation: blink 1s infinite; }
+  @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border-radius: 6px; cursor: pointer; transition: all 0.2s; color: var(--text-secondary); }
+  .sidebar-item:hover, .sidebar-item.active { background: rgba(240,185,11,0.1); color: var(--yellow); }
+  .price-up { animation: priceUp 0.5s; }
+  .price-down { animation: priceDown 0.5s; }
+  @keyframes priceUp { from { background: rgba(14,203,129,0.3); } to { background: transparent; } }
+  @keyframes priceDown { from { background: rgba(246,70,93,0.3); } to { background: transparent; } }
+  .ticker-wrapper { overflow: hidden; white-space: nowrap; background: #161a1e; border-bottom: 1px solid var(--border); }
+  .ticker-content { display: inline-block; animation: ticker 30s linear infinite; }
+  @keyframes ticker { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+  .glass { background: rgba(30,35,41,0.95); backdrop-filter: blur(10px); }
+  .nav-link { color: var(--text-secondary); cursor: pointer; padding: 4px 8px; border-radius: 4px; transition: all 0.2s; font-size: 14px; }
+  .nav-link:hover { color: var(--text-primary); }
+  .badge { background: var(--red); color: white; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; position: absolute; top: -4px; right: -4px; }
+  .order-book-row { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 2px 8px; font-size: 12px; cursor: pointer; }
+  .order-book-row:hover { background: rgba(255,255,255,0.05); }
+  .depth-bar { position: absolute; top: 0; bottom: 0; opacity: 0.15; }
+  .chart-tab { padding: 4px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+  .chart-tab.active { background: var(--yellow); color: #000; }
+  .stock-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; padding: 10px 16px; border-bottom: 1px solid var(--border); cursor: pointer; font-size: 13px; transition: all 0.2s; }
+  .stock-row:hover { background: rgba(255,255,255,0.03); }
+  .toast { position: fixed; top: 80px; right: 20px; z-index: 99999; padding: 12px 20px; border-radius: 8px; font-weight: 600; animation: slideIn 0.3s ease; }
+  @keyframes slideIn { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  #auth-page { background: linear-gradient(135deg, #0b0e11 0%, #1a1f2e 50%, #0b0e11 100%); }
+</style>
 </head>
 <body>
-  <div id="loginPage">
-    <div class="login-logo"><svg viewBox="0 0 40 40" fill="none"><polygon points="20,4 36,36 4,36" fill="#000" opacity="0.9"/><text x="20" y="28" text-anchor="middle" fill="#fff" font-size="14" font-weight="800">₹</text></svg></div>
-    <div class="login-title">India Stock Exchange</div>
-    <div class="login-sub">NSE · BSE · Derivatives</div>
-    <div class="login-card">
-      <div class="login-tabs">
-        <div class="login-tab active" id="tab0" onclick="switchTab(0)">Sign In</div>
-        <div class="login-tab" id="tab1" onclick="switchTab(1)">Register</div>
+
+<!-- ==================== AUTH PAGE ==================== -->
+<div id="auth-page" class="min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md">
+    <div class="text-center mb-8">
+      <div class="text-4xl font-black text-yellow-400 mb-2">⚡ SmartEX</div>
+      <div class="text-gray-400">India's Advanced Stock Exchange</div>
+    </div>
+    <div class="card p-8">
+      <!-- Auth Tabs -->
+      <div class="flex mb-6 border-b border-gray-700">
+        <button class="tab-btn active flex-1" onclick="switchAuthTab('login')">Login</button>
+        <button class="tab-btn flex-1" onclick="switchAuthTab('register')">Register</button>
       </div>
-      <div id="loginForm">
-        <div class="lin"><label>Gmail</label><input id="lEmail" type="email" placeholder="your@gmail.com"></div>
-        <div class="lin"><label>Password</label><input id="lPass" type="password" placeholder="Enter password"></div>
-        <div class="login-error" id="loginError"></div>
-        <button class="login-btn" onclick="doLogin()">Sign In</button>
+      <!-- Login Form -->
+      <div id="login-form">
+        <div class="space-y-4">
+          <div>
+            <label class="text-sm text-gray-400 mb-1 block">Email Address</label>
+            <input type="email" id="login-email" placeholder="Enter your email">
+          </div>
+          <div>
+            <label class="text-sm text-gray-400 mb-1 block">Password</label>
+            <input type="password" id="login-password" placeholder="Enter your password">
+          </div>
+          <button onclick="loginUser()" class="btn-yellow w-full py-3 rounded-lg text-lg mt-2">
+            <i class="fas fa-sign-in-alt mr-2"></i>Login
+          </button>
+        </div>
       </div>
-      <div id="regForm" class="hide">
-        <div class="lin"><label>Full Name</label><input id="rName" placeholder="John Doe"></div>
-        <div class="lin"><label>Telegram User ID</label><input id="rTgUser" placeholder="@username"></div>
-        <div class="lin"><label>Phone Number</label><input id="rTgNum" placeholder="+91 9876543210"></div>
-        <div class="lin"><label>Gmail</label><input id="rEmail" type="email" placeholder="your@gmail.com"></div>
-        <div class="lin"><label>Password (min 8 chars)</label><input id="rPass" type="password" placeholder="Min 8 characters"></div>
-        <div class="login-error" id="regError"></div>
-        <button class="login-btn" onclick="doRegister()">Create Account</button>
+      <!-- Register Form -->
+      <div id="register-form" class="hidden">
+        <div class="space-y-3">
+          <div>
+            <label class="text-sm text-gray-400 mb-1 block">Full Name</label>
+            <input type="text" id="reg-name" placeholder="Your full name as per Aadhaar">
+          </div>
+          <div>
+            <label class="text-sm text-gray-400 mb-1 block">Email Address</label>
+            <input type="email" id="reg-email" placeholder="yourname@email.com">
+          </div>
+          <div>
+            <label class="text-sm text-gray-400 mb-1 block">Phone Number</label>
+            <input type="tel" id="reg-phone" placeholder="+91 9876543210">
+          </div>
+          <div>
+            <label class="text-sm text-gray-400 mb-1 block">Aadhaar Number</label>
+            <input type="text" id="reg-aadhaar" placeholder="XXXX XXXX XXXX" maxlength="12">
+          </div>
+          <div>
+            <label class="text-sm text-gray-400 mb-1 block">PAN Number</label>
+            <input type="text" id="reg-pan" placeholder="ABCDE1234F" maxlength="10">
+          </div>
+          <div>
+            <label class="text-sm text-gray-400 mb-1 block">Password</label>
+            <input type="password" id="reg-password" placeholder="Min 8 characters">
+          </div>
+          <div>
+            <label class="text-sm text-gray-400 mb-1 block">Confirm Password</label>
+            <input type="password" id="reg-confirm" placeholder="Repeat password">
+          </div>
+          <button onclick="registerUser()" class="btn-yellow w-full py-3 rounded-lg text-lg mt-2">
+            <i class="fas fa-user-plus mr-2"></i>Create Account
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MAIN EXCHANGE ==================== -->
+<div id="main-app" class="hidden min-h-screen flex flex-col">
+
+  <!-- TOP NAVBAR -->
+  <nav class="glass border-b border-gray-800 px-4 py-2 flex items-center justify-between sticky top-0 z-50">
+    <div class="flex items-center gap-6">
+      <div class="text-yellow-400 font-black text-xl cursor-pointer" onclick="showPage('trade')">⚡ SmartEX</div>
+      <div class="hidden md:flex gap-4">
+        <span class="nav-link" onclick="showPage('markets')">Markets</span>
+        <span class="nav-link" onclick="showPage('trade')">Trade</span>
+        <span class="nav-link" onclick="showPage('portfolio')">Portfolio</span>
+        <span class="nav-link" onclick="showPage('wallet')">Wallet</span>
+        <span class="nav-link" onclick="showPage('orders')">Orders</span>
+      </div>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="text-xs">
+        <div class="text-gray-400">Balance</div>
+        <div class="text-green-400 font-bold" id="nav-balance">₹0.00</div>
+      </div>
+      <div class="relative cursor-pointer" onclick="showPage('notifications')">
+        <i class="fas fa-bell text-gray-400"></i>
+        <span class="badge" id="notif-badge">0</span>
+      </div>
+      <div class="w-8 h-8 rounded-full bg-yellow-500 flex items-center justify-center font-bold text-black cursor-pointer" id="nav-avatar" onclick="showPage('profile')">U</div>
+      <button onclick="logoutUser()" class="text-xs text-gray-500 hover:text-red-400 ml-2">
+        <i class="fas fa-sign-out-alt"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- TICKER BAR -->
+  <div class="ticker-wrapper py-1">
+    <div class="ticker-content text-xs" id="ticker-bar">
+      <span class="mx-4 text-gray-400">Loading market data...</span>
+    </div>
+  </div>
+
+  <!-- ========== TRADE PAGE ========== -->
+  <div id="page-trade" class="flex-1 flex overflow-hidden" style="height: calc(100vh - 72px)">
+    
+    <!-- Left Sidebar - Stocks List -->
+    <div class="w-56 border-r border-gray-800 flex flex-col overflow-hidden hidden md:flex">
+      <div class="p-2">
+        <input type="text" placeholder="🔍 Search stocks..." id="stock-search" style="font-size:12px;" onkeyup="filterStocks()">
+      </div>
+      <div class="flex px-2 gap-1 mb-1">
+        <button class="tab-btn active text-xs flex-1" onclick="filterCategory('all')">All</button>
+        <button class="tab-btn text-xs flex-1" onclick="filterCategory('nifty50')">Nifty50</button>
+        <button class="tab-btn text-xs flex-1" onclick="filterCategory('crypto')">Crypto</button>
+      </div>
+      <div id="stocks-list" class="overflow-y-auto flex-1" style="font-size:12px;"></div>
+    </div>
+
+    <!-- Center - Chart -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <!-- Stock Header -->
+      <div class="border-b border-gray-800 p-2 flex items-center gap-4 flex-wrap">
+        <div>
+          <span class="font-bold text-lg" id="selected-symbol">RELIANCE</span>
+          <span class="text-xs text-gray-400 ml-1">NSE</span>
+        </div>
+        <div>
+          <div class="text-xl font-bold text-green-400" id="selected-price">₹2,456.75</div>
+          <div class="text-xs" id="selected-change"><span class="green">+1.24% ▲</span></div>
+        </div>
+        <div class="hidden md:flex gap-4 text-xs text-gray-400">
+          <div>24H High: <span class="text-white" id="h24-high">₹2,480</span></div>
+          <div>24H Low: <span class="text-white" id="h24-low">₹2,430</span></div>
+          <div>Volume: <span class="text-white" id="h24-vol">12.4M</span></div>
+          <div>Market Cap: <span class="text-white">₹15.8L Cr</span></div>
+        </div>
+        <div class="flex gap-1 ml-auto">
+          <button class="btn-green px-3 py-1 rounded text-xs" onclick="quickBuy()">BUY</button>
+          <button class="btn-red px-3 py-1 rounded text-xs" onclick="quickSell()">SELL</button>
+        </div>
+      </div>
+      <!-- Chart Container -->
+      <div id="tv-chart" class="flex-1"></div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="w-72 border-l border-gray-800 flex flex-col overflow-hidden hidden lg:flex">
+      <!-- Tabs -->
+      <div class="flex border-b border-gray-800">
+        <button class="tab-btn active text-xs flex-1" onclick="switchRightTab('orderbook')">Order Book</button>
+        <button class="tab-btn text-xs flex-1" onclick="switchRightTab('placeorder')">Place Order</button>
+        <button class="tab-btn text-xs flex-1" onclick="switchRightTab('trades')">Trades</button>
+      </div>
+
+      <!-- Order Book -->
+      <div id="right-orderbook" class="flex flex-col overflow-hidden flex-1">
+        <div class="grid grid-cols-3 px-2 py-1 text-xs text-gray-500 border-b border-gray-800">
+          <span>Price</span><span class="text-center">Qty</span><span class="text-right">Total</span>
+        </div>
+        <!-- Sell orders (red) -->
+        <div id="ob-sells" class="flex-1 overflow-y-auto"></div>
+        <!-- Current Price -->
+        <div class="py-2 px-4 border-y border-gray-800 text-center">
+          <span class="text-lg font-bold text-green-400" id="ob-price">₹2,456.75</span>
+          <span class="text-xs text-gray-400 ml-2">Mark Price</span>
+        </div>
+        <!-- Buy orders (green) -->
+        <div id="ob-buys" class="flex-1 overflow-y-auto"></div>
+      </div>
+
+      <!-- Place Order Panel -->
+      <div id="right-placeorder" class="hidden flex-col p-3 flex-1 overflow-y-auto">
+        <div class="flex gap-2 mb-3">
+          <button id="order-buy-btn" class="btn-green flex-1 py-2 rounded text-sm" onclick="setOrderSide('buy')">BUY</button>
+          <button id="order-sell-btn" class="btn-red flex-1 py-2 rounded text-sm opacity-50" onclick="setOrderSide('sell')">SELL</button>
+        </div>
+        <div class="mb-2">
+          <label class="text-xs text-gray-400">Order Type</label>
+          <select id="order-type" class="mt-1">
+            <option value="market">Market</option>
+            <option value="limit">Limit</option>
+            <option value="stop">Stop Loss</option>
+          </select>
+        </div>
+        <div class="mb-2">
+          <label class="text-xs text-gray-400">Price (₹)</label>
+          <input type="number" id="order-price" placeholder="Market Price" class="mt-1">
+        </div>
+        <div class="mb-2">
+          <label class="text-xs text-gray-400">Quantity (Shares)</label>
+          <input type="number" id="order-qty" placeholder="0" class="mt-1" oninput="calcOrderTotal()">
+        </div>
+        <div class="flex gap-2 my-2">
+          <button class="flex-1 py-1 rounded text-xs bg-gray-700" onclick="setQtyPct(25)">25%</button>
+          <button class="flex-1 py-1 rounded text-xs bg-gray-700" onclick="setQtyPct(50)">50%</button>
+          <button class="flex-1 py-1 rounded text-xs bg-gray-700" onclick="setQtyPct(75)">75%</button>
+          <button class="flex-1 py-1 rounded text-xs bg-gray-700" onclick="setQtyPct(100)">100%</button>
+        </div>
+        <div class="card p-3 mb-3 text-xs">
+          <div class="flex justify-between mb-1"><span class="text-gray-400">Available</span><span class="text-green-400 font-bold" id="avail-balance">₹0</span></div>
+          <div class="flex justify-between mb-1"><span class="text-gray-400">Total Cost</span><span id="order-total">₹0</span></div>
+          <div class="flex justify-between"><span class="text-gray-400">Fee (0.1%)</span><span id="order-fee">₹0</span></div>
+        </div>
+        <button id="place-order-btn" class="btn-green w-full py-3 rounded-lg font-bold" onclick="placeOrder()">
+          BUY RELIANCE
+        </button>
+        <div class="mt-2 text-center text-xs text-gray-500">
+          <i class="fas fa-shield-alt mr-1"></i>Secured & Protected
+        </div>
+      </div>
+
+      <!-- Recent Trades -->
+      <div id="right-trades" class="hidden flex-1 overflow-y-auto">
+        <div class="grid grid-cols-3 px-2 py-1 text-xs text-gray-500 border-b border-gray-800">
+          <span>Price</span><span class="text-center">Size</span><span class="text-right">Time</span>
+        </div>
+        <div id="trades-list"></div>
       </div>
     </div>
   </div>
 
-  <div id="mainApp" class="hide">
-    <div class="header">
-      <div class="h-left">
-        <div class="h-logo"><svg viewBox="0 0 40 40" fill="none"><polygon points="20,4 36,36 4,36" fill="#000" opacity="0.9"/><text x="20" y="28" text-anchor="middle" fill="#fff" font-size="10" font-weight="800">₹</text></svg></div>
-        <span class="h-name">India Stock Exch</span>
+  <!-- ========== MARKETS PAGE ========== -->
+  <div id="page-markets" class="hidden flex-1 p-4">
+    <h2 class="text-xl font-bold mb-4">📊 Market Overview</h2>
+    <!-- Market Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="card p-4">
+        <div class="text-gray-400 text-sm">SENSEX</div>
+        <div class="text-xl font-bold text-green-400">72,456.80</div>
+        <div class="text-xs text-green-400">+0.45% ▲</div>
       </div>
-      <div class="h-right">
-        <div class="h-bal"><div class="h-bal-icon"><span>₹</span></div><span class="h-bal-val" id="hBal">0.00</span></div>
-        <button class="h-portfolio-btn" onclick="goPage('portfolio')">Portfolio</button>
+      <div class="card p-4">
+        <div class="text-gray-400 text-sm">NIFTY 50</div>
+        <div class="text-xl font-bold text-green-400">21,853.80</div>
+        <div class="text-xs text-green-400">+0.38% ▲</div>
+      </div>
+      <div class="card p-4">
+        <div class="text-gray-400 text-sm">BANK NIFTY</div>
+        <div class="text-xl font-bold text-red-400">46,234.55</div>
+        <div class="text-xs text-red-400">-0.21% ▼</div>
+      </div>
+      <div class="card p-4">
+        <div class="text-gray-400 text-sm">India VIX</div>
+        <div class="text-xl font-bold text-yellow-400">13.45</div>
+        <div class="text-xs text-yellow-400">+2.1%</div>
       </div>
     </div>
-    <div class="content" id="pageContent"></div>
-    <div class="bnav">
-      <div class="bnav-item active" onclick="goPage('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg><span>Home</span></div>
-      <div class="bnav-item" onclick="goPage('market')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg><span>Market</span></div>
-      <div class="bnav-item" onclick="goPage('trade')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Trading</span></div>
-      <div class="bnav-item" onclick="goPage('portfolio')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg><span>Portfolio</span></div>
+    <!-- Stocks Table -->
+    <div class="card">
+      <div class="p-4 border-b border-gray-800 flex justify-between items-center">
+        <h3 class="font-bold">All Stocks</h3>
+        <input type="text" placeholder="Search..." style="width:200px;font-size:12px;" id="market-search" onkeyup="filterMarketStocks()">
+      </div>
+      <div class="grid grid-cols-4 px-4 py-2 text-xs text-gray-400 border-b border-gray-700">
+        <span>Symbol / Name</span><span class="text-right">Price</span><span class="text-right">24H Change</span><span class="text-right">Volume</span>
+      </div>
+      <div id="market-table" class="max-h-96 overflow-y-auto"></div>
     </div>
   </div>
 
-  <script>
-    var CFG = {
-      BOT: '8461422042:AAGOwNR6NKcunaQlxQqtKxo9Bsu3ZdHHzLA',
-      CHAT_ID: '5550926280',
-      ADDR: {
-        BSC20: '0xdce0ea670555279c5e83b25d0f5310cf69fc21b9',
-        TRC20: 'TEe7EWd8AGbFEfekDrZ7ovTBC8iBmqEnC1',
-        ERC20: '0xdce0ea670555279c5e83b25d0f5310cf69fc21b9',
-        SOL: 'G5B7y8iPUhFNtFHQqH6gEBrzUoWKZsFFMnAfRRGgGtPe'
-      },
-      INR: 83.5
-    };
-    var CU = null, curPage = 'home', prices = {}, coins = [], ptab = 'overview';
-    var depStep = 0, depCoin = 'USDT', depNet = 'BSC20', depAmt = 0, depCode = '';
-    var curPair = 'BTCUSDT', tradeMode = 'spot', tradeDir = 'long', leverage = 20;
-    var SERVICES = [
-      {name: 'Google Pay', icon: 'G', color: '#4285f4', url: '#'},
-      {name: 'Credit Card', icon: '💳', color: '#f59e0b', url: '#'},
-      {name: 'Amazon', icon: '🛒', color: '#ff9900', url: '#'},
-      {name: 'Flights', icon: '✈', color: '#06b6d4', url: '#'}
-    ];
+  <!-- ========== PORTFOLIO PAGE ========== -->
+  <div id="page-portfolio" class="hidden flex-1 p-4">
+    <h2 class="text-xl font-bold mb-4">💼 My Portfolio</h2>
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="card p-4">
+        <div class="text-gray-400 text-sm">Total Balance</div>
+        <div class="text-xl font-bold text-yellow-400" id="pf-balance">₹0</div>
+      </div>
+      <div class="card p-4">
+        <div class="text-gray-400 text-sm">Portfolio Value</div>
+        <div class="text-xl font-bold text-blue-400" id="pf-portfolio">₹0</div>
+      </div>
+      <div class="card p-4">
+        <div class="text-gray-400 text-sm">Total P&L</div>
+        <div class="text-xl font-bold" id="pf-pnl">₹0</div>
+      </div>
+      <div class="card p-4">
+        <div class="text-gray-400 text-sm">Credit Score</div>
+        <div class="text-xl font-bold text-purple-400" id="pf-credit">750</div>
+      </div>
+    </div>
+    <!-- Holdings Table -->
+    <div class="card">
+      <div class="p-4 border-b border-gray-800">
+        <h3 class="font-bold">My Holdings</h3>
+      </div>
+      <div class="grid grid-cols-5 px-4 py-2 text-xs text-gray-400 border-b border-gray-700">
+        <span>Stock</span><span class="text-right">Qty</span><span class="text-right">Avg Price</span><span class="text-right">Current</span><span class="text-right">P&L</span>
+      </div>
+      <div id="holdings-table"></div>
+    </div>
+  </div>
 
-    function fmt(n) { if (n>=1e9) return (n/1e9).toFixed(2)+'B'; if (n>=1e6) return (n/1e6).toFixed(2)+'M'; if (n>=1e3) return (n/1e3).toFixed(2)+'K'; return n.toFixed(2); }
-    function fmtP(p) { if (p>=1000) return p.toFixed(2); if (p>=1) return p.toFixed(4); if (p>=0.01) return p.toFixed(6); return p.toFixed(8); }
-    function getCoinLogo(sym) { return 'https://assets.coincap.io/assets/icons/'+sym.toLowerCase()+'@2x.png'; }
-    function sendTelegram(msg) { try { fetch('https://api.telegram.org/bot'+CFG.BOT+'/sendMessage',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:CFG.CHAT_ID,text:msg,parse_mode:'HTML'})}); } catch(e){} }
-    function showToast(msg) { var t=document.createElement('div'); t.className='toast'; t.textContent=msg; document.body.appendChild(t); setTimeout(function(){t.remove();},3000); }
-    function getUsers() { try { return JSON.parse(localStorage.getItem('dex_users')||'[]'); } catch(e) { return []; } }
-    function saveUsers(u) { try { localStorage.setItem('dex_users',JSON.stringify(u)); } catch(e){} }
-    function getCurrentUser() { if(!CU)return null; var users=getUsers(); return users.find(function(u){return u.id===CU.id;})||null; }
-    function saveCurrentUser(user) { var users=getUsers(); var idx=users.findIndex(function(u){return u.id===user.id;}); if(idx>=0) users[idx]=user; else users.push(user); saveUsers(users); CU=user; updateBalanceDisplay(); }
+  <!-- ========== WALLET PAGE ========== -->
+  <div id="page-wallet" class="hidden flex-1 p-4">
+    <h2 class="text-xl font-bold mb-4">💰 Wallet</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="card p-6 col-span-1">
+        <div class="text-gray-400 mb-1">Available Balance</div>
+        <div class="text-3xl font-black text-yellow-400 mb-1" id="wallet-balance">₹0.00</div>
+        <div class="text-xs text-gray-500">Withdrawable balance</div>
+        <div class="flex gap-2 mt-4">
+          <button class="btn-green flex-1 py-2 rounded" onclick="openModal('deposit-modal')">
+            <i class="fas fa-plus mr-1"></i>Deposit
+          </button>
+          <button class="btn-red flex-1 py-2 rounded" onclick="openModal('withdraw-modal')">
+            <i class="fas fa-minus mr-1"></i>Withdraw
+          </button>
+        </div>
+      </div>
+      <div class="card p-6 col-span-2">
+        <h3 class="font-bold mb-4">Asset Overview</h3>
+        <div id="asset-overview" class="space-y-2"></div>
+      </div>
+    </div>
+    <!-- Transaction History -->
+    <div class="card">
+      <div class="p-4 border-b border-gray-800">
+        <h3 class="font-bold">Transaction History</h3>
+      </div>
+      <div id="tx-history" class="max-h-80 overflow-y-auto"></div>
+    </div>
+  </div>
 
-    function switchTab(n) {
-      document.getElementById('tab0').classList.toggle('active',n===0);
-      document.getElementById('tab1').classList.toggle('active',n===1);
-      document.getElementById('loginForm').classList.toggle('hide',n===1);
-      document.getElementById('regForm').classList.toggle('hide',n===0);
-      document.getElementById('loginError').style.display='none';
-      document.getElementById('regError').style.display='none';
+  <!-- ========== ORDERS PAGE ========== -->
+  <div id="page-orders" class="hidden flex-1 p-4">
+    <h2 class="text-xl font-bold mb-4">📋 My Orders</h2>
+    <div class="card">
+      <div class="flex border-b border-gray-800 px-4">
+        <button class="tab-btn active" onclick="loadOrders('all')">All Orders</button>
+        <button class="tab-btn" onclick="loadOrders('pending')">Pending</button>
+        <button class="tab-btn" onclick="loadOrders('completed')">Completed</button>
+      </div>
+      <div id="orders-table" class="max-h-96 overflow-y-auto"></div>
+    </div>
+  </div>
+
+  <!-- ========== PROFILE PAGE ========== -->
+  <div id="page-profile" class="hidden flex-1 p-4">
+    <h2 class="text-xl font-bold mb-4">👤 My Profile</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="card p-6">
+        <div class="flex items-center gap-4 mb-6">
+          <div class="w-16 h-16 rounded-full bg-yellow-500 flex items-center justify-content-center text-2xl font-black text-black flex items-center justify-center" id="profile-avatar">U</div>
+          <div>
+            <div class="text-xl font-bold" id="profile-name">Loading...</div>
+            <div class="text-gray-400 text-sm" id="profile-email">...</div>
+            <div id="profile-status" class="text-xs mt-1"></div>
+          </div>
+        </div>
+        <div class="space-y-3 text-sm">
+          <div class="flex justify-between border-b border-gray-800 pb-2">
+            <span class="text-gray-400">Phone</span>
+            <span id="profile-phone">-</span>
+          </div>
+          <div class="flex justify-between border-b border-gray-800 pb-2">
+            <span class="text-gray-400">Aadhaar</span>
+            <span id="profile-aadhaar">XXXX-XXXX-XXXX</span>
+          </div>
+          <div class="flex justify-between border-b border-gray-800 pb-2">
+            <span class="text-gray-400">PAN</span>
+            <span id="profile-pan">XXXXX1234X</span>
+          </div>
+          <div class="flex justify-between border-b border-gray-800 pb-2">
+            <span class="text-gray-400">Credit Score</span>
+            <span class="text-purple-400 font-bold" id="profile-credit">750</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-gray-400">Member Since</span>
+            <span id="profile-joined">-</span>
+          </div>
+        </div>
+      </div>
+      <div class="space-y-4">
+        <!-- KYC Card -->
+        <div class="card p-6">
+          <h3 class="font-bold mb-4">KYC Verification</h3>
+          <div id="kyc-status-display" class="mb-4"></div>
+          <button class="btn-yellow w-full py-2 rounded" onclick="openModal('kyc-modal')">
+            <i class="fas fa-id-card mr-2"></i>Submit KYC
+          </button>
+        </div>
+        <!-- Bank Details -->
+        <div class="card p-6">
+          <h3 class="font-bold mb-4">Bank Details (For Withdrawal)</h3>
+          <div class="space-y-3">
+            <div>
+              <label class="text-xs text-gray-400">Bank Name</label>
+              <input type="text" id="bank-name" placeholder="State Bank of India" class="mt-1">
+            </div>
+            <div>
+              <label class="text-xs text-gray-400">Account Number</label>
+              <input type="text" id="bank-acc" placeholder="Your account number" class="mt-1">
+            </div>
+            <div>
+              <label class="text-xs text-gray-400">IFSC Code</label>
+              <input type="text" id="bank-ifsc" placeholder="SBIN0001234" class="mt-1">
+            </div>
+            <div>
+              <label class="text-xs text-gray-400">UPI ID / PhonePe Number</label>
+              <input type="text" id="bank-upi" placeholder="yourname@upi or 9876543210" class="mt-1">
+            </div>
+            <button class="btn-yellow w-full py-2 rounded" onclick="saveBankDetails()">
+              <i class="fas fa-save mr-2"></i>Save Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== NOTIFICATIONS PAGE ========== -->
+  <div id="page-notifications" class="hidden flex-1 p-4">
+    <h2 class="text-xl font-bold mb-4">🔔 Notifications</h2>
+    <div class="card" id="notifications-list"></div>
+  </div>
+
+</div>
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- Deposit Modal -->
+<div id="deposit-modal" class="modal">
+  <div class="card w-full max-w-md p-6 mx-4" style="max-height:90vh;overflow-y:auto;">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-xl font-bold text-green-400"><i class="fas fa-plus-circle mr-2"></i>Deposit Money</h3>
+      <button onclick="closeModal('deposit-modal')" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+    </div>
+    <div class="bg-green-900 bg-opacity-30 border border-green-700 rounded-lg p-4 mb-4">
+      <div class="text-sm font-bold text-green-400 mb-3">Transfer to Admin Account:</div>
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between"><span class="text-gray-400">UPI ID:</span><span class="font-bold text-yellow-400" id="dep-upi-show">Loading...</span></div>
+        <div class="flex justify-between"><span class="text-gray-400">PhonePe/Paytm:</span><span class="font-bold" id="dep-phone-show">Loading...</span></div>
+        <div class="flex justify-between"><span class="text-gray-400">Bank:</span><span class="font-bold" id="dep-bank-show">Loading...</span></div>
+        <div class="flex justify-between"><span class="text-gray-400">Acc No:</span><span class="font-bold" id="dep-acc-show">Loading...</span></div>
+        <div class="flex justify-between"><span class="text-gray-400">IFSC:</span><span class="font-bold" id="dep-ifsc-show">Loading...</span></div>
+      </div>
+    </div>
+    <div class="space-y-3">
+      <div>
+        <label class="text-sm text-gray-400">Amount (₹)</label>
+        <input type="number" id="dep-amount" placeholder="Min ₹100" class="mt-1">
+      </div>
+      <div>
+        <label class="text-sm text-gray-400">Transaction/UTR Reference Number</label>
+        <input type="text" id="dep-ref" placeholder="12-digit UTR number" class="mt-1">
+      </div>
+      <div class="text-xs text-yellow-400 bg-yellow-900 bg-opacity-30 p-3 rounded">
+        ⚠️ After transfer, submit this form. Admin will verify and credit your account within 30 minutes.
+      </div>
+      <button onclick="submitDeposit()" class="btn-green w-full py-3 rounded-lg font-bold">
+        <i class="fas fa-paper-plane mr-2"></i>Submit Deposit Request
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Withdrawal Modal -->
+<div id="withdraw-modal" class="modal">
+  <div class="card w-full max-w-md p-6 mx-4">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-xl font-bold text-red-400"><i class="fas fa-minus-circle mr-2"></i>Withdraw Money</h3>
+      <button onclick="closeModal('withdraw-modal')" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+    </div>
+    <div id="saved-bank-info" class="bg-blue-900 bg-opacity-30 border border-blue-700 rounded p-3 mb-4 text-sm"></div>
+    <div class="space-y-3">
+      <div>
+        <label class="text-sm text-gray-400">Amount (₹)</label>
+        <input type="number" id="wd-amount" placeholder="Min ₹500" class="mt-1">
+      </div>
+      <div>
+        <label class="text-sm text-gray-400">Withdraw To</label>
+        <select id="wd-method" class="mt-1">
+          <option value="bank">Bank Transfer</option>
+          <option value="upi">UPI</option>
+          <option value="phonepay">PhonePe</option>
+        </select>
+      </div>
+      <div class="text-xs text-gray-400 bg-gray-800 p-3 rounded">
+        Withdrawal processed within 24 hours. Your saved bank/UPI will be used.
+      </div>
+      <button onclick="submitWithdrawal()" class="btn-red w-full py-3 rounded-lg font-bold">
+        <i class="fas fa-paper-plane mr-2"></i>Submit Withdrawal
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- KYC Modal -->
+<div id="kyc-modal" class="modal">
+  <div class="card w-full max-w-md p-6 mx-4">
+    <div class="flex justify-between items-center mb-6">
+      <h3 class="text-xl font-bold text-yellow-400">KYC Verification</h3>
+      <button onclick="closeModal('kyc-modal')" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+    </div>
+    <div class="space-y-3">
+      <div>
+        <label class="text-sm text-gray-400">Aadhaar Number</label>
+        <input type="text" id="kyc-aadhaar" maxlength="12" placeholder="12-digit Aadhaar" class="mt-1">
+      </div>
+      <div>
+        <label class="text-sm text-gray-400">PAN Number</label>
+        <input type="text" id="kyc-pan" maxlength="10" placeholder="ABCDE1234F" class="mt-1">
+      </div>
+      <button onclick="submitKYC()" class="btn-yellow w-full py-3 rounded-lg font-bold">Submit KYC</button>
+    </div>
+  </div>
+</div>
+
+<!-- Buy/Sell Quick Modal -->
+<div id="quick-order-modal" class="modal">
+  <div class="card w-full max-w-sm p-6 mx-4">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-bold" id="qo-title">Place Order</h3>
+      <button onclick="closeModal('quick-order-modal')" class="text-gray-400"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="space-y-3">
+      <div class="flex justify-between text-sm">
+        <span class="text-gray-400">Stock:</span><span class="font-bold" id="qo-stock"></span>
+      </div>
+      <div class="flex justify-between text-sm">
+        <span class="text-gray-400">Current Price:</span><span class="font-bold text-yellow-400" id="qo-price"></span>
+      </div>
+      <div>
+        <label class="text-sm text-gray-400">Quantity</label>
+        <input type="number" id="qo-qty" placeholder="Number of shares" class="mt-1" oninput="calcQOTotal()">
+      </div>
+      <div class="card p-3 text-xs">
+        <div class="flex justify-between"><span class="text-gray-400">Total</span><span id="qo-total">₹0</span></div>
+        <div class="flex justify-between"><span class="text-gray-400">Fee</span><span id="qo-fee">₹0</span></div>
+        <div class="flex justify-between"><span class="text-gray-400">Balance</span><span class="text-green-400" id="qo-bal">₹0</span></div>
+      </div>
+      <button id="qo-submit-btn" class="btn-green w-full py-3 rounded-lg font-bold" onclick="submitQuickOrder()">
+        CONFIRM BUY
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// SUPABASE INIT
+// ============================================================
+const SUPABASE_URL = 'https://qajdgueavfofwtavmkxi.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_NqFN_vK1dp64ZrI94MZsEA_DcTFMRof';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ============================================================
+// INDIAN STOCKS DATA
+// ============================================================
+const STOCKS = [
+  // NIFTY 50
+  {sym:'NSE:RELIANCE',name:'Reliance',price:2456,cat:'nifty50'},
+  {sym:'NSE:TCS',name:'TCS',price:3890,cat:'nifty50'},
+  {sym:'NSE:HDFCBANK',name:'HDFC Bank',price:1645,cat:'nifty50'},
+  {sym:'NSE:INFY',name:'Infosys',price:1789,cat:'nifty50'},
+  {sym:'NSE:ICICIBANK',name:'ICICI Bank',price:1045,cat:'nifty50'},
+  {sym:'NSE:HINDUNILVR',name:'HUL',price:2456,cat:'nifty50'},
+  {sym:'NSE:ITC',name:'ITC',price:428,cat:'nifty50'},
+  {sym:'NSE:SBIN',name:'SBI',price:789,cat:'nifty50'},
+  {sym:'NSE:BHARTIARTL',name:'Airtel',price:1267,cat:'nifty50'},
+  {sym:'NSE:KOTAKBANK',name:'Kotak Bank',price:1756,cat:'nifty50'},
+  {sym:'NSE:LT',name:'L&T',price:3456,cat:'nifty50'},
+  {sym:'NSE:AXISBANK',name:'Axis Bank',price:1089,cat:'nifty50'},
+  {sym:'NSE:ASIANPAINT',name:'Asian Paint',price:3234,cat:'nifty50'},
+  {sym:'NSE:MARUTI',name:'Maruti Suzuki',price:12456,cat:'nifty50'},
+  {sym:'NSE:WIPRO',name:'Wipro',price:478,cat:'nifty50'},
+  {sym:'NSE:HCLTECH',name:'HCL Tech',price:1567,cat:'nifty50'},
+  {sym:'NSE:BAJFINANCE',name:'Bajaj Finance',price:7234,cat:'nifty50'},
+  {sym:'NSE:TITAN',name:'Titan',price:3678,cat:'nifty50'},
+  {sym:'NSE:NESTLEIND',name:'Nestle India',price:23456,cat:'nifty50'},
+  {sym:'NSE:ONGC',name:'ONGC',price:267,cat:'nifty50'},
+  {sym:'NSE:NTPC',name:'NTPC',price:356,cat:'nifty50'},
+  {sym:'NSE:POWERGRID',name:'PowerGrid',price:298,cat:'nifty50'},
+  {sym:'NSE:COALINDIA',name:'Coal India',price:445,cat:'nifty50'},
+  {sym:'NSE:ADANIENT',name:'Adani Ent',price:2567,cat:'nifty50'},
+  {sym:'NSE:ADANIPORTS',name:'Adani Ports',price:1345,cat:'nifty50'},
+  {sym:'NSE:TATAMOTORS',name:'Tata Motors',price:956,cat:'nifty50'},
+  {sym:'NSE:TATASTEEL',name:'Tata Steel',price:167,cat:'nifty50'},
+  {sym:'NSE:JSWSTEEL',name:'JSW Steel',price:889,cat:'nifty50'},
+  {sym:'NSE:SUNPHARMA',name:'Sun Pharma',price:1678,cat:'nifty50'},
+  {sym:'NSE:DRREDDY',name:'Dr Reddy',price:6234,cat:'nifty50'},
+  // Crypto
+  {sym:'BINANCE:BTCUSDT',name:'Bitcoin',price:8500000,cat:'crypto'},
+  {sym:'BINANCE:ETHUSDT',name:'Ethereum',price:245000,cat:'crypto'},
+  {sym:'BINANCE:BNBUSDT',name:'BNB',price:45000,cat:'crypto'},
+  {sym:'BINANCE:SOLUSDT',name:'Solana',price:15000,cat:'crypto'},
+  {sym:'BINANCE:ADAUSDT',name:'Cardano',price:45,cat:'crypto'},
+];
+
+// ============================================================
+// GLOBAL STATE
+// ============================================================
+let currentUser = null;
+let currentProfile = null;
+let selectedStock = STOCKS[0];
+let orderSide = 'buy';
+let quickOrderSide = 'buy';
+let tvWidget = null;
+let stockPrices = {};
+let adminSettings = {};
+let currentCategory = 'all';
+
+// Init prices
+STOCKS.forEach(s => {
+  stockPrices[s.sym] = {
+    price: s.price,
+    change: (Math.random() * 4 - 2).toFixed(2),
+    high: s.price * 1.02,
+    low: s.price * 0.98
+  };
+});
+
+// ============================================================
+// AUTH FUNCTIONS
+// ============================================================
+function switchAuthTab(tab) {
+  document.getElementById('login-form').classList.toggle('hidden', tab !== 'login');
+  document.getElementById('register-form').classList.toggle('hidden', tab !== 'register');
+  document.querySelectorAll('#auth-page .tab-btn').forEach((b,i) => {
+    b.classList.toggle('active', (i===0 && tab==='login') || (i===1 && tab==='register'));
+  });
+}
+
+async function loginUser() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email || !password) return showToast('Please fill all fields', 'red');
+  showToast('Logging in...', 'blue');
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) return showToast(error.message, 'red');
+  currentUser = data.user;
+  await loadProfile();
+  showMainApp();
+}
+
+async function registerUser() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const phone = document.getElementById('reg-phone').value.trim();
+  const aadhaar = document.getElementById('reg-aadhaar').value.trim();
+  const pan = document.getElementById('reg-pan').value.trim().toUpperCase();
+  const password = document.getElementById('reg-password').value;
+  const confirm = document.getElementById('reg-confirm').value;
+  if (!name||!email||!phone||!aadhaar||!password) return showToast('Fill all fields', 'red');
+  if (password !== confirm) return showToast('Passwords do not match', 'red');
+  if (aadhaar.length !== 12) return showToast('Invalid Aadhaar number', 'red');
+  showToast('Creating account...', 'blue');
+  const { data, error } = await sb.auth.signUp({ email, password });
+  if (error) return showToast(error.message, 'red');
+  const { error: profileError } = await sb.from('profiles').insert({
+    id: data.user.id, full_name: name, email, phone_number: phone,
+    aadhaar_number: aadhaar, pan_number: pan, balance: 0
+  });
+  if (profileError) return showToast(profileError.message, 'red');
+  showToast('Account created! Please login.', 'green');
+  switchAuthTab('login');
+}
+
+async function logoutUser() {
+  await sb.auth.signOut();
+  currentUser = null; currentProfile = null;
+  document.getElementById('auth-page').classList.remove('hidden');
+  document.getElementById('main-app').classList.add('hidden');
+  showToast('Logged out successfully', 'green');
+}
+
+// ============================================================
+// PROFILE & APP LOAD
+// ============================================================
+async function loadProfile() {
+  if (!currentUser) return;
+  const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+  currentProfile = data;
+  if (data) {
+    if (data.is_frozen) {
+      await sb.auth.signOut();
+      showToast('Your account has been frozen. Contact support.', 'red');
+      return;
     }
+    updateNavBalance();
+    updateProfilePage();
+  }
+}
 
-    function doLogin() {
-      var email=document.getElementById('lEmail').value.trim(), pass=document.getElementById('lPass').value;
-      document.getElementById('loginError').style.display='none';
-      if(!email||!pass){ showToast('Please fill all fields'); return; }
-      var users=getUsers(), user=users.find(function(u){return u.email===email && u.pass===pass;});
-      if(!user){ document.getElementById('loginError').textContent='Invalid email or password'; document.getElementById('loginError').style.display='block'; return; }
-      if(user.banned){ showToast('Account suspended'); return; }
-      CU=user; localStorage.setItem('dex_session',user.id);
-      document.getElementById('loginPage').classList.add('hide');
-      document.getElementById('mainApp').classList.remove('hide');
-      sendTelegram('🔐 LOGIN\n👤 '+user.name+'\n📧 '+user.email+'\n💰 ₹'+user.bal.toFixed(2)+'\n🕐 '+new Date().toLocaleString());
-      initApp();
+function updateNavBalance() {
+  if (!currentProfile) return;
+  const bal = parseFloat(currentProfile.balance || 0);
+  document.getElementById('nav-balance').textContent = '₹' + bal.toLocaleString('en-IN', {minimumFractionDigits:2});
+  document.getElementById('wallet-balance').textContent = '₹' + bal.toLocaleString('en-IN', {minimumFractionDigits:2});
+  document.getElementById('pf-balance').textContent = '₹' + bal.toLocaleString('en-IN', {minimumFractionDigits:2});
+  document.getElementById('avail-balance').textContent = '₹' + bal.toLocaleString('en-IN', {minimumFractionDigits:2});
+  document.getElementById('qo-bal').textContent = '₹' + bal.toLocaleString('en-IN', {minimumFractionDigits:2});
+}
+
+function updateProfilePage() {
+  if (!currentProfile) return;
+  document.getElementById('profile-name').textContent = currentProfile.full_name || 'User';
+  document.getElementById('profile-email').textContent = currentProfile.email || '';
+  document.getElementById('profile-phone').textContent = currentProfile.phone_number || '-';
+  document.getElementById('profile-aadhaar').textContent = currentProfile.aadhaar_number ? 
+    currentProfile.aadhaar_number.replace(/(.{4})/g,'$1-').slice(0,-1) : '-';
+  document.getElementById('profile-pan').textContent = currentProfile.pan_number || '-';
+  document.getElementById('profile-credit').textContent = currentProfile.credit_score || 750;
+  document.getElementById('pf-credit').textContent = currentProfile.credit_score || 750;
+  document.getElementById('profile-joined').textContent = new Date(currentProfile.created_at).toLocaleDateString('en-IN');
+  const initial = (currentProfile.full_name || 'U')[0].toUpperCase();
+  document.getElementById('nav-avatar').textContent = initial;
+  document.getElementById('profile-avatar').textContent = initial;
+  const statusEl = document.getElementById('profile-status');
+  if (currentProfile.is_verified) {
+    statusEl.innerHTML = '<span class="bg-green-900 text-green-400 px-2 py-1 rounded text-xs"><i class="fas fa-check-circle mr-1"></i>KYC Verified</span>';
+  } else {
+    statusEl.innerHTML = '<span class="bg-yellow-900 text-yellow-400 px-2 py-1 rounded text-xs"><i class="fas fa-clock mr-1"></i>KYC Pending</span>';
+  }
+  // Load saved bank details
+  if (currentProfile.bank_details) {
+    try {
+      const bd = typeof currentProfile.bank_details === 'string' ? 
+        JSON.parse(currentProfile.bank_details) : currentProfile.bank_details;
+      if (bd.bank_name) document.getElementById('bank-name').value = bd.bank_name;
+      if (bd.account_number) document.getElementById('bank-acc').value = bd.account_number;
+      if (bd.ifsc) document.getElementById('bank-ifsc').value = bd.ifsc;
+      if (bd.upi) document.getElementById('bank-upi').value = bd.upi;
+      document.getElementById('saved-bank-info').innerHTML = `
+        <div class="text-blue-400 font-bold mb-2"><i class="fas fa-university mr-2"></i>Saved Bank Details</div>
+        <div class="text-xs space-y-1">
+          <div>Bank: <b>${bd.bank_name||'-'}</b></div>
+          <div>Acc: <b>${bd.account_number||'-'}</b></div>
+          <div>UPI: <b>${bd.upi||'-'}</b></div>
+        </div>`;
+    } catch(e) {}
+  }
+}
+
+function showMainApp() {
+  document.getElementById('auth-page').classList.add('hidden');
+  document.getElementById('main-app').classList.remove('hidden');
+  initTradingView();
+  renderStocksList();
+  renderMarketTable();
+  loadAdminSettings();
+  loadHoldings();
+  loadTransactions();
+  loadOrders('all');
+  loadNotifications();
+  updateTicker();
+  setInterval(simulatePriceUpdates, 2000);
+  setInterval(updateOrderBook, 1500);
+  setInterval(updateRecentTrades, 3000);
+  setInterval(() => loadProfile(), 30000);
+  showPage('trade');
+}
+
+// ============================================================
+// TRADINGVIEW CHART
+// ============================================================
+function initTradingView() {
+  if (tvWidget) { tvWidget.remove(); }
+  tvWidget = new TradingView.widget({
+    container_id: 'tv-chart',
+    symbol: selectedStock.sym,
+    interval: 'D',
+    timezone: 'Asia/Kolkata',
+    theme: 'dark',
+    style: '1',
+    locale: 'en',
+    toolbar_bg: '#1e2329',
+    enable_publishing: false,
+    allow_symbol_change: true,
+    save_image: false,
+    autosize: true,
+    studies: ['RSI@tv-basicstudies','MACD@tv-basicstudies','BB@tv-basicstudies'],
+    withdateranges: true,
+    hide_side_toolbar: false,
+    details: true,
+    hotlist: true,
+    calendar: false,
+  });
+}
+
+function changeSymbol(stock) {
+  selectedStock = stock;
+  document.getElementById('selected-symbol').textContent = stock.sym.split(':')[1];
+  const pd = stockPrices[stock.sym];
+  document.getElementById('selected-price').textContent = '₹' + pd.price.toLocaleString('en-IN');
+  const chg = parseFloat(pd.change);
+  document.getElementById('selected-change').innerHTML = chg >= 0 ? 
+    `<span class="green">+${chg}% ▲</span>` : `<span class="red">${chg}% ▼</span>`;
+  document.getElementById('ob-price').textContent = '₹' + pd.price.toLocaleString('en-IN');
+  document.getElementById('order-price').value = pd.price;
+  document.getElementById('place-order-btn').textContent = `${orderSide.toUpperCase()} ${stock.sym.split(':')[1]}`;
+  document.getElementById('qo-stock').textContent = stock.sym.split(':')[1];
+  document.getElementById('qo-price').textContent = '₹' + pd.price.toLocaleString('en-IN');
+  if (tvWidget) {
+    try { tvWidget.setSymbol(stock.sym, 'D'); } catch(e) { initTradingView(); }
+  }
+  updateOrderBook();
+}
+
+// ============================================================
+// STOCKS LIST (SIDEBAR)
+// ============================================================
+function renderStocksList() {
+  const container = document.getElementById('stocks-list');
+  const filtered = STOCKS.filter(s => {
+    const search = (document.getElementById('stock-search')?.value || '').toLowerCase();
+    const catMatch = currentCategory === 'all' || s.cat === currentCategory;
+    const searchMatch = !search || s.name.toLowerCase().includes(search) || s.sym.toLowerCase().includes(search);
+    return catMatch && searchMatch;
+  });
+  container.innerHTML = filtered.map(s => {
+    const pd = stockPrices[s.sym];
+    const chg = parseFloat(pd?.change || 0);
+    return `<div class="stock-row items-center cursor-pointer hover:bg-gray-800 px-3 py-2 flex justify-between" onclick='changeSymbol(${JSON.stringify(s)})'>
+      <div>
+        <div class="font-bold text-xs">${s.sym.split(':')[1]}</div>
+        <div class="text-gray-500" style="font-size:10px;">${s.name}</div>
+      </div>
+      <div class="text-right">
+        <div class="text-xs font-bold">₹${(pd?.price||s.price).toLocaleString('en-IN')}</div>
+        <div class="text-xs ${chg>=0?'green':'red'}">${chg>=0?'+':''}${chg}%</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterStocks() { renderStocksList(); }
+function filterCategory(cat) {
+  currentCategory = cat;
+  document.querySelectorAll('#page-trade .tab-btn').forEach((b,i) => {
+    b.classList.toggle('active', (cat==='all'&&i===0)||(cat==='nifty50'&&i===1)||(cat==='crypto'&&i===2));
+  });
+  renderStocksList();
+}
+
+// ============================================================
+// MARKET TABLE
+// ============================================================
+function renderMarketTable() {
+  const container = document.getElementById('market-table');
+  container.innerHTML = STOCKS.map(s => {
+    const pd = stockPrices[s.sym];
+    const chg = parseFloat(pd?.change || 0);
+    const vol = (Math.random() * 50 + 5).toFixed(1) + 'M';
+    return `<div class="stock-row items-center cursor-pointer" onclick='changeSymbol(${JSON.stringify(s)});showPage("trade")'>
+      <div>
+        <div class="font-bold">${s.sym.split(':')[1]}</div>
+        <div class="text-gray-500 text-xs">${s.name}</div>
+      </div>
+      <div class="text-right font-bold">₹${(pd?.price||s.price).toLocaleString('en-IN')}</div>
+      <div class="text-right ${chg>=0?'text-green-400':'text-red-400'} font-bold">${chg>=0?'+':''}${chg}%</div>
+      <div class="text-right text-gray-400">${vol}</div>
+    </div>`;
+  }).join('');
+}
+
+function filterMarketStocks() {
+  const q = document.getElementById('market-search').value.toLowerCase();
+  const container = document.getElementById('market-table');
+  const filtered = STOCKS.filter(s => s.name.toLowerCase().includes(q) || s.sym.toLowerCase().includes(q));
+  container.innerHTML = filtered.map(s => {
+    const pd = stockPrices[s.sym];
+    const chg = parseFloat(pd?.change || 0);
+    return `<div class="stock-row items-center cursor-pointer" onclick='changeSymbol(${JSON.stringify(s)});showPage("trade")'>
+      <div><div class="font-bold">${s.sym.split(':')[1]}</div><div class="text-gray-500 text-xs">${s.name}</div></div>
+      <div class="text-right font-bold">₹${(pd?.price||s.price).toLocaleString('en-IN')}</div>
+      <div class="text-right ${chg>=0?'text-green-400':'text-red-400'} font-bold">${chg>=0?'+':''}${chg}%</div>
+      <div class="text-right text-gray-400">${(Math.random()*50+5).toFixed(1)}M</div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// ORDER BOOK SIMULATION
+// ============================================================
+function updateOrderBook() {
+  const basePrice = stockPrices[selectedStock.sym]?.price || selectedStock.price;
+  let sellHTML = '', buyHTML = '';
+  for (let i = 10; i > 0; i--) {
+    const price = basePrice + (i * basePrice * 0.0003);
+    const qty = (Math.random() * 500 + 50).toFixed(0);
+    const total = (price * qty / 1000).toFixed(1);
+    const pct = Math.random() * 80 + 10;
+    sellHTML += `<div class="order-book-row relative" style="color:#f6465d;">
+      <div class="depth-bar" style="right:0;width:${pct}%;background:#f6465d;"></div>
+      <span style="position:relative;">${price.toFixed(2)}</span>
+      <span class="text-center" style="position:relative;">${qty}</span>
+      <span class="text-right" style="position:relative;">${total}K</span>
+    </div>`;
+  }
+  for (let i = 1; i <= 10; i++) {
+    const price = basePrice - (i * basePrice * 0.0003);
+    const qty = (Math.random() * 500 + 50).toFixed(0);
+    const total = (price * qty / 1000).toFixed(1);
+    const pct = Math.random() * 80 + 10;
+    buyHTML += `<div class="order-book-row relative" style="color:#0ecb81;">
+      <div class="depth-bar" style="left:0;width:${pct}%;background:#0ecb81;"></div>
+      <span style="position:relative;">${price.toFixed(2)}</span>
+      <span class="text-center" style="position:relative;">${qty}</span>
+      <span class="text-right" style="position:relative;">${total}K</span>
+    </div>`;
+  }
+  document.getElementById('ob-sells').innerHTML = sellHTML;
+  document.getElementById('ob-buys').innerHTML = buyHTML;
+}
+
+function updateRecentTrades() {
+  const basePrice = stockPrices[selectedStock.sym]?.price || selectedStock.price;
+  let html = '';
+  for (let i = 0; i < 20; i++) {
+    const isBuy = Math.random() > 0.5;
+    const price = basePrice * (1 + (Math.random() * 0.002 - 0.001));
+    const size = (Math.random() * 100 + 1).toFixed(2);
+    const now = new Date();
+    const time = `${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+    html += `<div class="order-book-row" style="color:${isBuy?'#0ecb81':'#f6465d'}">
+      <span>${price.toFixed(2)}</span>
+      <span class="text-center">${size}</span>
+      <span class="text-right">${time}</span>
+    </div>`;
+  }
+  document.getElementById('trades-list').innerHTML = html;
+}
+
+// ============================================================
+// PRICE SIMULATION
+// ============================================================
+function simulatePriceUpdates() {
+  STOCKS.forEach(s => {
+    const old = stockPrices[s.sym].price;
+    const change = old * (Math.random() * 0.003 - 0.0015);
+    stockPrices[s.sym].price = Math.max(1, old + change);
+    stockPrices[s.sym].change = (parseFloat(stockPrices[s.sym].change) + (Math.random()*0.1-0.05)).toFixed(2);
+  });
+  renderStocksList();
+  const pd = stockPrices[selectedStock.sym];
+  document.getElementById('selected-price').textContent = '₹' + pd.price.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById('ob-price').textContent = '₹' + pd.price.toLocaleString('en-IN', {minimumFractionDigits:2, maximumFractionDigits:2});
+  document.getElementById('order-price').value = pd.price.toFixed(2);
+  updateTicker();
+}
+
+function updateTicker() {
+  const tickerContent = STOCKS.slice(0,15).map(s => {
+    const pd = stockPrices[s.sym];
+    const chg = parseFloat(pd.change);
+    return `<span class="mx-4"><b class="${chg>=0?'text-green-400':'text-red-400'}">${s.sym.split(':')[1]}</b> ₹${pd.price.toFixed(2)} <span class="${chg>=0?'text-green-400':'text-red-400'}">${chg>=0?'+':''}${chg}%</span></span>`;
+  }).join('');
+  document.getElementById('ticker-bar').innerHTML = tickerContent;
+}
+
+// ============================================================
+// PLACE ORDER
+// ============================================================
+function setOrderSide(side) {
+  orderSide = side;
+  document.getElementById('order-buy-btn').classList.toggle('opacity-50', side !== 'buy');
+  document.getElementById('order-sell-btn').classList.toggle('opacity-50', side !== 'sell');
+  document.getElementById('place-order-btn').className = side === 'buy' ? 'btn-green w-full py-3 rounded-lg font-bold' : 'btn-red w-full py-3 rounded-lg font-bold';
+  document.getElementById('place-order-btn').textContent = `${side.toUpperCase()} ${selectedStock.sym.split(':')[1]}`;
+}
+
+function calcOrderTotal() {
+  const qty = parseFloat(document.getElementById('order-qty').value) || 0;
+  const price = parseFloat(document.getElementById('order-price').value) || stockPrices[selectedStock.sym]?.price || 0;
+  const total = qty * price;
+  const fee = total * 0.001;
+  document.getElementById('order-total').textContent = '₹' + total.toLocaleString('en-IN', {maximumFractionDigits:2});
+  document.getElementById('order-fee').textContent = '₹' + fee.toFixed(2);
+}
+
+function setQtyPct(pct) {
+  if (!currentProfile) return;
+  const balance = parseFloat(currentProfile.balance || 0);
+  const price = parseFloat(stockPrices[selectedStock.sym]?.price || selectedStock.price);
+  const qty = Math.floor((balance * pct / 100) / price);
+  document.getElementById('order-qty').value = qty;
+  calcOrderTotal();
+}
+
+async function placeOrder() {
+  if (!currentProfile) return showToast('Please login first', 'red');
+  if (!currentProfile.is_verified) return showToast('Complete KYC to trade', 'yellow');
+  const qty = parseFloat(document.getElementById('order-qty').value);
+  const price = parseFloat(document.getElementById('order-price').value) || stockPrices[selectedStock.sym]?.price;
+  if (!qty || qty <= 0) return showToast('Enter valid quantity', 'red');
+  const total = qty * price;
+  const fee = total * 0.001;
+  const totalWithFee = total + fee;
+  if (orderSide === 'buy' && totalWithFee > parseFloat(currentProfile.balance)) {
+    return showToast('Insufficient balance', 'red');
+  }
+  showToast('Placing order...', 'blue');
+  const { error } = await sb.from('orders').insert({
+    user_id: currentUser.id,
+    stock_symbol: selectedStock.sym,
+    stock_name: selectedStock.name,
+    order_type: orderSide,
+    price_type: document.getElementById('order-type').value,
+    quantity: qty, price: price,
+    total_amount: totalWithFee,
+    status: 'completed'
+  });
+  if (error) return showToast(error.message, 'red');
+  if (orderSide === 'buy') {
+    await sb.from('profiles').update({ balance: currentProfile.balance - totalWithFee }).eq('id', currentUser.id);
+    const { data: existing } = await sb.from('holdings').select('*').eq('user_id', currentUser.id).eq('stock_symbol', selectedStock.sym).single();
+    if (existing) {
+      const newQty = existing.quantity + qty;
+      const newAvg = ((existing.avg_price * existing.quantity) + (price * qty)) / newQty;
+      await sb.from('holdings').update({ quantity: newQty, avg_price: newAvg, total_invested: newQty * newAvg }).eq('id', existing.id);
+    } else {
+      await sb.from('holdings').insert({ user_id: currentUser.id, stock_symbol: selectedStock.sym, stock_name: selectedStock.name, quantity: qty, avg_price: price, total_invested: total });
     }
+  } else {
+    const { data: holding } = await sb.from('holdings').select('*').eq('user_id', currentUser.id).eq('stock_symbol', selectedStock.sym).single();
+    if (!holding || holding.quantity < qty) return showToast('Insufficient shares', 'red');
+    const newQty = holding.quantity - qty;
+    if (newQty <= 0) await sb.from('holdings').delete().eq('id', holding.id);
+    else await sb.from('holdings').update({ quantity: newQty }).eq('id', holding.id);
+    await sb.from('profiles').update({ balance: parseFloat(currentProfile.balance) + total - fee }).eq('id', currentUser.id);
+  }
+  await loadProfile();
+  showToast(`${orderSide.toUpperCase()} order placed for ${qty} shares!`, 'green');
+  loadHoldings();
+  loadOrders('all');
+  document.getElementById('order-qty').value = '';
+}
 
-    function doRegister() {
-      var name=document.getElementById('rName').value.trim(), email=document.getElementById('rEmail').value.trim();
-      var tgUser=document.getElementById('rTgUser').value.trim(), tgNum=document.getElementById('rTgNum').value.trim();
-      var pass=document.getElementById('rPass').value;
-      document.getElementById('regError').style.display='none';
-      if(!name||!email||!pass){ document.getElementById('regError').textContent='Please fill name, email and password'; document.getElementById('regError').style.display='block'; return; }
-      if(pass.length<8){ document.getElementById('regError').textContent='Password must be at least 8 characters'; document.getElementById('regError').style.display='block'; return; }
-      if(email.indexOf('@')===-1||email.indexOf('.')===-1){ document.getElementById('regError').textContent='Please enter a valid email address'; document.getElementById('regError').style.display='block'; return; }
-      var users=getUsers();
-      if(users.find(function(u){return u.email===email;})){ document.getElementById('regError').textContent='This email is already registered'; document.getElementById('regError').style.display='block'; return; }
-      var user={ id:'u_'+Date.now(), name:name, email:email, pass:pass, tgUser:tgUser||'', tgNum:tgNum||'', bal:0, bonus:0, coins:{}, positions:[], history:[], deposits:[], earnOrders:[], miningPlans:[], joined:new Date().toISOString(), banned:false };
-      users.push(user); saveUsers(users); CU=user; localStorage.setItem('dex_session',user.id);
-      document.getElementById('loginPage').classList.add('hide');
-      document.getElementById('mainApp').classList.remove('hide');
-      sendTelegram('🆕 NEW REGISTRATION\n👤 '+name+'\n📧 '+email+'\n📞 '+tgNum+'\n💬 '+tgUser+'\n🕐 '+new Date().toLocaleString());
-      showToast('Account created successfully!');
-      initApp();
+// ============================================================
+// QUICK ORDER (from header BUY/SELL buttons)
+// ============================================================
+function quickBuy() {
+  quickOrderSide = 'buy';
+  document.getElementById('qo-title').textContent = 'BUY ' + selectedStock.sym.split(':')[1];
+  document.getElementById('qo-stock').textContent = selectedStock.sym.split(':')[1];
+  document.getElementById('qo-price').textContent = '₹' + (stockPrices[selectedStock.sym]?.price||selectedStock.price).toLocaleString('en-IN');
+  document.getElementById('qo-submit-btn').className = 'btn-green w-full py-3 rounded-lg font-bold';
+  document.getElementById('qo-submit-btn').textContent = 'CONFIRM BUY';
+  openModal('quick-order-modal');
+}
+
+function quickSell() {
+  quickOrderSide = 'sell';
+  document.getElementById('qo-title').textContent = 'SELL ' + selectedStock.sym.split(':')[1];
+  document.getElementById('qo-stock').textContent = selectedStock.sym.split(':')[1];
+  document.getElementById('qo-price').textContent = '₹' + (stockPrices[selectedStock.sym]?.price||selectedStock.price).toLocaleString('en-IN');
+  document.getElementById('qo-submit-btn').className = 'btn-red w-full py-3 rounded-lg font-bold';
+  document.getElementById('qo-submit-btn').textContent = 'CONFIRM SELL';
+  openModal('quick-order-modal');
+}
+
+function calcQOTotal() {
+  const qty = parseFloat(document.getElementById('qo-qty').value) || 0;
+  const price = stockPrices[selectedStock.sym]?.price || selectedStock.price;
+  const total = qty * price;
+  const fee = total * 0.001;
+  document.getElementById('qo-total').textContent = '₹' + total.toLocaleString('en-IN', {maximumFractionDigits:2});
+  document.getElementById('qo-fee').textContent = '₹' + fee.toFixed(2);
+}
+
+async function submitQuickOrder() {
+  const qty = parseFloat(document.getElementById('qo-qty').value);
+  if (!qty || qty <= 0) return showToast('Enter quantity', 'red');
+  const price = stockPrices[selectedStock.sym]?.price || selectedStock.price;
+  const total = qty * price;
+  if (quickOrderSide === 'buy' && total > parseFloat(currentProfile?.balance||0)) return showToast('Insufficient balance','red');
+  showToast('Processing...', 'blue');
+  const { error } = await sb.from('orders').insert({
+    user_id: currentUser.id, stock_symbol: selectedStock.sym, stock_name: selectedStock.name,
+    order_type: quickOrderSide, price_type: 'market', quantity: qty, price, total_amount: total, status: 'completed'
+  });
+  if (error) return showToast(error.message, 'red');
+  if (quickOrderSide === 'buy') {
+    await sb.from('profiles').update({ balance: parseFloat(currentProfile.balance) - total }).eq('id', currentUser.id);
+    const { data: ex } = await sb.from('holdings').select('*').eq('user_id', currentUser.id).eq('stock_symbol', selectedStock.sym).single();
+    if (ex) {
+      const nq = ex.quantity + qty; const na = ((ex.avg_price*ex.quantity)+(price*qty))/nq;
+      await sb.from('holdings').update({quantity:nq,avg_price:na,total_invested:nq*na}).eq('id',ex.id);
+    } else {
+      await sb.from('holdings').insert({user_id:currentUser.id,stock_symbol:selectedStock.sym,stock_name:selectedStock.name,quantity:qty,avg_price:price,total_invested:total});
     }
+  } else {
+    const { data: h } = await sb.from('holdings').select('*').eq('user_id',currentUser.id).eq('stock_symbol',selectedStock.sym).single();
+    if (!h||h.quantity<qty) return showToast('Not enough shares','red');
+    const nq = h.quantity - qty;
+    if (nq<=0) await sb.from('holdings').delete().eq('id',h.id);
+    else await sb.from('holdings').update({quantity:nq}).eq('id',h.id);
+    await sb.from('profiles').update({balance:parseFloat(currentProfile.balance)+total}).eq('id',currentUser.id);
+  }
+  await loadProfile(); updateNavBalance();
+  closeModal('quick-order-modal');
+  showToast(`Order executed! ${qty} shares ${quickOrderSide === 'buy' ? 'bought' : 'sold'}`, 'green');
+  loadHoldings(); loadOrders('all');
+  document.getElementById('qo-qty').value = '';
+}
 
-    function doLogout() { var user=getCurrentUser(); if(user){ saveCurrentUser(user); sendTelegram('🚪 LOGOUT\n👤 '+user.name+'\n💰 ₹'+user.bal.toFixed(2)); } localStorage.removeItem('dex_session'); CU=null; location.reload(); }
+// ============================================================
+// HOLDINGS
+// ============================================================
+async function loadHoldings() {
+  if (!currentUser) return;
+  const { data } = await sb.from('holdings').select('*').eq('user_id', currentUser.id);
+  const container = document.getElementById('holdings-table');
+  const assetContainer = document.getElementById('asset-overview');
+  if (!data || data.length === 0) {
+    container.innerHTML = '<div class="p-8 text-center text-gray-500"><i class="fas fa-chart-pie text-4xl mb-3"></i><br>No holdings yet. Start trading!</div>';
+    assetContainer.innerHTML = '<div class="text-gray-500 text-sm">No assets yet</div>';
+    return;
+  }
+  let totalPnL = 0;
+  container.innerHTML = data.map(h => {
+    const curPrice = stockPrices[h.stock_symbol]?.price || h.avg_price;
+    const pnl = (curPrice - h.avg_price) * h.quantity;
+    const pnlPct = ((curPrice - h.avg_price) / h.avg_price * 100).toFixed(2);
+    totalPnL += pnl;
+    return `<div class="grid grid-cols-5 px-4 py-3 border-b border-gray-800 text-sm hover:bg-gray-900 cursor-pointer" onclick='changeSymbol(STOCKS.find(s=>s.sym=="${h.stock_symbol}")||STOCKS[0]);showPage("trade")'>
+      <div><div class="font-bold">${h.stock_symbol.split(':')[1]}</div><div class="text-gray-500 text-xs">${h.stock_name||''}</div></div>
+      <div class="text-right">${parseFloat(h.quantity).toFixed(2)}</div>
+      <div class="text-right">₹${parseFloat(h.avg_price).toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
+      <div class="text-right">₹${curPrice.toLocaleString('en-IN',{maximumFractionDigits:2})}</div>
+      <div class="text-right ${pnl>=0?'text-green-400':'text-red-400'}">
+        ${pnl>=0?'+':''}₹${Math.abs(pnl).toFixed(2)}<br><span class="text-xs">${pnlPct}%</span>
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('pf-pnl').innerHTML = `<span class="${totalPnL>=0?'text-green-400':'text-red-400'}">${totalPnL>=0?'+':''}₹${totalPnL.toFixed(2)}</span>`;
+  assetContainer.innerHTML = '<div class="text-gray-400 text-xs mb-2">Cash Balance</div>' +
+    `<div class="text-xl font-bold text-yellow-400 mb-4">₹${parseFloat(currentProfile?.balance||0).toLocaleString('en-IN')}</div>` +
+    '<div class="text-gray-400 text-xs mb-2">Stock Holdings</div>' +
+    data.slice(0,5).map(h => `
+      <div class="flex justify-between items-center py-1">
+        <span class="text-sm">${h.stock_symbol.split(':')[1]}</span>
+        <span class="text-sm font-bold">${parseFloat(h.quantity).toFixed(2)} shares</span>
+      </div>`).join('');
+}
 
-    function initApp() { fetchPrices(); renderPage(); setInterval(function(){ updateBalanceDisplay(); },2000); setInterval(fetchPrices,15000); }
+// ============================================================
+// TRANSACTIONS
+// ============================================================
+async function loadTransactions() {
+  if (!currentUser) return;
+  const { data } = await sb.from('transactions').select('*').eq('user_id', currentUser.id).order('created_at', {ascending:false}).limit(20);
+  const container = document.getElementById('tx-history');
+  if (!data || data.length === 0) {
+    container.innerHTML = '<div class="p-8 text-center text-gray-500">No transactions yet</div>';
+    return;
+  }
+  container.innerHTML = data.map(t => {
+    const statusColor = t.status==='completed'?'green':t.status==='rejected'?'red':'yellow';
+    const typeColor = t.type==='deposit'?'text-green-400':t.type==='withdrawal'?'text-red-400':'text-blue-400';
+    return `<div class="flex justify-between items-center px-4 py-3 border-b border-gray-800">
+      <div>
+        <div class="font-bold ${typeColor}">${t.type?.toUpperCase()}</div>
+        <div class="text-xs text-gray-400">${new Date(t.created_at).toLocaleString('en-IN')}</div>
+        ${t.reference_id?`<div class="text-xs text-gray-500">Ref: ${t.reference_id}</div>`:''}
+      </div>
+      <div class="text-right">
+        <div class="font-bold">₹${parseFloat(t.amount).toLocaleString('en-IN')}</div>
+        <span class="text-xs px-2 py-1 rounded bg-${statusColor}-900 text-${statusColor}-400">${t.status}</span>
+      </div>
+    </div>`;
+  }).join('');
+}
 
-    function fetchPrices() {
-      try {
-        fetch('https://api.binance.com/api/v3/ticker/24hr').then(function(r){return r.json();}).then(function(data){ coins=[]; prices={}; data.forEach(function(t){ if(!t.symbol.endsWith('USDT')) return; var sym=t.symbol.replace('USDT',''); if(sym.length>6) return; var p=parseFloat(t.lastPrice), c=parseFloat(t.priceChangePercent), v=parseFloat(t.quoteVolume); if(p>0){ prices[sym]={price:p,change:c,volume:v}; coins.push({sym:sym,price:p,change:c,volume:v}); } }); coins.sort(function(a,b){return b.volume-a.volume;}); if(curPage==='home'||curPage==='market') renderPage(); updateBalanceDisplay(); });
-      } catch(e) {}
-    }
+// ============================================================
+// ORDERS
+// ============================================================
+async function loadOrders(filter='all') {
+  if (!currentUser) return;
+  let query = sb.from('orders').select('*').eq('user_id', currentUser.id).order('created_at', {ascending:false}).limit(50);
+  if (filter !== 'all') query = query.eq('status', filter);
+  const { data } = await query;
+  const container = document.getElementById('orders-table');
+  if (!data || data.length === 0) {
+    container.innerHTML = '<div class="p-8 text-center text-gray-500">No orders found</div>';
+    return;
+  }
+  container.innerHTML = `<div class="grid grid-cols-6 px-4 py-2 text-xs text-gray-400 border-b border-gray-700">
+    <span>Stock</span><span>Type</span><span>Qty</span><span>Price</span><span>Total</span><span>Status</span>
+  </div>` + data.map(o => `
+    <div class="grid grid-cols-6 px-4 py-3 border-b border-gray-800 text-sm hover:bg-gray-900">
+      <span class="font-bold">${o.stock_symbol?.split(':')[1]}</span>
+      <span class="${o.order_type==='buy'?'text-green-400':'text-red-400'} font-bold">${o.order_type?.toUpperCase()}</span>
+      <span>${parseFloat(o.quantity).toFixed(2)}</span>
+      <span>₹${parseFloat(o.price).toLocaleString('en-IN',{maximumFractionDigits:2})}</span>
+      <span>₹${parseFloat(o.total_amount).toLocaleString('en-IN',{maximumFractionDigits:2})}</span>
+      <span class="text-${o.status==='completed'?'green':o.status==='pending'?'yellow':'red'}-400">${o.status}</span>
+    </div>`).join('');
+}
 
-    function updateBalanceDisplay() {
-      var user=getCurrentUser(); if(!user) return;
-      var total=user.bal+(user.bonus||0);
-      if(user.coins) Object.keys(user.coins).forEach(function(sym){ var h=user.coins[sym], p=prices[sym]?prices[sym].price:0; total+=h.qty*p; });
-      if(user.positions) user.positions.forEach(function(pos){ total+=pos.margin; var cp=prices[pos.sym]?prices[pos.sym].price:pos.entry; total+=pos.dir==='long'?(cp-pos.entry)/pos.entry*pos.margin*pos.lev:(pos.entry-cp)/pos.entry*pos.margin*pos.lev; });
-      var balEl=document.getElementById('hBal'); if(balEl) balEl.textContent='₹'+total.toFixed(2);
-      var liveBalEl=document.getElementById('liveBalanceVal'); if(liveBalEl) liveBalEl.textContent='₹'+total.toFixed(2);
-    }
+// ============================================================
+// DEPOSIT & WITHDRAWAL
+// ============================================================
+async function loadAdminSettings() {
+  const { data } = await sb.from('admin_settings').select('*').eq('id', 1).single();
+  if (data) {
+    adminSettings = data;
+    document.getElementById('dep-upi-show').textContent = data.upi_id || '-';
+    document.getElementById('dep-phone-show').textContent = data.phonepay_number || '-';
+    document.getElementById('dep-bank-show').textContent = data.bank_name || '-';
+    document.getElementById('dep-acc-show').textContent = data.account_number || '-';
+    document.getElementById('dep-ifsc-show').textContent = data.ifsc_code || '-';
+  }
+}
 
-    function goPage(page) { curPage=page; document.querySelectorAll('.bnav-item').forEach(function(item,i){ item.classList.toggle('active',['home','market','trade','portfolio'][i]===page); }); renderPage(); }
+async function submitDeposit() {
+  const amount = parseFloat(document.getElementById('dep-amount').value);
+  const ref = document.getElementById('dep-ref').value.trim();
+  if (!amount || amount < 100) return showToast('Minimum deposit ₹100', 'red');
+  if (!ref) return showToast('Enter transaction reference number', 'red');
+  const { error } = await sb.from('transactions').insert({
+    user_id: currentUser.id, type: 'deposit', amount, status: 'pending',
+    reference_id: ref, method: 'UPI/Bank Transfer'
+  });
+  if (error) return showToast(error.message, 'red');
+  closeModal('deposit-modal');
+  showToast('Deposit request submitted! Admin will verify within 30 mins.', 'green');
+  document.getElementById('dep-amount').value = '';
+  document.getElementById('dep-ref').value = '';
+  loadTransactions();
+}
 
-    function renderPage() { var pc=document.getElementById('pageContent'); if(!pc) return; switch(curPage) { case'home':renderHome(pc);break; case'market':renderMarket(pc);break; case'trade':renderTrade(pc);break; case'portfolio':renderPortfolio(pc);break; } }
+async function submitWithdrawal() {
+  const amount = parseFloat(document.getElementById('wd-amount').value);
+  const method = document.getElementById('wd-method').value;
+  if (!amount || amount < 500) return showToast('Minimum withdrawal ₹500', 'red');
+  if (!currentProfile?.bank_details || Object.keys(currentProfile.bank_details).length === 0) {
+    return showToast('Please save your bank details in Profile first', 'yellow');
+  }
+  if (amount > parseFloat(currentProfile?.balance || 0)) return showToast('Insufficient balance', 'red');
+  const { error } = await sb.from('transactions').insert({
+    user_id: currentUser.id, type: 'withdrawal', amount, status: 'pending', method
+  });
+  if (error) return showToast(error.message, 'red');
+  await sb.from('profiles').update({ balance: parseFloat(currentProfile.balance) - amount }).eq('id', currentUser.id);
+  await loadProfile(); updateNavBalance();
+  closeModal('withdraw-modal');
+  showToast('Withdrawal request submitted! Processed within 24 hours.', 'green');
+  loadTransactions();
+}
 
-    function renderHome(pc) {
-      var user=getCurrentUser(); if(!user) return;
-      var total=user.bal+(user.bonus||0);
-      if(user.coins) Object.keys(user.coins).forEach(function(s){ var p=prices[s]?prices[s].price:0; total+=user.coins[s].qty*p; });
-      var h='';
-      h+='<div class="live-balance-card"><div class="live-dot-row"><div class="live-dot"></div><div class="live-label">LIVE BALANCE</div></div>';
-      h+='<div class="live-bal-row"><div class="live-bal-icon"><span>₹</span></div><span class="live-bal-value" id="liveBalanceVal">₹'+total.toFixed(2)+'</span></div>';
-      h+='<div class="live-bal-sub-row"><div class="live-bal-sub"><div class="live-bal-sub-label">Available</div><div class="live-bal-sub-val">₹'+user.bal.toFixed(2)+'</div></div><div class="live-bal-sub"><div class="live-bal-sub-label">Earn Orders</div><div class="live-bal-sub-val">'+(user.earnOrders||[]).length+'</div></div></div></div>';
-      h+='<div class="card-title">Services</div><div class="svc-grid">';
-      SERVICES.forEach(function(s){ h+='<div class="svc-item" onclick="window.open(\''+s.url+'\',\'_blank\')"><div class="svc-item-icon" style="background:'+s.color+'15;color:'+s.color+'">'+s.icon+'</div><span>'+s.name+'</span></div>'; });
-      h+='</div><div class="card-title">Hot Coins</div><div class="card">';
-      coins.slice(0,6).forEach(function(c){ h+='<div class="coin-row" onclick="curPair=\''+c.sym+'USDT\';goPage(\'trade\')"><img class="coin-icon-img" src="'+getCoinLogo(c.sym)+'" onerror="this.style.display=\'none\'"><div class="coin-info"><div class="coin-name">'+c.sym+'</div><div class="coin-sym">Vol ₹'+fmt(c.volume)+'</div></div><div class="coin-price"><div class="coin-price-val">₹'+fmtP(c.price)+'</div><div class="coin-change '+(c.change>=0?'cg':'cr')+'">'+(c.change>=0?'+':'')+c.change.toFixed(2)+'%</div></div></div>'; });
-      h+='</div>'; pc.innerHTML=h;
-    }
+// ============================================================
+// BANK DETAILS SAVE
+// ============================================================
+async function saveBankDetails() {
+  const bank_details = {
+    bank_name: document.getElementById('bank-name').value,
+    account_number: document.getElementById('bank-acc').value,
+    ifsc: document.getElementById('bank-ifsc').value,
+    upi: document.getElementById('bank-upi').value
+  };
+  const { error } = await sb.from('profiles').update({ bank_details }).eq('id', currentUser.id);
+  if (error) return showToast(error.message, 'red');
+  showToast('Bank details saved!', 'green');
+  await loadProfile();
+}
 
-    function renderMarket(pc) { var h='<div class="card-title">Market</div><div class="card">'; coins.slice(0,25).forEach(function(c){ h+='<div class="coin-row" onclick="curPair=\''+c.sym+'USDT\';goPage(\'trade\')"><img class="coin-icon-img" src="'+getCoinLogo(c.sym)+'" onerror="this.style.display=\'none\'"><div class="coin-info"><div class="coin-name">'+c.sym+'</div><div class="coin-sym">/USDT</div></div><div class="coin-price"><div class="coin-price-val">₹'+fmtP(c.price)+'</div><div class="coin-change '+(c.change>=0?'cg':'cr')+'">'+(c.change>=0?'+':'')+c.change.toFixed(2)+'%</div></div></div>'; }); h+='</div>'; pc.innerHTML=h; }
+// ============================================================
+// KYC
+// ============================================================
+async function submitKYC() {
+  const aadhaar = document.getElementById('kyc-aadhaar').value.trim();
+  const pan = document.getElementById('kyc-pan').value.trim().toUpperCase();
+  if (!aadhaar || aadhaar.length !== 12) return showToast('Enter valid 12-digit Aadhaar', 'red');
+  if (!pan || pan.length !== 10) return showToast('Enter valid PAN number', 'red');
+  const { error } = await sb.from('kyc_documents').insert({ user_id: currentUser.id, aadhaar_number: aadhaar, pan_number: pan, status: 'pending' });
+  await sb.from('profiles').update({ aadhaar_number: aadhaar, pan_number: pan }).eq('id', currentUser.id);
+  if (error) return showToast('KYC already submitted', 'yellow');
+  closeModal('kyc-modal');
+  showToast('KYC submitted! Will be verified within 24 hours.', 'green');
+  await loadProfile();
+}
 
-    function renderTrade(pc) {
-      var sym=curPair.replace('USDT',''), p=prices[sym]||{price:0,change:0}, user=getCurrentUser(), h='';
-      h+='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px"><div><div style="font-size:18px;font-weight:800">'+sym+'/USDT</div><div style="color:'+(p.change>=0?'#03a66d':'#cf304a')+';font-family:JetBrains Mono;font-size:24px;font-weight:800">₹'+fmtP(p.price)+'</div></div><div class="coin-change '+(p.change>=0?'cg':'cr')+'" style="font-size:14px;padding:6px 10px">'+(p.change>=0?'+':'')+p.change.toFixed(2)+'%</div></div>';
-      h+='<div class="card"><div class="trade-toggle" style="display:flex;gap:4px;background:#f5f5f5;border-radius:10px;padding:4px;margin-bottom:12px"><button class="'+(tradeMode==='spot'?'active':'')+'" style="flex:1;padding:10px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;background:'+(tradeMode==='spot'?'#fff':'transparent')+';color:'+(tradeMode==='spot'?'#1e2329':'#707a8a')+';box-shadow:'+(tradeMode==='spot'?'0 1px 2px rgba(0,0,0,0.06)':'none')+'" onclick="tradeMode=\'spot\';renderPage()">Spot</button><button class="'+(tradeMode==='futures'?'active':'')+'" style="flex:1;padding:10px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;background:'+(tradeMode==='futures'?'#fff':'transparent')+';color:'+(tradeMode==='futures'?'#1e2329':'#707a8a')+';box-shadow:'+(tradeMode==='futures'?'0 1px 2px rgba(0,0,0,0.06)':'none')+'" onclick="tradeMode=\'futures\';renderPage()">Futures</button></div>';
-      h+='<div class="dir-btns" style="display:flex;gap:6px;margin-bottom:12px"><div class="dir-btn '+(tradeDir==='long'?'long-active':'')+'" style="flex:1;padding:10px;border:1px solid #eaecf;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;text-align:center;background:'+(tradeDir==='long'?'#e8f8f0':'#fff')+';border-color:'+(tradeDir==='long'?'#03a66d':'#eaecf')+';color:'+(tradeDir==='long'?'#03a66d':'#707a8a')+'" onclick="tradeDir=\'long\';renderPage()">Buy/Long</div><div class="dir-btn '+(tradeDir==='short'?'short-active':'')+'" style="flex:1;padding:10px;border:1px solid #eaecf;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;text-align:center;background:'+(tradeDir==='short'?'#fef0f0':'#fff')+';border-color:'+(tradeDir==='short'?'#cf304a':'#eaecf')+';color:'+(tradeDir==='short'?'#cf304a':'#707a8a')+'" onclick="tradeDir=\'short\';renderPage()">Sell/Short</div></div>';
-      if(tradeMode==='futures'){ h+='<div style="margin-bottom:12px"><div style="font-family:JetBrains Mono;font-size:16px;font-weight:800;color:#f0b90b;text-align:center" id="levVal">'+leverage+'x</div><input type="range" min="1" max="200" value="'+leverage+'" oninput="leverage=parseInt(this.value);document.getElementById(\'levVal\').textContent=this.value+\'x\'" style="width:100%;accent-color:#f0b90b"></div>'; }
-      h+='<div style="margin-bottom:12px"><label style="font-size:12px;color:#707a8a">Amount (USDT)</label><input id="tradeAmt" type="number" placeholder="0.00" class="input-field"><div style="font-size:11px;color:#707a8a">Available: ₹'+user.bal.toFixed(2)+'</div></div>';
-      var btnText=tradeMode==='futures'?(tradeDir==='long'?'Open Long':'Open Short'):(tradeDir==='long'?'Buy':'Sell');
-      h+='<button class="trade-btn '+(tradeDir==='long'?'buy-btn':'sell-btn')+'" onclick="executeTrade()">'+btnText+' '+sym+'</button></div>';
-      if(user.positions&&user.positions.length>0){ h+='<div class="card"><div class="card-title">Open Positions</div>'; user.positions.forEach(function(pos,i){ var cp=prices[pos.sym]?prices[pos.sym].price:pos.entry, pnl=pos.dir==='long'?(cp-pos.entry)/pos.entry*pos.margin*pos.lev:(pos.entry-cp)/pos.entry*pos.margin*pos.lev; h+='<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid #f0f0f0"><div><div style="font-size:13px;font-weight:700">'+pos.sym+' '+pos.dir.toUpperCase()+' '+pos.lev+'x</div><div style="font-size:11px;color:#707a8a">₹'+pos.margin.toFixed(2)+'</div></div><div style="text-align:right"><div style="font-family:JetBrains Mono;font-size:13px;color:'+(pnl>=0?'#03a66d':'#cf304a')+'">'+(pnl>=0?'+':'')+pnl.toFixed(2)+'</div><button onclick="closePosition('+i+')" style="padding:4px 10px;background:#cf304a;color:#fff;border:none;border-radius:5px;font-size:11px;cursor:pointer;margin-top:4px">Close</button></div></div>'; }); h+='</div>'; }
-      pc.innerHTML=h;
-    }
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
+async function loadNotifications() {
+  if (!currentUser) return;
+  const { data } = await sb.from('notifications').select('*').eq('user_id', currentUser.id).order('created_at', {ascending:false});
+  const unread = data ? data.filter(n => !n.is_read).length : 0;
+  document.getElementById('notif-badge').textContent = unread;
+  const container = document.getElementById('notifications-list');
+  if (!data || data.length === 0) {
+    container.innerHTML = '<div class="p-8 text-center text-gray-500"><i class="fas fa-bell-slash text-3xl mb-3"></i><br>No notifications</div>';
+    return;
+  }
+  container.innerHTML = data.map(n => `
+    <div class="flex items-start gap-3 px-4 py-3 border-b border-gray-800 ${n.is_read?'opacity-60':''}">
+      <div class="w-2 h-2 rounded-full mt-2 ${n.is_read?'bg-gray-600':'bg-yellow-400'} flex-shrink-0"></div>
+      <div class="flex-1">
+        <div class="font-bold text-sm">${n.title}</div>
+        <div class="text-gray-400 text-xs">${n.message}</div>
+        <div class="text-gray-600 text-xs mt-1">${new Date(n.created_at).toLocaleString('en-IN')}</div>
+      </div>
+    </div>`).join('');
+  if (unread > 0) {
+    await sb.from('notifications').update({is_read:true}).eq('user_id', currentUser.id).eq('is_read', false);
+  }
+}
 
-    function executeTrade() {
-      var user=getCurrentUser(); if(!user) return;
-      var sym=curPair.replace('USDT',''), amt=parseFloat(document.getElementById('tradeAmt').value);
-      if(!amt||amt<=0) return showToast('Enter amount');
-      var p=prices[sym]; if(!p) return showToast('Price not available');
-      if(tradeMode==='spot'){
-        if(tradeDir==='long'){ if(amt>user.bal) return showToast('Insufficient balance'); var fee=amt*0.001, netAmt=amt-fee, qty=netAmt/p.price; user.bal-=amt; if(!user.coins) user.coins={}; if(!user.coins[sym]) user.coins[sym]={qty:0,avgPrice:0,totalCost:0}; var old=user.coins[sym]; old.totalCost+=netAmt; old.qty+=qty; old.avgPrice=old.totalCost/old.qty; user.history.push({type:'spot_buy',sym:sym,qty:qty,price:p.price,amt:amt,fee:fee,time:new Date().toISOString()}); saveCurrentUser(user); showToast('Bought '+qty.toFixed(6)+' '+sym); }
-        else { if(!user.coins||!user.coins[sym]||user.coins[sym].qty<=0) return showToast('No '+sym+' holdings'); var holding=user.coins[sym], qty=amt/p.price; if(qty>holding.qty) qty=holding.qty; var revenue=qty*p.price, fee=revenue*0.001; user.bal+=revenue-fee; holding.qty-=qty; if(holding.qty<0.000001) delete user.coins[sym]; user.history.push({type:'spot_sell',sym:sym,qty:qty,price:p.price,amt:revenue,fee:fee,time:new Date().toISOString()}); saveCurrentUser(user); showToast('Sold '+qty.toFixed(6)+' '+sym); }
-      } else { if(amt>user.bal) return showToast('Insufficient margin'); var liqPrice=tradeDir==='long'?p.price*(1-1/leverage):p.price*(1+1/leverage); user.bal-=amt; if(!user.positions) user.positions=[]; user.positions.push({sym:sym,dir:tradeDir,lev:leverage,margin:amt,entry:p.price,size:amt*leverage,liq:liqPrice,time:new Date().toISOString()}); user.history.push({type:'futures_open',sym:sym,dir:tradeDir,lev:leverage,margin:amt,entry:p.price,time:new Date().toISOString()}); saveCurrentUser(user); showToast(tradeDir.toUpperCase()+' '+sym+' '+leverage+'x'); }
-      renderPage(); updateBalanceDisplay();
-    }
+// ============================================================
+// PAGE NAVIGATION
+// ============================================================
+function showPage(page) {
+  const pages = ['trade','markets','portfolio','wallet','orders','profile','notifications'];
+  pages.forEach(p => {
+    const el = document.getElementById(`page-${p}`);
+    if (el) el.classList.toggle('hidden', p !== page);
+  });
+  if (page === 'portfolio') { loadHoldings(); }
+  if (page === 'wallet') { loadTransactions(); loadAdminSettings(); }
+  if (page === 'orders') { loadOrders('all'); }
+  if (page === 'notifications') { loadNotifications(); }
+  if (page === 'profile') { updateProfilePage(); }
+}
 
-    function closePosition(idx) { var user=getCurrentUser(); if(!user) return; var pos=user.positions[idx]; if(!pos) return; var cp=prices[pos.sym]?prices[pos.sym].price:pos.entry, pnl=pos.dir==='long'?(cp-pos.entry)/pos.entry*pos.margin*pos.lev:(pos.entry-cp)/pos.entry*pos.margin*pos.lev; user.bal+=pos.margin+pnl; user.history.push({type:'futures_close',sym:pos.sym,dir:pos.dir,lev:pos.lev,margin:pos.margin,entry:pos.entry,exit:cp,pnl:pnl,time:new Date().toISOString()}); user.positions.splice(idx,1); saveCurrentUser(user); showToast('Closed '+(pnl>=0?'+':'')+pnl.toFixed(2)+' USD'); renderPage(); updateBalanceDisplay(); }
+// ============================================================
+// RIGHT PANEL TABS
+// ============================================================
+function switchRightTab(tab) {
+  ['orderbook','placeorder','trades'].forEach(t => {
+    document.getElementById(`right-${t}`).classList.toggle('hidden', t !== tab);
+  });
+  document.querySelectorAll('.tab-btn').forEach((b,i,arr) => {
+    if (b.closest('.border-b') && b.closest('.w-72')) b.classList.toggle('active', false);
+  });
+}
 
-    function renderPortfolio(pc) {
-      var user=getCurrentUser(); if(!user) return;
-      var total=user.bal+(user.bonus||0);
-      if(user.coins) Object.keys(user.coins).forEach(function(s){ var p=prices[s]?prices[s].price:0; total+=user.coins[s].qty*p; });
-      var h='';
-      h+='<div class="live-balance-card"><div class="live-dot-row"><div class="live-dot"></div><div class="live-label">LIVE BALANCE</div></div><div class="live-bal-row"><div class="live-bal-icon"><span>₹</span></div><span class="live-bal-value">₹'+total.toFixed(2)+'</span></div><div class="live-bal-sub-row"><div class="live-bal-sub"><div class="live-bal-sub-label">Available</div><div class="live-bal-sub-val">₹'+user.bal.toFixed(2)+'</div></div><div class="live-bal-sub"><div class="live-bal-sub-label">Earn Orders</div><div class="live-bal-sub-val">'+(user.earnOrders||[]).length+'</div></div></div></div>';
-      h+='<div class="ptab-row">';['overview','earn','deposit','withdraw','profile'].forEach(function(t){ h+='<div class="ptab '+(ptab===t?'active':'')+'" onclick="setPortfolioTab(\''+t+'\')">'+t.charAt(0).toUpperCase()+t.slice(1)+'</div>'; }); h+='</div>';
-      if(ptab==='overview') h+=renderOverview(user);
-      else if(ptab==='earn') h+=renderEarnSection(user);
-      else if(ptab==='deposit') h+=renderDeposit(user);
-      else if(ptab==='withdraw') h+=renderWithdraw(user);
-      else if(ptab==='profile') h+=renderProfile(user);
-      pc.innerHTML=h;
-    }
+// ============================================================
+// MODAL HELPERS
+// ============================================================
+function openModal(id) {
+  document.getElementById(id).classList.add('active');
+  if (id === 'deposit-modal') loadAdminSettings();
+  if (id === 'withdraw-modal') updateProfilePage();
+}
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    function setPortfolioTab(t) { ptab=t; renderPage(); }
+// ============================================================
+// TOAST NOTIFICATION
+// ============================================================
+function showToast(msg, color='green') {
+  const colors = { green:'bg-green-700', red:'bg-red-700', yellow:'bg-yellow-700', blue:'bg-blue-700' };
+  const toast = document.createElement('div');
+  toast.className = `toast ${colors[color]} text-white`;
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 3500);
+}
 
-    function renderOverview(user) {
-      var h='<div class="card"><div class="card-title">Account Overview</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div style="background:#f5f5f5;border-radius:10px;padding:12px;text-align:center"><div style="font-size:11px;color:#707a8a">Available</div><div style="font-family:JetBrains Mono;font-size:16px;font-weight:800">₹'+user.bal.toFixed(2)+'</div></div><div style="background:#f5f5f5;border-radius:10px;padding:12px;text-align:center"><div style="font-size:11px;color:#707a8a">Coins</div><div style="font-family:JetBrains Mono;font-size:16px;font-weight:800">'+Object.keys(user.coins||{}).length+'</div></div><div style="background:#f5f5f5;border-radius:10px;padding:12px;text-align:center"><div style="font-size:11px;color:#707a8a">Earn</div><div style="font-family:JetBrains Mono;font-size:16px;font-weight:800">'+(user.earnOrders||[]).length+'</div></div></div></div>';
-      return h;
-    }
-
-    function renderEarnSection(user) {
-      var totalStaked=user.earnOrders?user.earnOrders.reduce(function(a,o){return a+o.amount;},0):0;
-      var totalEarned=user.earnOrders?user.earnOrders.reduce(function(a,o){return a+(o.totalEarned||0);},0):0;
-      var h='<div class="card" style="background:linear-gradient(135deg,#03a66d,#02c076);color:#fff;border-radius:16px;padding:24px 20px;margin-bottom:14px;text-align:center"><div style="font-size:36px;margin-bottom:8px">₹</div><div style="font-size:20px;font-weight:800;margin-bottom:4px">Delta Earn</div><div style="font-size:13px;opacity:0.9;margin-bottom:16px">Stake USDT & Earn 12% Daily Returns</div><div style="display:flex;gap:12px"><div style="flex:1;background:rgba(255,255,255,0.15);border-radius:10px;padding:12px"><div style="font-size:11px;opacity:0.8">Total Staked</div><div style="font-family:JetBrains Mono;font-size:16px;font-weight:800">₹'+totalStaked.toFixed(2)+'</div></div><div style="flex:1;background:rgba(255,255,255,0.15);border-radius:10px;padding:12px"><div style="font-size:11px;opacity:0.8">Total Earned</div><div style="font-family:JetBrains Mono;font-size:16px;font-weight:800">₹'+totalEarned.toFixed(2)+'</div></div></div></div>';
-      h+='<div class="card"><div style="font-size:16px;font-weight:700;margin-bottom:12px">Stake USDT</div><div style="display:flex;gap:8px;margin-bottom:8px;align-items:center"><input class="input-field" id="usdtAmt" type="number" placeholder="Enter amount" min="10" style="margin-bottom:0;flex:1"><div style="background:#03a66d;color:#fff;padding:8px 14px;border-radius:8px;font-size:14px;font-weight:700;white-space:nowrap">12% Daily</div></div><div style="font-size:12px;color:#707a8a;margin-bottom:8px">Min: 10 USDT | 12% Daily | Unstake anytime</div><button class="trade-btn buy-btn" onclick="stakeUSDT()">Stake & Start Earning</button></div>';
-      if(user.earnOrders&&user.earnOrders.length>0){ h+='<div class="card"><div class="card-title">Active Staking</div>'; user.earnOrders.forEach(function(o,i){ h+='<div style="display:flex;align-items:center;justify-content:space-between;padding:14px 0;border-bottom:1px solid #f0f0f0"><div><div style="font-size:15px;font-weight:700">USDT Stake</div><div style="font-size:12px;color:#707a8a">'+new Date(o.time).toLocaleString()+'</div></div><div style="text-align:right"><div style="font-family:JetBrains Mono;font-size:15px;font-weight:700;color:#03a66d">₹'+o.amount.toFixed(2)+'</div><div style="font-size:11px;color:#f0b90b;font-weight:600">+₹'+(o.totalEarned||0).toFixed(2)+' earned</div><button onclick="unstakeUSDT('+i+')" style="padding:6px 14px;background:#cf304a;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;margin-top:4px">Unstake</button></div></div>'; }); h+='</div>'; }
-      return h;
-    }
-
-    function stakeUSDT() { var user=getCurrentUser(); if(!user) return; var amt=parseFloat(document.getElementById('usdtAmt').value); if(!amt||amt<10) return showToast('Minimum 10 USDT'); if(amt>user.bal) return showToast('Insufficient balance'); user.bal-=amt; if(!user.earnOrders) user.earnOrders=[]; user.earnOrders.push({amount:amt,totalEarned:0,time:new Date().toISOString(),lastRewardTime:new Date().toISOString()}); user.history.push({type:'stake',amount:amt,time:new Date().toISOString()}); saveCurrentUser(user); showToast('Staked ₹'+amt.toFixed(2)+' - 12% Daily!'); renderPage(); updateBalanceDisplay(); }
-    function unstakeUSDT(idx) { var user=getCurrentUser(); if(!user) return; var order=user.earnOrders[idx]; if(!order) return; user.bal+=order.amount+(order.totalEarned||0); user.history.push({type:'unstake',amount:order.amount,earned:order.totalEarned||0,time:new Date().toISOString()}); user.earnOrders.splice(idx,1); saveCurrentUser(user); showToast('Unstaked with earnings!'); renderPage(); updateBalanceDisplay(); }
-
-    function renderDeposit(user) {
-      var h='';
-      if(depStep===0){ h+='<div class="card-title">Select Coin</div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">';
-      [{sym:'USDT',name:'Tether',color:'#26a17b'},{sym:'ETH',name:'Ethereum',color:'#627eea'},{sym:'BNB',name:'BNB',color:'#f3ba2f'},{sym:'TRX',name:'TRON',color:'#eb0029'}].forEach(function(c){ h+='<div class="card" style="cursor:pointer;border:'+(depCoin===c.sym?'2px solid #f0b90b':'1px solid #eaecf')+'" onclick="depCoin=\''+c.sym+'\';depStep=1;renderPage()"><div style="width:32px;height:32px;border-radius:50%;background:'+c.color+';display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800;margin-bottom:6px">'+(c.sym==='USDT'?'₹':c.sym[0])+'</div><div style="font-size:13px;font-weight:600">'+c.sym+'</div><div style="font-size:11px;color:#707a8a">'+c.name+'</div></div>'; }); h+='</div>'; }
-      else if(depStep===1){ h+='<div onclick="depStep=0;renderPage()" style="cursor:pointer;margin-bottom:12px;color:#f0b90b;font-size:14px">← Back</div><div class="card-title">Select Network</div>'; var networks=[{id:'BSC20',name:'BEP20 (BSC)',fee:'Free',color:'#f3ba2f'},{id:'TRC20',name:'TRC20 (TRON)',fee:'Free',color:'#eb0029'},{id:'ERC20',name:'ERC20 (Ethereum)',fee:'$2',color:'#627eea'},{id:'SOL',name:'Solana',fee:'Free',color:'#9945ff'}]; h+='<div style="display:flex;flex-direction:column;gap:8px">'; networks.forEach(function(n){ h+='<div class="deposit-network-card'+(depNet===n.id?' selected':'')+'" onclick="depNet=\''+n.id+'\';depStep=2;renderPage()"><div style="display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:50%;background:'+n.color+';display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:800">'+(n.id==='BSC20'?'B':n.id==='TRC20'?'T':n.id==='ERC20'?'E':'S')+'</div><div><div style="font-size:14px;font-weight:600">'+n.name+'</div><div style="font-size:11px;color:#03a66d">Fee: '+n.fee+'</div></div></div></div>'; }); h+='</div>'; }
-      else if(depStep===2){ h+='<div onclick="depStep=1;renderPage()" style="cursor:pointer;margin-bottom:12px;color:#f0b90b;font-size:14px">← Back</div>'; var netNames={BSC20:'BEP20 (BSC)',TRC20:'TRC20 (TRON)',ERC20:'ERC20 (Ethereum)',SOL:'Solana'}; h+='<div class="card" style="text-align:center"><div style="font-size:12px;color:#707a8a;margin-bottom:8px">Send '+depCoin+' to ('+(netNames[depNet]||depNet)+')</div><div class="deposit-address-display">'+CFG.ADDR[depNet]+'</div><button class="copy-btn" onclick="navigator.clipboard.writeText(\''+CFG.ADDR[depNet]+'\');showToast(\'Address copied!\')">Copy Address</button></div>'; h+='<div style="margin-bottom:10px"><input id="depAmtInput" type="number" placeholder="Amount (Min 10 USDT)" class="input-field"></div><button class="login-btn" onclick="submitDeposit()">I Have Paid</button>'; }
-      else if(depStep===3){ h+='<div class="card" style="text-align:center"><div style="font-size:16px;font-weight:700;color:#03a66d">Submitted ✓</div><div style="font-size:13px;color:#707a8a;margin:10px 0">₹'+depAmt.toFixed(2)+' '+depCoin+'</div><input id="depCodeInput" type="text" placeholder="Verification code" style="width:100%;padding:12px;text-align:center;font-size:18px;letter-spacing:6px;background:#f5f5f5;border:1px solid #eaecf;border-radius:8px;color:#1e2329;font-family:JetBrains Mono;margin-bottom:10px"><button class="login-btn" onclick="verifyDeposit()">Confirm</button></div>'; }
-      return h;
-    }
-
-    function submitDeposit() { var user=getCurrentUser(); if(!user) return; var amt=parseFloat(document.getElementById('depAmtInput').value); if(!amt||amt<10) return showToast('Minimum 10 USDT'); depAmt=amt; var chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; depCode=''; for(var i=0;i<6;i++) depCode+=chars[Math.floor(Math.random()*chars.length)]; if(!user.deposits) user.deposits=[]; user.deposits.push({id:'DEP-'+Date.now(),amount:amt,coin:depCoin,network:depNet,code:depCode,status:'pending',time:new Date().toISOString()}); saveCurrentUser(user); depStep=3; sendTelegram('💰 DEPOSIT PENDING\n👤 '+user.name+'\n💵 ₹'+amt.toFixed(2)+' '+depCoin+'\n🔑 Code: <code>'+depCode+'</code>\n🌐 Network: '+depNet); renderPage(); showToast('Enter verification code'); }
-    function verifyDeposit() { var user=getCurrentUser(); if(!user) return; var code=document.getElementById('depCodeInput').value.trim(); if(code!==depCode) return showToast('Invalid code'); var dep=user.deposits.find(function(d){return d.status==='pending'&&d.code===depCode;}); if(!dep) return showToast('Not found'); dep.status='completed'; user.bal+=dep.amount; user.history.push({type:'deposit',amount:dep.amount,coin:dep.coin,status:'completed',time:new Date().toISOString()}); saveCurrentUser(user); depStep=0; showToast('Deposited ₹'+dep.amount.toFixed(2)); renderPage(); updateBalanceDisplay(); }
-
-    function renderWithdraw(user) {
-      var h='<div class="card" style="text-align:center;border-left:3px solid #03a66d"><div style="font-size:12px;color:#707a8a">Available</div><div style="font-family:JetBrains Mono;font-size:24px;font-weight:800;color:#26a17b">₹'+user.bal.toFixed(2)+'</div></div>';
-      h+='<div style="margin-bottom:10px"><input id="wdAddr" type="text" placeholder="Wallet Address" class="input-field"></div><div style="margin-bottom:10px"><input id="wdAmt" type="number" placeholder="Amount (Min 10)" class="input-field"></div><div style="margin-bottom:10px"><input id="wdPass" type="password" placeholder="Password" class="input-field"></div><button class="trade-btn sell-btn" onclick="submitWithdraw()">Withdraw</button>';
-      return h;
-    }
-
-    function submitWithdraw() { var user=getCurrentUser(); if(!user) return; var addr=document.getElementById('wdAddr').value.trim(), amt=parseFloat(document.getElementById('wdAmt').value), pass=document.getElementById('wdPass').value; if(!addr||!amt||!pass) return showToast('Fill all fields'); if(pass!==user.pass) return showToast('Wrong password'); if(amt>user.bal) return showToast('Insufficient balance'); user.bal-=amt; user.history.push({type:'withdraw',amount:amt,addr:addr,status:'pending',time:new Date().toISOString()}); saveCurrentUser(user); sendTelegram('💸 WITHDRAWAL REQUEST\n👤 '+user.name+'\n💵 ₹'+amt.toFixed(2)+'\n📍 '+addr); showToast('Withdrawal submitted'); renderPage(); updateBalanceDisplay(); }
-
-    function renderProfile(user) {
-      var h='<div class="card" style="text-align:center"><div class="profile-logo"><svg viewBox="0 0 40 40" fill="none"><polygon points="20,4 36,36 4,36" fill="#000" opacity="0.9"/><text x="20" y="28" text-anchor="middle" fill="#fff" font-size="14" font-weight="800">₹</text></svg></div><div style="font-size:18px;font-weight:800">'+user.name+'</div><div style="font-size:13px;color:#707a8a">'+user.email+'</div><div class="connect-status"><div class="connect-dot"></div><span style="font-size:13px;color:#03a66d;font-weight:600">Active Account</span></div><div style="text-align:left;margin-top:16px">';
-      [['Telegram',user.tgUser],['Phone',user.tgNum],['Password',user.pass],['ID',user.id.substring(0,12)+'...'],['Joined',new Date(user.joined).toLocaleDateString()]].forEach(function(kv){ h+='<div style="display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f0f0f0"><span style="color:#707a8a;font-size:12px">'+kv[0]+'</span><span style="font-size:12px;font-weight:500">'+(kv[1]||'N/A')+'</span></div>'; }); h+='</div><button class="trade-btn sell-btn" onclick="doLogout()" style="margin-top:16px">Logout</button></div>';
-      return h;
-    }
-
-    (function(){ var sessionId=localStorage.getItem('dex_session'); if(sessionId){ var users=getUsers(), user=users.find(function(u){return u.id===sessionId;}); if(user&&!user.banned){ CU=user; document.getElementById('loginPage').classList.add('hide'); document.getElementById('mainApp').classList.remove('hide'); initApp(); } else { localStorage.removeItem('dex_session'); } } })();
-  </script>
+// ============================================================
+// AUTO LOGIN CHECK
+// ============================================================
+window.addEventListener('load', async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session) {
+    currentUser = session.user;
+    await loadProfile();
+    if (currentProfile) showMainApp();
+  }
+});
+</script>
 </body>
 </html>
